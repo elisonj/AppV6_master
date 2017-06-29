@@ -1,0 +1,193 @@
+{
+  "modelId": 273,
+  "detailedDescCompl": "Predovic, Predovic and PredovicProduct",
+  "photoIllustrative": true,
+  "detailedDesc": "Expanded 5th generation workforce",
+  "inConditions": true,
+  "miniPhoto": "http://www.superbid.com.br/photos/img36-20000426-115811.jpg",
+  "subCategoryId": 10004,
+  "cityId": 9183,
+  "photoUrl": ["PHOTO 1"],
+  "sellerId": 8684,
+  "descURL": "http://www.superbid.com.br/photos/img36-20000426-115811.jpg",
+  "productYourRef": "xxxxxxxxx",
+  "attach1URL": "http://www.superbid.com.br/photos/img36-20000426-115811.jpg",
+  "shortDesc": "car full-range",
+  "projectId": 19835,
+  "attach2URL": "http://www.superbid.com.br/photos/img36-20000426-115811.jpg",
+  "properties": {"propertyGroupList": [
+    {
+      "propertyList": [
+        {
+          "id": "placa",
+          "value": "abc-3456"
+        },
+        {
+          "id": "placauf",
+          "value": "sp"
+        },
+        {
+          "id": "localidade",
+          "value": "são paulo"
+        },
+        {
+          "id": "marca",
+          "value": "fiat"
+        },
+        {
+          "id": "modelo",
+          "value": "Uno Mille"
+        },
+        {
+          "id": "anofabricacao",
+          "value": "2000"
+        },
+        {
+          "id": "anomodelo",
+          "value": "2001"
+        },
+        {
+          "id": "chassi",
+          "value": "93w244m24c2080127"
+        }
+      ],
+      "id": "identificacao"
+    },
+    {
+      "propertyList": [
+        {
+          "id": "cor",
+          "value": "azul"
+        },
+        {
+          "id": "tipocombustivel",
+          "value": "flex"
+        },
+        {
+          "id": "chavedeignicao",
+          "value": false
+        },
+        {
+          "id": "blindado",
+          "value": true
+        },
+        {
+          "id": "tipodecambio",
+          "value": "manual"
+        }
+      ],
+      "id": "especificacao"
+    },
+    {
+      "propertyList": [
+        {
+          "id": "kilometragem",
+          "value": "10001"
+        },
+        {
+          "id": "mecanicamotor",
+          "value": "falta"
+        },
+        {"id": "cambio"},
+        {"id": "direcao"},
+        {"id": "pintura"},
+        {"id": "lataria"},
+        {"id": "tapecaria"},
+        {"id": "pneus"},
+        {"id": "vidroblindado"},
+        {"id": "delaminado"},
+        {"id": "chassioxidado"},
+        {"id": "chassiremarcado"}
+      ],
+      "id": "condicoesgerais"
+    },
+    {
+      "propertyList": [
+        {
+          "id": "ndeportas",
+          "value": "4"
+        },
+        {"id": "arcondicionado"},
+        {"id": "vidrosdianteiros"},
+        {"id": "vidrostraseiros"},
+        {"id": "rodas"},
+        {"id": "bancos"},
+        {"id": "sistemadeaudio"},
+        {"id": "airbag"},
+        {"id": "abs"},
+        {"id": "tetosolar"},
+        {"id": "sensordere"}
+      ],
+      "id": "acessorios"
+    },
+    {
+      "propertyList": [
+        {"id": "pneuestepe"},
+        {"id": "macaco"},
+        {"id": "chavederoda"},
+        {"id": "triangulo"},
+        {
+          "id": "chavereserva",
+          "value": true
+        },
+        {
+          "id": "manual",
+          "value": true
+        }
+      ],
+      "id": "itensobrigatorios"
+    },
+    {
+      "propertyList": [
+        {"id": "grade"},
+        {"id": "parabrisa"},
+        {"id": "limpadorparabrisa"},
+        {"id": "capo"},
+        {"id": "parachoquedianteiro"},
+        {"id": "farolesquerdo"},
+        {"id": "faroldemilhaesquerdo"},
+        {"id": "faroldemilhadireito"},
+        {"id": "lanternadianteiraesquerda"},
+        {"id": "faroldireito"},
+        {"id": "lanternadianteiradireita"},
+        {"id": "paralamadianteirodireito"},
+        {"id": "retrovisordireito"},
+        {"id": "portadianteirodireito"},
+        {"id": "portatraseirodireito"},
+        {"id": "lateraltraseirodireito"},
+        {"id": "vidrolateraldireito"},
+        {"id": "rodadianteirodireito"},
+        {"id": "rodatraseirodireito"},
+        {"id": "pneudianteirodireito"},
+        {"id": "pneutraseirodireito"},
+        {"id": "lanternatraseirodireito"},
+        {"id": "lanternatraseiroesquerdo"},
+        {"id": "capotraseiro"},
+        {"id": "vidrotraseiro"},
+        {"id": "parachoquetraseiro"},
+        {"id": "lateraltraseiroesquerdo"},
+        {"id": "vidrolateralesquerdo"},
+        {"id": "portatraseiroesquerdo"},
+        {"id": "portadianteiroesquerdo"},
+        {"id": "retrovisoresquerdo"},
+        {"id": "paralamadianteiroesquerdo"},
+        {"id": "pneudianteiroesquerdo"},
+        {"id": "pneutraseiroesquerdo"},
+        {"id": "rodadianteiroesquerda"},
+        {"id": "rodatraseiroesquerda"},
+        {"id": "teto"},
+        {"id": "tetosolarobservacao"},
+        {"id": "bancodianteirodireito"},
+        {"id": "bancodianteiroesquerdo"},
+        {"id": "bancotraseiro"},
+        {"id": "painelinstrumentos"},
+        {"id": "forracaoportadianteiradireito"},
+        {"id": "forracaoportadianteiraesquerdo"},
+        {"id": "forracaoportatraseirodireito"},
+        {"id": "forracaoportatraseiroesquerdo"},
+        {"id": "bateria"}
+      ],
+      "id": "observacao"
+    }
+  ]}
+}
