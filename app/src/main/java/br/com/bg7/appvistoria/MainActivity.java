@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
                                 Util.Log.i("Sucesso! "+ product.getProductYourRef());
                                 product.save();
                                 getItemsFromDB();
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

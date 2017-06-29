@@ -42,8 +42,6 @@ public class PropertyList extends SugarRecord<PropertyList> {
         this.propertyList = propertyList;
     }
 
-
-
     // Decodes propertyList json into PropertyList model object
     public static PropertyList fromJson(JSONObject jsonObject) {
         PropertyList b = new PropertyList();

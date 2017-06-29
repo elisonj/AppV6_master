@@ -194,6 +194,7 @@ public class Util {
     public static String loadJSONFromAsset(Activity activity) {
         String json = null;
         try {
+
             InputStream is = activity.getAssets().open("model.json");
             int size = is.available();
             byte[] buffer = new byte[size];

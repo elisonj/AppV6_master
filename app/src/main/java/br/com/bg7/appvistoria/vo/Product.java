@@ -191,7 +191,6 @@ public class Product extends SugarRecord<Product> {
     }
 
 
-
     // Decodes model json into Model model object
     public static Product fromJson(JSONObject jsonObject) {
         Product b = new Product();

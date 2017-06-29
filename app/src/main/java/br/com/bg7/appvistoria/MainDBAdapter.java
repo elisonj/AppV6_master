@@ -76,7 +76,6 @@ public class MainDBAdapter extends BaseAdapter {
                 holder.textSub2.setText(item.getProductYourRef());
             }
 
-
         } catch (Exception e) {
             e.printStackTrace();
         }

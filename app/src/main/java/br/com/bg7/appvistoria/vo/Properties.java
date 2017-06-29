@@ -37,8 +37,6 @@ public class Properties extends SugarRecord<Properties> {
         // Deserialize json into object fields
         try {
 
-
-
             if(jsonObject.has("propertyGroupList") && jsonObject.getJSONArray("propertyGroupList").length() > 0) {
                 JSONObject propertyJson;
                 JSONArray arr = jsonObject.getJSONArray("propertyGroupList");

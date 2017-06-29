@@ -14,7 +14,9 @@ public class Property extends SugarRecord<Property> {
     String idProperty;
     String value;
 
-    public Property() { }
+    public Property() {
+
+    }
 
     public Property(String id, String value) {
         this.idProperty = id;
