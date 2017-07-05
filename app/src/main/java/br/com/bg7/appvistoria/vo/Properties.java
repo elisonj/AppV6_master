@@ -16,6 +16,7 @@ import java.util.List;
 public class Properties extends SugarRecord<Properties> {
 
     List<PropertyList> propertyGroupList;
+    private long productId;
 
     public Properties() {}
 
@@ -74,5 +75,33 @@ public class Properties extends SugarRecord<Properties> {
     }
 
 
+    /**
+     * Return a JSON representation from Object
+     * @return
+     */
+    public JSONObject toJSON() {
 
+        JSONObject propertiesGroupList = new JSONObject();
+        JSONArray arr = new JSONArray();
+        if(propertyGroupList != null && propertyGroupList.size() > 0) {
+            for (PropertyList list: propertyGroupList ) {
+                arr.put(list.toJSON());
+            }
+        }
+        try {
+            propertiesGroupList.put("propertyGroupList", arr);
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+        return propertiesGroupList;
+    }
+
+
+    public void setProductId(long productId) {
+        this.productId = productId;
+    }
+
+    public long getProductId() {
+        return productId;
+    }
 }

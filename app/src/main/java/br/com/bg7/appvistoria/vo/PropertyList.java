@@ -17,6 +17,7 @@ public class PropertyList extends SugarRecord<PropertyList> {
 
     String idList;
     List<Property> propertyList;
+    private long propertiesId;
 
 
     public PropertyList() {}
@@ -38,7 +39,7 @@ public class PropertyList extends SugarRecord<PropertyList> {
         this.idList = idList;
     }
 
-    public void setPropertyList(ArrayList<Property> propertyList) {
+    public void setPropertyList(List<Property> propertyList) {
         this.propertyList = propertyList;
     }
 
@@ -85,4 +86,37 @@ public class PropertyList extends SugarRecord<PropertyList> {
         return b;
     }
 
+
+
+    /**
+     * Return a JSON representation from Object
+     * @return
+     */
+    public JSONObject toJSON() {
+
+        JSONObject propertiesList = new JSONObject();
+        JSONArray arr = new JSONArray();
+
+        if(propertyList != null && propertyList.size() > 0) {
+            for (Property property: propertyList ) {
+                arr.put(property.toJSON());
+            }
+        }
+        try {
+            propertiesList.put("id", idList);
+            propertiesList.put("propertyList", arr);
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+        return propertiesList;
+    }
+
+
+    public void setPropertiesId(long propertiesId) {
+        this.propertiesId = propertiesId;
+    }
+
+    public long getPropertiesId() {
+        return propertiesId;
+    }
 }

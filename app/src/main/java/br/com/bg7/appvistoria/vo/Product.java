@@ -5,8 +5,6 @@ import com.orm.SugarRecord;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
-
 /**
  * Created by elison on 27/06/17.
 
@@ -32,6 +30,7 @@ import java.util.List;
 
 public class Product extends SugarRecord<Product> {
 
+        long productId;
        int modelId;
        String detailedDescCompl;
        boolean photoIllustrative;
@@ -40,7 +39,7 @@ public class Product extends SugarRecord<Product> {
        String miniPhoto;
        int subCategoryId;
        int cityId;
-       List<String> photoUrl;
+      // List<String> photoUrl;
        int sellerId;
        String descURL;
        String productYourRef;
@@ -52,6 +51,14 @@ public class Product extends SugarRecord<Product> {
 
 
     public Product() {
+    }
+
+    public long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(long productId) {
+        this.productId = productId;
     }
 
     public int getModelId() {
@@ -118,14 +125,14 @@ public class Product extends SugarRecord<Product> {
         this.cityId = cityId;
     }
 
-    public List<String> getPhotoUrl() {
+ /*   public List<String> getPhotoUrl() {
         return photoUrl;
     }
 
     public void setPhotoUrl(List<String> photoUrl) {
         this.photoUrl = photoUrl;
     }
-
+*/
     public int getSellerId() {
         return sellerId;
     }
@@ -196,22 +203,25 @@ public class Product extends SugarRecord<Product> {
         Product b = new Product();
         // Deserialize json into object fields
         try {
-            b.modelId = jsonObject.getInt("modelId");
-            b.detailedDescCompl = jsonObject.getString("detailedDescCompl");
-            b.photoIllustrative = jsonObject.getBoolean("photoIllustrative");
-            b.detailedDesc = jsonObject.getString("detailedDesc");
-            b.inConditions = jsonObject.getBoolean("inConditions");
-            b.miniPhoto = jsonObject.getString("miniPhoto");
-            b.subCategoryId = jsonObject.getInt("subCategoryId");
-            b.cityId = jsonObject.getInt("cityId");
-       //     b.photoUrl = jsonObject.getString("photoUrl");
-            b.sellerId = jsonObject.getInt("sellerId");
-            b.descURL = jsonObject.getString("descURL");
-            b.productYourRef = jsonObject.getString("productYourRef");
-            b.attach1URL = jsonObject.getString("attach1URL");
-            b.shortDesc = jsonObject.getString("shortDesc");
-            b.projectId = jsonObject.getInt("projectId");
-            b.attach2URL = jsonObject.getString("attach2URL");
+
+            if(jsonObject.has("productId")) b.productId = jsonObject.getLong("productId");
+
+            if(jsonObject.has("modelId"))  b.modelId = jsonObject.getInt("modelId");
+            if(jsonObject.has("detailedDescCompl")) b.detailedDescCompl = jsonObject.getString("detailedDescCompl");
+            if(jsonObject.has("photoIllustrative")) b.photoIllustrative = jsonObject.getBoolean("photoIllustrative");
+            if(jsonObject.has("detailedDesc")) b.detailedDesc = jsonObject.getString("detailedDesc");
+            if(jsonObject.has("inConditions")) b.inConditions = jsonObject.getBoolean("inConditions");
+            if(jsonObject.has("miniPhoto")) b.miniPhoto = jsonObject.getString("miniPhoto");
+            if(jsonObject.has("subCategoryId")) b.subCategoryId = jsonObject.getInt("subCategoryId");
+            if(jsonObject.has("cityId")) b.cityId = jsonObject.getInt("cityId");
+          //if(jsonObject.has("photoUrl"))   b.photoUrl = jsonObject.getString("photoUrl");
+            if(jsonObject.has("sellerId")) b.sellerId = jsonObject.getInt("sellerId");
+            if(jsonObject.has("descURL")) b.descURL = jsonObject.getString("descURL");
+            if(jsonObject.has("productYourRef")) b.productYourRef = jsonObject.getString("productYourRef");
+            if(jsonObject.has("attach1URL")) b.attach1URL = jsonObject.getString("attach1URL");
+            if(jsonObject.has("shortDesc")) b.shortDesc = jsonObject.getString("shortDesc");
+            if(jsonObject.has("projectId")) b.projectId = jsonObject.getInt("projectId");
+            if(jsonObject.has("attach2URL")) b.attach2URL = jsonObject.getString("attach2URL");
 
             if(jsonObject.has("properties")) {
                 Properties p  = Properties.fromJson(jsonObject.getJSONObject("properties"));
@@ -230,6 +240,43 @@ public class Product extends SugarRecord<Product> {
     }
 
 
+    /**
+     * Return a JSON representation from Object
+     * @return
+     */
+    public JSONObject toJSON(){
+
+        JSONObject jsonObject= new JSONObject();
+        try {
+
+            if(productId > 0)  jsonObject.put("productId", productId);
+
+            jsonObject.put("modelId", modelId);
+            jsonObject.put("detailedDescCompl", detailedDescCompl);
+            jsonObject.put("photoIllustrative", photoIllustrative);
+            jsonObject.put("detailedDesc", detailedDesc);
+            jsonObject.put("inConditions", inConditions);
+            jsonObject.put("miniPhoto", miniPhoto);
+            jsonObject.put("subCategoryId", subCategoryId);
+            jsonObject.put("cityId", cityId);
+         //   jsonObject.put("photoUrl", photoUrl);
+            jsonObject.put("sellerId", sellerId);
+            jsonObject.put("descURL", descURL);
+            jsonObject.put("productYourRef", productYourRef);
+            jsonObject.put("attach1URL", attach1URL);
+            jsonObject.put("shortDesc", shortDesc);
+            jsonObject.put("projectId", projectId);
+            jsonObject.put("attach2URL", attach2URL);
+            if(properties != null) jsonObject.put("properties", properties.toJSON());
+
+
+            return jsonObject;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return jsonObject;
+        }
+
+    }
 
 
 

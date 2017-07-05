@@ -13,6 +13,7 @@ public class Property extends SugarRecord<Property> {
 
     String idProperty;
     String value;
+    private long propertyListId;
 
     public Property() {
 
@@ -57,4 +58,35 @@ public class Property extends SugarRecord<Property> {
     }
 
 
+
+    /**
+     * Return a JSON representation from Object
+     * @return
+     */
+    public JSONObject toJSON(){
+
+        JSONObject jsonObject= new JSONObject();
+        try {
+
+
+            jsonObject.put("id", idProperty);
+            if(value != null && value.length() > 0) jsonObject.put("value", value);
+
+
+            return jsonObject;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return jsonObject;
+        }
+
+    }
+
+
+    public void setPropertyListId(long propertyListId) {
+        this.propertyListId = propertyListId;
+    }
+
+    public long getPropertyListId() {
+        return propertyListId;
+    }
 }

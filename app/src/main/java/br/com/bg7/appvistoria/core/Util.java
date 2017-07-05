@@ -12,18 +12,24 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.webkit.MimeTypeMap;
 
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
+
+import br.com.bg7.appvistoria.Applic;
 
 /**
  * Created by Elisonj on 21/06/2017.
@@ -60,6 +66,34 @@ public class Util {
         public static void d(String log) {
             if (isInDebugMode)
                 splitAndLog_d(TAG, log);
+        }
+
+
+
+        public static BufferedWriter out;
+
+        /**
+         * Save log in file system - create one file per day
+         * @param log
+         */
+        public static void file(String log) {
+            File Root = new File(Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_PICTURES), "AppVistoria");
+            if(Root.canWrite()){
+                Calendar cal = Calendar.getInstance();
+                String filename = "log_app_vistoria_"+cal.get(Calendar.DAY_OF_MONTH)+cal.get(Calendar.MONTH)+cal.get(Calendar.YEAR)+".txt";
+                File  LogFile = new File(Root, filename);
+                FileWriter LogWriter = null;
+                try {
+                    LogWriter = new FileWriter(LogFile, true);
+                    out = new BufferedWriter(LogWriter);
+                    Date date = new Date();
+                    out.write("* Logged at" + String.valueOf(date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + " --- " + log + "\n"));
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -134,7 +168,6 @@ public class Util {
     }
 
 
-
     /**
      * Divides the string into chunks for displaying them
      * into the Eclipse's LogCat.
@@ -148,10 +181,6 @@ public class Util {
             android.util.Log.d(tag, message);
         }
     }
-
-
-
-
 
 
     /**
@@ -210,6 +239,21 @@ public class Util {
 
 
     /**
+     * Get all Images stored
+     * @param context
+     * @param finalBitmap
+     */
+    public static File[] getPhotos(Context context) {
+        //File mediaStorageDir = context.getDir(Applic.KEY_IMAGE_FOLDER, Context.MODE_PRIVATE);
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "AppVistoria");
+
+        File[] files = mediaStorageDir.listFiles();
+        return files;
+
+    }
+
+    /**
      * Save a bitmap in Internal Storage
      * @param context
      * @param finalBitmap
@@ -217,15 +261,29 @@ public class Util {
     public static void saveToInternalStorage(Context context, Bitmap finalBitmap){
 
 
-        String root = Environment.getExternalStorageDirectory().toString();
-        File myDir = new File(root + "/saved_images");
-        myDir.mkdirs();
+        //String root = Environment.getExternalStorageDirectory().toString();
+        //File myDir = new File(root + "/saved_images");
+        //myDir.mkdirs();
+        //File mediaStorageDir = Environment.getInternalStoragePublicDirectory(
+         //       Environment.DIRECTORY_PICTURES);
+        //File mediaStorageDir = context.getDir(Applic.KEY_IMAGE_FOLDER, Context.MODE_PRIVATE);
+
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "AppVistoria");
+
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Util.Log.d( "Util.class - failed to create directory");
+            }
+        }
+
+
         Random generator = new Random();
         int n = 10000;
         n = generator.nextInt(n);
         String fname = "Image-"+ n +".jpg";
-        File file = new File (myDir, fname);
-        if (file.exists ()) file.delete ();
+        File file = new File (mediaStorageDir, fname);
+        // if (file.exists ()) file.delete ();
         try {
             FileOutputStream out = new FileOutputStream(file);
             finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
@@ -236,35 +294,7 @@ public class Util {
             e.printStackTrace();
         }
 
-
-//        ContextWrapper cw = new ContextWrapper(context);
-//        // path to /data/data/yourapp/app_data/imageDir
-//        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-//        // Create imageDir
-//
-//        Date today = null;
-//        Calendar cal = Calendar.getInstance();
-//        today = cal.getTime();
-//
-//        File mypath=new File(directory,getDateTime(today)+".jpg");
-//
-//        FileOutputStream fos = null;
-//        try {
-//            fos = new FileOutputStream(mypath);
-//            // Use the compress method on the BitMap object to write image to the OutputStream
-//            bitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-//
-//            if(fos != null) {
-//                fos.close();
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//        }
-//        return directory.getAbsolutePath();
     }
-
-
 
 
 

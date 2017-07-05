@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AppVistoria.iml" filepath="$PROJECT_DIR$/AppVistoria.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wslibrary/wslibrary.iml" filepath="$PROJECT_DIR$/wslibrary/wslibrary.iml" />
     </modules>
   </component>
 </project>
