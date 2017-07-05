@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:gravity="center"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="300dp"
+        android:layout_margin="15dp"
+        android:gravity="center"
+        android:background="#D50058"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/dialog_textView_dialogTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:text="@string/generic_alert_warn" />
+
+        <TextView
+            android:id="@+id/dialog_textView_dialogMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:textColor="#666666"
+            android:gravity="center"></TextView>
+        <Button
+            android:id="@+id/dialog_button_dialogOk"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:text="@string/ok" />
+    </LinearLayout>
+
+</RelativeLayout>

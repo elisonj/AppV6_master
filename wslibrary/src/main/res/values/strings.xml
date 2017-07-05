@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">WSLibrary</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="cancel">Cancelar</string>
+    <string name="ok">Ok</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="generic_alert_warn">Atenção</string>
+    <string name="success">Sucesso!</string>
+    <string name="confirm">CONFIRMAR</string>
+    <string name="change_date">TROCAR DATA</string>
+    <string name="success_theme_change">Tema alterado com sucesso!</string>
+    <string name="progress_dialog_wait">Aguarde…</string>
+    <string name="lost_conn_alert_message">Erro na conexão. Por favor, tente novamete.</string>
+    <string name="invalid_session_alert_message">Erro na sessão. Por favor, faça o login novamente.</string>
+    <string name="forget_result_notOk">Falha de comunicação com o servidor.</string>
+
+</resources>
