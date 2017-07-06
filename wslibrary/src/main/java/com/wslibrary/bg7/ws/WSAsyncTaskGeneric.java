@@ -45,7 +45,7 @@ public abstract class WSAsyncTaskGeneric<W, U, T> extends AsyncTask<W, U, T> {
 //			dialog.setMessage("");
 //			dialog.setTitle("");
 		}
-//		dialog.setCancelable(false);
+		dialog.setCancelable(false);
 	}
 
 	protected void dismissDialogOrActionBarProgress(Activity activity) {
