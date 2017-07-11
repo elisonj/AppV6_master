@@ -13,14 +13,13 @@ import com.wslibrary.bg7.ws.SBCommands;
 import com.wslibrary.bg7.ws.WSAsyncTaskGeneric;
 import com.wslibrary.bg7.ws.WSCallBack;
 
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +60,7 @@ public class MainController {
     /**
      * Execute request to send all Products in database
      */
-    private void syncronizeProduct(LocalDateTime start) {
+    private void syncronizeProduct(DateTime start) {
         if(productsToSend.size() > 0) {
             Product product = productsToSend.get(0);
             if (product != null) {
@@ -91,9 +90,9 @@ public class MainController {
      * Return of Product Send request
      */
     class CallbackProduct implements WSCallBack {
-        private LocalDateTime start;
+        private DateTime start;
 
-        public CallbackProduct(LocalDateTime start) {
+        public CallbackProduct(DateTime start) {
             this.start = start;
         }
 
@@ -157,7 +156,7 @@ public class MainController {
         List<Product> items = db.getAll();
 
         logger.info("Inicio sync", items.size());
-        LocalDateTime now = LocalDateTime.now();
+        DateTime now = DateTime.now();
         if(items.size() > 0) {
             logger.info("Produtos: {}", items.size());
             logger.info("Imagens: {}", qtdImagesFolder);
@@ -177,7 +176,7 @@ public class MainController {
     /**
      * Execute request to send all image files
      */
-    private void syncronizeImages(Product obj, LocalDateTime start) {
+    private void syncronizeImages(Product obj, DateTime start) {
         filesToSend.clear();
         File[] files = Util.getPhotos(activity);
         for (File file: files) {
@@ -188,7 +187,7 @@ public class MainController {
     }
 
 
-    private void sendFileToServer(Product obj, LocalDateTime start) {
+    private void sendFileToServer(Product obj, DateTime start) {
         if(filesToSend != null && filesToSend.size() > 0) {
             Parameter<String, File> param = filesToSend.get(0);
             File file = param.getValue();
@@ -212,8 +211,7 @@ public class MainController {
             }
             productsToSend.remove(0);
             if(productsToSend.size() == 0) {
-                LocalDateTime now = LocalDateTime.now();
-                logger.info("Millis: {}", Duration.between(start, now).toMillis());
+                logger.info("Millis: {}", new Duration(start, null).getMillis());
                 logger.info("Fim sync");
                 SugarRecord.deleteAll(Product.class);
                 SugarRecord.deleteAll(Properties.class);
@@ -251,9 +249,9 @@ public class MainController {
 
         File file = null;
         Product product = null;
-        LocalDateTime start;
+        DateTime start;
 
-        public CallbackSendImage(Product product, File file, LocalDateTime start) {
+        public CallbackSendImage(Product product, File file, DateTime start) {
             this.product = product;
             this.file = file;
             this.start = start;
