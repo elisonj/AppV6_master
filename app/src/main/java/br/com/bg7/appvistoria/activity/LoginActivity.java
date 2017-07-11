@@ -23,7 +23,5 @@ public class LoginActivity extends Activity {
         controller = new LoginController(LoginActivity.this, view);
 
         setContentView(view);
-
     }
-
 }
