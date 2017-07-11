@@ -14,8 +14,13 @@ import com.wslibrary.bg7.ws.WSAsyncTaskGeneric;
 import com.wslibrary.bg7.ws.WSCallBack;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,9 +40,9 @@ public class MainController {
     private MainActivity activity;
     private ListView listView;
 
+    private static final Logger logger = LoggerFactory.getLogger(MainController.class.getSimpleName());
 
-    public static final String WS_BASE_URL = "https://preapi.s4bdigital.net/";
-    private static ArrayList<Parameter> filesToSend = new ArrayList<Parameter>();
+    private static ArrayList<Parameter<String, File>> filesToSend = new ArrayList<>();
     private static ArrayList<Product> productsToSend = new ArrayList<Product>();
     int qtdImagesFolder = 0;
 
@@ -56,12 +61,12 @@ public class MainController {
     /**
      * Execute request to send all Products in database
      */
-    private void syncronizeProduct() {
+    private void syncronizeProduct(LocalDateTime start) {
         if(productsToSend.size() > 0) {
             Product product = productsToSend.get(0);
             if (product != null) {
                 JSONObject obj = product.toJSON();
-                CallbackProduct callback = new CallbackProduct();
+                CallbackProduct callback = new CallbackProduct(start);
                 List<Parameter> params = new ArrayList<Parameter>();
                 params.add(new Parameter<String, String>("body", obj.toString()));
                 Applic.getInstance().getWsRequests().requestGetWS(activity, SBCommands.CMD_SEND_PRODUCTS.getValue(), callback, params, GetRequestUITask.HttpMethod.POST);
@@ -86,13 +91,19 @@ public class MainController {
      * Return of Product Send request
      */
     class CallbackProduct implements WSCallBack {
+        private LocalDateTime start;
+
+        public CallbackProduct(LocalDateTime start) {
+            this.start = start;
+        }
+
         @Override
         public void onResult(final JSONObject result) {
             if (result != null) {
                 try {
                     LibraryUtil.Log.i("RESULT - CallbackProduct: " + result.toString());
                     Product p =  Product.fromJson(result);
-                    syncronizeImages(p);
+                    syncronizeImages(p, start);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -141,44 +152,52 @@ public class MainController {
     protected void syncronizeDB() {
         ProductDB db = new ProductDB();
         List<Product> items = db.getAll();
-        if(items != null && items.size() > 0) {
+
+        logger.info("Inicio sync", items.size());
+        LocalDateTime now = LocalDateTime.now();
+        if(items.size() > 0) {
+            logger.info("Produtos: {}", items.size());
+            logger.info("Imagens: {}", qtdImagesFolder);
 
             for(Product product: items) {
                 if (product.toJSON() != null) {
                     productsToSend.add(product);
                 }
             }
-            syncronizeProduct();
+            syncronizeProduct(now);
+        }
+        else {
+            logger.info("Fim sync", items.size());
         }
     }
 
     /**
      * Execute request to send all image files
      */
-    private void syncronizeImages(Product obj) {
+    private void syncronizeImages(Product obj, LocalDateTime start) {
         filesToSend.clear();
         File[] files = Util.getPhotos(activity);
         for (File file: files) {
             filesToSend.add(new Parameter<String, File>(file.getName(), file));
         }
         LibraryUtil.Log.file(" ****   Start Syncronization ****      Qtd files: "+ qtdImagesFolder+ "");
-        sendFileToServer(obj);
+        sendFileToServer(obj, start);
     }
 
 
-    private void sendFileToServer(Product obj) {
+    private void sendFileToServer(Product obj, LocalDateTime start) {
         if(filesToSend != null && filesToSend.size() > 0) {
             Parameter<String, File> param = filesToSend.get(0);
             File file = param.getValue();
             if (LibraryUtil.getMimeType(file.getAbsolutePath()).equalsIgnoreCase("image/jpeg")) {  // if is a jpeg file, send to server
-                CallbackSendImage callback = new CallbackSendImage(obj, file);
+                CallbackSendImage callback = new CallbackSendImage(obj, file, start);
                 List<Parameter> params = new ArrayList<Parameter>();
                 params.add(new Parameter<String, File>("image", file));
                 LibraryUtil.Log.file("Syncronizing file " + file.getName() + " - Product: " + obj.getProductId());
                 Applic.getInstance().getWsRequests().requestGetWS(activity, SBCommands.PREFIX_SEND_IMAGE.getValue() + obj.getProductId() + SBCommands.CMD_SEND_IMAGE.getValue(), callback, params, GetRequestUITask.HttpMethod.POST);
             } else {
                 filesToSend.remove(0);      //  else, remove from list
-                sendFileToServer(obj);
+                sendFileToServer(obj, start);
             }
         } else {   //  IF Send all files
             LibraryUtil.Log.file("End of syncronizing files ");
@@ -190,6 +209,9 @@ public class MainController {
             }
             productsToSend.remove(0);
             if(productsToSend.size() == 0) {
+                LocalDateTime now = LocalDateTime.now();
+                logger.info("Millis: {}", Duration.between(start, now).toMillis());
+                logger.info("Fim sync");
                 SugarRecord.deleteAll(Product.class);
                 SugarRecord.deleteAll(Properties.class);
                 SugarRecord.deleteAll(Property.class);
@@ -197,13 +219,13 @@ public class MainController {
             }
 
             getItemsFromDB();                   //  Update ListView
-            syncronizeProduct();                //  If has more products, sent it to server
+            syncronizeProduct(start);           //  If has more products, sent it to server
             updateCountPhotos();                //  update count photos in screen
         }
     }
 
     /**
-     * Update Count photos in folder
+     * Update Count photos in screen
      */
     protected void updateCountPhotos() {
 
@@ -226,10 +248,12 @@ public class MainController {
 
         File file = null;
         Product product = null;
+        LocalDateTime start;
 
-        public CallbackSendImage(Product product, File file) {
+        public CallbackSendImage(Product product, File file, LocalDateTime start) {
             this.product = product;
             this.file = file;
+            this.start = start;
         }
 
         @Override
@@ -244,7 +268,7 @@ public class MainController {
                         if(deleted) {
                             LibraryUtil.Log.file("-- Send File OK: "+ filename + " delected");
                         }
-                        sendFileToServer(product);
+                        sendFileToServer(product, start);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

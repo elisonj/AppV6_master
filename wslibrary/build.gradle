@@ -21,10 +21,9 @@ android {
 }
 
 dependencies {
-     compile ('cz.msebera.android:httpclient:4.4.1.2') {
-         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
-     }
-
+    compile('cz.msebera.android:httpclient:4.4.1.2') {
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    }
     // compile 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
     //compile 'org.apache.httpcomponents:httpclient:4.5.1'
     //compile group: 'org.apache.httpcomponents' , name: 'httpclient-android' , version: '4.3.5'
