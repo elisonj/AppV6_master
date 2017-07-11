@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import br.com.bg7.appvistoria.login.LoginActivity;
+import br.com.bg7.appvistoria.activity.LoginActivity;
 
 /**
  *   MainActivity of Application

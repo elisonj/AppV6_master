@@ -1,8 +1,8 @@
 package br.com.bg7.appvistoria.vo;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;
-
-import java.time.LocalDateTime;
 
 /**
  * Created by elison on 11/07/17.
@@ -10,9 +10,21 @@ import java.time.LocalDateTime;
 
 public class Token  extends SugarRecord<Token> {
 
+    @SerializedName("access_token")
+    @Expose
     private String accessToken;
-    private long expiresIn;
-    private LocalDateTime receivedAt;
+    @SerializedName("token_type")
+    @Expose
+    private String tokenType;
+    @SerializedName("expires_in")
+    @Expose
+    private Integer expiresIn;
+    @SerializedName("refresh_token")
+    @Expose
+    private String refreshToken;
+    @SerializedName("userId")
+    @Expose
+    private String userId;
 
     public String getAccessToken() {
         return accessToken;
@@ -22,19 +34,36 @@ public class Token  extends SugarRecord<Token> {
         this.accessToken = accessToken;
     }
 
-    public long getExpiresIn() {
+    public String getTokenType() {
+        return tokenType;
+    }
+
+    public void setTokenType(String tokenType) {
+        this.tokenType = tokenType;
+    }
+
+    public Integer getExpiresIn() {
         return expiresIn;
     }
 
-    public void setExpiresIn(long expiresIn) {
+    public void setExpiresIn(Integer expiresIn) {
         this.expiresIn = expiresIn;
     }
 
-    public LocalDateTime getReceivedAt() {
-        return receivedAt;
+    public String getRefreshToken() {
+        return refreshToken;
     }
 
-    public void setReceivedAt(LocalDateTime receivedAt) {
-        this.receivedAt = receivedAt;
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
 }

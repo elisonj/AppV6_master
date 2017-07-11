@@ -1,7 +1,10 @@
-package br.com.bg7.appvistoria.login;
+package br.com.bg7.appvistoria.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+
+import br.com.bg7.appvistoria.controller.LoginController;
+import br.com.bg7.appvistoria.view.LoginView;
 
 /**
  * Created by elison on 10/07/17.
