@@ -2,21 +2,32 @@ package br.com.bg7.appvistoria;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 
+import br.com.bg7.appvistoria.core.ImageUtil;
 import br.com.bg7.appvistoria.core.Util;
 import br.com.bg7.appvistoria.database.ProductDB;
 import pl.brightinventions.slf4android.FileLogHandlerConfiguration;
@@ -36,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
             };
 
     private TextView qtdPhotos;
+    private LinearLayout  linearBackground;
     private MainController controller;
 
     @Override
@@ -54,7 +66,10 @@ public class MainActivity extends AppCompatActivity {
         final Button btClick = (Button) findViewById(R.id.button_add_item);
         final Button btSync = (Button) findViewById(R.id.button_syncronize);
         final Button btPhoto = (Button) findViewById(R.id.button_add_photo);
+        final ImageButton btPhotoClose = (ImageButton) findViewById(R.id.imageButton_close);
+        final ImageButton btTakePhoto = (ImageButton) findViewById(R.id.imageButton_camera);
         final EditText editTextQtdPhotos = (EditText) findViewById(R.id.editText_qtd_imagens);
+        linearBackground = (LinearLayout) findViewById(R.id.linear_imagem_bg);
 
         if(btClick != null) {       //  Execute action for add_item
             btClick.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +94,22 @@ public class MainActivity extends AppCompatActivity {
                         controller.createDefaultImage(add);
                         controller.updateCountPhotos();
                     }
+                }
+            });
+        }
+        if(btTakePhoto != null) {       // Execute action to take a photo
+            btTakePhoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onSelectImageClick(view);
+                }
+            });
+        }
+        if(btPhotoClose != null) {       // Execute action to take a photo
+            btPhotoClose.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    linearBackground.setVisibility(View.GONE);
                 }
             });
         }
@@ -134,5 +165,66 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Start pick image activity with chooser.
+     */
+    public void onSelectImageClick(View view) {
+        CropImage.activity(null)
+                .setMaxCropResultSize(4608,2592)         // max size:  4608 x 2592
+                .setMinCropResultSize(1200, 900)
+                .setAspectRatio(4608, 2592)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .start(this);
+    }
 
+    /**
+     *  Requires permission to save in storage, if hasn't ask for it.
+     * @return boolean
+     */
+    public  boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v("BG7","Permission is granted");
+                return true;
+            } else {
+
+                Log.v("BG7","Permission is revoked");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            Log.v("BG7","Permission is granted");
+            return true;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        // handle result of CropImageActivity
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+
+                Bitmap bmp = ImageUtil.fileToBitmapSafeMemory(result.getUri().getPath());
+
+                bmp = ImageUtil.createScaledBitmap(bmp, 1200, 1000, ImageUtil.ScalingLogic.FIT);  // Redimen Image
+                if(bmp != null) {
+                    if(isStoragePermissionGranted()){
+                        Util.saveToInternalStorage(this, bmp);
+                    }
+                    ((ImageView) findViewById(R.id.quick_start_cropped_image)).setImageBitmap(bmp);
+                    linearBackground.setVisibility(View.VISIBLE);
+                    controller.updateCountPhotos();
+                    Toast.makeText(this, "Redimencionamento realizado com sucesso!", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "Erro ao efetuar a compressão da imagem", Toast.LENGTH_LONG).show();
+                }
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Toast.makeText(this, "Erro ao efetuar o Redimencionamento: " + result.getError(), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 }

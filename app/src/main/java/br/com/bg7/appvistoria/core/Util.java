@@ -24,8 +24,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
@@ -40,25 +40,6 @@ public class Util {
     public static boolean isInDebugMode = true; // habilita o log
     public static BufferedWriter out;
 
-    /**
-     *  Method to decode an URI image to a JPEG - 80%
-     * @param activity
-     * @param uri
-     * @return
-     */
-    public static Bitmap getJpgCompressed(Activity activity, Uri uri) {
-        Bitmap bitmap = null;
-        try {
-            bitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), uri);
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
-            Bitmap decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
-            return decoded;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bitmap;
-    }
 
     /**
      * Get current Date in format yyyy-MM-dd-HH:mm:ss
@@ -105,6 +86,8 @@ public class Util {
         return files;
     }
 
+
+
     /**
      * Save a bitmap in Internal Storage
      * @param context
@@ -126,7 +109,7 @@ public class Util {
         File file = new File (mediaStorageDir, fname);
         try {
             FileOutputStream out = new FileOutputStream(file);
-            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
             out.flush();
             out.close();
 

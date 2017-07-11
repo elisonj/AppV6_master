@@ -103,6 +103,9 @@ public class MainController {
                 try {
                     LibraryUtil.Log.i("RESULT - CallbackProduct: " + result.toString());
                     Product p =  Product.fromJson(result);
+                    if (p != null) {
+                        logger.info("Produto: {}", p.getProductId());
+                    }
                     syncronizeImages(p, start);
                 } catch (Exception e) {
                     e.printStackTrace();
