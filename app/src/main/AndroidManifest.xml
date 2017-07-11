@@ -24,7 +24,9 @@
             <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="br.com.bg7.appvistoria" />
 
 
-            <activity android:name=".MainActivity">
+            <activity android:name=".MainActivity"
+                android:screenOrientation="portrait">
+
                 <intent-filter>
                     <action android:name="android.intent.action.MAIN" />
 

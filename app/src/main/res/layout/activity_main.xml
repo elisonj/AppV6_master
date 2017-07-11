@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@android:color/holo_blue_light">
+
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
 
     <LinearLayout
@@ -69,6 +76,13 @@
                 android:layout_height="wrap_content"
                 android:text="Adicionar Imagens" />
 
+            <ImageButton
+                android:id="@+id/imageButton_camera"
+                android:layout_marginLeft="20dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                app:srcCompat="@android:drawable/ic_menu_camera" />
+
 
         </LinearLayout>
 
@@ -109,11 +123,38 @@
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
-    <ImageView
-        android:id="@+id/quick_start_cropped_image"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+
 
 </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_imagem_bg"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CC000000"
+        android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/linear_imagem"
+        android:gravity="center"
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:layout_gravity="left"
+            android:id="@+id/imageButton_close"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:srcCompat="@android:drawable/ic_delete" />
+
+        <ImageView
+            android:id="@+id/quick_start_cropped_image"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+    </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
