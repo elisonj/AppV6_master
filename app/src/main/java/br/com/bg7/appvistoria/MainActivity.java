@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -22,9 +23,15 @@ import android.widget.Toast;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+
 import br.com.bg7.appvistoria.core.ImageUtil;
 import br.com.bg7.appvistoria.core.Util;
 import br.com.bg7.appvistoria.database.ProductDB;
+import pl.brightinventions.slf4android.FileLogHandlerConfiguration;
+import pl.brightinventions.slf4android.LoggerConfiguration;
 
 
 /**
@@ -114,6 +121,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+
+        FileLogHandlerConfiguration fileHandler = LoggerConfiguration.fileLogHandler(this);
+        String YYYYMMDD = LocalDate.now().format(DateTimeFormatter.ISO_DATE);
+        fileHandler.setFullFilePathPattern(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES).getPath() + "/log_app_vistoria_"+YYYYMMDD+".%g.log.txt");
+        fileHandler.setLevel(Level.INFO);
+        LoggerConfiguration.configuration().addHandlerToRootLogger(fileHandler);
     }
 
     public TextView getQtdPhotos() {
@@ -136,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 ActivityCompat.requestPermissions(MainActivity.this, storage_permissions, 0);
-                                // onContactsClick();
                             }
                         });
                         builder.show();
