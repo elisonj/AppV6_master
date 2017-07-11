@@ -23,8 +23,9 @@ import android.widget.Toast;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import org.joda.time.DateTime;
+import org.joda.time.format.ISODateTimeFormat;
+
 import java.util.logging.Level;
 
 import br.com.bg7.appvistoria.core.ImageUtil;
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         FileLogHandlerConfiguration fileHandler = LoggerConfiguration.fileLogHandler(this);
-        String YYYYMMDD = LocalDate.now().format(DateTimeFormatter.ISO_DATE);
+        String YYYYMMDD = DateTime.now().toString(ISODateTimeFormat.date());
         fileHandler.setFullFilePathPattern(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES).getPath() + "/log_app_vistoria_"+YYYYMMDD+".%g.log.txt");
         fileHandler.setLevel(Level.INFO);
