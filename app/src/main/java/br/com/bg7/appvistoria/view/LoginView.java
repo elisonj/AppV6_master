@@ -12,7 +12,7 @@ import br.com.bg7.appvistoria.R;
  * Created by elison on 10/07/17.
  */
 
-public class LoginView  extends ConstraintLayout {
+public class LoginView extends ConstraintLayout {
 
     private EditText editTextUser;
     private EditText editTextPassword;
@@ -25,21 +25,20 @@ public class LoginView  extends ConstraintLayout {
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.activity_login, this, true);
 
-        editTextUser = (EditText) findViewById(R.id.editText_user);
-        editTextPassword = (EditText) findViewById(R.id.editText_password);
-
-        buttonLogin = (Button) findViewById(R.id.button_login);
+        editTextUser = findViewById(R.id.editText_user);
+        editTextPassword = findViewById(R.id.editText_password);
+        buttonLogin = findViewById(R.id.button_login);
     }
 
-    public EditText getEditTextPassword() {
-        return editTextPassword;
+    public String getEditTextPassword() {
+        return editTextPassword.getText().toString();
     }
 
-    public EditText getEditTextUser() {
-        return editTextUser;
+    public String getEditTextUser() {
+        return editTextUser.getText().toString();
     }
 
-    public Button getButtonLogin() {
-        return buttonLogin;
+    public void setButtonLoginListener(OnClickListener listener) {
+        buttonLogin.setOnClickListener(listener);
     }
 }
