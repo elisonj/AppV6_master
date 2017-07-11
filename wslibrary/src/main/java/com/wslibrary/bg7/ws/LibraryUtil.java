@@ -131,27 +131,8 @@ public class LibraryUtil {
 		 * @param log
 		 */
 		public static void file(String log) {
-			File Root = new File(Environment.getExternalStoragePublicDirectory(
-					Environment.DIRECTORY_PICTURES), "AppVistoria");
-			if(Root.canWrite()){
-				Calendar cal = Calendar.getInstance();
-				String filename = "log_app_vistoria_"+cal.get(Calendar.DAY_OF_MONTH)+cal.get(Calendar.MONTH)+cal.get(Calendar.YEAR)+".txt";
-				File  LogFile = new File(Root, filename);
-				FileWriter LogWriter = null;
-				try {
-					LogWriter = new FileWriter(LogFile, true);
-					out = new BufferedWriter(LogWriter);
-					Date date = new Date();
-					out.write("* Logged at" + String.valueOf(date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + " --- " + log + "\n"));
-					out.close();
-					i(log);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+			i(log);
 		}
-
-
 	}
 
 
