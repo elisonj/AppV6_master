@@ -1,5 +1,6 @@
 package br.com.bg7.appvistoria.controller;
 
+import android.text.TextUtils;
 import android.view.View;
 
 import br.com.bg7.appvistoria.activity.LoginActivity;
@@ -45,8 +46,8 @@ public class LoginController {
     private boolean validateFields() {
         boolean valid = false;
 
-        if(view.getEditTextUser().getText() != null && view.getEditTextUser().getText().toString().length() > 0) {
-            if(view.getEditTextPassword().getText() != null && view.getEditTextPassword().getText().toString().length() > 0) {
+        if(TextUtils.isEmpty(view.getEditTextUser().getText())) {
+            if(TextUtils.isEmpty(view.getEditTextPassword().getText())) {
                 valid = true;
             } else { // message error password
                 Util.showDialog(activity, "Atenção", "Preencha o campo Usuário para continuar.");
