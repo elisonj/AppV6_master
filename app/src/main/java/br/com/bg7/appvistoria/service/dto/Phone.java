@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.vo;
+package br.com.bg7.appvistoria.service.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -7,24 +7,24 @@ import com.google.gson.annotations.SerializedName;
  * Created by: elison
  * Date: 2017-07-12
  */
-public class Email {
+public class Phone  {
 
     @SerializedName("id")
     @Expose
     private Integer id;
-    @SerializedName("address")
+    @SerializedName("type")
     @Expose
-    private String address;
-    @SerializedName("validated")
+    private Integer type;
+    @SerializedName("ddi")
     @Expose
-    private Boolean validated;
-    @SerializedName("validatedAt")
+    private String ddi;
+    @SerializedName("ddd")
     @Expose
-    private String validatedAt;
+    private String ddd;
+    @SerializedName("number")
+    @Expose
+    private String number;
     @SerializedName("userId")
     @Expose
     private Integer userId;
-    @SerializedName("master")
-    @Expose
-    private Boolean master;
 }

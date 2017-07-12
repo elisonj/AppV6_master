@@ -1,37 +1,41 @@
 package br.com.bg7.appvistoria.vo;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import com.orm.SugarRecord;
+
+import java.time.LocalDateTime;
 
 /**
  * Created by: elison
- * Date: 2017-07-11
+ * Date: 2017-07-12
  */
-
 public class Token extends SugarRecord<Token> {
 
-    @SerializedName("access_token")
-    @Expose
     private String accessToken;
-    @SerializedName("token_type")
-    @Expose
-    private String tokenType;
-    @SerializedName("expires_in")
-    @Expose
-    private Integer expiresIn;
-    @SerializedName("refresh_token")
-    @Expose
-    private String refreshToken;
-    @SerializedName("userId")
-    @Expose
-    private String userId;
+    private long expiresIn;
+    private LocalDateTime receivedAt;
 
-    public String getAccessToken() {
-        return accessToken;
+    public Token(br.com.bg7.appvistoria.service.dto.Token tk) {
+        accessToken = tk.getAccessToken();
+        expiresIn = tk.getExpiresIn();
     }
 
-    public String getUserId() {
-        return userId;
+
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
+
+    public void setExpiresIn(long expiresIn) {
+        this.expiresIn = expiresIn;
+    }
+
+    public void setReceivedAt(LocalDateTime receivedAt) {
+        this.receivedAt = receivedAt;
+    }
+
+    public boolean isExpired() {
+        //Todo:  implement
+        return false;
+    }
+
 }

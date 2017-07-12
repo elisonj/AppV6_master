@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.vo;
+package br.com.bg7.appvistoria.service.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -11,4 +11,8 @@ public class Credentials {
     @SerializedName("login")
     @Expose
     private String login;
+
+    public String getLogin() {
+        return login;
+    }
 }

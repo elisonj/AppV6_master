@@ -1,7 +1,7 @@
 package br.com.bg7.appvistoria.ws;
 
-import br.com.bg7.appvistoria.vo.Token;
-import br.com.bg7.appvistoria.vo.UserResponse;
+import br.com.bg7.appvistoria.service.dto.Token;
+import br.com.bg7.appvistoria.service.dto.UserResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -15,7 +15,7 @@ import retrofit2.http.Path;
  * Date: 2017-07-11
  */
 
-public interface ServiceInterface {
+public interface LoginInterface {
     @POST("account/oauth/token")
     @FormUrlEncoded
     Call<Token> getToken(@Field("grant_type") String grant_type,

@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.vo;
+package br.com.bg7.appvistoria.service.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -79,8 +79,7 @@ public class UserAccount {
         return basicInfo;
     }
 
-    public CompanyInfo getCompanyInfo() {
-        return companyInfo;
+    public Credentials getCredentials() {
+        return credentials;
     }
-
 }
