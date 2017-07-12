@@ -4,6 +4,8 @@ package br.com.bg7.appvistoria.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.com.bg7.appvistoria.Applic;
+import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.vo.Token;
 import br.com.bg7.appvistoria.vo.UserResponse;
 import br.com.bg7.appvistoria.ws.ServiceInterface;
@@ -29,11 +31,9 @@ public class LoginService {
      */
     public void requestToken(String username, String password) {
 
-        String grant_type = "password";
-        String client_id = "61922-5b5d19794c749cfbc5d20becc3826e08-s4b-cda-app";
-
         mService = ServiceUtils.getService();
-        mService.getToken(grant_type, client_id, username, password).enqueue(new Callback<Token>() {
+        mService.getToken(Applic.getInstance().getResources().getString(R.string.grant_type), Applic.getInstance().getResources().getString(R.string.client_id),
+                username, password).enqueue(new Callback<Token>() {
             @Override
             public void onResponse(Call<Token> call, Response<Token> response) {
 
