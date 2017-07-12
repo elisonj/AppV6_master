@@ -2,7 +2,7 @@ package br.com.bg7.appvistoria.vo;
 
 import com.orm.SugarRecord;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Created by: elison
@@ -12,14 +12,12 @@ public class Token extends SugarRecord<Token> {
 
     private String accessToken;
     private long expiresIn;
-    private LocalDateTime receivedAt;
+    private Date receivedAt;
 
     public Token(br.com.bg7.appvistoria.service.dto.Token tokenFromService) {
         accessToken = tokenFromService.getAccessToken();
         expiresIn = tokenFromService.getExpiresIn();
     }
-
-
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
@@ -29,7 +27,7 @@ public class Token extends SugarRecord<Token> {
         this.expiresIn = expiresIn;
     }
 
-    public void setReceivedAt(LocalDateTime receivedAt) {
+    public void setReceivedAt(Date receivedAt) {
         this.receivedAt = receivedAt;
     }
 
