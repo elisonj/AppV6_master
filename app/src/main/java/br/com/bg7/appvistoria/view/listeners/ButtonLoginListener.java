@@ -26,7 +26,7 @@ public class ButtonLoginListener implements View.OnClickListener {
     public void onClick(View v) {
         if (fieldsAreValid()) {
             LoginService service = new LoginService();
-            service.requestToken(view.getTextUser(), view.getTextPassword());
+            service.requestToken(view.getUser(), view.getPassword());
         }
     }
 
@@ -35,11 +35,11 @@ public class ButtonLoginListener implements View.OnClickListener {
      * @return
      */
     private boolean fieldsAreValid() {
-        if(TextUtils.isEmpty(view.getTextUser())) {
+        if(TextUtils.isEmpty(view.getUser())) {
             view.showDialog(activity.getString(R.string.warning), activity.getString(R.string.validation_user_field_not_empty));
             return false;
         }
-        if(TextUtils.isEmpty(view.getTextPassword())) {
+        if(TextUtils.isEmpty(view.getPassword())) {
             view.showDialog(activity.getString(R.string.warning), activity.getString(R.string.validation_password_field_not_empty));
             return false;
         }
