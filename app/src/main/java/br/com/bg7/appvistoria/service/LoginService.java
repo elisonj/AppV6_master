@@ -4,13 +4,16 @@ package br.com.bg7.appvistoria.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 import br.com.bg7.appvistoria.Applic;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.service.dto.Token;
 import br.com.bg7.appvistoria.service.dto.UserResponse;
 import br.com.bg7.appvistoria.vo.User;
-import br.com.bg7.appvistoria.ws.TokenService;
+import br.com.bg7.appvistoria.ws.NoConnectivityException;
 import br.com.bg7.appvistoria.ws.RetrofitClient;
+import br.com.bg7.appvistoria.ws.TokenService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,11 +29,16 @@ public class LoginService {
 
     private TokenService service;
     private Token token = null;
+    private String userName, password;
+
 
     /**
      * Method to execute request and get user Token
      */
     public void requestToken(String username, String password) {
+
+        this.userName = username;
+        this.password = password;
 
         service = RetrofitClient.getClient(Applic.getInstance().getString(R.string.base_url)).
                 create(TokenService.class);
@@ -56,8 +64,11 @@ public class LoginService {
 
             @Override
             public void onFailure(Call<Token> call, Throwable t) {
-                //showErrorMessage();
-                LOG.debug("error loading from API");
+                LOG.info("error loading from API");
+                if (t instanceof NoConnectivityException) {
+                    LOG.info("No Internet");
+                    loginOffline();
+                }
             }
         });
     }
@@ -82,7 +93,8 @@ public class LoginService {
                     UserResponse userResponse = response.body();
                     if(userResponse != null) {
                         LOG.debug(" **** user data loaded from API: "+userResponse.getUserAccounts().get(0).getId());
-                        User user = new User(userResponse, token);
+                        User user = new User(userResponse, token, password);
+                        user.save();
                     }
                 } else {
                     int statusCode  = response.code();
@@ -90,6 +102,16 @@ public class LoginService {
                 }
             }
         });
+    }
+
+    private void loginOffline() {
+        List<User> user = User.find(User.class, "user_name = ?", this.userName);
+        if(user != null && user.size() > 0) {
+            String password = user.get(0).getPassword();
+            if(password.equals(User.getHashPassword(this.password))) {
+                LOG.info("Got data from user offline. UserId: "+user.get(0).getId());
+            }
+        }
     }
 
     /**
