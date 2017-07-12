@@ -5,7 +5,8 @@ import br.com.bg7.appvistoria.view.LoginView;
 import br.com.bg7.appvistoria.view.listeners.ButtonLoginListener;
 
 /**
- * Created by elison on 10/07/17.
+ * Created by: elison
+ * Date: 2017-07-10
  */
 
 public class LoginController {

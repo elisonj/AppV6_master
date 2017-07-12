@@ -7,8 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import br.com.bg7.appvistoria.activity.LoginActivity;
 
 /**
- *   MainActivity of Application
+ * Created by: elison
+ * Date: 2017-07-10
  */
+
 public class MainActivity extends AppCompatActivity {
 
     @Override

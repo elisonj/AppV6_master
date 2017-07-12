@@ -1,8 +1,6 @@
 package br.com.bg7.appvistoria.service;
 
 
-import android.util.Log;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +14,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Created by elison on 11/07/17.
+ * Created by: elison
+ * Date: 2017-07-11
  */
 
 public class LoginService {

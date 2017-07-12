@@ -8,7 +8,8 @@ import android.widget.EditText;
 import br.com.bg7.appvistoria.R;
 
 /**
- * Created by elison on 10/07/17.
+ * Created by: elison
+ * Date: 2017-07-10
  */
 
 public class LoginView extends BaseView {

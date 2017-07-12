@@ -7,7 +7,8 @@ import br.com.bg7.appvistoria.controller.LoginController;
 import br.com.bg7.appvistoria.view.LoginView;
 
 /**
- * Created by elison on 10/07/17.
+ * Created by: elison
+ * Date: 2017-07-10
  */
 
 public class LoginActivity extends Activity {

@@ -1,7 +1,8 @@
 package br.com.bg7.appvistoria;
 
 /**
- * Created by elison on 11/07/17.
+ * Created by: elison
+ * Date: 2017-07-11
  */
 
 public class Applic extends com.orm.SugarApp {
