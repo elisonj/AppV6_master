@@ -7,7 +7,7 @@
     <string name="user">Usuário</string>
     <string name="login">LOGIN</string>
     <string name="warning">Atenção</string>
-    <string name="fill_user">Preencha o campo Usuário para continuar.</string>
-    <string name="fill_pass">Preencha o campo Senha para continuar.</string>
+    <string name="validation_user_field_not_empty">Preencha o campo Usuário para continuar.</string>
+    <string name="validation_password_field_not_empty">Preencha o campo Senha para continuar.</string>
 
 </resources>
