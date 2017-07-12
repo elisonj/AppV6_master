@@ -32,7 +32,8 @@ public class ButtonLoginListener implements View.OnClickListener {
 
     /**
      * Validate Login fields
-     * @return
+     * @return return true only if both fields <b>User</b> and <b>Password</b> has values.
+     * Case one of than are empty, will be returned false.
      */
     private boolean fieldsAreValid() {
         if(TextUtils.isEmpty(view.getUser())) {

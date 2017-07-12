@@ -63,7 +63,6 @@ public class LoginService {
 
     /**
      * Request UserAccount Logged
-     * @param token
      */
     private void requestUser(Token token) {
         service =  RetrofitClient.getClient(Applic.getInstance().getString(R.string.base_url)).
