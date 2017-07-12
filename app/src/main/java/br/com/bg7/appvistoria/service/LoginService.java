@@ -4,7 +4,6 @@ package br.com.bg7.appvistoria.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.bg7.appvistoria.Applic;
 import br.com.bg7.appvistoria.vo.Token;
 import br.com.bg7.appvistoria.vo.UserResponse;
 import br.com.bg7.appvistoria.ws.ServiceInterface;
@@ -20,7 +19,7 @@ import retrofit2.Response;
 
 public class LoginService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(LoginService.class.getSimpleName());
+    private static final Logger LOG = LoggerFactory.getLogger(LoginService.class);
 
     private ServiceInterface mService;
     private Token token = null;
@@ -39,23 +38,23 @@ public class LoginService {
             public void onResponse(Call<Token> call, Response<Token> response) {
 
                 if(response.isSuccessful()) {
-                    LOG.debug(Applic.TAG, " **** posts loaded from API");
+                    LOG.debug(" **** posts loaded from API");
                     token = response.body();
                     if(token != null) {
-                        LOG.debug(Applic.TAG, "Token: "+token.getAccessToken());
-                        LOG.debug(Applic.TAG, "UserId: "+token.getUserId());
+                        LOG.debug("Token: "+token.getAccessToken());
+                        LOG.debug("UserId: "+token.getUserId());
                         requestUser(token);
                     }
                 } else {
                     int statusCode  = response.code();
-                    LOG.debug(Applic.TAG, " **** ERROR: "+ statusCode);
+                    LOG.debug(" **** ERROR: "+ statusCode);
                 }
             }
 
             @Override
             public void onFailure(Call<Token> call, Throwable t) {
                 //showErrorMessage();
-                LOG.debug(Applic.TAG, "error loading from API");
+                LOG.debug("error loading from API");
             }
         });
     }
@@ -70,7 +69,7 @@ public class LoginService {
         mService.getUser("Bearer "+token.getAccessToken(), token.getUserId()).enqueue(new Callback<UserResponse>() {
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
-                LOG.debug(Applic.TAG, " **** error on load posts from API");
+                LOG.debug(" **** error on load posts from API");
             }
 
             @Override
@@ -79,11 +78,11 @@ public class LoginService {
                 if(response.isSuccessful()) {
                     UserResponse userResponse = response.body();
                     if(userResponse != null) {
-                        LOG.debug(Applic.TAG, " **** user data loaded from API: "+userResponse.getUserAccounts().get(0).getId());
+                        LOG.debug(" **** user data loaded from API: "+userResponse.getUserAccounts().get(0).getId());
                     }
                 } else {
                     int statusCode  = response.code();
-                    LOG.debug(Applic.TAG, " **** ERROR: "+ statusCode);
+                    LOG.debug(" **** ERROR: "+ statusCode);
                 }
             }
         });
