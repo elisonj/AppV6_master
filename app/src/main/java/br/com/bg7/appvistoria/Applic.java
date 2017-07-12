@@ -6,6 +6,8 @@ package br.com.bg7.appvistoria;
 
 public class Applic extends com.orm.SugarApp {
 
+    public static final String TAG = "AppVistoria";
+
     private static Applic instance = null;
 
     @Override
