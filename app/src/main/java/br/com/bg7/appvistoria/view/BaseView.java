@@ -8,7 +8,7 @@ import android.support.constraint.ConstraintLayout;
  * Created by: elison
  * Date: 2017-07-12
  */
-public class BaseView  extends ConstraintLayout {
+public class BaseView extends ConstraintLayout {
 
     private Context context;
     public BaseView(Context context) {
