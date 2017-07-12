@@ -8,6 +8,7 @@ import br.com.bg7.appvistoria.Applic;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.service.dto.Token;
 import br.com.bg7.appvistoria.service.dto.UserResponse;
+import br.com.bg7.appvistoria.vo.User;
 import br.com.bg7.appvistoria.ws.LoginInterface;
 import br.com.bg7.appvistoria.ws.RetrofitClient;
 import retrofit2.Call;
@@ -64,7 +65,7 @@ public class LoginService {
     /**
      * Request UserAccount Logged
      */
-    private void requestUser(Token token) {
+    private void requestUser(final Token token) {
         service =  RetrofitClient.getClient(Applic.getInstance().getString(R.string.base_url)).
                 create(LoginInterface.class);
 
@@ -81,6 +82,8 @@ public class LoginService {
                     UserResponse userResponse = response.body();
                     if(userResponse != null) {
                         LOG.debug(" **** user data loaded from API: "+userResponse.getUserAccounts().get(0).getId());
+                        User user = new User();
+                        user.setUserFromService(userResponse, token);
                     }
                 } else {
                     int statusCode  = response.code();

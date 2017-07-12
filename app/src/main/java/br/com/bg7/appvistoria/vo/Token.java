@@ -14,7 +14,9 @@ public class Token extends SugarRecord<Token> {
     private long expiresIn;
     private Date receivedAt;
 
-    public Token(br.com.bg7.appvistoria.service.dto.Token tokenFromService) {
+    public Token() {}
+
+    public void setTokenFromService(br.com.bg7.appvistoria.service.dto.Token tokenFromService) {
         accessToken = tokenFromService.getAccessToken();
         expiresIn = tokenFromService.getExpiresIn();
     }
