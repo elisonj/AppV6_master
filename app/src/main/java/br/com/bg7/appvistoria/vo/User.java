@@ -18,11 +18,10 @@ public class User extends SugarRecord<User> {
 
     public User() {}
 
-    public void setUserFromService(UserResponse user, br.com.bg7.appvistoria.service.dto.Token tokenFromService) {
+    public User(UserResponse user, br.com.bg7.appvistoria.service.dto.Token tokenFromService) {
         fullName = user.getUserAccounts().get(0).getBasicInfo().getFullName();
         userName = user.getUserAccounts().get(0).getCredentials().getLogin();
         email = user.getUserAccounts().get(0).getBasicInfo().getEmail().getAddress();
-        token = new Token();
-        token.setTokenFromService(tokenFromService);
+        token = new Token(tokenFromService);
     }
 }

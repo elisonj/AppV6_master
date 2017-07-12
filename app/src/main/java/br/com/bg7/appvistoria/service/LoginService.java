@@ -82,8 +82,7 @@ public class LoginService {
                     UserResponse userResponse = response.body();
                     if(userResponse != null) {
                         LOG.debug(" **** user data loaded from API: "+userResponse.getUserAccounts().get(0).getId());
-                        User user = new User();
-                        user.setUserFromService(userResponse, token);
+                        User user = new User(userResponse, token);
                     }
                 } else {
                     int statusCode  = response.code();
