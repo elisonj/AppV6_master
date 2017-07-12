@@ -1,6 +1,7 @@
 package br.com.bg7.appvistoria.ws;
 
 import br.com.bg7.appvistoria.vo.Token;
+import br.com.bg7.appvistoria.vo.UserResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -23,7 +24,7 @@ public interface ServiceInterface {
 
 
     @GET("account/v2/user/{id}")
-    Call<String> getUser(@Header("Authorization") String token, @Path("id") String userId);
+    Call<UserResponse> getUser(@Header("Authorization") String token, @Path("id") String userId);
 
 
 }

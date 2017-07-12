@@ -2,6 +2,7 @@ package br.com.bg7.appvistoria.service;
 
 import br.com.bg7.appvistoria.util.Util;
 import br.com.bg7.appvistoria.vo.Token;
+import br.com.bg7.appvistoria.vo.UserResponse;
 import br.com.bg7.appvistoria.ws.ServiceInterface;
 import br.com.bg7.appvistoria.ws.ServiceUtils;
 import retrofit2.Call;
@@ -53,23 +54,26 @@ public class LoginService {
     }
 
     /**
-     * Request User Logged
+     * Request UserAccount Logged
      * @param token
      */
     private void requestUser(Token token) {
         mService = ServiceUtils.getService();
 
-        mService.getUser("Bearer "+token.getAccessToken(), token.getUserId()).enqueue(new Callback<String>() {
+        mService.getUser("Bearer "+token.getAccessToken(), token.getUserId()).enqueue(new Callback<UserResponse>() {
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<UserResponse> call, Throwable t) {
                 Util.Log.d(" **** error on load posts from API");
             }
 
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
 
                 if(response.isSuccessful()) {
-                    Util.Log.d(" **** posts loaded from API");
+                    UserResponse userResponse = response.body();
+                    if(userResponse != null) {
+                        Util.Log.d(" **** user data loaded from API: "+userResponse.getUserAccounts().get(0).getId());
+                    }
                 } else {
                     int statusCode  = response.code();
                     Util.Log.d(" **** ERROR: "+ statusCode);
@@ -77,7 +81,6 @@ public class LoginService {
             }
         });
     }
-
 
     /**
      * get Actual Token

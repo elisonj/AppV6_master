@@ -8,7 +8,7 @@ import com.orm.SugarRecord;
  * Created by elison on 11/07/17.
  */
 
-public class Token  extends SugarRecord<Token> {
+public class Token extends SugarRecord<Token> {
 
     @SerializedName("access_token")
     @Expose
@@ -30,40 +30,7 @@ public class Token  extends SugarRecord<Token> {
         return accessToken;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    public String getTokenType() {
-        return tokenType;
-    }
-
-    public void setTokenType(String tokenType) {
-        this.tokenType = tokenType;
-    }
-
-    public Integer getExpiresIn() {
-        return expiresIn;
-    }
-
-    public void setExpiresIn(Integer expiresIn) {
-        this.expiresIn = expiresIn;
-    }
-
-    public String getRefreshToken() {
-        return refreshToken;
-    }
-
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
-
     public String getUserId() {
         return userId;
     }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
 }
