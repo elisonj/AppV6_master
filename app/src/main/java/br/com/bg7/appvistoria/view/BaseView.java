@@ -17,10 +17,10 @@ public class BaseView extends ConstraintLayout {
     }
 
     /**
-     * Show the dialog with message
+     * Show a generic dialog with message in screen.
      *
-     * @param title
-     * @param message
+     * @param title the title of dialog
+     * @param  message the message who will be showed in dialog
      */
     public void showDialog(String title, String message) {
             AlertDialog.Builder alert = new AlertDialog.Builder(context);

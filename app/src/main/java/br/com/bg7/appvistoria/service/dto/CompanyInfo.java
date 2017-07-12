@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.vo;
+package br.com.bg7.appvistoria.service.dto;
 
 /**
  * Created by: elison

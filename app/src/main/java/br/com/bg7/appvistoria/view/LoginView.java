@@ -30,11 +30,11 @@ public class LoginView extends BaseView {
         buttonLogin = findViewById(R.id.button_login);
     }
 
-    public String getTextPassword() {
+    public String getPassword() {
         return textPassword.getText().toString();
     }
 
-    public String getTextUser() {
+    public String getUser() {
         return textUser.getText().toString();
     }
 

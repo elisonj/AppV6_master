@@ -6,10 +6,11 @@ import org.slf4j.LoggerFactory;
 
 import br.com.bg7.appvistoria.Applic;
 import br.com.bg7.appvistoria.R;
-import br.com.bg7.appvistoria.vo.Token;
-import br.com.bg7.appvistoria.vo.UserResponse;
-import br.com.bg7.appvistoria.ws.ServiceInterface;
-import br.com.bg7.appvistoria.ws.ServiceUtils;
+import br.com.bg7.appvistoria.service.dto.Token;
+import br.com.bg7.appvistoria.service.dto.UserResponse;
+import br.com.bg7.appvistoria.vo.User;
+import br.com.bg7.appvistoria.ws.TokenService;
+import br.com.bg7.appvistoria.ws.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,7 +24,7 @@ public class LoginService {
 
     private static final Logger LOG = LoggerFactory.getLogger(LoginService.class);
 
-    private ServiceInterface mService;
+    private TokenService service;
     private Token token = null;
 
     /**
@@ -31,8 +32,10 @@ public class LoginService {
      */
     public void requestToken(String username, String password) {
 
-        mService = ServiceUtils.getService();
-        mService.getToken(Applic.getInstance().getResources().getString(R.string.grant_type), Applic.getInstance().getResources().getString(R.string.client_id),
+        service = RetrofitClient.getClient(Applic.getInstance().getString(R.string.base_url)).
+                create(TokenService.class);
+        service.getToken(Applic.getInstance().getResources().getString(R.string.grant_type),
+                Applic.getInstance().getResources().getString(R.string.client_id),
                 username, password).enqueue(new Callback<Token>() {
             @Override
             public void onResponse(Call<Token> call, Response<Token> response) {
@@ -61,12 +64,12 @@ public class LoginService {
 
     /**
      * Request UserAccount Logged
-     * @param token
      */
-    private void requestUser(Token token) {
-        mService = ServiceUtils.getService();
+    private void requestUser(final Token token) {
+        service =  RetrofitClient.getClient(Applic.getInstance().getString(R.string.base_url)).
+                create(TokenService.class);
 
-        mService.getUser("Bearer "+token.getAccessToken(), token.getUserId()).enqueue(new Callback<UserResponse>() {
+        service.getUser("Bearer "+token.getAccessToken(), token.getUserId()).enqueue(new Callback<UserResponse>() {
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
                 LOG.debug(" **** error on load posts from API");
@@ -79,6 +82,7 @@ public class LoginService {
                     UserResponse userResponse = response.body();
                     if(userResponse != null) {
                         LOG.debug(" **** user data loaded from API: "+userResponse.getUserAccounts().get(0).getId());
+                        User user = new User(userResponse, token);
                     }
                 } else {
                     int statusCode  = response.code();
