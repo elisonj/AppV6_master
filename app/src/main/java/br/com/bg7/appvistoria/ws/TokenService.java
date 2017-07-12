@@ -15,7 +15,7 @@ import retrofit2.http.Path;
  * Date: 2017-07-11
  */
 
-public interface LoginInterface {
+public interface TokenService {
     @POST("account/oauth/token")
     @FormUrlEncoded
     Call<Token> getToken(@Field("grant_type") String grant_type,

@@ -9,7 +9,7 @@ import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.service.dto.Token;
 import br.com.bg7.appvistoria.service.dto.UserResponse;
 import br.com.bg7.appvistoria.vo.User;
-import br.com.bg7.appvistoria.ws.LoginInterface;
+import br.com.bg7.appvistoria.ws.TokenService;
 import br.com.bg7.appvistoria.ws.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,7 +24,7 @@ public class LoginService {
 
     private static final Logger LOG = LoggerFactory.getLogger(LoginService.class);
 
-    private LoginInterface service;
+    private TokenService service;
     private Token token = null;
 
     /**
@@ -33,7 +33,7 @@ public class LoginService {
     public void requestToken(String username, String password) {
 
         service = RetrofitClient.getClient(Applic.getInstance().getString(R.string.base_url)).
-                create(LoginInterface.class);
+                create(TokenService.class);
         service.getToken(Applic.getInstance().getResources().getString(R.string.grant_type),
                 Applic.getInstance().getResources().getString(R.string.client_id),
                 username, password).enqueue(new Callback<Token>() {
@@ -67,7 +67,7 @@ public class LoginService {
      */
     private void requestUser(final Token token) {
         service =  RetrofitClient.getClient(Applic.getInstance().getString(R.string.base_url)).
-                create(LoginInterface.class);
+                create(TokenService.class);
 
         service.getUser("Bearer "+token.getAccessToken(), token.getUserId()).enqueue(new Callback<UserResponse>() {
             @Override
