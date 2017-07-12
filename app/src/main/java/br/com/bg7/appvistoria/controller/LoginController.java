@@ -18,13 +18,13 @@ public class LoginController {
         this.activity = loginActivity;
         this.view = view;
 
-        configureListenners();
+        configureListeners();
     }
 
     /**
-     * Configure listenners for the view
+     * Configure listeners for the view
      */
-    private void configureListenners() {
+    private void configureListeners() {
         view.setButtonLoginListener(new ButtonLoginListener(activity, view));
     }
 
