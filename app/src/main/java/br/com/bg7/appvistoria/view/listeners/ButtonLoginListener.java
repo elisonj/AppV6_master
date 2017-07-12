@@ -36,11 +36,11 @@ public class ButtonLoginListener implements View.OnClickListener {
      */
     private boolean fieldsAreValid() {
         if(TextUtils.isEmpty(view.getTextUser())) {
-            view.showDialog(activity.getString(R.string.warning), activity.getString(R.string.fill_user));
+            view.showDialog(activity.getString(R.string.warning), activity.getString(R.string.validation_user_field_not_empty));
             return false;
         }
         if(TextUtils.isEmpty(view.getTextPassword())) {
-            view.showDialog(activity.getString(R.string.warning), activity.getString(R.string.fill_pass));
+            view.showDialog(activity.getString(R.string.warning), activity.getString(R.string.validation_password_field_not_empty));
             return false;
         }
         return true;
