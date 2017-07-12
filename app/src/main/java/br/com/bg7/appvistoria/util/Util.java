@@ -5,9 +5,6 @@ package br.com.bg7.appvistoria.util;
  */
 
 
-import android.app.Activity;
-import android.app.AlertDialog.Builder;
-import android.content.DialogInterface;
 import android.os.Environment;
 
 import java.io.BufferedWriter;
@@ -214,42 +211,4 @@ public class Util {
         }
     }
 
-    /**
-     * Show the dialog with message
-     *
-     * @param activity
-     */
-    public static void showDialog(final Activity activity, String title, String message) {
-        if(!activity.isFinishing()) {
-            Builder alert = new Builder(activity);
-            alert.setTitle(title);
-            alert.setMessage(message);
-            alert.setPositiveButton("OK",null);
-            alert.show();
-        }
-    }
-
-    /**
-     * Show alert with ok button
-     */
-    public static void showGenericAlertOK(final Activity activity, final String title, final String msg) {
-
-        try{
-            if (activity != null && title != null && msg != null && !msg.equals("null")) {
-                Builder dialog= new Builder(activity);
-
-                dialog.setTitle(title);
-                dialog.setMessage(msg);
-
-                dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) { }
-                });
-                dialog.show();
-            }
-        } catch (Exception ex) {
-            Util.Log.i("Error open GenericAlert with msg: " + msg);
-            Util.Log.i(ex.getMessage());
-        }
-    }
 }

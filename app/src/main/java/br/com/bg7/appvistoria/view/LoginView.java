@@ -1,7 +1,6 @@
 package br.com.bg7.appvistoria.view;
 
 import android.content.Context;
-import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,7 +11,7 @@ import br.com.bg7.appvistoria.R;
  * Created by elison on 10/07/17.
  */
 
-public class LoginView extends ConstraintLayout {
+public class LoginView extends BaseView {
 
     private EditText textUser;
     private EditText textPassword;

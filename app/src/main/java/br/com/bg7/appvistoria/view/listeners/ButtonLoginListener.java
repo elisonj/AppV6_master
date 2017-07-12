@@ -6,7 +6,6 @@ import android.view.View;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.activity.LoginActivity;
 import br.com.bg7.appvistoria.service.LoginService;
-import br.com.bg7.appvistoria.util.Util;
 import br.com.bg7.appvistoria.view.LoginView;
 
 /**
@@ -37,11 +36,11 @@ public class ButtonLoginListener implements View.OnClickListener {
      */
     private boolean validateFields() {
         if(TextUtils.isEmpty(view.getTextUser())) {
-            Util.showDialog(activity, activity.getString(R.string.warning), activity.getString(R.string.fill_user));
+            view.showDialog(activity.getString(R.string.warning), activity.getString(R.string.fill_user));
             return false;
         }
         if(TextUtils.isEmpty(view.getTextPassword())) {
-            Util.showDialog(activity, activity.getString(R.string.warning), activity.getString(R.string.fill_pass));
+            view.showDialog(activity.getString(R.string.warning), activity.getString(R.string.fill_pass));
             return false;
         }
         return true;
