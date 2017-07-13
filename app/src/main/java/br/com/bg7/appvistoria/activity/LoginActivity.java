@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import br.com.bg7.appvistoria.view.LoginView;
-import br.com.bg7.appvistoria.view.listeners.ButtonLoginListenner;
+import br.com.bg7.appvistoria.view.listeners.ButtonLoginListener;
 
 /**
  * Created by: elison
@@ -27,6 +27,6 @@ public class LoginActivity extends Activity {
     }
 
     private void configureListeners() {
-        view.setButtonLoginListener(new ButtonLoginListenner(this, view));
+        view.setButtonLoginListener(new ButtonLoginListener(this, view));
     }
 }

@@ -1,5 +1,7 @@
 package br.com.bg7.appvistoria.view.listeners;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.util.List;
 
 import br.com.bg7.appvistoria.Applic;
@@ -16,8 +18,8 @@ public class OfflineLoginCommand {
     public void onClick(LoginView view) {
         List<User> user = User.find(User.class, "user_name = ?", view.getUser());
         if(user != null && user.size() > 0) {
-            String password = user.get(0).getPassword();
-            if(password.equals(User.getHashPassword(view.getPassword()))) {
+            String passwordHash = user.get(0).getPassword();
+            if (BCrypt.checkpw(view.getPassword(), passwordHash)) {
                 view.showDialog(Applic.getInstance().getString(R.string.success),
                         Applic.getInstance().getString(R.string.login_offline_success));
             } else {
