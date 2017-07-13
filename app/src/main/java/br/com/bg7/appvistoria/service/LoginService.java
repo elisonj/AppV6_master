@@ -18,6 +18,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static br.com.bg7.appvistoria.R.string.base_url;
+
 /**
  * Created by: elison
  * Date: 2017-07-11
@@ -41,7 +43,7 @@ public class LoginService {
         this.userName = userName;
         this.password = password;
 
-        service = RetrofitClient.getClient(Applic.getInstance().getString(R.string.base_url)).
+        service = RetrofitClient.getClient(Applic.getInstance().getResources().getString(R.string.base_url)).
                 create(TokenService.class);
         service.getToken(Applic.getInstance().getResources().getString(R.string.grant_type),
                 Applic.getInstance().getResources().getString(R.string.client_id),
@@ -75,7 +77,7 @@ public class LoginService {
      * Request UserAccount Logged
      */
     private void requestUser(final Token token) {
-        service =  RetrofitClient.getClient(Applic.getInstance().getString(R.string.base_url)).
+        service =  RetrofitClient.getClient(Applic.getInstance().getString(base_url)).
                 create(TokenService.class);
 
         service.getUser("Bearer "+token.getAccessToken(), token.getUserId()).enqueue(new Callback<UserResponse>() {

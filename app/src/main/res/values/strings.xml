@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">AppVistoria</string>
-    <string name="base_url">https://preapi.s4bdigital.net</string>
-    <string name="grant_type">password</string>
-    <string name="client_id">61922-5b5d19794c749cfbc5d20becc3826e08-s4b-cda-app</string>
 
     <string name="password">Senha</string>
     <string name="user">Usuário</string>
