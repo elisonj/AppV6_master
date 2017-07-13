@@ -2,7 +2,7 @@ package br.com.bg7.appvistoria.controller;
 
 import br.com.bg7.appvistoria.activity.LoginActivity;
 import br.com.bg7.appvistoria.view.LoginView;
-import br.com.bg7.appvistoria.view.listeners.ButtonLoginListener;
+import br.com.bg7.appvistoria.view.listeners.ButtonLoginListenner;
 
 /**
  * Created by: elison
@@ -25,7 +25,7 @@ public class LoginController {
      * Configure listeners for the view
      */
     private void configureListeners() {
-        view.setButtonLoginListener(new ButtonLoginListener(activity, view));
+        view.setButtonLoginListener(new ButtonLoginListenner(activity, view));
     }
 
 }

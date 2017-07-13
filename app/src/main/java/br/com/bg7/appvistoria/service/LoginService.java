@@ -12,14 +12,11 @@ import br.com.bg7.appvistoria.service.dto.Token;
 import br.com.bg7.appvistoria.service.dto.UserResponse;
 import br.com.bg7.appvistoria.view.LoginView;
 import br.com.bg7.appvistoria.vo.User;
-import br.com.bg7.appvistoria.ws.NoConnectivityException;
 import br.com.bg7.appvistoria.ws.RetrofitClient;
 import br.com.bg7.appvistoria.ws.TokenService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.orm.SugarRecord.find;
 
 /**
  * Created by: elison
@@ -69,10 +66,6 @@ public class LoginService {
             @Override
             public void onFailure(Call<Token> call, Throwable t) {
                 LOG.info("error loading from API");
-                if (t instanceof NoConnectivityException) {
-                    LOG.info("No Internet");
-                    loginOffline();
-                }
             }
         });
     }
@@ -111,24 +104,6 @@ public class LoginService {
                 }
             }
         });
-    }
-
-    private void loginOffline() {
-        List<User> user = find(User.class, "user_name = ?", this.userName);
-        if(user != null && user.size() > 0) {
-            String password = user.get(0).getPassword();
-            if(password.equals(User.getHashPassword(this.password))) {
-                LOG.info("Got data from user offline. UserId: "+user.get(0).getId());
-                view.showDialog(Applic.getInstance().getString(R.string.success),
-                        Applic.getInstance().getString(R.string.login_offline_success));
-            } else {
-                view.showDialog(Applic.getInstance().getString(R.string.warning),
-                        Applic.getInstance().getString(R.string.validation_password_dont_match));
-            }
-        } else {
-            view.showDialog(Applic.getInstance().getString(R.string.warning),
-                    Applic.getInstance().getString(R.string.validation_user_not_found));
-        }
     }
 
     /**
