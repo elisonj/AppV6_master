@@ -10,7 +10,7 @@ import br.com.bg7.appvistoria.Applic;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.service.dto.Token;
 import br.com.bg7.appvistoria.service.dto.UserResponse;
-import br.com.bg7.appvistoria.view.LoginView;
+import br.com.bg7.appvistoria.view.listeners.LoginCallback;
 import br.com.bg7.appvistoria.vo.User;
 import br.com.bg7.appvistoria.ws.RetrofitClient;
 import br.com.bg7.appvistoria.ws.TokenService;
@@ -30,16 +30,16 @@ public class LoginService {
     private TokenService service;
     private Token token = null;
     private String userName, password;
-    private LoginView view;
+    private LoginCallback callback;
 
     /**
      * Method to execute request and get user Token
      */
-    public void requestToken(LoginView view) {
+    public void requestToken(final LoginCallback callback, String userName, String password) {
 
-        this.view = view;
-        this.userName = view.getUser();
-        this.password = view.getPassword();
+        this.callback = callback;
+        this.userName = userName;
+        this.password = password;
 
         service = RetrofitClient.getClient(Applic.getInstance().getString(R.string.base_url)).
                 create(TokenService.class);
@@ -66,6 +66,7 @@ public class LoginService {
             @Override
             public void onFailure(Call<Token> call, Throwable t) {
                 LOG.info("error loading from API");
+                callback.onFailure(t);
             }
         });
     }
@@ -81,6 +82,7 @@ public class LoginService {
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
                 LOG.debug(" **** error on load posts from API");
+                callback.onFailure(t);
             }
 
             @Override
@@ -95,8 +97,7 @@ public class LoginService {
                             User user = new User(userResponse, token, password);
                             user.save();
                         }
-                        view.showDialog(Applic.getInstance().getString(R.string.success),
-                                Applic.getInstance().getString(R.string.login_success));
+                        callback.onSucess();
                     }
                 } else {
                     int statusCode  = response.code();

@@ -4,6 +4,11 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.view.View;
 
+import java.net.ConnectException;
+import java.util.concurrent.TimeoutException;
+
+import br.com.bg7.appvistoria.Applic;
+import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.activity.LoginActivity;
 import br.com.bg7.appvistoria.view.LoginView;
 
@@ -23,7 +28,7 @@ public class ButtonLoginListenner implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         if(isConnected()) {
-            new ServiceLoginCommand().onClick(view);
+            new ServiceLoginCommand().onClick(callback, view);
         } else {
             new OfflineLoginCommand().onClick(view);
         }
@@ -33,16 +38,34 @@ public class ButtonLoginListenner implements View.OnClickListener{
      *  Verify if exists internet connection
      */
     public  boolean isConnected() {
-        boolean conectado;
+        boolean connected;
         ConnectivityManager connectivtyManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivtyManager.getActiveNetworkInfo() != null
                 && connectivtyManager.getActiveNetworkInfo().isAvailable()
                 && connectivtyManager.getActiveNetworkInfo().isConnected()) {
-            conectado = true;
+            connected = true;
         } else {
-            conectado = false;
+            connected = false;
         }
-        return conectado;
+        return connected;
     }
 
+
+    /**
+     * Callback used to handle service responses
+     */
+    private LoginCallback callback = new LoginCallback() {
+        @Override
+        public void onFailure(Throwable t) {
+            if(t instanceof TimeoutException || t instanceof ConnectException) {
+                new OfflineLoginCommand().onClick(view);
+            }
+        }
+
+        @Override
+        public void onSucess() {
+            view.showDialog(Applic.getInstance().getString(R.string.success),
+                    Applic.getInstance().getString(R.string.login_success));
+        }
+    };
 }

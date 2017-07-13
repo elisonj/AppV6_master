@@ -13,10 +13,10 @@ import br.com.bg7.appvistoria.view.LoginView;
  */
 public class ServiceLoginCommand {
 
-    public void onClick(LoginView view) {
+    public void onClick(LoginCallback callback, LoginView view) {
         if (fieldsAreValid(view)) {
             LoginService service = new LoginService();
-            service.requestToken(view);
+            service.requestToken(callback, view.getUser(), view.getPassword());
         }
     }
 
