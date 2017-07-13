@@ -26,7 +26,7 @@ public class ButtonLoginListener implements View.OnClickListener {
     public void onClick(View v) {
         if (fieldsAreValid()) {
             LoginService service = new LoginService();
-            service.requestToken(view.getUser(), view.getPassword());
+            service.requestToken(view);
         }
     }
 
