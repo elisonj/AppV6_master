@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">AppVistoria</string>
+
+    <string name="menu_visita">VISITAS</string>
+    <string name="menu_sync">SYNC</string>
+    <string name="menu_historic">HISTÓRICO</string>
+    <string name="menu_config">CONFIG</string>
+
+    <string name="password">Senha</string>
+    <string name="user">Usuário</string>
+    <string name="login">LOGIN</string>
+    <string name="warning">Atenção</string>
+    <string name="success">Sucesso!</string>
+    <string name="login_success">Login executado com sucesso.</string>
+    <string name="login_offline_success">Login offline executado com sucesso.</string>
+    <string name="validation_user_field_not_empty">Preencha o campo Usuário para continuar.</string>
+    <string name="validation_password_field_not_empty">Preencha o campo Senha para continuar.</string>
+    <string name="validation_password_dont_match">A senha inserida está incorreta. Por favor, tente novamente.</string>
+    <string name="validation_user_not_found">Usuário não sincronizado. Por favor, faça a sincronização de dados antes de efetuar o login offline.</string>
+
+</resources>
