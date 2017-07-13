@@ -16,11 +16,11 @@ import br.com.bg7.appvistoria.view.LoginView;
  * Created by: elison
  * Date: 2017-07-13
  */
-public class ButtonLoginListenner implements View.OnClickListener{
+public class ButtonLoginListener implements View.OnClickListener{
     private LoginView view;
     private LoginActivity activity;
 
-    public ButtonLoginListenner(LoginActivity activity, LoginView view) {
+    public ButtonLoginListener(LoginActivity activity, LoginView view) {
         this.activity = activity;
         this.view = view;
     }
