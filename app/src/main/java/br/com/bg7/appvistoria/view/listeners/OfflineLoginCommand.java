@@ -20,8 +20,7 @@ public class OfflineLoginCommand {
         if(user != null && user.size() > 0) {
             String password = user.get(0).getPassword();
             String hash = BCrypt.hashpw(view.getPassword(), BCrypt.gensalt());
-
-            if(password.equals(hash)) {
+            if (BCrypt.checkpw(password, hash)) {
                 view.showDialog(Applic.getInstance().getString(R.string.success),
                         Applic.getInstance().getString(R.string.login_offline_success));
             } else {
