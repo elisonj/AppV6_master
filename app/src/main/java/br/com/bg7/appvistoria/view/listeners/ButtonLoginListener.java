@@ -1,6 +1,7 @@
 package br.com.bg7.appvistoria.view.listeners;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.view.View;
 
@@ -8,6 +9,7 @@ import java.net.ConnectException;
 import java.util.concurrent.TimeoutException;
 
 import br.com.bg7.appvistoria.Applic;
+import br.com.bg7.appvistoria.MainActivity;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.activity.LoginActivity;
 import br.com.bg7.appvistoria.view.LoginView;
@@ -50,7 +52,6 @@ public class ButtonLoginListener implements View.OnClickListener{
         return connected;
     }
 
-
     /**
      * Callback used to handle service responses
      */
@@ -59,13 +60,16 @@ public class ButtonLoginListener implements View.OnClickListener{
         public void onFailure(Throwable t) {
             if(t instanceof TimeoutException || t instanceof ConnectException) {
                 new OfflineLoginCommand().onClick(view);
+            } else {
+                view.showDialog(Applic.getInstance().getString(R.string.warning),
+                        Applic.getInstance().getString(R.string.login_error));
             }
         }
 
         @Override
         public void onSucess() {
-            view.showDialog(Applic.getInstance().getString(R.string.success),
-                    Applic.getInstance().getString(R.string.login_success));
+            Intent intent = new Intent(activity, MainActivity.class);
+            activity.startActivity(intent);
         }
     };
 }
