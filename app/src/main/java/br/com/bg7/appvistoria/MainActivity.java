@@ -11,24 +11,22 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import br.com.bg7.appvistoria.fragment.ConfigFragment;
+
 /**
  * Created by: elison
  * Date: 2017-07-10
  */
-
 public class MainActivity extends AppCompatActivity {
 
     private static final String SELECTED_ITEM = "arg_selected_item";
     private BottomNavigationView navigation;
-    private int selectedItem;
+    private int selectedItem = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-       // Intent i = new Intent(this, LoginActivity.class);
-       // startActivity(i);
 
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -60,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         MenuItem homeItem = navigation.getMenu().getItem(0);
         if (selectedItem != homeItem.getItemId()) {
-            // select home item
             selectFragment(homeItem);
         } else {
             super.onBackPressed();
@@ -69,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void selectFragment(MenuItem item) {
         Fragment frag = null;
-        // init corresponding fragment
         switch (item.getItemId()) {
             case R.id.menu_visita:
                 frag = MainFragment.newInstance(getString(R.string.menu_visita),
@@ -84,14 +80,11 @@ public class MainActivity extends AppCompatActivity {
                         getColorFromRes(R.color.color_historic));
                 break;
             case R.id.menu_config:
-                frag = MainFragment.newInstance(getString(R.string.menu_config),
-                        getColorFromRes(R.color.color_config));
+                frag = ConfigFragment.newInstance(getString(R.string.menu_config));
                 break;
         }
-        // update selected item
         selectedItem = item.getItemId();
 
-        // uncheck the other items.
         for (int i = 0; i < navigation.getMenu().size(); i++) {
             MenuItem menuItem = navigation.getMenu().getItem(i);
             menuItem.setChecked(menuItem.getItemId() == item.getItemId());

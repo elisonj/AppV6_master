@@ -54,6 +54,9 @@
             android:id="@+id/spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawSelectorOnTop="true"
+            android:prompt="@string/spin"
+            android:entries="@array/languageItems"
             android:layout_weight="0.2" />
 
     </LinearLayout>
@@ -75,9 +78,10 @@
             android:text="@string/syncronize_only_by_wifi" />
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/checkBox_wifi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:layout_weight="0.87"
              />
     </LinearLayout>
@@ -92,7 +96,9 @@
 </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linear_buttons"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="80dp"
         android:background="#CCCCCC"
         android:gravity="center"
@@ -102,7 +108,7 @@
         android:layout_alignParentEnd="true">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/button_cancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -110,7 +116,7 @@
             android:text="@string/cancel" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/button_confirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
