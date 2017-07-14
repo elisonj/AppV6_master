@@ -61,13 +61,13 @@ public class LoginService {
                     }
                 } else {
                     int statusCode  = response.code();
-                    LOG.debug(" **** ERROR: "+ statusCode);
+                    LOG.error(" **** ERROR: "+ statusCode);
                 }
             }
 
             @Override
             public void onFailure(Call<Token> call, Throwable t) {
-                LOG.info("error loading from API");
+                LOG.error("error loading from API");
                 callback.onFailure(t);
             }
         });
@@ -83,7 +83,7 @@ public class LoginService {
         service.getUser("Bearer "+token.getAccessToken(), token.getUserId()).enqueue(new Callback<UserResponse>() {
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
-                LOG.debug(" **** error on load posts from API");
+                LOG.error(" **** error on load posts from API");
                 callback.onFailure(t);
             }
 
@@ -103,7 +103,7 @@ public class LoginService {
                     }
                 } else {
                     int statusCode  = response.code();
-                    LOG.debug(" **** ERROR: "+ statusCode);
+                    LOG.error(" **** ERROR: "+ statusCode);
                 }
             }
         });
