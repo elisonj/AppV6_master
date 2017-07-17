@@ -42,7 +42,7 @@ public class ConfigFragment extends Fragment {
     }
 
     private void configureListeners() {
-        view.setConfirmListenner(new ButtonConfirmConfigListener(view));
+        view.setConfirmListenner(new ButtonConfirmConfigListener(this, view));
         view.setCancelListenner(new ButtonCancelConfigListener(view));
     }
 
