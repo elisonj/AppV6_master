@@ -1,11 +1,17 @@
 package br.com.bg7.appvistoria.view.listeners;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.View;
 
-import br.com.bg7.appvistoria.Applic;
-import br.com.bg7.appvistoria.R;
+import java.util.List;
+
+import br.com.bg7.appvistoria.MainActivity;
+import br.com.bg7.appvistoria.fragment.ConfigFragment;
 import br.com.bg7.appvistoria.view.ConfigView;
 import br.com.bg7.appvistoria.vo.Config;
+import br.com.bg7.appvistoria.vo.Country;
 
 /**
  * Created by: elison
@@ -14,8 +20,10 @@ import br.com.bg7.appvistoria.vo.Config;
 public class ButtonConfirmConfigListener implements View.OnClickListener{
 
     ConfigView view;
+    ConfigFragment frag;
 
-    public ButtonConfirmConfigListener(ConfigView view) {
+    public ButtonConfirmConfigListener(ConfigFragment frag, ConfigView view) {
+        this.frag = frag;
         this.view = view;
     }
 
@@ -24,11 +32,25 @@ public class ButtonConfirmConfigListener implements View.OnClickListener{
         view.getButtons().setVisibility(View.GONE);
         view.getLanguages().setVisibility(View.GONE);
 
-        Config.deleteAll(Config.class);
-        Config config = new Config(view.getLanguageSelected(), view.getWifi().isChecked());
+        List<Config> list = Config.listAll(Config.class);
+        if(list != null && list.size() > 0) {
+            Config.deleteAll(Config.class);
+        }
+        Config config = new Config((view.getLanguageSelected()).getId(), view.getWifi().isChecked());
         config.save();
 
-        view.showDialog(Applic.getInstance().getString(R.string.success),
-                Applic.getInstance().getString(R.string.config_saved));
+        changeLanguage();
+    }
+
+
+    private void changeLanguage() {
+        Country country = view.getLanguageSelected();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(frag.getContext());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("Language", country.getLanguage());
+        editor.apply();
+
+        frag.getActivity().finish();
+        frag.getActivity().startActivity(new Intent(frag.getActivity(), MainActivity.class));
     }
 }
