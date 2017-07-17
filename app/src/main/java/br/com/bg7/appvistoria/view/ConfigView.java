@@ -2,14 +2,18 @@ package br.com.bg7.appvistoria.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
+
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.view.listeners.ButtonTopLanguagesListener;
 import br.com.bg7.appvistoria.view.listeners.CheckBoxWifiListener;
+import br.com.bg7.appvistoria.vo.Country;
 
 /**
  * Created by: elison
@@ -36,13 +40,21 @@ public class ConfigView extends BaseView {
         syncronize = findViewById(R.id.linear_wifi);
         languages = findViewById(R.id.linear_language);
         topLanguages = findViewById(R.id.linear_language_top);
-        languageSelected = findViewById(R.id.spinner_language);
         buttons = findViewById(R.id.linear_buttons);
         wifi = findViewById(R.id.checkBox_wifi);
         cancel = findViewById(R.id.button_cancel);
         confirm = findViewById(R.id.button_confirm);
         topLanguages.setOnClickListener(new ButtonTopLanguagesListener(this));
         syncronize.setOnClickListener(new CheckBoxWifiListener(this));
+        languageSelected = findViewById(R.id.spinner_language);
+
+        ArrayList<Country> countryList = new ArrayList<>();
+
+        countryList.add(new Country("1", context.getString(R.string.portuguese_br), "pt", "BR"));
+        countryList.add(new Country("2", context.getString(R.string.english), "en", "US"));
+
+        ArrayAdapter<Country> adapter = new ArrayAdapter<Country>(context, android.R.layout.simple_spinner_dropdown_item, countryList);
+        languageSelected.setAdapter(adapter);
     }
 
     public LinearLayout getButtons() {
@@ -57,8 +69,8 @@ public class ConfigView extends BaseView {
         return wifi;
     }
 
-    public String getLanguageSelected() {
-        return languageSelected.getSelectedItem().toString();
+    public Country getLanguageSelected() {
+        return (Country)languageSelected.getSelectedItem();
     }
 
     public void setConfirmListenner(OnClickListener listenner) {
