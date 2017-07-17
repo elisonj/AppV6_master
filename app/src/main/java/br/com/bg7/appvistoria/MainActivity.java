@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import br.com.bg7.appvistoria.fragment.ConfigFragment;
@@ -17,11 +16,11 @@ import br.com.bg7.appvistoria.fragment.ConfigFragment;
  * Created by: elison
  * Date: 2017-07-10
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String SELECTED_ITEM = "arg_selected_item";
     private BottomNavigationView navigation;
-    private int selectedItem = 0;
+    private int selectedItem = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +39,10 @@ public class MainActivity extends AppCompatActivity {
         MenuItem menuSelectedItem;
 
         if (savedInstanceState != null) {
-            selectedItem = savedInstanceState.getInt(SELECTED_ITEM, 0);
+            selectedItem = savedInstanceState.getInt(SELECTED_ITEM, 3);
             menuSelectedItem = navigation.getMenu().findItem(selectedItem);
         } else {
-            menuSelectedItem = navigation.getMenu().getItem(0);
+            menuSelectedItem = navigation.getMenu().getItem(3);
         }
         selectFragment(menuSelectedItem);
     }
