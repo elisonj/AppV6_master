@@ -10,6 +10,8 @@ public class Config extends SugarRecord<Config> {
     private boolean updateOnlyWifi;
     private String actualLanguage;
 
+    public Config() {}
+
     public Config(String actualLanguage, boolean updateOnlyWifi) {
         this.actualLanguage = actualLanguage;
         this.updateOnlyWifi = updateOnlyWifi;
