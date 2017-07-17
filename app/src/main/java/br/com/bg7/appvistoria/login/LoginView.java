@@ -2,12 +2,14 @@ package br.com.bg7.appvistoria.login;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import br.com.bg7.appvistoria.MainActivity;
 import br.com.bg7.appvistoria.R;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -70,13 +72,19 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
     }
 
     @Override
-    public void showCannotLoginError() {
+    public void showCannotLoginOfflineError() {
         showWarning(getContext().getString(R.string.validation_user_not_found));
     }
 
     @Override
-    public void showLoginSuccess() {
-        showSuccess(getContext().getString(R.string.login_success));
+    public void showCannotLoginError() {
+        showWarning(getContext().getString(R.string.login_error));
+    }
+
+    @Override
+    public void showMainScreen() {
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        getContext().startActivity(intent);
     }
 
     @Override
