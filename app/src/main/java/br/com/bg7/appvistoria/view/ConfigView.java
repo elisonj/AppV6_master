@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.view.listeners.ButtonTopLanguagesListener;
@@ -19,6 +20,7 @@ public class ConfigView extends BaseView {
     private LinearLayout topLanguages;
     private LinearLayout syncronize;
     private LinearLayout languages;
+    private Spinner languageSelected;
     private LinearLayout buttons;
     private CheckBox wifi;
     private Button cancel;
@@ -34,6 +36,7 @@ public class ConfigView extends BaseView {
         syncronize = findViewById(R.id.linear_wifi);
         languages = findViewById(R.id.linear_language);
         topLanguages = findViewById(R.id.linear_language_top);
+        languageSelected = findViewById(R.id.spinner_language);
         buttons = findViewById(R.id.linear_buttons);
         wifi = findViewById(R.id.checkBox_wifi);
         cancel = findViewById(R.id.button_cancel);
@@ -52,6 +55,10 @@ public class ConfigView extends BaseView {
 
     public CheckBox getWifi() {
         return wifi;
+    }
+
+    public String getLanguageSelected() {
+        return languageSelected.getSelectedItem().toString();
     }
 
     public void setConfirmListenner(OnClickListener listenner) {
