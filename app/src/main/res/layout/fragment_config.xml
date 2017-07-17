@@ -56,7 +56,6 @@
             android:layout_height="wrap_content"
             android:drawSelectorOnTop="true"
             android:prompt="@string/spin"
-            android:entries="@array/languageItems"
             android:layout_weight="0.2" />
 
     </LinearLayout>
@@ -98,14 +97,12 @@
     <LinearLayout
         android:id="@+id/linear_buttons"
         android:layout_width="match_parent"
-        android:visibility="gone"
         android:layout_height="80dp"
         android:background="#CCCCCC"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginTop="450dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
+        android:visibility="gone"
+        android:layout_gravity="end"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/button_cancel"
