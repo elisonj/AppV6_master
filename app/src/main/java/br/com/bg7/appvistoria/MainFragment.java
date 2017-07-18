@@ -26,12 +26,12 @@ public class MainFragment extends Fragment {
     private int color;
 
     public static Fragment newInstance(String text, int color) {
-        Fragment frag = new MainFragment();
+        Fragment fragment = new MainFragment();
         Bundle args = new Bundle();
         args.putString(TEXT_KEY, text);
         args.putInt(COLOR_KEY, color);
-        frag.setArguments(args);
-        return frag;
+        fragment.setArguments(args);
+        return fragment;
     }
 
 
