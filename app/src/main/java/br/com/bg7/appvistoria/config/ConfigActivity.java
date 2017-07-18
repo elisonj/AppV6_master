@@ -22,8 +22,11 @@ import br.com.bg7.appvistoria.R;
 
 public class ConfigActivity extends BaseActivity {
     private static final String SELECTED_ITEM_KEY = "SELECTED_ITEM_KEY";
+    private static final int SCREEN_OPEN_DEFAULT = 3;
+
+
     private BottomNavigationView navigation;
-    private int selectedItem = 3;
+    private int selectedItem = SCREEN_OPEN_DEFAULT;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,24 +70,24 @@ public class ConfigActivity extends BaseActivity {
     }
 
     private void selectFragment(MenuItem item) {
-        Fragment frag = null;
+        Fragment fragment = null;
         switch (item.getItemId()) {
             case R.id.menu_visita:
-                frag = MainFragment.newInstance(getString(R.string.menu_visita),
+                fragment = MainFragment.newInstance(getString(R.string.menu_visita),
                         getColorFromRes(R.color.color_visita));
                 break;
             case R.id.menu_sync:
-                frag = MainFragment.newInstance(getString(R.string.menu_sync),
+                fragment = MainFragment.newInstance(getString(R.string.menu_sync),
                         getColorFromRes(R.color.color_sync));
                 break;
             case R.id.menu_historic:
-                frag = MainFragment.newInstance(getString(R.string.menu_historic),
+                fragment = MainFragment.newInstance(getString(R.string.menu_historic),
                         getColorFromRes(R.color.color_historic));
                 break;
             case R.id.menu_config:
                 ConfigFragment configFrag = new ConfigFragment();
-                frag = configFrag;
-                frag.setRetainInstance(true);
+                fragment = configFrag;
+                fragment.setRetainInstance(true);
                 new ConfigPresenter(configFrag);
                 break;
         }
@@ -97,9 +100,9 @@ public class ConfigActivity extends BaseActivity {
 
         updateToolbarText(item.getTitle());
 
-        if (frag != null) {
+        if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.container, frag, frag.getTag());
+            ft.add(R.id.container, fragment, fragment.getTag());
             ft.commit();
         }
     }
