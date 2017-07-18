@@ -60,11 +60,11 @@ public class ConfigActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         MenuItem homeItem = navigation.getMenu().getItem(0);
-        if (selectedItem != homeItem.getItemId()) {
+        if (homeItem.getItemId() != selectedItem) {
             selectFragment(homeItem);
-        } else {
-            super.onBackPressed();
+            return;
         }
+        super.onBackPressed();
     }
 
     private void selectFragment(MenuItem item) {
