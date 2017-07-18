@@ -1,6 +1,7 @@
 package br.com.bg7.appvistoria;
 
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import com.akexorcist.localizationactivity.LocalizationActivity;
@@ -11,7 +12,9 @@ import com.akexorcist.localizationactivity.LocalizationActivity;
  */
 public class BaseActivity extends LocalizationActivity {
 
-    public void changeLanguage() {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String defaultLanguage = preferences.getString("Language", "pt");
         setLanguage(defaultLanguage);
