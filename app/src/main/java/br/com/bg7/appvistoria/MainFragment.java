@@ -13,8 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import static android.text.style.TtsSpan.ARG_TEXT;
-
 /**
  * Fragment class for each nav menu item
  */
@@ -41,7 +39,7 @@ public class MainFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_navigation, container, false);
     }
 
-    @Override
+
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         View content;
@@ -49,7 +47,7 @@ public class MainFragment extends Fragment {
 
         if (savedInstanceState == null) {
             Bundle args = getArguments();
-            text = args.getString(ARG_TEXT);
+            text = args.getString(TEXT_KEY);
             color = args.getInt(COLOR_KEY);
         } else {
             text = savedInstanceState.getString(TEXT_KEY);

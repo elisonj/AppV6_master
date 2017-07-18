@@ -22,8 +22,11 @@ import br.com.bg7.appvistoria.R;
 
 public class ConfigActivity extends BaseActivity {
     private static final String SELECTED_ITEM_KEY = "SELECTED_ITEM_KEY";
+    private static final int SCREEN_OPEN_DEFAULT = 3;
+
+
     private BottomNavigationView navigation;
-    private int selectedItem = 3;
+    private int selectedItem = SCREEN_OPEN_DEFAULT;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,13 +42,11 @@ public class ConfigActivity extends BaseActivity {
             }
         });
 
-        MenuItem menuSelectedItem;
+        MenuItem menuSelectedItem = navigation.getMenu().getItem(SCREEN_OPEN_DEFAULT);
 
         if (savedInstanceState != null) {
-            selectedItem = savedInstanceState.getInt(SELECTED_ITEM_KEY, 3);
+            selectedItem = savedInstanceState.getInt(SELECTED_ITEM_KEY, SCREEN_OPEN_DEFAULT);
             menuSelectedItem = navigation.getMenu().findItem(selectedItem);
-        } else {
-            menuSelectedItem = navigation.getMenu().getItem(3);
         }
         selectFragment(menuSelectedItem);
     }
@@ -59,32 +60,32 @@ public class ConfigActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         MenuItem homeItem = navigation.getMenu().getItem(0);
-        if (selectedItem != homeItem.getItemId()) {
+        if (homeItem.getItemId() != selectedItem) {
             selectFragment(homeItem);
-        } else {
-            super.onBackPressed();
+            return;
         }
+        super.onBackPressed();
     }
 
     private void selectFragment(MenuItem item) {
-        Fragment frag = null;
+        Fragment fragment = null;
         switch (item.getItemId()) {
             case R.id.menu_visita:
-                frag = MainFragment.newInstance(getString(R.string.menu_visita),
-                        getColorFromRes(R.color.color_visita));
+                fragment = MainFragment.newInstance(getString(R.string.menu_visita),
+                        getColorFromResource(R.color.color_visita));
                 break;
             case R.id.menu_sync:
-                frag = MainFragment.newInstance(getString(R.string.menu_sync),
-                        getColorFromRes(R.color.color_sync));
+                fragment = MainFragment.newInstance(getString(R.string.menu_sync),
+                        getColorFromResource(R.color.color_sync));
                 break;
             case R.id.menu_historic:
-                frag = MainFragment.newInstance(getString(R.string.menu_historic),
-                        getColorFromRes(R.color.color_historic));
+                fragment = MainFragment.newInstance(getString(R.string.menu_historic),
+                        getColorFromResource(R.color.color_historic));
                 break;
             case R.id.menu_config:
                 ConfigFragment configFrag = new ConfigFragment();
-                frag = configFrag;
-                frag.setRetainInstance(true);
+                fragment = configFrag;
+                fragment.setRetainInstance(true);
                 new ConfigPresenter(configFrag);
                 break;
         }
@@ -97,9 +98,9 @@ public class ConfigActivity extends BaseActivity {
 
         updateToolbarText(item.getTitle());
 
-        if (frag != null) {
+        if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.container, frag, frag.getTag());
+            ft.add(R.id.container, fragment, fragment.getTag());
             ft.commit();
         }
     }
@@ -111,7 +112,7 @@ public class ConfigActivity extends BaseActivity {
         }
     }
 
-    private int getColorFromRes(@ColorRes int resId) {
-        return ContextCompat.getColor(this, resId);
+    private int getColorFromResource(@ColorRes int resourceId) {
+        return ContextCompat.getColor(this, resourceId);
     }
 }
