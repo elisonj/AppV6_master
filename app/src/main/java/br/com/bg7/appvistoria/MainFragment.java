@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import static br.com.bg7.appvistoria.R.id.textView;
+
 /**
  * Fragment class for each nav menu item
  */
@@ -20,11 +22,8 @@ public class MainFragment extends Fragment {
     private static final String ARG_TEXT = "arg_text";
     private static final String ARG_COLOR = "arg_color";
 
-    private String mText;
-    private int mColor;
-
-    private View mContent;
-    private TextView mTextView;
+    private String text;
+    private int color;
 
     public static Fragment newInstance(String text, int color) {
         Fragment frag = new MainFragment();
@@ -45,30 +44,28 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        View content;
+        TextView textView;
 
-        // retrieve text and color from bundle or savedInstanceState
         if (savedInstanceState == null) {
             Bundle args = getArguments();
-            mText = args.getString(ARG_TEXT);
-            mColor = args.getInt(ARG_COLOR);
+            text = args.getString(ARG_TEXT);
+            color = args.getInt(ARG_COLOR);
         } else {
-            mText = savedInstanceState.getString(ARG_TEXT);
-            mColor = savedInstanceState.getInt(ARG_COLOR);
+            text = savedInstanceState.getString(ARG_TEXT);
+            color = savedInstanceState.getInt(ARG_COLOR);
         }
+        content = view.findViewById(R.id.fragment_content);
+        textView = (TextView) view.findViewById(R.id.text);
 
-        // initialize views
-        mContent = view.findViewById(R.id.fragment_content);
-        mTextView = (TextView) view.findViewById(R.id.text);
-
-        // set text and background color
-        mTextView.setText(mText);
-        mContent.setBackgroundColor(mColor);
+        textView.setText(text);
+        content.setBackgroundColor(color);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString(ARG_TEXT, mText);
-        outState.putInt(ARG_COLOR, mColor);
+        outState.putString(ARG_TEXT, text);
+        outState.putInt(ARG_COLOR, color);
         super.onSaveInstanceState(outState);
     }
 }
