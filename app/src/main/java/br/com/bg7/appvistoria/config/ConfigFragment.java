@@ -48,7 +48,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_config, container, true);
+        View root = inflater.inflate(R.layout.fragment_config, container, false);
 
         synchronize = root.findViewById(R.id.linear_wifi);
         languages = root.findViewById(R.id.linear_language);
