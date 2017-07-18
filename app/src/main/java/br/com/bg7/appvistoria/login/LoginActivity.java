@@ -3,6 +3,7 @@ package br.com.bg7.appvistoria.login;
 import android.os.Bundle;
 
 import br.com.bg7.appvistoria.BaseActivity;
+import br.com.bg7.appvistoria.data.UserRepository;
 import br.com.bg7.appvistoria.service.LoginService;
 
 /**
@@ -19,7 +20,7 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         LoginView loginView = new LoginView(this);
-        loginPresenter = new LoginPresenter(new LoginService(), loginView);
+        loginPresenter = new LoginPresenter(new LoginService(), new UserRepository(), loginView);
 
         setContentView(loginView);
     }
