@@ -10,13 +10,11 @@ import android.support.v7.app.AppCompatActivity;
  * Date: 2017-07-17
  */
 public class BaseActivity extends AppCompatActivity {
-    private String defaultLanguage;
-
     @Override
     protected void attachBaseContext(Context newBase) {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(newBase);
-        defaultLanguage = preferences.getString("Language", "pt");
+        String defaultLanguage = preferences.getString("Language", "pt");
 
         super.attachBaseContext(LanguageContextWrap.wrap(newBase, defaultLanguage));
     }

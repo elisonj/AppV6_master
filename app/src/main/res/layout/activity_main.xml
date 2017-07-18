@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="br.com.bg7.appvistoria.MainActivity">
+    tools:context="br.com.bg7.appvistoria.config.ConfigActivity">
 
         <FrameLayout
             android:id="@+id/container"

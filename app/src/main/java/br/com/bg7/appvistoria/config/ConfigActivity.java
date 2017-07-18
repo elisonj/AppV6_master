@@ -9,9 +9,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.MainFragment;
 import br.com.bg7.appvistoria.R;
 
@@ -20,7 +20,7 @@ import br.com.bg7.appvistoria.R;
  * Date: 2017-07-17
  */
 
-public class ConfigActivity extends AppCompatActivity {
+public class ConfigActivity extends BaseActivity {
     private static final String SELECTED_ITEM_KEY = "SELECTED_ITEM_KEY";
     private BottomNavigationView navigation;
     private int selectedItem = 3;
@@ -82,7 +82,9 @@ public class ConfigActivity extends AppCompatActivity {
                         getColorFromRes(R.color.color_historic));
                 break;
             case R.id.menu_config:
-                frag = ConfigFragment.newInstance(getString(R.string.menu_config));
+                ConfigFragment configFrag = new ConfigFragment();
+                frag = configFrag;
+                new ConfigPresenter(configFrag);
                 break;
         }
         selectedItem = item.getItemId();
