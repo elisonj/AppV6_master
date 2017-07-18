@@ -10,7 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
-import br.com.bg7.appvistoria.fragment.ConfigFragment;
+import br.com.bg7.appvistoria.config.ConfigFragment;
 
 /**
  * Created by: elison

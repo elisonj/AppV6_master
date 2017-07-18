@@ -8,7 +8,7 @@ import android.view.View;
 import java.util.List;
 
 import br.com.bg7.appvistoria.MainActivity;
-import br.com.bg7.appvistoria.fragment.ConfigFragment;
+import br.com.bg7.appvistoria.config.ConfigFragment;
 import br.com.bg7.appvistoria.view.ConfigView;
 import br.com.bg7.appvistoria.vo.Config;
 import br.com.bg7.appvistoria.vo.Country;

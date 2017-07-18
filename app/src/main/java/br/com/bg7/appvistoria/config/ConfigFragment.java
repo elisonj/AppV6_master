@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.fragment;
+package br.com.bg7.appvistoria.config;
 
 /**
  * Created by: elison

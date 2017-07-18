@@ -14,7 +14,6 @@ import android.view.MenuItem;
 
 import br.com.bg7.appvistoria.MainFragment;
 import br.com.bg7.appvistoria.R;
-import br.com.bg7.appvistoria.fragment.ConfigFragment;
 
 /**
  * Created by: luciolucio
