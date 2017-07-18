@@ -39,7 +39,7 @@ public class MainFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_navigation, container, false);
     }
 
-    @Overrideandroid.text.style
+
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         View content;
