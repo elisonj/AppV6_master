@@ -26,9 +26,10 @@ public class ConfigActivity extends BaseActivity {
     private int selectedItem = 3;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        changeLanguage();
 
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -84,6 +85,7 @@ public class ConfigActivity extends BaseActivity {
             case R.id.menu_config:
                 ConfigFragment configFrag = new ConfigFragment();
                 frag = configFrag;
+                frag.setRetainInstance(true);
                 new ConfigPresenter(configFrag);
                 break;
         }

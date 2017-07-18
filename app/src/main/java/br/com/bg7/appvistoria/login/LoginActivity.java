@@ -17,6 +17,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        changeLanguage();
 
         LoginView loginView = new LoginView(this);
         loginPresenter = new LoginPresenter(new LoginService(), loginView);
@@ -25,7 +26,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         loginPresenter.start();
     }

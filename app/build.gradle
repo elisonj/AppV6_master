@@ -52,4 +52,5 @@ dependencies {
     compile group: 'com.google.guava', name: 'guava', version: '22.0-android'
     compile 'com.google.dagger:dagger:2.4'
     annotationProcessor "com.google.dagger:dagger-compiler:2.4"
+    compile 'com.akexorcist:localizationactivity:1.1.2'
 }

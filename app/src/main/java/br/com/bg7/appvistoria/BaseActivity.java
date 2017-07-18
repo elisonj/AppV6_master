@@ -1,21 +1,19 @@
 package br.com.bg7.appvistoria;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+
+import com.akexorcist.localizationactivity.LocalizationActivity;
 
 /**
  * Created by: elison
  * Date: 2017-07-17
  */
-public class BaseActivity extends AppCompatActivity {
-    @Override
-    protected void attachBaseContext(Context newBase) {
+public class BaseActivity extends LocalizationActivity {
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(newBase);
+    public void changeLanguage() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String defaultLanguage = preferences.getString("Language", "pt");
-
-        super.attachBaseContext(LanguageContextWrap.wrap(newBase, defaultLanguage));
+        setLanguage(defaultLanguage);
     }
 }
