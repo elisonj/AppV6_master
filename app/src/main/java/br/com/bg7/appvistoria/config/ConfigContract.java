@@ -23,6 +23,8 @@ public interface ConfigContract {
         void changeLanguage();
 
         void refresh();
+
+        void toggleLoadSaveState();
     }
 
     interface Presenter extends BasePresenter {

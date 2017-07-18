@@ -55,5 +55,6 @@ public class ConfigPresenter implements ConfigContract.Presenter {
     public void cancelClicked() {
         configView.hideButtons();
         configView.hideLanguages();
+        configView.toggleLoadSaveState();
     }
 }

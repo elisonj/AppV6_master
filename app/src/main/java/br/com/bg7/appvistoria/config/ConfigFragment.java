@@ -87,27 +87,14 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
             }
         });
 
-        ArrayList<Country> countryList = new ArrayList<>();
-
-        countryList.add(new Country("1", getContext().getString(R.string.portuguese_br), "pt", "BR"));
-        countryList.add(new Country("2", getContext().getString(R.string.english), "en", "US"));
-
-        ArrayAdapter<Country> adapter = new ArrayAdapter<Country>(getContext(), android.R.layout.simple_spinner_dropdown_item, countryList);
-        languageSelected.setAdapter(adapter);
-
-        List<Config> list = Config.listAll(Config.class);
-        if(list != null && list.size() > 0) {
-            int selected = 0;
-            for (int i=0; i < countryList.size(); i++) {
-                Country country = countryList.get(i);
-                if(country.getId().equals(list.get(0).getActualLanguage())) {
-                    selected = i;
-                }
+        wifi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showButtons();
             }
-                languageSelected.setSelection(selected);
-        }
+        });
 
-        wifi.setChecked(list.get(0).isUpdateOnlyWifi());
+        toggleLoadSaveState();
 
         return root;
     }
@@ -153,6 +140,32 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     @Override
     public void hideLanguages() {
         languages.setVisibility(View.GONE);
+    }
+
+
+    @Override
+    public void toggleLoadSaveState() {
+        ArrayList<Country> countryList = new ArrayList<>();
+
+        countryList.add(new Country("1", getContext().getString(R.string.portuguese_br), "pt", "BR"));
+        countryList.add(new Country("2", getContext().getString(R.string.english), "en", "US"));
+
+        ArrayAdapter<Country> adapter = new ArrayAdapter<Country>(getContext(), android.R.layout.simple_spinner_dropdown_item, countryList);
+        languageSelected.setAdapter(adapter);
+
+        List<Config> list = Config.listAll(Config.class);
+        if(list != null && list.size() > 0) {
+            int selected = 0;
+            for (int i=0; i < countryList.size(); i++) {
+                Country country = countryList.get(i);
+                if(country.getId().equals(list.get(0).getActualLanguage())) {
+                    selected = i;
+                }
+            }
+            languageSelected.setSelection(selected);
+            wifi.setChecked(list.get(0).isUpdateOnlyWifi());
+        }
+
     }
 
     @Override
