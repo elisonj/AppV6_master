@@ -5,7 +5,6 @@ package br.com.bg7.appvistoria.config;
  * Date: 2017-07-13
  */
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -20,8 +19,10 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.com.bg7.appvistoria.R;
+import br.com.bg7.appvistoria.vo.Config;
 import br.com.bg7.appvistoria.vo.Country;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -48,7 +49,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_config, container, true);
+        View root = inflater.inflate(R.layout.fragment_config, container, false);
 
         synchronize = root.findViewById(R.id.linear_wifi);
         languages = root.findViewById(R.id.linear_language);
@@ -93,6 +94,20 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
 
         ArrayAdapter<Country> adapter = new ArrayAdapter<Country>(getContext(), android.R.layout.simple_spinner_dropdown_item, countryList);
         languageSelected.setAdapter(adapter);
+
+        List<Config> list = Config.listAll(Config.class);
+        if(list != null && list.size() > 0) {
+            int selected = 0;
+            for (int i=0; i < countryList.size(); i++) {
+                Country country = countryList.get(i);
+                if(country.getId().equals(list.get(0).getActualLanguage())) {
+                    selected = i;
+                }
+            }
+                languageSelected.setSelection(selected);
+        }
+
+        wifi.setChecked(list.get(0).isUpdateOnlyWifi());
 
         return root;
     }
@@ -151,8 +166,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
 
     @Override
     public void refresh() {
-        getActivity().finish();
-        getActivity().startActivity(new Intent(getActivity(), ConfigActivity.class));
+        getActivity().recreate();
     }
 
     private void toggleVisibility(View view) {
