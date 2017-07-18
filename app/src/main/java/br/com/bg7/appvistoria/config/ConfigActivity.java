@@ -1,8 +1,9 @@
-package br.com.bg7.appvistoria;
+package br.com.bg7.appvistoria.config;
 
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -10,20 +11,22 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
-import br.com.bg7.appvistoria.fragment.ConfigFragment;
+import br.com.bg7.appvistoria.BaseActivity;
+import br.com.bg7.appvistoria.MainFragment;
+import br.com.bg7.appvistoria.R;
 
 /**
- * Created by: elison
- * Date: 2017-07-10
+ * Created by: luciolucio
+ * Date: 2017-07-17
  */
-public class MainActivity extends BaseActivity {
 
-    private static final String SELECTED_ITEM = "arg_selected_item";
+public class ConfigActivity extends BaseActivity {
+    private static final String SELECTED_ITEM_KEY = "SELECTED_ITEM_KEY";
     private BottomNavigationView navigation;
     private int selectedItem = 3;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -39,7 +42,7 @@ public class MainActivity extends BaseActivity {
         MenuItem menuSelectedItem;
 
         if (savedInstanceState != null) {
-            selectedItem = savedInstanceState.getInt(SELECTED_ITEM, 3);
+            selectedItem = savedInstanceState.getInt(SELECTED_ITEM_KEY, 3);
             menuSelectedItem = navigation.getMenu().findItem(selectedItem);
         } else {
             menuSelectedItem = navigation.getMenu().getItem(3);
@@ -49,7 +52,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(SELECTED_ITEM, selectedItem);
+        outState.putInt(SELECTED_ITEM_KEY, selectedItem);
         super.onSaveInstanceState(outState);
     }
 
@@ -79,7 +82,9 @@ public class MainActivity extends BaseActivity {
                         getColorFromRes(R.color.color_historic));
                 break;
             case R.id.menu_config:
-                frag = ConfigFragment.newInstance(getString(R.string.menu_config));
+                ConfigFragment configFrag = new ConfigFragment();
+                frag = configFrag;
+                new ConfigPresenter(configFrag);
                 break;
         }
         selectedItem = item.getItemId();

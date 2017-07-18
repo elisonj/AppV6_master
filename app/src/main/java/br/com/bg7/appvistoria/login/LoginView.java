@@ -9,8 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import br.com.bg7.appvistoria.MainActivity;
 import br.com.bg7.appvistoria.R;
+import br.com.bg7.appvistoria.config.ConfigActivity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -83,7 +83,7 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
 
     @Override
     public void showMainScreen() {
-        Intent intent = new Intent(getContext(), MainActivity.class);
+        Intent intent = new Intent(getContext(), ConfigActivity.class);
         getContext().startActivity(intent);
     }
 
