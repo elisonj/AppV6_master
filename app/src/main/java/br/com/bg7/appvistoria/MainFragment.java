@@ -13,14 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import static br.com.bg7.appvistoria.R.id.textView;
+import static android.text.style.TtsSpan.ARG_TEXT;
 
 /**
  * Fragment class for each nav menu item
  */
 public class MainFragment extends Fragment {
-    private static final String ARG_TEXT = "arg_text";
-    private static final String ARG_COLOR = "arg_color";
+    private static final String TEXT_KEY = "text_key";
+    private static final String COLOR_KEY = "color_key";
 
     private String text;
     private int color;
@@ -28,8 +28,8 @@ public class MainFragment extends Fragment {
     public static Fragment newInstance(String text, int color) {
         Fragment frag = new MainFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_TEXT, text);
-        args.putInt(ARG_COLOR, color);
+        args.putString(TEXT_KEY, text);
+        args.putInt(COLOR_KEY, color);
         frag.setArguments(args);
         return frag;
     }
@@ -50,10 +50,10 @@ public class MainFragment extends Fragment {
         if (savedInstanceState == null) {
             Bundle args = getArguments();
             text = args.getString(ARG_TEXT);
-            color = args.getInt(ARG_COLOR);
+            color = args.getInt(COLOR_KEY);
         } else {
-            text = savedInstanceState.getString(ARG_TEXT);
-            color = savedInstanceState.getInt(ARG_COLOR);
+            text = savedInstanceState.getString(TEXT_KEY);
+            color = savedInstanceState.getInt(COLOR_KEY);
         }
         content = view.findViewById(R.id.fragment_content);
         textView = (TextView) view.findViewById(R.id.text);
@@ -64,8 +64,8 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString(ARG_TEXT, text);
-        outState.putInt(ARG_COLOR, color);
+        outState.putString(TEXT_KEY, text);
+        outState.putInt(COLOR_KEY, color);
         super.onSaveInstanceState(outState);
     }
 }
