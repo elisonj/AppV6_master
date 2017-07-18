@@ -72,15 +72,15 @@ public class ConfigActivity extends BaseActivity {
         switch (item.getItemId()) {
             case R.id.menu_visita:
                 fragment = MainFragment.newInstance(getString(R.string.menu_visita),
-                        getColorFromRes(R.color.color_visita));
+                        getColorFromResource(R.color.color_visita));
                 break;
             case R.id.menu_sync:
                 fragment = MainFragment.newInstance(getString(R.string.menu_sync),
-                        getColorFromRes(R.color.color_sync));
+                        getColorFromResource(R.color.color_sync));
                 break;
             case R.id.menu_historic:
                 fragment = MainFragment.newInstance(getString(R.string.menu_historic),
-                        getColorFromRes(R.color.color_historic));
+                        getColorFromResource(R.color.color_historic));
                 break;
             case R.id.menu_config:
                 ConfigFragment configFrag = new ConfigFragment();
@@ -112,7 +112,7 @@ public class ConfigActivity extends BaseActivity {
         }
     }
 
-    private int getColorFromRes(@ColorRes int resId) {
-        return ContextCompat.getColor(this, resId);
+    private int getColorFromResource(@ColorRes int resourceId) {
+        return ContextCompat.getColor(this, resourceId);
     }
 }
