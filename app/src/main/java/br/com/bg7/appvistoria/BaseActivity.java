@@ -16,7 +16,8 @@ public class BaseActivity extends LocalizationActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String defaultLanguage = preferences.getString("Language", "pt");
+        String defaultLanguage = preferences.getString(Constants.PREFERENCE_LANGUAGE_KEY,
+                Constants.PREFERENCE_LANGUAGE_DEFAULT);
         setLanguage(defaultLanguage);
     }
 }
