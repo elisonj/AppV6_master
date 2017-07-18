@@ -42,13 +42,11 @@ public class ConfigActivity extends BaseActivity {
             }
         });
 
-        MenuItem menuSelectedItem;
+        MenuItem menuSelectedItem = navigation.getMenu().getItem(SCREEN_OPEN_DEFAULT);
 
         if (savedInstanceState != null) {
-            selectedItem = savedInstanceState.getInt(SELECTED_ITEM_KEY, 3);
+            selectedItem = savedInstanceState.getInt(SELECTED_ITEM_KEY, SCREEN_OPEN_DEFAULT);
             menuSelectedItem = navigation.getMenu().findItem(selectedItem);
-        } else {
-            menuSelectedItem = navigation.getMenu().getItem(3);
         }
         selectFragment(menuSelectedItem);
     }
