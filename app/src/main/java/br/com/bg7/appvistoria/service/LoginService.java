@@ -1,6 +1,8 @@
 package br.com.bg7.appvistoria.service;
 
 
+import android.support.annotation.NonNull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +13,6 @@ import java.util.concurrent.TimeoutException;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import br.com.bg7.appvistoria.Applic;
-import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.service.dto.Token;
 import br.com.bg7.appvistoria.service.dto.UserResponse;
 import br.com.bg7.appvistoria.view.listeners.LoginCallback;
@@ -23,6 +24,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static br.com.bg7.appvistoria.R.string.base_url;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by: elison
@@ -34,8 +36,16 @@ public class LoginService {
     private static final Logger LOG = LoggerFactory.getLogger(LoginService.class);
 
     private TokenService service;
+    private final String grantType;
+    private final String clientId;
     private Token token = null;
     private String userName, password;
+
+    public LoginService(@NonNull TokenService service, @NonNull String grantType, @NonNull String clientId) {
+        this.service = checkNotNull(service);
+        this.grantType = grantType;
+        this.clientId = clientId;
+    }
 
     /**
      * Method to execute request and get user Token
@@ -45,11 +55,7 @@ public class LoginService {
         this.userName = userName;
         this.password = password;
 
-        service = RetrofitClient.getClient(Applic.getInstance().getResources().getString(R.string.base_url)).
-                create(TokenService.class);
-        service.getToken(Applic.getInstance().getResources().getString(R.string.grant_type),
-                Applic.getInstance().getResources().getString(R.string.client_id),
-                userName, password).enqueue(new Callback<Token>() {
+        service.getToken(grantType, clientId, userName, password).enqueue(new Callback<Token>() {
             @Override
             @ParametersAreNonnullByDefault
             public void onResponse(Call<Token> call, Response<Token> response) {
