@@ -128,13 +128,4 @@ public class LoginService {
             }
         });
     }
-
-    /**
-     * get Actual Token
-     * @return
-     */
-    public Token getToken() {
-        return token;
-    }
-
 }
