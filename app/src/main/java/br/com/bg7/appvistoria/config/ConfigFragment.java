@@ -43,9 +43,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     private Button cancel;
     private Button confirm;
 
-    private static final String ARG_TEXT_KEY = "ARG_TEXT_KEY";
     private static final String CHANGE_LANGUAGE_KEY = "CHANGE_LANGUAGE";
-    private String text;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -108,7 +106,6 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString(ARG_TEXT_KEY, text);
         super.onSaveInstanceState(outState);
     }
 
