@@ -93,7 +93,6 @@ public class ConfigActivity extends BaseActivity {
                 new ConfigPresenter(configFrag);
                 break;
         }
-        selectedItem = item.getItemId();
 
         for (int i = 0; i < menu.size(); i++) {
             MenuItem menuItem = menu.getItem(i);
