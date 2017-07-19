@@ -158,12 +158,12 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
             int selected = 0;
             for (int i=0; i < countryList.size(); i++) {
                 Country country = countryList.get(i);
-                if(country.getId().equals(list.get(0).getActualLanguage())) {
+                if(country.getId().equals(list.get(0).getLanguage())) {
                     selected = i;
                 }
             }
             languageSelected.setSelection(selected);
-            wifi.setChecked(list.get(0).isUpdateOnlyWifi());
+            wifi.setChecked(list.get(0).isSyncWithWifiOnly());
         }
 
     }
