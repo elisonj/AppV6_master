@@ -18,11 +18,10 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import br.com.bg7.appvistoria.Constants;
 import br.com.bg7.appvistoria.R;
-import br.com.bg7.appvistoria.vo.Config;
 import br.com.bg7.appvistoria.vo.Country;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -39,12 +38,9 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     private LinearLayout languages;
     private Spinner languageSelected;
     private LinearLayout buttons;
-    private CheckBox wifi;
+    private CheckBox syncWithWifiOnly;
     private Button cancel;
     private Button confirm;
-
-    private static final String ARG_TEXT_KEY = "ARG_TEXT_KEY";
-    private String text;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,7 +51,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
         languages = root.findViewById(R.id.linear_language);
         topLanguages = root.findViewById(R.id.linear_language_top);
         buttons = root.findViewById(R.id.linear_buttons);
-        wifi = root.findViewById(R.id.checkBox_wifi);
+        syncWithWifiOnly = root.findViewById(R.id.checkBox_wifi);
         cancel = root.findViewById(R.id.button_cancel);
         confirm = root.findViewById(R.id.button_confirm);
         languageSelected = root.findViewById(R.id.spinner_language);
@@ -77,7 +73,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
             public void onClick(View view) {
                 Country selected = (Country) languageSelected.getSelectedItem();
 
-                configPresenter.confirmClicked(selected.getId(), wifi.isChecked());
+                configPresenter.confirmClicked(selected.getId(), selected.getLanguage(), syncWithWifiOnly.isChecked());
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -87,14 +83,12 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
             }
         });
 
-        wifi.setOnClickListener(new View.OnClickListener() {
+        syncWithWifiOnly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showButtons();
             }
         });
-
-        toggleLoadSaveState();
 
         return root;
     }
@@ -107,7 +101,6 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString(ARG_TEXT_KEY, text);
         super.onSaveInstanceState(outState);
     }
 
@@ -127,14 +120,23 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     }
 
     @Override
+    public void setLanguage(int id) {
+        languageSelected.setSelection(id);
+    }
+
+    @Override
+    public void setSyncWithWifiOnly(boolean syncWithWifiOnly) {
+        this.syncWithWifiOnly.setChecked(syncWithWifiOnly);
+    }
+
+    @Override
     public void toggleLanguagesVisibility() {
         toggleVisibility(languages);
     }
 
     @Override
     public void toggleSyncWithWifiOnly() {
-        buttons.setVisibility(View.VISIBLE);
-        wifi.setChecked(!wifi.isChecked());
+        syncWithWifiOnly.setChecked(!syncWithWifiOnly.isChecked());
     }
 
     @Override
@@ -144,36 +146,16 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
 
 
     @Override
-    public void toggleLoadSaveState() {
-        ArrayList<Country> countryList = new ArrayList<>();
-
-        countryList.add(new Country("1", getContext().getString(R.string.portuguese_br), "pt", "BR"));
-        countryList.add(new Country("2", getContext().getString(R.string.english), "en", "US"));
-
-        ArrayAdapter<Country> adapter = new ArrayAdapter<Country>(getContext(), android.R.layout.simple_spinner_dropdown_item, countryList);
+    public void setCountries(List<Country> countryList) {
+        ArrayAdapter<Country> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, countryList);
         languageSelected.setAdapter(adapter);
-
-        List<Config> list = Config.listAll(Config.class);
-        if(list != null && list.size() > 0) {
-            int selected = 0;
-            for (int i=0; i < countryList.size(); i++) {
-                Country country = countryList.get(i);
-                if(country.getId().equals(list.get(0).getActualLanguage())) {
-                    selected = i;
-                }
-            }
-            languageSelected.setSelection(selected);
-            wifi.setChecked(list.get(0).isUpdateOnlyWifi());
-        }
-
     }
 
     @Override
-    public void changeLanguage() {
-        Country country = (Country) languageSelected.getSelectedItem();
+    public void changeLanguage(String language) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("Language", country.getLanguage());
+        editor.putString(Constants.PREFERENCE_LANGUAGE_KEY, language);
         editor.apply();
     }
 
@@ -187,7 +169,6 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
             view.setVisibility(View.GONE);
             return;
         }
-
         view.setVisibility(View.VISIBLE);
     }
 }

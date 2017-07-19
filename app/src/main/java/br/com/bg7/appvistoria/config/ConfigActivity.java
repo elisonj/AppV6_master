@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import br.com.bg7.appvistoria.BaseActivity;
@@ -21,12 +22,13 @@ import br.com.bg7.appvistoria.R;
  */
 
 public class ConfigActivity extends BaseActivity {
-    private static final String SELECTED_ITEM_KEY = "SELECTED_ITEM_KEY";
+    private static final String SELECTED_MENU_ITEM_KEY = "SELECTED_MENU_ITEM_KEY";
     private static final int SCREEN_OPEN_DEFAULT = 3;
 
 
     private BottomNavigationView navigation;
     private int selectedItem = SCREEN_OPEN_DEFAULT;
+    private Menu menu = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,25 +44,27 @@ public class ConfigActivity extends BaseActivity {
             }
         });
 
-        MenuItem menuSelectedItem = navigation.getMenu().getItem(SCREEN_OPEN_DEFAULT);
+        menu = navigation.getMenu();
+
+        MenuItem menuSelectedItem = menu.getItem(SCREEN_OPEN_DEFAULT);
 
         if (savedInstanceState != null) {
-            selectedItem = savedInstanceState.getInt(SELECTED_ITEM_KEY, SCREEN_OPEN_DEFAULT);
-            menuSelectedItem = navigation.getMenu().findItem(selectedItem);
+            selectedItem = savedInstanceState.getInt(SELECTED_MENU_ITEM_KEY, SCREEN_OPEN_DEFAULT);
+            menuSelectedItem = menu.findItem(selectedItem);
         }
         selectFragment(menuSelectedItem);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(SELECTED_ITEM_KEY, selectedItem);
+        outState.putInt(SELECTED_MENU_ITEM_KEY, selectedItem);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onBackPressed() {
-        MenuItem homeItem = navigation.getMenu().getItem(0);
-        if (homeItem.getItemId() != selectedItem) {
+        MenuItem homeItem = menu.getItem(0);
+        if (selectedItem != homeItem.getItemId()) {
             selectFragment(homeItem);
             return;
         }
@@ -89,10 +93,9 @@ public class ConfigActivity extends BaseActivity {
                 new ConfigPresenter(configFrag);
                 break;
         }
-        selectedItem = item.getItemId();
 
-        for (int i = 0; i < navigation.getMenu().size(); i++) {
-            MenuItem menuItem = navigation.getMenu().getItem(i);
+        for (int i = 0; i < menu.size(); i++) {
+            MenuItem menuItem = menu.getItem(i);
             menuItem.setChecked(menuItem.getItemId() == item.getItemId());
         }
 

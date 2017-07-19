@@ -45,14 +45,15 @@ public class MainFragment extends Fragment {
         View content;
         TextView textView;
 
-        if (savedInstanceState == null) {
-            Bundle args = getArguments();
-            text = args.getString(TEXT_KEY);
-            color = args.getInt(COLOR_KEY);
-        } else {
+        Bundle args = getArguments();
+        text = args.getString(TEXT_KEY);
+        color = args.getInt(COLOR_KEY);
+
+        if (savedInstanceState != null) {
             text = savedInstanceState.getString(TEXT_KEY);
             color = savedInstanceState.getInt(COLOR_KEY);
         }
+
         content = view.findViewById(R.id.fragment_content);
         textView = (TextView) view.findViewById(R.id.text);
 

@@ -14,17 +14,17 @@
     <string name="confirm">CONFIRM</string>
     <string name="cancel">CANCEL</string>
     <string name="spin">Choose a language</string>
-    <string name="syncronize_only_by_wifi">SINCRONIZE ONLY WITH WI-FI</string>
+    <string name="sync_with_wifi_only">SYNC ONLY WITH WI-FI</string>
     <string name="portuguese_br">Portuguese (Brazil)</string>
     <string name="english">English</string>
     <string name="config_saved">Configuration saved.</string>
     <string name="change_language">CHANGE LANGUAGE</string>
     <string name="login_success">Login success.</string>
-    <string name="login_error">Login failed. Please, verify your user and password and try again.</string>
+    <string name="login_error">Login failed. Please verify your user and password and try again.</string>
     <string name="login_offline_success">Login offline success.</string>
-    <string name="validation_user_field_not_empty">Field User can not be empty.</string>
-    <string name="validation_password_field_not_empty">Field Password can not be empty.</string>
-    <string name="validation_password_dont_match">Wrong password. Please, try again.</string>
-    <string name="validation_user_not_found">User not syncronized. Please, syncronize yout device before trying login offline.</string>
+    <string name="validation_user_field_not_empty">User field cannot be empty.</string>
+    <string name="validation_password_field_not_empty">Password cannot be empty.</string>
+    <string name="validation_password_dont_match">Wrong password. Please try again.</string>
+    <string name="validation_user_not_found">User not synchronized. Please, synchronize your device before trying login offline.</string>
 
 </resources>

@@ -7,21 +7,21 @@ import com.orm.SugarRecord;
  * Date: 2017-07-17
  */
 public class Config extends SugarRecord<Config> {
-    private boolean updateOnlyWifi;
-    private String actualLanguage;
+    private boolean syncWithWifiOnly;
+    private String language;
 
     public Config() {}
 
-    public Config(String actualLanguage, boolean updateOnlyWifi) {
-        this.actualLanguage = actualLanguage;
-        this.updateOnlyWifi = updateOnlyWifi;
+    public Config(String language, boolean updateOnlyWifi) {
+        this.language = language;
+        this.syncWithWifiOnly = updateOnlyWifi;
     }
 
-    public String getActualLanguage() {
-        return actualLanguage;
+    public String getLanguage() {
+        return language;
     }
 
-    public boolean isUpdateOnlyWifi() {
-        return updateOnlyWifi;
+    public boolean isSyncWithWifiOnly() {
+        return syncWithWifiOnly;
     }
 }

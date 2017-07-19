@@ -74,7 +74,7 @@
             android:layout_margin="10dp"
             android:textStyle="bold"
             android:layout_weight="0.13"
-            android:text="@string/syncronize_only_by_wifi" />
+            android:text="@string/sync_with_wifi_only" />
 
         <CheckBox
             android:id="@+id/checkBox_wifi"
