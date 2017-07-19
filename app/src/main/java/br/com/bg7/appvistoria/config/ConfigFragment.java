@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.bg7.appvistoria.Constants;
@@ -65,7 +66,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
         synchronize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                configPresenter.syncWithWifiOnlyClicked();
+                configPresenter.syncWithWifiOnlyLineClicked();
             }
         });
         confirm.setOnClickListener(new View.OnClickListener() {
@@ -86,7 +87,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
         syncWithWifiOnly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showButtons();
+                configPresenter.syncWithWifiOnlyClicked();
             }
         });
 
@@ -97,6 +98,20 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     public void onResume() {
         super.onResume();
         configPresenter.start();
+    }
+
+    @Override
+    public List<Country> initCountryList() {
+        String languageIds [] = getContext().getResources().getStringArray(R.array.languageIds);
+        String languageNames [] = getContext().getResources().getStringArray(R.array.languageNames);
+        String languages [] = getContext().getResources().getStringArray(R.array.languages);
+        String abbreviations [] = getContext().getResources().getStringArray(R.array.abbreviations);
+
+        ArrayList<Country> countryList = new ArrayList<>();
+        for(int i=0;i<languageIds.length;i++) {
+            countryList.add(new Country(languageIds[i], languageNames[i],languages[i], abbreviations[i]));
+        }
+        return countryList;
     }
 
     @Override
@@ -169,6 +184,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
             view.setVisibility(View.GONE);
             return;
         }
+
         view.setVisibility(View.VISIBLE);
     }
 }
