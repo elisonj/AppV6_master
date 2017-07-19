@@ -68,7 +68,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
         if(user != null) {
             String passwordHash = user.getPassword();
-            if (BCrypt.checkpw(password, passwordHash)) {
+            if (checkpw(password, passwordHash)) {
                 loginView.showOfflineLoginSuccess();
             } else {
                 loginView.showWrongPasswordError();
@@ -76,6 +76,10 @@ public class LoginPresenter implements LoginContract.Presenter {
         } else {
             loginView.showUserNotFoundError();
         }
+    }
+
+    protected boolean checkpw(String password, String passwordHash) {
+        return BCrypt.checkpw(password, passwordHash);
     }
 
     private LoginCallback callback = new LoginCallback() {
