@@ -13,10 +13,11 @@ public interface LoginContract {
     interface View extends BaseView<Presenter> {
 
         boolean isConnected();
+        void showMainScreen();
         void showUsernameEmptyError();
         void showPasswordEmptyError();
         void showCannotLoginError();
-        void showLoginSuccess();
+        void showCannotLoginOfflineError();
         void showOfflineLoginSuccess();
         void showWrongPasswordError();
         void showUserNotFoundError();

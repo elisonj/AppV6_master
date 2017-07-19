@@ -62,6 +62,7 @@ public class LoginService {
                 } else {
                     int statusCode  = response.code();
                     LOG.error(" **** ERROR: "+ statusCode);
+                    callback.onFailure(new Throwable());
                 }
             }
 

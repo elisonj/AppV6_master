@@ -20,5 +20,4 @@ public class Applic extends com.orm.SugarApp {
         return instance;
     }
 
-
 }

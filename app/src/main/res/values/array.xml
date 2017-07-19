@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="languageIds">
+        <item>@string/id_br</item>
+        <item>@string/id_us</item>
+    </string-array>
+    <string-array name="languageNames">
+        <item>@string/portuguese_br</item>
+        <item>@string/english</item>
+    </string-array>
+    <string-array name="languages">
+        <item>@string/language_pt</item>
+        <item>@string/language_en</item>
+    </string-array>
+    <string-array name="abbreviations">
+        <item>@string/abbreviation_br</item>
+        <item>@string/abbreviation_us</item>
+    </string-array>
+</resources>
