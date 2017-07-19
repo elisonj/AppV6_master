@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.ws;
+package br.com.bg7.appvistoria.data.source.remote;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

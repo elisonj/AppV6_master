@@ -3,13 +3,12 @@ package br.com.bg7.appvistoria.login;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import br.com.bg7.appvistoria.Applic;
 import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.UserRepository;
 import br.com.bg7.appvistoria.service.LoginService;
-import br.com.bg7.appvistoria.ws.RetrofitClient;
-import br.com.bg7.appvistoria.ws.TokenService;
+import br.com.bg7.appvistoria.data.source.remote.RetrofitClient;
+import br.com.bg7.appvistoria.data.source.remote.TokenService;
 
 /**
  * Created by: elison

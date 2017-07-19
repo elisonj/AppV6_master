@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.ws;
+package br.com.bg7.appvistoria.data.source.remote;
 
 import br.com.bg7.appvistoria.service.dto.Token;
 import br.com.bg7.appvistoria.service.dto.UserResponse;
