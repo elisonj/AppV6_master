@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.data.source.remote.dto;
+package br.com.bg7.appvistoria.data.source.remote.retrofit.dto;
 
 /**
  * Created by: elison
