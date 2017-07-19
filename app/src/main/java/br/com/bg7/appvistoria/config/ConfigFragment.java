@@ -39,7 +39,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     private LinearLayout languages;
     private Spinner languageSelected;
     private LinearLayout buttons;
-    private CheckBox wifi;
+    private CheckBox syncWithWifiOnly;
     private Button cancel;
     private Button confirm;
 
@@ -55,7 +55,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
         languages = root.findViewById(R.id.linear_language);
         topLanguages = root.findViewById(R.id.linear_language_top);
         buttons = root.findViewById(R.id.linear_buttons);
-        wifi = root.findViewById(R.id.checkBox_wifi);
+        syncWithWifiOnly = root.findViewById(R.id.checkBox_wifi);
         cancel = root.findViewById(R.id.button_cancel);
         confirm = root.findViewById(R.id.button_confirm);
         languageSelected = root.findViewById(R.id.spinner_language);
@@ -77,7 +77,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
             public void onClick(View view) {
                 Country selected = (Country) languageSelected.getSelectedItem();
 
-                configPresenter.confirmClicked(selected.getId(), wifi.isChecked());
+                configPresenter.confirmClicked(selected.getId(), syncWithWifiOnly.isChecked());
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +87,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
             }
         });
 
-        wifi.setOnClickListener(new View.OnClickListener() {
+        syncWithWifiOnly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showButtons();
@@ -134,7 +134,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     @Override
     public void toggleSyncWithWifiOnly() {
         buttons.setVisibility(View.VISIBLE);
-        wifi.setChecked(!wifi.isChecked());
+        syncWithWifiOnly.setChecked(!syncWithWifiOnly.isChecked());
     }
 
     @Override
@@ -163,7 +163,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
                 }
             }
             languageSelected.setSelection(selected);
-            wifi.setChecked(list.get(0).isSyncWithWifiOnly());
+            syncWithWifiOnly.setChecked(list.get(0).isSyncWithWifiOnly());
         }
 
     }
