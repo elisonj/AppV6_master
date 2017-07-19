@@ -5,7 +5,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import br.com.bg7.appvistoria.data.local.UserRepository;
-import br.com.bg7.appvistoria.service.LoginService;
 
 /**
  * Created by: luciolucio
