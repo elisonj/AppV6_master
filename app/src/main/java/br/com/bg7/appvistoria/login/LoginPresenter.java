@@ -85,13 +85,18 @@ public class LoginPresenter implements LoginContract.Presenter {
     private LoginCallback callback = new LoginCallback() {
         // TODO: Tentar o login offline se der erro no online
         @Override
-        public void onFailure(Throwable t) {
-            if(t instanceof TimeoutException || t instanceof ConnectException) {
-                loginView.showCannotLoginOfflineError();
-                return;
-            }
-
+        public void onError() {
             loginView.showCannotLoginError();
+        }
+
+        @Override
+        public void onTimeout() {
+            loginView.showCannotLoginOfflineError();
+        }
+
+        @Override
+        public void onConnectionFailed() {
+            loginView.showCannotLoginOfflineError();
         }
 
         @Override

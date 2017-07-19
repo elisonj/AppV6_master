@@ -5,9 +5,6 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 
-import java.net.ConnectException;
-import java.util.concurrent.TimeoutException;
-
 import br.com.bg7.appvistoria.view.listeners.LoginCallback;
 
 import static org.mockito.ArgumentMatchers.matches;
@@ -46,7 +43,7 @@ public class LoginPresenterOnlineTest extends LoginPresenterBaseTest {
         callLogin();
 
         verify(loginService).requestToken(loginCallbackCaptor.capture(), matches(USERNAME), matches(PASSWORD));
-        loginCallbackCaptor.getValue().onFailure(new TimeoutException());
+        loginCallbackCaptor.getValue().onTimeout();
 
         verify(loginView).showCannotLoginOfflineError();
     }
@@ -56,7 +53,7 @@ public class LoginPresenterOnlineTest extends LoginPresenterBaseTest {
         callLogin();
 
         verify(loginService).requestToken(loginCallbackCaptor.capture(), matches(USERNAME), matches(PASSWORD));
-        loginCallbackCaptor.getValue().onFailure(new ConnectException());
+        loginCallbackCaptor.getValue().onConnectionFailed();
 
         verify(loginView).showCannotLoginOfflineError();
     }
@@ -66,7 +63,7 @@ public class LoginPresenterOnlineTest extends LoginPresenterBaseTest {
         callLogin();
 
         verify(loginService).requestToken(loginCallbackCaptor.capture(), matches(USERNAME), matches(PASSWORD));
-        loginCallbackCaptor.getValue().onFailure(new Exception());
+        loginCallbackCaptor.getValue().onError();
 
         verify(loginView).showCannotLoginError();
     }

@@ -4,7 +4,9 @@ package br.com.bg7.appvistoria.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.ConnectException;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import br.com.bg7.appvistoria.Applic;
 import br.com.bg7.appvistoria.R;
@@ -62,14 +64,25 @@ public class LoginService {
                 } else {
                     int statusCode  = response.code();
                     LOG.error(" **** ERROR: "+ statusCode);
-                    callback.onFailure(new Throwable());
+                    callback.onError();
                 }
             }
 
             @Override
             public void onFailure(Call<Token> call, Throwable t) {
-                LOG.error("error loading from API");
-                callback.onFailure(t);
+                LOG.error("error loading from API", t);
+
+                if(t instanceof TimeoutException) {
+                    callback.onTimeout();
+                    return;
+                }
+
+                if(t instanceof ConnectException) {
+                    callback.onConnectionFailed();
+                    return;
+                }
+
+                callback.onError();
             }
         });
     }
@@ -84,8 +97,8 @@ public class LoginService {
         service.getUser("Bearer "+token.getAccessToken(), token.getUserId()).enqueue(new Callback<UserResponse>() {
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
-                LOG.error(" **** error on load posts from API");
-                callback.onFailure(t);
+                LOG.error(" **** error on load users from API", t);
+                callback.onError();
             }
 
             @Override
