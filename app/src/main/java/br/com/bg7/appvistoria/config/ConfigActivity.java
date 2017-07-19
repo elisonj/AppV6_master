@@ -22,7 +22,7 @@ import br.com.bg7.appvistoria.R;
  */
 
 public class ConfigActivity extends BaseActivity {
-    private static final String SELECTED_ITEM_KEY = "SELECTED_ITEM_KEY";
+    private static final String SELECTED_MENU_ITEM_KEY = "SELECTED_MENU_ITEM_KEY";
     private static final int SCREEN_OPEN_DEFAULT = 3;
 
 
@@ -49,7 +49,7 @@ public class ConfigActivity extends BaseActivity {
         MenuItem menuSelectedItem = menu.getItem(SCREEN_OPEN_DEFAULT);
 
         if (savedInstanceState != null) {
-            selectedItem = savedInstanceState.getInt(SELECTED_ITEM_KEY, SCREEN_OPEN_DEFAULT);
+            selectedItem = savedInstanceState.getInt(SELECTED_MENU_ITEM_KEY, SCREEN_OPEN_DEFAULT);
             menuSelectedItem = menu.findItem(selectedItem);
         }
         selectFragment(menuSelectedItem);
@@ -57,14 +57,14 @@ public class ConfigActivity extends BaseActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(SELECTED_ITEM_KEY, selectedItem);
+        outState.putInt(SELECTED_MENU_ITEM_KEY, selectedItem);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onBackPressed() {
         MenuItem homeItem = menu.getItem(0);
-        if (homeItem.getItemId() != selectedItem) {
+        if (selectedItem != homeItem.getItemId()) {
             selectFragment(homeItem);
             return;
         }
