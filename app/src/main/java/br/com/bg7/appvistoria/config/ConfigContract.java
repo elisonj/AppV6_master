@@ -19,6 +19,8 @@ public interface ConfigContract {
 
         void showButtons();
 
+        List<Country> initCountryList();
+
         void setCountries(List<Country> countryList);
 
         void setLanguage(int id);
@@ -37,7 +39,7 @@ public interface ConfigContract {
     interface Presenter extends BasePresenter {
         void topLanguagesClicked();
 
-        void syncWithWifiOnlyClicked();
+        void syncWithWifiOnlyClicked(boolean changeStatusCheck);
 
         void confirmClicked(String languageId, String language, boolean syncWithWifiOnly);
 
