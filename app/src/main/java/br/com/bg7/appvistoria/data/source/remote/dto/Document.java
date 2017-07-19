@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.data.source.remote.retrofit.dto;
+package br.com.bg7.appvistoria.data.source.remote.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by: elison
  * Date: 2017-07-12
  */
-public class Phone  {
+public class Document {
 
     @SerializedName("id")
     @Expose
@@ -15,16 +15,16 @@ public class Phone  {
     @SerializedName("type")
     @Expose
     private Integer type;
-    @SerializedName("ddi")
-    @Expose
-    private String ddi;
-    @SerializedName("ddd")
-    @Expose
-    private String ddd;
     @SerializedName("number")
     @Expose
     private String number;
     @SerializedName("userId")
     @Expose
     private Integer userId;
+    @SerializedName("order")
+    @Expose
+    private Integer order;
+    @SerializedName("description")
+    @Expose
+    private String description;
 }

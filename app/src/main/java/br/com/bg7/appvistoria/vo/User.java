@@ -4,7 +4,7 @@ import com.orm.SugarRecord;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import br.com.bg7.appvistoria.data.source.remote.retrofit.dto.UserResponse;
+import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
 
 /**
  * Created by: elison
@@ -20,7 +20,7 @@ public class User extends SugarRecord<User> {
 
     public User() {}
 
-    public User(UserResponse user, br.com.bg7.appvistoria.data.source.remote.retrofit.dto.Token tokenFromService, String password) {
+    public User(UserResponse user, br.com.bg7.appvistoria.data.source.remote.dto.Token tokenFromService, String password) {
         fullName = user.getUserAccounts().get(0).getBasicInfo().getFullName();
         userName = user.getUserAccounts().get(0).getCredentials().getLogin();
         email = user.getUserAccounts().get(0).getBasicInfo().getEmail().getAddress();
