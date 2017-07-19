@@ -70,8 +70,4 @@ public class LoginPresenterOnlineTest extends LoginPresenterBaseTest {
 
         verify(loginView).showCannotLoginError();
     }
-
-    private void callLogin() {
-        loginPresenter.login(USERNAME, PASSWORD);
-    }
 }

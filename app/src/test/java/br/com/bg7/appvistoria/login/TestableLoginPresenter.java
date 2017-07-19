@@ -7,7 +7,7 @@ import br.com.bg7.appvistoria.service.LoginService;
 
 class TestableLoginPresenter extends LoginPresenter {
 
-    boolean checkpw;
+    boolean checkpw = true;
 
     TestableLoginPresenter(@NonNull LoginService loginService, @NonNull UserRepository userRepository, @NonNull LoginContract.View loginView) {
         super(loginService, userRepository, loginView);

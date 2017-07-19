@@ -32,4 +32,8 @@ public class LoginPresenterBaseTest {
         MockitoAnnotations.initMocks(this);
         loginPresenter = new TestableLoginPresenter(loginService, userRepository, loginView);
     }
+
+    void callLogin() {
+        loginPresenter.login(USERNAME, PASSWORD);
+    }
 }
