@@ -62,20 +62,20 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     private void attemptOfflineLogin(String username, String password) {
-        // TODO: Limpar esta lógica: tirar os else
         // TODO: Limpar esta lógica: exibir mensagens melhores para o usuário
         User user = userRepository.findByUsername(username);
 
-        if(user != null) {
-            String passwordHash = user.getPassword();
-            if (checkpw(password, passwordHash)) {
-                loginView.showMainScreen();
-            } else {
-                loginView.showWrongPasswordError();
-            }
-        } else {
+        if (user == null) {
             loginView.showUserNotFoundError();
+            return;
         }
+
+        if (!checkpw(password, user.getPassword())) {
+            loginView.showWrongPasswordError();
+            return;
+        }
+
+        loginView.showMainScreen();
     }
 
     protected boolean checkpw(String password, String passwordHash) {
