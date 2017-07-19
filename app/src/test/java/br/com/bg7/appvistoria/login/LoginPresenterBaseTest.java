@@ -24,6 +24,9 @@ public class LoginPresenterBaseTest {
 
     TestableLoginPresenter loginPresenter;
 
+    static final String USERNAME = "user";
+    static final String PASSWORD = "password";
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
