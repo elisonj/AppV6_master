@@ -36,14 +36,12 @@ public class LoginService {
     private TokenService service;
     private Token token = null;
     private String userName, password;
-    private LoginCallback callback;
 
     /**
      * Method to execute request and get user Token
      */
     public void requestToken(String userName, String password, final LoginCallback callback) {
 
-        this.callback = callback;
         this.userName = userName;
         this.password = password;
 
@@ -62,7 +60,7 @@ public class LoginService {
                     if(token != null) {
                         LOG.debug("Token: "+token.getAccessToken());
                         LOG.debug("UserId: "+token.getUserId());
-                        requestUser(token);
+                        requestUser(token, callback);
                     }
                 } else {
                     int statusCode  = response.code();
@@ -94,7 +92,7 @@ public class LoginService {
     /**
      * Request UserAccount Logged
      */
-    private void requestUser(final Token token) {
+    private void requestUser(final Token token, final LoginCallback callback) {
         service =  RetrofitClient.getClient(Applic.getInstance().getString(base_url)).
                 create(TokenService.class);
 
