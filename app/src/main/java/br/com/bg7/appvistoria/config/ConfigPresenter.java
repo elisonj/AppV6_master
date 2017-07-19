@@ -1,10 +1,7 @@
 package br.com.bg7.appvistoria.config;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import br.com.bg7.appvistoria.Applic;
-import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.vo.Config;
 import br.com.bg7.appvistoria.vo.Country;
 
@@ -25,13 +22,7 @@ public class ConfigPresenter implements ConfigContract.Presenter {
     @Override
     public void start() {
 
-        ArrayList<Country> countryList = new ArrayList<>();
-
-        countryList.add(new Country(Applic.getInstance().getString(R.string.id_br), Applic.getInstance().getString(R.string.portuguese_br),
-                Applic.getInstance().getString(R.string.language_pt), Applic.getInstance().getString(R.string.abbreviation_br)));
-        countryList.add(new Country(Applic.getInstance().getString(R.string.id_us), Applic.getInstance().getString(R.string.english),
-                Applic.getInstance().getString(R.string.language_en), Applic.getInstance().getString(R.string.abbreviation_us)));
-
+        List<Country> countryList = configView.initCountryList();
         configView.setCountries(countryList);
 
         List<Config> list = Config.listAll(Config.class);
@@ -56,6 +47,11 @@ public class ConfigPresenter implements ConfigContract.Presenter {
 
     @Override
     public void syncWithWifiOnlyClicked() {
+        configView.showButtons();
+    }
+
+    @Override
+    public void syncWithWifiOnlyLineClicked() {
         configView.showButtons();
         configView.toggleSyncWithWifiOnly();
     }
