@@ -46,10 +46,13 @@ public class ConfigPresenter implements ConfigContract.Presenter {
     }
 
     @Override
-    public void syncWithWifiOnlyClicked(boolean changeStatusCheck) {
+    public void syncWithWifiOnlyClicked() {
         configView.showButtons();
-        if(changeStatusCheck)
-            configView.toggleSyncWithWifiOnly();
+    }
+    @Override
+    public void syncWithWifiOnlyClickedToogle() {
+        configView.showButtons();
+        configView.toggleSyncWithWifiOnly();
     }
 
     @Override

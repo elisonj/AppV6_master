@@ -66,7 +66,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
         synchronize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                configPresenter.syncWithWifiOnlyClicked(true);
+                configPresenter.syncWithWifiOnlyClickedToogle();
             }
         });
         confirm.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +87,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
         syncWithWifiOnly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                configPresenter.syncWithWifiOnlyClicked(false);
+                configPresenter.syncWithWifiOnlyClicked();
             }
         });
 

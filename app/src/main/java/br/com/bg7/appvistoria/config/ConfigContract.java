@@ -39,7 +39,9 @@ public interface ConfigContract {
     interface Presenter extends BasePresenter {
         void topLanguagesClicked();
 
-        void syncWithWifiOnlyClicked(boolean changeStatusCheck);
+        void syncWithWifiOnlyClicked();
+
+        void syncWithWifiOnlyClickedToogle();
 
         void confirmClicked(String languageId, String language, boolean syncWithWifiOnly);
 
