@@ -1,7 +1,8 @@
-package br.com.bg7.appvistoria.data;
+package br.com.bg7.appvistoria.data.local;
 
 import java.util.List;
 
+import br.com.bg7.appvistoria.data.local.Repository;
 import br.com.bg7.appvistoria.vo.User;
 
 /**

@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.data;
+package br.com.bg7.appvistoria.data.local;
 
 import com.orm.SugarRecord;
 

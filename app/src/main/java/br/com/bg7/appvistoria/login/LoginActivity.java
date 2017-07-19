@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 
 import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.R;
-import br.com.bg7.appvistoria.data.UserRepository;
+import br.com.bg7.appvistoria.data.local.UserRepository;
 import br.com.bg7.appvistoria.service.LoginService;
 import br.com.bg7.appvistoria.data.source.remote.RetrofitClient;
 import br.com.bg7.appvistoria.data.source.remote.TokenService;
