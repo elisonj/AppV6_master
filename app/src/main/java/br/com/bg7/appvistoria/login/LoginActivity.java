@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 
 import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.R;
-import br.com.bg7.appvistoria.data.source.TokenService;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
 import br.com.bg7.appvistoria.data.source.remote.retrofit.RetrofitTokenService;
 
@@ -36,9 +35,9 @@ public class LoginActivity extends BaseActivity {
         String grantType = getResources().getString(R.string.grant_type);
         String clientId = getResources().getString(R.string.client_id);
 
-        TokenService tokenService = new RetrofitTokenService(baseUrl, grantType, clientId);
+        RetrofitTokenService tokenService = new RetrofitTokenService(baseUrl, grantType, clientId);
 
-        return new LoginService(tokenService, userRepository, grantType, clientId);
+        return new LoginService(tokenService, userRepository);
     }
 
     @Override

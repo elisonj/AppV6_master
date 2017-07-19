@@ -34,15 +34,11 @@ public class LoginService {
 
     private final TokenService service;
     private final UserRepository userRepository;
-    private final String grantType;
-    private final String clientId;
     private Token token = null;
 
-    public LoginService(@NonNull TokenService service, @NonNull UserRepository userRepository, @NonNull String grantType, @NonNull String clientId) {
+    public LoginService(@NonNull TokenService service, @NonNull UserRepository userRepository) {
         this.service = checkNotNull(service);
         this.userRepository = checkNotNull(userRepository);
-        this.grantType = checkNotNull(grantType);
-        this.clientId = checkNotNull(clientId);
     }
 
     /**
