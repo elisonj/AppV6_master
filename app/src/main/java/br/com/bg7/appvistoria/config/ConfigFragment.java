@@ -133,7 +133,6 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
 
     @Override
     public void toggleSyncWithWifiOnly() {
-        buttons.setVisibility(View.VISIBLE);
         syncWithWifiOnly.setChecked(!syncWithWifiOnly.isChecked());
     }
 
