@@ -41,7 +41,7 @@ public interface ConfigContract {
 
         void syncWithWifiOnlyClicked();
 
-        void syncWithWifiOnlyClickedToogle();
+        void syncWithWifiOnlyLineClicked();
 
         void confirmClicked(String languageId, String language, boolean syncWithWifiOnly);
 
