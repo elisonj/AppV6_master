@@ -5,7 +5,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
-import br.com.bg7.appvistoria.data.source.remote.TokenService;
+import br.com.bg7.appvistoria.data.source.remote.retrofit.TokenService;
 
 /**
  * Created by: luciolucio

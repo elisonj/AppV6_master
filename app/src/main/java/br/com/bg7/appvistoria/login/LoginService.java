@@ -16,7 +16,7 @@ import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
 import br.com.bg7.appvistoria.data.source.RequestTokenCallback;
 import br.com.bg7.appvistoria.vo.User;
-import br.com.bg7.appvistoria.data.source.remote.TokenService;
+import br.com.bg7.appvistoria.data.source.remote.retrofit.TokenService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

@@ -7,7 +7,7 @@ import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
 import br.com.bg7.appvistoria.data.source.remote.RetrofitClient;
-import br.com.bg7.appvistoria.data.source.remote.TokenService;
+import br.com.bg7.appvistoria.data.source.remote.retrofit.TokenService;
 
 /**
  * Created by: elison
