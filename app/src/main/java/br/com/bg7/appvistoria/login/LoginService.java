@@ -11,15 +11,15 @@ import java.util.concurrent.TimeoutException;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import br.com.bg7.appvistoria.data.source.RequestTokenCallback;
+import br.com.bg7.appvistoria.data.source.TokenService;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
+import br.com.bg7.appvistoria.data.source.remote.HttpCall;
+import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
+import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
-import br.com.bg7.appvistoria.data.source.RequestTokenCallback;
 import br.com.bg7.appvistoria.vo.User;
-import br.com.bg7.appvistoria.data.source.remote.retrofit.TokenService;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -50,10 +50,10 @@ public class LoginService {
      */
     public void requestToken(@NonNull final String username, @NonNull final String password, @NonNull final RequestTokenCallback callback) {
 
-        service.getToken(grantType, clientId, username, password).enqueue(new Callback<Token>() {
+        service.getToken(username, password).enqueue(new HttpCallback<Token>() {
             @Override
             @ParametersAreNonnullByDefault
-            public void onResponse(Call<Token> call, Response<Token> response) {
+            public void onResponse(HttpCall<Token> call, HttpResponse<Token> response) {
 
                 if(response.isSuccessful()) {
                     LOG.debug(" **** posts loaded from API");
@@ -72,7 +72,7 @@ public class LoginService {
 
             @Override
             @ParametersAreNonnullByDefault
-            public void onFailure(Call<Token> call, Throwable t) {
+            public void onFailure(HttpCall<Token> call, Throwable t) {
                 LOG.error("error loading from API", t);
 
                 if(t instanceof TimeoutException) {
@@ -95,17 +95,17 @@ public class LoginService {
      */
     private void requestUser(final Token token, @NonNull final String username, final @NonNull String password, final RequestTokenCallback callback) {
 
-        service.getUser("Bearer "+token.getAccessToken(), token.getUserId()).enqueue(new Callback<UserResponse>() {
+        service.getUser("Bearer "+token.getAccessToken(), token.getUserId()).enqueue(new HttpCallback<UserResponse>() {
             @Override
             @ParametersAreNonnullByDefault
-            public void onFailure(Call<UserResponse> call, Throwable t) {
+            public void onFailure(HttpCall<UserResponse> call, Throwable t) {
                 LOG.error(" **** error on load users from API", t);
                 callback.onError();
             }
 
             @Override
             @ParametersAreNonnullByDefault
-            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+            public void onResponse(HttpCall<UserResponse> call, HttpResponse<UserResponse> response) {
 
                 if(response.isSuccessful()) {
                     UserResponse userResponse = response.body();
