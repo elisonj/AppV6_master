@@ -8,6 +8,8 @@ import java.net.ConnectException;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import br.com.bg7.appvistoria.Applic;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.service.dto.Token;
@@ -51,6 +53,7 @@ public class LoginService {
                 Applic.getInstance().getResources().getString(R.string.client_id),
                 userName, password).enqueue(new Callback<Token>() {
             @Override
+            @ParametersAreNonnullByDefault
             public void onResponse(Call<Token> call, Response<Token> response) {
 
                 if(response.isSuccessful()) {
@@ -69,6 +72,7 @@ public class LoginService {
             }
 
             @Override
+            @ParametersAreNonnullByDefault
             public void onFailure(Call<Token> call, Throwable t) {
                 LOG.error("error loading from API", t);
 
@@ -96,12 +100,14 @@ public class LoginService {
 
         service.getUser("Bearer "+token.getAccessToken(), token.getUserId()).enqueue(new Callback<UserResponse>() {
             @Override
+            @ParametersAreNonnullByDefault
             public void onFailure(Call<UserResponse> call, Throwable t) {
                 LOG.error(" **** error on load users from API", t);
                 callback.onError();
             }
 
             @Override
+            @ParametersAreNonnullByDefault
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
 
                 if(response.isSuccessful()) {
