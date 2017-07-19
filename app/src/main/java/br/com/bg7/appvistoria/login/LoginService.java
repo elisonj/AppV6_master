@@ -42,8 +42,8 @@ public class LoginService {
     public LoginService(@NonNull TokenService service, @NonNull UserRepository userRepository, @NonNull String grantType, @NonNull String clientId) {
         this.service = checkNotNull(service);
         this.userRepository = checkNotNull(userRepository);
-        this.grantType = grantType;
-        this.clientId = clientId;
+        this.grantType = checkNotNull(grantType);
+        this.clientId = checkNotNull(clientId);
     }
 
     /**
