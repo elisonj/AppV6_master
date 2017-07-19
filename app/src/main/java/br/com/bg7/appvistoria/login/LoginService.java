@@ -37,7 +37,6 @@ public class LoginService {
     private final String grantType;
     private final String clientId;
     private Token token = null;
-    private String userName, password;
 
     public LoginService(@NonNull TokenService service, @NonNull UserRepository userRepository, @NonNull String grantType, @NonNull String clientId) {
         this.service = checkNotNull(service);
@@ -49,12 +48,9 @@ public class LoginService {
     /**
      * Method to execute request and get user Token
      */
-    public void requestToken(String userName, String password, final RequestTokenCallback callback) {
+    public void requestToken(@NonNull final String username, @NonNull final String password, @NonNull final RequestTokenCallback callback) {
 
-        this.userName = userName;
-        this.password = password;
-
-        service.getToken(grantType, clientId, userName, password).enqueue(new Callback<Token>() {
+        service.getToken(grantType, clientId, username, password).enqueue(new Callback<Token>() {
             @Override
             @ParametersAreNonnullByDefault
             public void onResponse(Call<Token> call, Response<Token> response) {
@@ -65,7 +61,7 @@ public class LoginService {
                     if(token != null) {
                         LOG.debug("Token: "+token.getAccessToken());
                         LOG.debug("UserId: "+token.getUserId());
-                        requestUser(token, callback);
+                        requestUser(token, username, password, callback);
                     }
                 } else {
                     int statusCode  = response.code();
@@ -97,7 +93,7 @@ public class LoginService {
     /**
      * Request UserAccount Logged
      */
-    private void requestUser(final Token token, final RequestTokenCallback callback) {
+    private void requestUser(final Token token, @NonNull final String username, final @NonNull String password, final RequestTokenCallback callback) {
 
         service.getUser("Bearer "+token.getAccessToken(), token.getUserId()).enqueue(new Callback<UserResponse>() {
             @Override
@@ -116,7 +112,7 @@ public class LoginService {
                     if(userResponse != null) {
                         LOG.debug(" **** user data loaded from API: "+userResponse.getUserAccounts().get(0).getId());
 
-                        User userFromRepository = userRepository.findByUsername(userName);
+                        User userFromRepository = userRepository.findByUsername(username);
                         if(userFromRepository == null) {
                             User user = new User(userResponse, token, password);
                             userRepository.save(user);
