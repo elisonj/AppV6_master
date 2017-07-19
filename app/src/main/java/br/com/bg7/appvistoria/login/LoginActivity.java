@@ -25,21 +25,22 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         LoginView loginView = new LoginView(this);
+        UserRepository userRepository = new UserRepository();
 
-        loginPresenter = new LoginPresenter(getLoginService(), new UserRepository(), loginView);
+        loginPresenter = new LoginPresenter(getLoginService(userRepository), userRepository, loginView);
 
         setContentView(loginView);
     }
 
     @NonNull
-    private LoginService getLoginService() {
+    private LoginService getLoginService(UserRepository userRepository) {
         TokenService tokenService = RetrofitClient.getClient(getResources().getString(R.string.base_url)).
                 create(TokenService.class);
 
         String grantType = getResources().getString(R.string.grant_type);
         String clientId = getResources().getString(R.string.client_id);
 
-        return new LoginService(tokenService, grantType, clientId);
+        return new LoginService(tokenService, userRepository, grantType, clientId);
     }
 
     @Override
