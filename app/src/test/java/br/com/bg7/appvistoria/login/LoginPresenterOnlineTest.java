@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 
-import br.com.bg7.appvistoria.view.listeners.LoginCallback;
+import br.com.bg7.appvistoria.data.source.RequestTokenCallback;
 
 import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.verify;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 public class LoginPresenterOnlineTest extends LoginPresenterBaseTest {
 
     @Captor
-    private ArgumentCaptor<LoginCallback> loginCallbackCaptor;
+    private ArgumentCaptor<RequestTokenCallback> loginCallbackCaptor;
 
     @Override
     @Before

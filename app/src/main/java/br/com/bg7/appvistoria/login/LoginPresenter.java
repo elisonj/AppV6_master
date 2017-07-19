@@ -7,7 +7,7 @@ import com.google.common.base.Strings;
 import org.mindrot.jbcrypt.BCrypt;
 
 import br.com.bg7.appvistoria.data.local.UserRepository;
-import br.com.bg7.appvistoria.view.listeners.LoginCallback;
+import br.com.bg7.appvistoria.data.source.RequestTokenCallback;
 import br.com.bg7.appvistoria.vo.User;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -78,7 +78,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         return BCrypt.checkpw(password, passwordHash);
     }
 
-    private LoginCallback callback = new LoginCallback() {
+    private RequestTokenCallback callback = new RequestTokenCallback() {
         // TODO: Tentar o login offline se der erro no online
         @Override
         public void onError() {

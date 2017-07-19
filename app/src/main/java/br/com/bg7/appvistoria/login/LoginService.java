@@ -14,7 +14,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import br.com.bg7.appvistoria.data.local.UserRepository;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
-import br.com.bg7.appvistoria.view.listeners.LoginCallback;
+import br.com.bg7.appvistoria.data.source.RequestTokenCallback;
 import br.com.bg7.appvistoria.vo.User;
 import br.com.bg7.appvistoria.data.source.remote.TokenService;
 import retrofit2.Call;
@@ -49,7 +49,7 @@ public class LoginService {
     /**
      * Method to execute request and get user Token
      */
-    public void requestToken(String userName, String password, final LoginCallback callback) {
+    public void requestToken(String userName, String password, final RequestTokenCallback callback) {
 
         this.userName = userName;
         this.password = password;
@@ -97,7 +97,7 @@ public class LoginService {
     /**
      * Request UserAccount Logged
      */
-    private void requestUser(final Token token, final LoginCallback callback) {
+    private void requestUser(final Token token, final RequestTokenCallback callback) {
 
         service.getUser("Bearer "+token.getAccessToken(), token.getUserId()).enqueue(new Callback<UserResponse>() {
             @Override
