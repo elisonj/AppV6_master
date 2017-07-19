@@ -18,11 +18,10 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import br.com.bg7.appvistoria.Constants;
 import br.com.bg7.appvistoria.R;
-import br.com.bg7.appvistoria.vo.Config;
 import br.com.bg7.appvistoria.vo.Country;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -42,8 +41,6 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     private CheckBox syncWithWifiOnly;
     private Button cancel;
     private Button confirm;
-
-    private static final String CHANGE_LANGUAGE_KEY = "CHANGE_LANGUAGE";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,7 +73,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
             public void onClick(View view) {
                 Country selected = (Country) languageSelected.getSelectedItem();
 
-                configPresenter.confirmClicked(selected.getId(), syncWithWifiOnly.isChecked());
+                configPresenter.confirmClicked(selected.getId(), selected.getLanguage(), syncWithWifiOnly.isChecked());
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -92,8 +89,6 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
                 showButtons();
             }
         });
-
-        toggleLoadSaveState();
 
         return root;
     }
@@ -125,6 +120,16 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     }
 
     @Override
+    public void setLanguage(int id) {
+        languageSelected.setSelection(id);
+    }
+
+    @Override
+    public void setSyncWithWifiOnly(boolean syncWithWifiOnly) {
+        this.syncWithWifiOnly.setChecked(syncWithWifiOnly);
+    }
+
+    @Override
     public void toggleLanguagesVisibility() {
         toggleVisibility(languages);
     }
@@ -141,36 +146,16 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
 
 
     @Override
-    public void toggleLoadSaveState() {
-        ArrayList<Country> countryList = new ArrayList<>();
-
-        countryList.add(new Country("1", getContext().getString(R.string.portuguese_br), "pt", "BR"));
-        countryList.add(new Country("2", getContext().getString(R.string.english), "en", "US"));
-
+    public void setCountries(List<Country> countryList) {
         ArrayAdapter<Country> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, countryList);
         languageSelected.setAdapter(adapter);
-
-        List<Config> list = Config.listAll(Config.class);
-        if(list != null && list.size() > 0) {
-            int selected = 0;
-            for (int i=0; i < countryList.size(); i++) {
-                Country country = countryList.get(i);
-                if(country.getId().equals(list.get(0).getLanguage())) {
-                    selected = i;
-                }
-            }
-            languageSelected.setSelection(selected);
-            syncWithWifiOnly.setChecked(list.get(0).isSyncWithWifiOnly());
-        }
-
     }
 
     @Override
-    public void changeLanguage() {
-        Country country = (Country) languageSelected.getSelectedItem();
+    public void changeLanguage(String language) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(CHANGE_LANGUAGE_KEY, country.getLanguage());
+        editor.putString(Constants.PREFERENCE_LANGUAGE_KEY, language);
         editor.apply();
     }
 
@@ -184,7 +169,6 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
             view.setVisibility(View.GONE);
             return;
         }
-
         view.setVisibility(View.VISIBLE);
     }
 }

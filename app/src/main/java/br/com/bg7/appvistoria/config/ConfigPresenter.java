@@ -1,8 +1,12 @@
 package br.com.bg7.appvistoria.config;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import br.com.bg7.appvistoria.Applic;
+import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.vo.Config;
+import br.com.bg7.appvistoria.vo.Country;
 
 /**
  * Created by: luciolucio
@@ -21,6 +25,27 @@ public class ConfigPresenter implements ConfigContract.Presenter {
     @Override
     public void start() {
 
+        ArrayList<Country> countryList = new ArrayList<>();
+
+        countryList.add(new Country(Applic.getInstance().getString(R.string.id_br), Applic.getInstance().getString(R.string.portuguese_br),
+                Applic.getInstance().getString(R.string.language_pt), Applic.getInstance().getString(R.string.abbreviation_br)));
+        countryList.add(new Country(Applic.getInstance().getString(R.string.id_us), Applic.getInstance().getString(R.string.english),
+                Applic.getInstance().getString(R.string.language_en), Applic.getInstance().getString(R.string.abbreviation_us)));
+
+        configView.setCountries(countryList);
+
+        List<Config> list = Config.listAll(Config.class);
+        if(list != null && list.size() > 0) {
+            int selected = 0;
+            for (int i = 0; i < countryList.size(); i++) {
+                Country country = countryList.get(i);
+                if (country.getId().equals(list.get(0).getLanguage())) {
+                    selected = i;
+                }
+            }
+            configView.setLanguage(selected);
+            configView.setSyncWithWifiOnly(list.get(0).isSyncWithWifiOnly());
+        }
     }
 
     @Override
@@ -36,7 +61,7 @@ public class ConfigPresenter implements ConfigContract.Presenter {
     }
 
     @Override
-    public void confirmClicked(String languageId, boolean syncWithWifiOnly) {
+    public void confirmClicked(String languageId, String language, boolean syncWithWifiOnly) {
         configView.hideButtons();
         configView.hideLanguages();
 
@@ -47,7 +72,7 @@ public class ConfigPresenter implements ConfigContract.Presenter {
         Config config = new Config(languageId, syncWithWifiOnly);
         config.save();
 
-        configView.changeLanguage();
+        configView.changeLanguage(language);
         configView.refresh();
     }
 
@@ -55,6 +80,6 @@ public class ConfigPresenter implements ConfigContract.Presenter {
     public void cancelClicked() {
         configView.hideButtons();
         configView.hideLanguages();
-        configView.toggleLoadSaveState();
+        start();
     }
 }

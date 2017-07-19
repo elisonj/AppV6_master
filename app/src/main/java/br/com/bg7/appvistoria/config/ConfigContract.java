@@ -1,7 +1,10 @@
 package br.com.bg7.appvistoria.config;
 
+import java.util.List;
+
 import br.com.bg7.appvistoria.BasePresenter;
 import br.com.bg7.appvistoria.BaseView;
+import br.com.bg7.appvistoria.vo.Country;
 
 /**
  * Created by: luciolucio
@@ -16,15 +19,19 @@ public interface ConfigContract {
 
         void showButtons();
 
+        void setCountries(List<Country> countryList);
+
+        void setLanguage(int id);
+
+        void setSyncWithWifiOnly(boolean syncWithWifiOnly);
+
         void toggleSyncWithWifiOnly();
 
         void hideLanguages();
 
-        void changeLanguage();
+        void changeLanguage(String language);
 
         void refresh();
-
-        void toggleLoadSaveState();
     }
 
     interface Presenter extends BasePresenter {
@@ -32,7 +39,7 @@ public interface ConfigContract {
 
         void syncWithWifiOnlyClicked();
 
-        void confirmClicked(String languageId, boolean syncWithWifiOnly);
+        void confirmClicked(String languageId, String language, boolean syncWithWifiOnly);
 
         void cancelClicked();
     }
