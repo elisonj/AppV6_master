@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.service.dto;
+package br.com.bg7.appvistoria.data.source.remote.dto;
 
 /**
  * Created by: elison

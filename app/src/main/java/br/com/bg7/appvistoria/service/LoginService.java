@@ -12,8 +12,8 @@ import java.util.concurrent.TimeoutException;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import br.com.bg7.appvistoria.data.local.UserRepository;
-import br.com.bg7.appvistoria.service.dto.Token;
-import br.com.bg7.appvistoria.service.dto.UserResponse;
+import br.com.bg7.appvistoria.data.source.remote.dto.Token;
+import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
 import br.com.bg7.appvistoria.view.listeners.LoginCallback;
 import br.com.bg7.appvistoria.vo.User;
 import br.com.bg7.appvistoria.data.source.remote.TokenService;
