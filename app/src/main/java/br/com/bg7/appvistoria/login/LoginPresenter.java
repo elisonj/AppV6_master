@@ -69,7 +69,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         if(user != null) {
             String passwordHash = user.getPassword();
             if (checkpw(password, passwordHash)) {
-                loginView.showOfflineLoginSuccess();
+                loginView.showMainScreen();
             } else {
                 loginView.showWrongPasswordError();
             }
