@@ -1,8 +1,8 @@
 package br.com.bg7.appvistoria.login;
 
-import android.app.Activity;
 import android.os.Bundle;
 
+import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.service.LoginService;
 
 /**
@@ -10,7 +10,7 @@ import br.com.bg7.appvistoria.service.LoginService;
  * Date: 2017-07-10
  */
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends BaseActivity {
 
     private LoginPresenter loginPresenter;
 
@@ -25,7 +25,7 @@ public class LoginActivity extends Activity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         loginPresenter.start();
     }

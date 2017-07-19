@@ -77,13 +77,16 @@ public class LoginPresenter implements LoginContract.Presenter {
         @Override
         public void onFailure(Throwable t) {
             if(t instanceof TimeoutException || t instanceof ConnectException) {
-                loginView.showCannotLoginError();
+                loginView.showCannotLoginOfflineError();
+                return;
             }
+
+            loginView.showCannotLoginError();
         }
 
         @Override
         public void onSucess() {
-            loginView.showLoginSuccess();
+            loginView.showMainScreen();
         }
     };
 }
