@@ -44,6 +44,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     private Button confirm;
 
     private static final String ARG_TEXT_KEY = "ARG_TEXT_KEY";
+    private static final String CHANGE_LANGUAGE_KEY = "CHANGE_LANGUAGE";
     private String text;
 
     @Override
@@ -172,7 +173,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
         Country country = (Country) languageSelected.getSelectedItem();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("Language", country.getLanguage());
+        editor.putString(CHANGE_LANGUAGE_KEY, country.getLanguage());
         editor.apply();
     }
 
