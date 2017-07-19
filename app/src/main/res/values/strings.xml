@@ -14,7 +14,7 @@
     <string name="confirm">CONFIRMAR</string>
     <string name="cancel">CANCELAR</string>
     <string name="spin">Selecione a linguagem</string>
-    <string name="syncronize_only_by_wifi">SINCRONIZAR APENAS COM WI-FI</string>
+    <string name="sync_with_wifi_only">SINCRONIZAR APENAS COM WI-FI</string>
     <string name="portuguese_br">Português (Brasil)</string>
     <string name="english">Inglês</string>
     <string name="config_saved">Configuração salva com sucesso.</string>
