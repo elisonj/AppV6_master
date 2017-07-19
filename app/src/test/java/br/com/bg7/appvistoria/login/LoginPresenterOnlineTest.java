@@ -32,7 +32,7 @@ public class LoginPresenterOnlineTest extends LoginPresenterBaseTest {
     public void shouldShowMainScreenWhenLoggedInSuccessfully() {
         callLogin();
 
-        verify(loginService).requestToken(loginCallbackCaptor.capture(), matches(USERNAME), matches(PASSWORD));
+        verify(loginService).requestToken(matches(USERNAME), matches(PASSWORD), loginCallbackCaptor.capture());
         loginCallbackCaptor.getValue().onSucess();
 
         verify(loginView).showMainScreen();
@@ -42,7 +42,7 @@ public class LoginPresenterOnlineTest extends LoginPresenterBaseTest {
     public void shouldShowOfflineLoginErrorWhenConnectionTimesOut() {
         callLogin();
 
-        verify(loginService).requestToken(loginCallbackCaptor.capture(), matches(USERNAME), matches(PASSWORD));
+        verify(loginService).requestToken(matches(USERNAME), matches(PASSWORD), loginCallbackCaptor.capture());
         loginCallbackCaptor.getValue().onTimeout();
 
         verify(loginView).showCannotLoginOfflineError();
@@ -52,7 +52,7 @@ public class LoginPresenterOnlineTest extends LoginPresenterBaseTest {
     public void shouldShowOfflineLoginErrorWhenConnectionFails() {
         callLogin();
 
-        verify(loginService).requestToken(loginCallbackCaptor.capture(), matches(USERNAME), matches(PASSWORD));
+        verify(loginService).requestToken(matches(USERNAME), matches(PASSWORD), loginCallbackCaptor.capture());
         loginCallbackCaptor.getValue().onConnectionFailed();
 
         verify(loginView).showCannotLoginOfflineError();
@@ -62,7 +62,7 @@ public class LoginPresenterOnlineTest extends LoginPresenterBaseTest {
     public void shouldShowLoginErrorWhenAnotherFailureHappens() {
         callLogin();
 
-        verify(loginService).requestToken(loginCallbackCaptor.capture(), matches(USERNAME), matches(PASSWORD));
+        verify(loginService).requestToken(matches(USERNAME), matches(PASSWORD), loginCallbackCaptor.capture());
         loginCallbackCaptor.getValue().onError();
 
         verify(loginView).showCannotLoginError();

@@ -41,7 +41,7 @@ public class LoginService {
     /**
      * Method to execute request and get user Token
      */
-    public void requestToken(final LoginCallback callback, String userName, String password) {
+    public void requestToken(String userName, String password, final LoginCallback callback) {
 
         this.callback = callback;
         this.userName = userName;

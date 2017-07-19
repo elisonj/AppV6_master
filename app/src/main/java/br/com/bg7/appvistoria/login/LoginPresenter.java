@@ -6,9 +6,6 @@ import com.google.common.base.Strings;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.net.ConnectException;
-import java.util.concurrent.TimeoutException;
-
 import br.com.bg7.appvistoria.data.UserRepository;
 import br.com.bg7.appvistoria.service.LoginService;
 import br.com.bg7.appvistoria.view.listeners.LoginCallback;
@@ -54,7 +51,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         }
 
         if (loginView.isConnected()) {
-            loginService.requestToken(callback, username, password);
+            loginService.requestToken(username, password, callback);
             return;
         }
 
