@@ -6,7 +6,7 @@ import com.google.common.base.Strings;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import br.com.bg7.appvistoria.data.local.UserRepository;
+import br.com.bg7.appvistoria.data.source.local.UserRepository;
 import br.com.bg7.appvistoria.data.source.RequestTokenCallback;
 import br.com.bg7.appvistoria.vo.User;
 

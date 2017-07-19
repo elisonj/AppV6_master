@@ -1,12 +1,8 @@
 package br.com.bg7.appvistoria.login;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
-import br.com.bg7.appvistoria.data.local.UserRepository;
-import br.com.bg7.appvistoria.data.source.remote.TokenService;
+import br.com.bg7.appvistoria.data.source.local.UserRepository;
 
 /**
  * Created by: luciolucio

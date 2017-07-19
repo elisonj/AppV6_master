@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import br.com.bg7.appvistoria.data.local.UserRepository;
+import br.com.bg7.appvistoria.data.source.local.UserRepository;
 
 /**
  * Created by: luciolucio
