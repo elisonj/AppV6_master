@@ -150,7 +150,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
         countryList.add(new Country("1", getContext().getString(R.string.portuguese_br), "pt", "BR"));
         countryList.add(new Country("2", getContext().getString(R.string.english), "en", "US"));
 
-        ArrayAdapter<Country> adapter = new ArrayAdapter<Country>(getContext(), android.R.layout.simple_spinner_dropdown_item, countryList);
+        ArrayAdapter<Country> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, countryList);
         languageSelected.setAdapter(adapter);
 
         List<Config> list = Config.listAll(Config.class);
