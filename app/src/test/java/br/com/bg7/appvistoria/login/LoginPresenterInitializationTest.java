@@ -17,12 +17,12 @@ public class LoginPresenterInitializationTest extends LoginPresenterBaseTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullRepositoryWhenCreated() {
-        new LoginPresenter(loginService, null, loginView);
+        new LoginPresenter(tokenService, null, loginView);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullViewWhenCreated() {
-        new LoginPresenter(loginService, userRepository, null);
+        new LoginPresenter(tokenService, userRepository, null);
     }
 
     @Test

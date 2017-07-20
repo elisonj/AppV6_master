@@ -26,6 +26,14 @@ public class Token {
     @Expose
     private String userId;
 
+    public Token() {
+    }
+
+    public Token(String accessToken, String userId) {
+        this.accessToken = accessToken;
+        this.userId = userId;
+    }
+
     public String getAccessToken() {
         return accessToken;
     }

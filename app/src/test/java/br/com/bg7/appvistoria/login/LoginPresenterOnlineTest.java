@@ -4,8 +4,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.Mock;
+
+import java.net.ConnectException;
+import java.util.concurrent.TimeoutException;
 
 import br.com.bg7.appvistoria.data.source.RequestTokenCallback;
+import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
+import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
+import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 
 import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.verify;
@@ -19,7 +26,10 @@ import static org.mockito.Mockito.when;
 public class LoginPresenterOnlineTest extends LoginPresenterBaseTest {
 
     @Captor
-    private ArgumentCaptor<RequestTokenCallback> loginCallbackCaptor;
+    private ArgumentCaptor<HttpCallback<Token>> loginCallbackCaptor;
+
+    @Mock
+    HttpResponse<Token> tokenHttpResponse;
 
     @Override
     @Before
@@ -29,21 +39,11 @@ public class LoginPresenterOnlineTest extends LoginPresenterBaseTest {
     }
 
     @Test
-    public void shouldShowMainScreenWhenLoggedInSuccessfully() {
-        callLogin();
-
-        verify(loginService).requestToken(matches(USERNAME), matches(PASSWORD), loginCallbackCaptor.capture());
-        loginCallbackCaptor.getValue().onSucess();
-
-        verify(loginView).showMainScreen();
-    }
-
-    @Test
     public void shouldShowOfflineLoginErrorWhenConnectionTimesOut() {
         callLogin();
 
-        verify(loginService).requestToken(matches(USERNAME), matches(PASSWORD), loginCallbackCaptor.capture());
-        loginCallbackCaptor.getValue().onTimeout();
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), loginCallbackCaptor.capture());
+        loginCallbackCaptor.getValue().onFailure(null, new TimeoutException());
 
         verify(loginView).showCannotLoginOfflineError();
     }
@@ -52,8 +52,8 @@ public class LoginPresenterOnlineTest extends LoginPresenterBaseTest {
     public void shouldShowOfflineLoginErrorWhenConnectionFails() {
         callLogin();
 
-        verify(loginService).requestToken(matches(USERNAME), matches(PASSWORD), loginCallbackCaptor.capture());
-        loginCallbackCaptor.getValue().onConnectionFailed();
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), loginCallbackCaptor.capture());
+        loginCallbackCaptor.getValue().onFailure(null, new ConnectException());
 
         verify(loginView).showCannotLoginOfflineError();
     }
@@ -62,8 +62,8 @@ public class LoginPresenterOnlineTest extends LoginPresenterBaseTest {
     public void shouldShowLoginErrorWhenAnotherFailureHappens() {
         callLogin();
 
-        verify(loginService).requestToken(matches(USERNAME), matches(PASSWORD), loginCallbackCaptor.capture());
-        loginCallbackCaptor.getValue().onError();
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), loginCallbackCaptor.capture());
+        loginCallbackCaptor.getValue().onFailure(null, new Exception());
 
         verify(loginView).showCannotLoginError();
     }

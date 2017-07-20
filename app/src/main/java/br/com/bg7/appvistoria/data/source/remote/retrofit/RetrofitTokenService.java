@@ -1,6 +1,6 @@
 package br.com.bg7.appvistoria.data.source.remote.retrofit;
 
-import br.com.bg7.appvistoria.data.source.remote.HttpCall;
+import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
 import retrofit2.Call;
@@ -28,16 +28,18 @@ public class RetrofitTokenService implements br.com.bg7.appvistoria.data.source.
     }
 
     @Override
-    public HttpCall<Token> getToken(String username, String password) {
+    public void getToken(String username, String password, final HttpCallback<Token> callback) {
         Call<Token> call = tokenService.getToken(grantType, clientId, username, password);
+        RetrofitHttpCall<Token> httpCall = new RetrofitHttpCall<>(call);
 
-        return new RetrofitHttpCall<>(call);
+        httpCall.enqueue(callback);
     }
 
     @Override
-    public HttpCall<UserResponse> getUser(String token, String userId) {
+    public void getUser(String token, String userId, final HttpCallback<UserResponse> callback) {
         Call<UserResponse> call = tokenService.getUser(token, userId);
+        RetrofitHttpCall<UserResponse> httpCall = new RetrofitHttpCall<>(call);
 
-        return new RetrofitHttpCall<>(call);
+        httpCall.enqueue(callback);
     }
 }
