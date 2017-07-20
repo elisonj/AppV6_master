@@ -22,7 +22,7 @@ public class UserResponse {
     private Integer limit;
     @SerializedName("userAccounts")
     @Expose
-    private List<UserAccount> userAccounts = null;
+    private final List<UserAccount> userAccounts = null;
 
     public List<UserAccount> getUserAccounts() {
         return userAccounts;
