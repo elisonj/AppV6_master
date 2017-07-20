@@ -9,9 +9,9 @@ package br.com.bg7.appvistoria.vo;
  */
 public class Country {
 
-    private String id;
-    private String name;
-    private String language;
+    private final String id;
+    private final String name;
+    private final String language;
 
     public Country(String id, String name, String language) {
         this.id = id;

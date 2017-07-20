@@ -95,8 +95,8 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     private class TokenCallback implements HttpCallback<Token> {
 
-        private String username;
-        private String password;
+        private final String username;
+        private final String password;
 
         TokenCallback(String username, String password) {
             this.username = username;
@@ -133,9 +133,9 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     private class UserCallback implements HttpCallback<UserResponse> {
 
-        private String username;
-        private String password;
-        private Token token;
+        private final String username;
+        private final String password;
+        private final Token token;
 
         UserCallback(String username, String password, Token token) {
             this.username = username;

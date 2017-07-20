@@ -15,7 +15,7 @@ import retrofit2.Response;
 
 public class RetrofitHttpCall<T> implements HttpCall<T> {
 
-    private Call<T> call;
+    private final Call<T> call;
 
     public RetrofitHttpCall(Call<T> call) {
         this.call = call;

@@ -15,16 +15,16 @@ import br.com.bg7.appvistoria.data.source.local.UserRepository;
 
 public class LoginPresenterBaseTest {
     @Mock
-    protected LoginContract.View loginView;
+    protected final LoginContract.View loginView;
 
     @Mock
-    protected TokenService tokenService;
+    protected final TokenService tokenService;
 
     @Mock
-    protected UserService userService;
+    protected final UserService userService;
 
     @Mock
-    protected UserRepository userRepository;
+    protected final UserRepository userRepository;
 
     TestableLoginPresenter loginPresenter;
 

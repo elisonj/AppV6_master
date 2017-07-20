@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 public class LoginPresenterOnlineTest extends LoginPresenterBaseTest {
 
     @Captor
-    private ArgumentCaptor<HttpCallback<Token>> loginCallbackCaptor;
+    private final ArgumentCaptor<HttpCallback<Token>> loginCallbackCaptor;
 
     @Mock
     HttpResponse<Token> tokenHttpResponse;
