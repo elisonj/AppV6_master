@@ -11,18 +11,23 @@ import static org.mockito.Mockito.verify;
 
 public class LoginPresenterInitializationTest extends LoginPresenterBaseTest {
     @Test(expected = NullPointerException.class)
-    public void shouldNotAcceptNullServiceWhenCreated() {
-        new LoginPresenter(null, userRepository, loginView);
+    public void shouldNotAcceptNullTokenServiceWhenCreated() {
+        new LoginPresenter(null, userService, userRepository, loginView);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldNotAcceptNullUserServiceWhenCreated() {
+        new LoginPresenter(tokenService, null, userRepository, loginView);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullRepositoryWhenCreated() {
-        new LoginPresenter(tokenService, null, loginView);
+        new LoginPresenter(tokenService, userService, null, loginView);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullViewWhenCreated() {
-        new LoginPresenter(tokenService, userRepository, null);
+        new LoginPresenter(tokenService, userService, userRepository, null);
     }
 
     @Test
