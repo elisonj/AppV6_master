@@ -12,6 +12,4 @@ import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
 
 public interface TokenService {
     void getToken(String username, String password, HttpCallback<Token> callback);
-
-    void getUser(String token, String userId, HttpCallback<UserResponse> callback);
 }

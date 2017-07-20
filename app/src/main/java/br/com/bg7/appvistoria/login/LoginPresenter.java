@@ -10,6 +10,7 @@ import java.net.ConnectException;
 import java.util.concurrent.TimeoutException;
 
 import br.com.bg7.appvistoria.data.source.TokenService;
+import br.com.bg7.appvistoria.data.source.UserService;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
 import br.com.bg7.appvistoria.data.source.remote.HttpCall;
 import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
@@ -27,11 +28,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class LoginPresenter implements LoginContract.Presenter {
     private final TokenService tokenService;
+    private final UserService userService;
     private final LoginContract.View loginView;
     private final UserRepository userRepository;
 
-    public LoginPresenter(@NonNull TokenService tokenService, @NonNull UserRepository userRepository, @NonNull LoginContract.View loginView) {
+    public LoginPresenter(
+            @NonNull TokenService tokenService,
+            @NonNull UserService userService,
+            @NonNull UserRepository userRepository,
+            @NonNull LoginContract.View loginView) {
         this.tokenService = checkNotNull(tokenService, "tokenService cannot be null");
+        this.userService = checkNotNull(userService, "userService cannot be null");
         this.userRepository = checkNotNull(userRepository, "userRepository cannot be null");
         this.loginView = checkNotNull(loginView, "loginView cannot be null");
 
@@ -102,7 +109,7 @@ public class LoginPresenter implements LoginContract.Presenter {
             if (httpResponse.isSuccessful()) {
                 Token token = httpResponse.body();
                 if (token != null) {
-                    tokenService.getUser("Bearer " + token.getAccessToken(), token.getUserId(), new UserCallback(username, password, token));
+                    userService.getUser("Bearer " + token.getAccessToken(), token.getUserId(), new UserCallback(username, password, token));
                 }
             } else {
                 loginView.showCannotLoginError();

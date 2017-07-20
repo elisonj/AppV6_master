@@ -22,10 +22,4 @@ public interface TokenService {
                          @Field("client_id") String client_id,
                          @Field("username") String username,
                          @Field("password") String password);
-
-
-    @GET("account/v2/user/{id}")
-    Call<UserResponse> getUser(@Header("Authorization") String token, @Path("id") String userId);
-
-
 }

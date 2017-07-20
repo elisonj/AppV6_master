@@ -5,6 +5,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import br.com.bg7.appvistoria.data.source.TokenService;
+import br.com.bg7.appvistoria.data.source.UserService;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
 
 /**
@@ -20,6 +21,9 @@ public class LoginPresenterBaseTest {
     protected TokenService tokenService;
 
     @Mock
+    protected UserService userService;
+
+    @Mock
     protected UserRepository userRepository;
 
     TestableLoginPresenter loginPresenter;
@@ -30,7 +34,7 @@ public class LoginPresenterBaseTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        loginPresenter = new TestableLoginPresenter(tokenService, userRepository, loginView);
+        loginPresenter = new TestableLoginPresenter(tokenService, userService, userRepository, loginView);
     }
 
     void callLogin() {

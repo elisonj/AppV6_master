@@ -34,12 +34,4 @@ public class RetrofitTokenService implements br.com.bg7.appvistoria.data.source.
 
         httpCall.enqueue(callback);
     }
-
-    @Override
-    public void getUser(String token, String userId, final HttpCallback<UserResponse> callback) {
-        Call<UserResponse> call = tokenService.getUser(token, userId);
-        RetrofitHttpCall<UserResponse> httpCall = new RetrofitHttpCall<>(call);
-
-        httpCall.enqueue(callback);
-    }
 }
