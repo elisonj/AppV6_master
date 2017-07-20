@@ -12,6 +12,10 @@ public class Config extends SugarRecord<Config> {
     private boolean syncWithWifiOnly;
     private String language;
 
+    /**
+     * Default constructor used by Sugar
+     */
+    @SuppressWarnings("unused")
     public Config() {}
 
     public Config(String language, boolean updateOnlyWifi) {

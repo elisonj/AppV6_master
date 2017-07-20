@@ -13,7 +13,7 @@ import java.util.Date;
  * Warnings of "FieldCanBeLocal" are ignored if the field is not used because
  * the field needs to be present for Sugar to create it in the database
  */
-public class Token extends SugarRecord<Token> {
+class Token extends SugarRecord<Token> {
 
     @SuppressWarnings("FieldCanBeLocal")
     private String accessToken;
@@ -24,9 +24,13 @@ public class Token extends SugarRecord<Token> {
     @SuppressWarnings("FieldCanBeLocal")
     private Date receivedAt;
 
+    /**
+     * Default constructor used by Sugar
+     */
+    @SuppressWarnings("unused")
     public Token() {}
 
-    public Token(br.com.bg7.appvistoria.data.source.remote.dto.Token tokenFromService) {
+    Token(br.com.bg7.appvistoria.data.source.remote.dto.Token tokenFromService) {
         accessToken = tokenFromService.getAccessToken();
         expiresIn = tokenFromService.getExpiresIn();
     }

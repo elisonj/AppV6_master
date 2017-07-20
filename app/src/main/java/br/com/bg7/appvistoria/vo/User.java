@@ -31,6 +31,10 @@ public class User extends SugarRecord<User> {
     @SuppressWarnings("FieldCanBeLocal")
     private Token token;
 
+    /**
+     * Default constructor used by Sugar
+     */
+    @SuppressWarnings("unused")
     public User() {}
 
     public User(UserResponse user, br.com.bg7.appvistoria.data.source.remote.dto.Token tokenFromService, String password) {
