@@ -19,11 +19,12 @@ import br.com.bg7.appvistoria.data.source.remote.retrofit.RetrofitUserService;
 public class LoginActivity extends BaseActivity {
 
     private LoginPresenter loginPresenter;
-    private final String baseUrl = getResources().getString(R.string.base_url);
+    private String baseUrl;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        baseUrl = getResources().getString(R.string.base_url);
 
         LoginView loginView = new LoginView(this);
         UserRepository userRepository = new UserRepository();
