@@ -50,26 +50,58 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     @Override
-    public void login(String username, String password) {
-        username = Strings.nullToEmpty(username).trim();
-        if (Strings.isNullOrEmpty(username)) {
+    public void login(final String username, final String password) {
+        if (Strings.isNullOrEmpty(username) || Strings.isNullOrEmpty(username.trim())) {
             loginView.showUsernameEmptyError();
             return;
         }
 
-        password = Strings.nullToEmpty(password).trim();
-        if (Strings.isNullOrEmpty(password)) {
+        if (Strings.isNullOrEmpty(password) || Strings.isNullOrEmpty(password.trim())) {
             loginView.showPasswordEmptyError();
             return;
         }
 
-        if (loginView.isConnected()) {
-            // TODO: Tentar o login offline se der erro no online
-            tokenService.getToken(username, password, new TokenCallback(username, password));
-            return;
-        }
+        if (attemptOnlineLogin(username, password)) return;
 
         attemptOfflineLogin(username, password);
+    }
+
+    private boolean attemptOnlineLogin(final String username, final String password) {
+        if (loginView.isConnected()) {
+            // TODO: Tentar o login offline se der erro no online
+            tokenService.getToken(username, password, new HttpCallback<Token>() {
+                @Override
+                public void onResponse(HttpResponse<Token> httpResponse) {
+                    if (httpResponse.isSuccessful()) {
+                        Token token = httpResponse.body();
+                        if (token != null) {
+                            userService.getUser("Bearer " + token.getAccessToken(), token.getUserId(), new UserCallback(username, password, token));
+                        }
+                    } else {
+                        loginView.showCannotLoginError();
+                    }
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    if (t instanceof TimeoutException) {
+                        loginView.showCannotLoginOfflineError();
+                        return;
+                    }
+
+                    if (t instanceof ConnectException) {
+                        loginView.showCannotLoginOfflineError();
+                        return;
+                    }
+
+                    loginView.showCannotLoginError();
+                }
+            });
+
+            return true;
+        }
+
+        return false;
     }
 
     private void attemptOfflineLogin(String username, String password) {
@@ -91,44 +123,6 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     boolean checkpw(String password, String passwordHash) {
         return BCrypt.checkpw(password, passwordHash);
-    }
-
-    private class TokenCallback implements HttpCallback<Token> {
-
-        private final String username;
-        private final String password;
-
-        TokenCallback(String username, String password) {
-            this.username = username;
-            this.password = password;
-        }
-
-        @Override
-        public void onResponse(HttpResponse<Token> httpResponse) {
-            if (httpResponse.isSuccessful()) {
-                Token token = httpResponse.body();
-                if (token != null) {
-                    userService.getUser("Bearer " + token.getAccessToken(), token.getUserId(), new UserCallback(username, password, token));
-                }
-            } else {
-                loginView.showCannotLoginError();
-            }
-        }
-
-        @Override
-        public void onFailure(Throwable t) {
-            if (t instanceof TimeoutException) {
-                loginView.showCannotLoginOfflineError();
-                return;
-            }
-
-            if (t instanceof ConnectException) {
-                loginView.showCannotLoginOfflineError();
-                return;
-            }
-
-            loginView.showCannotLoginError();
-        }
     }
 
     private class UserCallback implements HttpCallback<UserResponse> {
