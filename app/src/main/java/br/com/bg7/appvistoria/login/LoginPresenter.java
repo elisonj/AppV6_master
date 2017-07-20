@@ -89,7 +89,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         loginView.showMainScreen();
     }
 
-    protected boolean checkpw(String password, String passwordHash) {
+    boolean checkpw(String password, String passwordHash) {
         return BCrypt.checkpw(password, passwordHash);
     }
 

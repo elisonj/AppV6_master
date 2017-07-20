@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 
 public class LoginView extends ConstraintLayout implements LoginContract.View {
-    LoginContract.Presenter loginPresenter;
+    private LoginContract.Presenter loginPresenter;
 
     public LoginView(Context context) {
         super(context);

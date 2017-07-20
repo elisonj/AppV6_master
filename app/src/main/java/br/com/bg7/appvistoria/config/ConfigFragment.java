@@ -30,7 +30,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class ConfigFragment extends Fragment implements ConfigContract.View {
 
-    ConfigContract.Presenter configPresenter;
+    private ConfigContract.Presenter configPresenter;
 
     private LinearLayout languages;
     private Spinner languageSelected;

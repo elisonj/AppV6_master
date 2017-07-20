@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by: elison
  * Date: 2017-07-12
  */
-public class Role {
+class Role {
 
     @SerializedName("userId")
     @Expose

@@ -11,7 +11,7 @@ import retrofit2.http.Path;
  * Date: 2017-07-19
  */
 
-public interface UserService {
+interface UserService {
     @GET("account/v2/user/{id}")
     Call<UserResponse> getUser(@Header("Authorization") String token, @Path("id") String userId);
 }

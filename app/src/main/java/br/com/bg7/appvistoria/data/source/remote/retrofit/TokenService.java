@@ -11,7 +11,7 @@ import retrofit2.http.POST;
  * Date: 2017-07-11
  */
 
-public interface TokenService {
+interface TokenService {
     @POST("account/oauth/token")
     @FormUrlEncoded
     Call<Token> getToken(@Field("grant_type") String grant_type,
