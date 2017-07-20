@@ -12,7 +12,6 @@ import java.util.concurrent.TimeoutException;
 import br.com.bg7.appvistoria.data.source.TokenService;
 import br.com.bg7.appvistoria.data.source.UserService;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
-import br.com.bg7.appvistoria.data.source.remote.HttpCall;
 import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
@@ -105,7 +104,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         }
 
         @Override
-        public void onResponse(HttpCall<Token> httpCall, HttpResponse<Token> httpResponse) {
+        public void onResponse(HttpResponse<Token> httpResponse) {
             if (httpResponse.isSuccessful()) {
                 Token token = httpResponse.body();
                 if (token != null) {
@@ -117,7 +116,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         }
 
         @Override
-        public void onFailure(HttpCall<Token> httpCall, Throwable t) {
+        public void onFailure(Throwable t) {
             if (t instanceof TimeoutException) {
                 loginView.showCannotLoginOfflineError();
                 return;
@@ -145,7 +144,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         }
 
         @Override
-        public void onResponse(HttpCall<UserResponse> httpCall, HttpResponse<UserResponse> httpResponse) {
+        public void onResponse(HttpResponse<UserResponse> httpResponse) {
             if(httpResponse.isSuccessful()) {
                 UserResponse userResponse = httpResponse.body();
 
@@ -162,7 +161,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         }
 
         @Override
-        public void onFailure(HttpCall<UserResponse> httpCall, Throwable t) {
+        public void onFailure(Throwable t) {
             loginView.showCannotLoginError();
         }
     }

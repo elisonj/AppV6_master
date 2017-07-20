@@ -7,11 +7,21 @@ import java.util.Date;
 /**
  * Created by: elison
  * Date: 2017-07-12
+ *
+ * Represents a user's token. Used to authenticate with services.
+ *
+ * Warnings of "FieldCanBeLocal" are ignored if the field is not used because
+ * the field needs to be present for Sugar to create it in the database
  */
 public class Token extends SugarRecord<Token> {
 
+    @SuppressWarnings("FieldCanBeLocal")
     private String accessToken;
+
+    @SuppressWarnings("FieldCanBeLocal")
     private long expiresIn;
+
+    @SuppressWarnings("FieldCanBeLocal")
     private Date receivedAt;
 
     public Token() {}
@@ -20,22 +30,4 @@ public class Token extends SugarRecord<Token> {
         accessToken = tokenFromService.getAccessToken();
         expiresIn = tokenFromService.getExpiresIn();
     }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    public void setExpiresIn(long expiresIn) {
-        this.expiresIn = expiresIn;
-    }
-
-    public void setReceivedAt(Date receivedAt) {
-        this.receivedAt = receivedAt;
-    }
-
-    public boolean isExpired() {
-        //Todo:  implement
-        return false;
-    }
-
 }

@@ -10,9 +10,8 @@ import java.util.Iterator;
  */
 
 public abstract class Repository<T extends SugarRecord<T>> {
-    public T save(T entity) {
+    public void save(T entity) {
         entity.save();
-        return entity;
     }
 
     public T first(Class<T> type) {

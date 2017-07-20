@@ -23,11 +23,9 @@ import br.com.bg7.appvistoria.R;
 
 public class ConfigActivity extends BaseActivity {
     private static final String SELECTED_MENU_ITEM_KEY = "SELECTED_MENU_ITEM_KEY";
-    private static final int SCREEN_OPEN_DEFAULT = 3;
+    private static final int DEFAULT_SCREEN_MENU_ITEM_INDEX = 3;
 
-
-    private BottomNavigationView navigation;
-    private int selectedItem = SCREEN_OPEN_DEFAULT;
+    private int selectedItem = DEFAULT_SCREEN_MENU_ITEM_INDEX;
     private Menu menu = null;
 
     @Override
@@ -35,7 +33,7 @@ public class ConfigActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -46,10 +44,10 @@ public class ConfigActivity extends BaseActivity {
 
         menu = navigation.getMenu();
 
-        MenuItem menuSelectedItem = menu.getItem(SCREEN_OPEN_DEFAULT);
+        MenuItem menuSelectedItem = menu.getItem(DEFAULT_SCREEN_MENU_ITEM_INDEX);
 
         if (savedInstanceState != null) {
-            selectedItem = savedInstanceState.getInt(SELECTED_MENU_ITEM_KEY, SCREEN_OPEN_DEFAULT);
+            selectedItem = savedInstanceState.getInt(SELECTED_MENU_ITEM_KEY, DEFAULT_SCREEN_MENU_ITEM_INDEX);
             menuSelectedItem = menu.findItem(selectedItem);
         }
         selectFragment(menuSelectedItem);

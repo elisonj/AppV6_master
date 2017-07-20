@@ -5,6 +5,8 @@ import com.orm.SugarRecord;
 /**
  * Created by: elison
  * Date: 2017-07-17
+ *
+ * Represents a user's config settings
  */
 public class Config extends SugarRecord<Config> {
     private boolean syncWithWifiOnly;

@@ -1,10 +1,5 @@
 package br.com.bg7.appvistoria;
 
-/**
- * Created by: elison
- * Date: 2017-07-13
- */
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 /**
+ * Created by: elison
+ * Date: 2017-07-13
+ *
  * Fragment class for each nav menu item
  */
 public class MainFragment extends Fragment {
@@ -55,7 +53,7 @@ public class MainFragment extends Fragment {
         }
 
         content = view.findViewById(R.id.fragment_content);
-        textView = (TextView) view.findViewById(R.id.text);
+        textView = view.findViewById(R.id.text);
 
         textView.setText(text);
         content.setBackgroundColor(color);

@@ -4,7 +4,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import br.com.bg7.appvistoria.data.source.remote.HttpCall;
 import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
-import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,18 +27,13 @@ public class RetrofitHttpCall<T> implements HttpCall<T> {
             @Override
             @ParametersAreNonnullByDefault
             public void onResponse(Call<T> call, Response<T> response) {
-                HttpCall<T> httpCall = new RetrofitHttpCall<T>(call);
-                HttpResponse<T> httpResponse = new RetrofitHttpResponse<T>(response);
-
-                httpCallback.onResponse(httpCall, httpResponse);
+                httpCallback.onResponse(new RetrofitHttpResponse<>(response));
             }
 
             @Override
             @ParametersAreNonnullByDefault
             public void onFailure(Call<T> call, Throwable t) {
-                HttpCall<T> httpCall = new RetrofitHttpCall<T>(call);
-
-                httpCallback.onFailure(httpCall, t);
+                httpCallback.onFailure(t);
             }
         });
     }

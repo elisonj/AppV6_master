@@ -9,7 +9,6 @@ import org.mockito.Mock;
 import java.net.ConnectException;
 import java.util.concurrent.TimeoutException;
 
-import br.com.bg7.appvistoria.data.source.RequestTokenCallback;
 import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;

@@ -3,19 +3,20 @@ package br.com.bg7.appvistoria.vo;
 /**
  * Created by: elison
  * Date: 2017-07-17
+ *
+ * Represents a Country, like the ones that appear in the language
+ * selection screen
  */
 public class Country {
 
     private String id;
     private String name;
     private String language;
-    private String abbreviation;
 
-    public Country(String id, String name, String language, String abbreviation) {
+    public Country(String id, String name, String language) {
         this.id = id;
         this.name = name;
         this.language = language;
-        this.abbreviation = abbreviation;
     }
 
     public String getId() {

@@ -25,6 +25,7 @@ public class ConfigPresenter implements ConfigContract.Presenter {
         List<Country> countryList = configView.initCountryList();
         configView.setCountries(countryList);
 
+        // TODO: Olhar isso quando descansado. Tem alguma responsabilidade da view perdida aqui
         List<Config> list = Config.listAll(Config.class);
         if(list != null && list.size() > 0) {
             int selected = 0;

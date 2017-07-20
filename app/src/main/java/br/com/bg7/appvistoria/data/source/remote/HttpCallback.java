@@ -6,6 +6,6 @@ package br.com.bg7.appvistoria.data.source.remote;
  */
 
 public interface HttpCallback<T> {
-    void onResponse(HttpCall<T> httpCall, HttpResponse<T> httpResponse);
-    void onFailure(HttpCall<T> httpCall, Throwable t);
+    void onResponse(HttpResponse<T> httpResponse);
+    void onFailure(Throwable t);
 }
