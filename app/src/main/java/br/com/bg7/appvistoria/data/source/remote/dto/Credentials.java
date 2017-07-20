@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 public class Credentials {
     @SerializedName("login")
     @Expose
-    private final String login;
+    private String login;
 
     public String getLogin() {
         return login;

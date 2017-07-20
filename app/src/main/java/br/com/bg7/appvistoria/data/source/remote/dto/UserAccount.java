@@ -29,7 +29,7 @@ public class UserAccount {
     private Integer statusId;
     @SerializedName("basicInfo")
     @Expose
-    private final BasicInfo basicInfo;
+    private BasicInfo basicInfo;
     @SerializedName("companyInfo")
     @Expose
     private CompanyInfo companyInfo;
@@ -50,7 +50,7 @@ public class UserAccount {
     private String type;
     @SerializedName("credentials")
     @Expose
-    private final Credentials credentials;
+    private Credentials credentials;
     @SerializedName("mothersName")
     @Expose
     private String mothersName;

@@ -14,7 +14,7 @@ public class Email {
     private Integer id;
     @SerializedName("address")
     @Expose
-    private final String address;
+    private String address;
     @SerializedName("validated")
     @Expose
     private Boolean validated;

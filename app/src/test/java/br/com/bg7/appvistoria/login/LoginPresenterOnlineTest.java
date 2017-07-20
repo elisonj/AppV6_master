@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 public class LoginPresenterOnlineTest extends LoginPresenterBaseTest {
 
     @Captor
-    private final ArgumentCaptor<HttpCallback<Token>> loginCallbackCaptor;
+    private ArgumentCaptor<HttpCallback<Token>> loginCallbackCaptor;
 
     @Mock
     HttpResponse<Token> tokenHttpResponse;
@@ -42,7 +42,7 @@ public class LoginPresenterOnlineTest extends LoginPresenterBaseTest {
         callLogin();
 
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), loginCallbackCaptor.capture());
-        loginCallbackCaptor.getValue().onFailure(null, new TimeoutException());
+        loginCallbackCaptor.getValue().onFailure(new TimeoutException());
 
         verify(loginView).showCannotLoginOfflineError();
     }
@@ -52,7 +52,7 @@ public class LoginPresenterOnlineTest extends LoginPresenterBaseTest {
         callLogin();
 
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), loginCallbackCaptor.capture());
-        loginCallbackCaptor.getValue().onFailure(null, new ConnectException());
+        loginCallbackCaptor.getValue().onFailure(new ConnectException());
 
         verify(loginView).showCannotLoginOfflineError();
     }
@@ -62,7 +62,7 @@ public class LoginPresenterOnlineTest extends LoginPresenterBaseTest {
         callLogin();
 
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), loginCallbackCaptor.capture());
-        loginCallbackCaptor.getValue().onFailure(null, new Exception());
+        loginCallbackCaptor.getValue().onFailure(new Exception());
 
         verify(loginView).showCannotLoginError();
     }

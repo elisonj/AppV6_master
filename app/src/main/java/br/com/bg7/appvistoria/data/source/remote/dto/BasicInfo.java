@@ -10,13 +10,13 @@ import com.google.gson.annotations.SerializedName;
 public class BasicInfo {
     @SerializedName("fullName")
     @Expose
-    private final String fullName;
+    private String fullName;
     @SerializedName("firstName")
     @Expose
-    private final String firstName;
+    private String firstName;
     @SerializedName("lastName")
     @Expose
-    private final String lastName;
+    private String lastName;
     @SerializedName("countryId")
     @Expose
     private Integer countryId;
@@ -31,18 +31,10 @@ public class BasicInfo {
     private Integer civilStateId;
     @SerializedName("email")
     @Expose
-    private final Email email;
+    private Email email;
 
     public String getFullName() {
         return fullName;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
     }
 
     public Email getEmail() {
