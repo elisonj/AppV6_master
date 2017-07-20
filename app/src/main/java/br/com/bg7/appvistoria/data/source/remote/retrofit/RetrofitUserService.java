@@ -23,7 +23,7 @@ public class RetrofitUserService implements br.com.bg7.appvistoria.data.source.U
 
     @Override
     public void getUser(String token, String userId, final HttpCallback<UserResponse> callback) {
-        Call<UserResponse> call = userService.getUser(token, userId);
+        Call<UserResponse> call = userService.getUser("Bearer " + token, userId);
         RetrofitHttpCall<UserResponse> httpCall = new RetrofitHttpCall<>(call);
 
         httpCall.enqueue(callback);

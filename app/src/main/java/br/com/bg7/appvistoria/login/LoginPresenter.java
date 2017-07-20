@@ -75,7 +75,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                     if (httpResponse.isSuccessful()) {
                         Token token = httpResponse.body();
                         if (token != null) {
-                            userService.getUser("Bearer " + token.getAccessToken(), token.getUserId(), new UserCallback(username, password, token));
+                            userService.getUser(token.getAccessToken(), token.getUserId(), new UserCallback(username, password, token));
                         }
                     } else {
                         loginView.showCannotLoginError();
