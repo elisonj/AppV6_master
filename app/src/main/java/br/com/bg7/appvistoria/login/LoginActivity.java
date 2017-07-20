@@ -1,9 +1,15 @@
 package br.com.bg7.appvistoria.login;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import br.com.bg7.appvistoria.BaseActivity;
-import br.com.bg7.appvistoria.service.LoginService;
+import br.com.bg7.appvistoria.R;
+import br.com.bg7.appvistoria.data.source.TokenService;
+import br.com.bg7.appvistoria.data.source.UserService;
+import br.com.bg7.appvistoria.data.source.local.UserRepository;
+import br.com.bg7.appvistoria.data.source.remote.retrofit.RetrofitTokenService;
+import br.com.bg7.appvistoria.data.source.remote.retrofit.RetrofitUserService;
 
 /**
  * Created by: elison
@@ -13,15 +19,31 @@ import br.com.bg7.appvistoria.service.LoginService;
 public class LoginActivity extends BaseActivity {
 
     private LoginPresenter loginPresenter;
+    private String baseUrl;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        baseUrl = getResources().getString(R.string.base_url);
 
         LoginView loginView = new LoginView(this);
-        loginPresenter = new LoginPresenter(new LoginService(), loginView);
+        UserRepository userRepository = new UserRepository();
+
+        loginPresenter = new LoginPresenter(getTokenService(), getUserService(), userRepository, loginView);
 
         setContentView(loginView);
+    }
+
+    private UserService getUserService() {
+        return new RetrofitUserService(baseUrl);
+    }
+
+    @NonNull
+    private TokenService getTokenService() {
+        String grantType = getResources().getString(R.string.grant_type);
+        String clientId = getResources().getString(R.string.client_id);
+
+        return new RetrofitTokenService(baseUrl, grantType, clientId);
     }
 
     @Override

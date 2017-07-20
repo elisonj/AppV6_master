@@ -1,7 +1,7 @@
-package br.com.bg7.appvistoria.ws;
+package br.com.bg7.appvistoria.data.source.remote.retrofit;
 
-import br.com.bg7.appvistoria.service.dto.Token;
-import br.com.bg7.appvistoria.service.dto.UserResponse;
+import br.com.bg7.appvistoria.data.source.remote.dto.Token;
+import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -22,10 +22,4 @@ public interface TokenService {
                          @Field("client_id") String client_id,
                          @Field("username") String username,
                          @Field("password") String password);
-
-
-    @GET("account/v2/user/{id}")
-    Call<UserResponse> getUser(@Header("Authorization") String token, @Path("id") String userId);
-
-
 }

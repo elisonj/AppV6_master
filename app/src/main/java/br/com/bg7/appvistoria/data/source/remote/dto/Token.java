@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.service.dto;
+package br.com.bg7.appvistoria.data.source.remote.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -25,6 +25,14 @@ public class Token {
     @SerializedName("userId")
     @Expose
     private String userId;
+
+    public Token() {
+    }
+
+    public Token(String accessToken, String userId) {
+        this.accessToken = accessToken;
+        this.userId = userId;
+    }
 
     public String getAccessToken() {
         return accessToken;

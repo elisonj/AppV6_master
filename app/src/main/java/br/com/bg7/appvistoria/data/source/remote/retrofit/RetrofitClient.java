@@ -1,14 +1,14 @@
-package br.com.bg7.appvistoria.ws;
+package br.com.bg7.appvistoria.data.source.remote.retrofit;
 
 import retrofit2.Retrofit;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by: elison
  * Date: 2017-07-11
  */
 
-public class RetrofitJSONClient {
+public class RetrofitClient {
 
     private static Retrofit retrofit = null;
 
@@ -17,7 +17,7 @@ public class RetrofitJSONClient {
         if (retrofit==null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
-                    .addConverterFactory(ScalarsConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
         return retrofit;
