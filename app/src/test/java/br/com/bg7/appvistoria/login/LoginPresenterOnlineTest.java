@@ -9,7 +9,6 @@ import org.mockito.Mock;
 import java.net.ConnectException;
 import java.util.concurrent.TimeoutException;
 
-import br.com.bg7.appvistoria.data.source.RequestTokenCallback;
 import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
@@ -43,7 +42,7 @@ public class LoginPresenterOnlineTest extends LoginPresenterBaseTest {
         callLogin();
 
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), loginCallbackCaptor.capture());
-        loginCallbackCaptor.getValue().onFailure(null, new TimeoutException());
+        loginCallbackCaptor.getValue().onFailure(new TimeoutException());
 
         verify(loginView).showCannotLoginOfflineError();
     }
@@ -53,7 +52,7 @@ public class LoginPresenterOnlineTest extends LoginPresenterBaseTest {
         callLogin();
 
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), loginCallbackCaptor.capture());
-        loginCallbackCaptor.getValue().onFailure(null, new ConnectException());
+        loginCallbackCaptor.getValue().onFailure(new ConnectException());
 
         verify(loginView).showCannotLoginOfflineError();
     }
@@ -63,7 +62,7 @@ public class LoginPresenterOnlineTest extends LoginPresenterBaseTest {
         callLogin();
 
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), loginCallbackCaptor.capture());
-        loginCallbackCaptor.getValue().onFailure(null, new Exception());
+        loginCallbackCaptor.getValue().onFailure(new Exception());
 
         verify(loginView).showCannotLoginError();
     }

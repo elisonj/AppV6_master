@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class RetrofitUserService implements br.com.bg7.appvistoria.data.source.UserService {
-    private UserService userService;
+    private final UserService userService;
 
     public RetrofitUserService(String baseUrl) {
         this.userService = new Retrofit.Builder()

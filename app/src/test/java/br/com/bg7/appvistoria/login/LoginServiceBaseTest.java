@@ -12,7 +12,7 @@ import br.com.bg7.appvistoria.data.source.local.UserRepository;
  * Date: 2017-07-19
  */
 
-public class LoginServiceBaseTest {
+class LoginServiceBaseTest {
     @Mock
     UserRepository userRepository;
 

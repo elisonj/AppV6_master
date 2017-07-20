@@ -8,7 +8,7 @@
 
     <application
         android:allowBackup="true"
-        android:name=".Applic"
+        android:name="com.orm.SugarApp"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"

@@ -37,14 +37,6 @@ public class BasicInfo {
         return fullName;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
     public Email getEmail() {
         return email;
     }

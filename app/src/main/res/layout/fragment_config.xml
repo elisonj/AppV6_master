@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#ECDCEC"
-        android:orientation="vertical"></LinearLayout>
+        android:orientation="vertical" />
 
     <LinearLayout
         android:id="@+id/linear_language"
@@ -89,7 +89,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#ECDCEC"
-        android:orientation="vertical"></LinearLayout>
+        android:orientation="vertical" />
 
 
 </LinearLayout>

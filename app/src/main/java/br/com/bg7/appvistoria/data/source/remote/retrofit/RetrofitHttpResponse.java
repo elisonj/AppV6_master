@@ -12,7 +12,7 @@ import retrofit2.Response;
 
 public class RetrofitHttpResponse<T> implements HttpResponse<T> {
 
-    private Response<T> response;
+    private final Response<T> response;
 
     public RetrofitHttpResponse(Response<T> response) {
         this.response = response;

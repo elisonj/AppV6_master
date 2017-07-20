@@ -1,10 +1,5 @@
 package br.com.bg7.appvistoria.config;
 
-/**
- * Created by: elison
- * Date: 2017-07-13
- */
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -28,17 +23,20 @@ import br.com.bg7.appvistoria.vo.Country;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
+ * Created by: elison
+ * Date: 2017-07-13
+ *
  * Fragment class for Config menu item
  */
 public class ConfigFragment extends Fragment implements ConfigContract.View {
 
-    ConfigContract.Presenter configPresenter;
+    private ConfigContract.Presenter configPresenter;
 
-    private LinearLayout topLanguages;
-    private LinearLayout synchronize;
     private LinearLayout languages;
     private Spinner languageSelected;
+    private LinearLayout topLanguages;
     private LinearLayout buttons;
+    private LinearLayout synchronize;
     private CheckBox syncWithWifiOnly;
     private Button cancel;
     private Button confirm;
@@ -48,27 +46,38 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_config, container, false);
 
-        synchronize = root.findViewById(R.id.linear_wifi);
+        initializeViewElements(root);
+        initializeListeners();
+
+        return root;
+    }
+
+    private void initializeViewElements(View root) {
         languages = root.findViewById(R.id.linear_language);
-        topLanguages = root.findViewById(R.id.linear_language_top);
+        languageSelected = root.findViewById(R.id.spinner_language);
         buttons = root.findViewById(R.id.linear_buttons);
         syncWithWifiOnly = root.findViewById(R.id.checkBox_wifi);
+        topLanguages = root.findViewById(R.id.linear_language_top);
+        synchronize = root.findViewById(R.id.linear_wifi);
         cancel = root.findViewById(R.id.button_cancel);
         confirm = root.findViewById(R.id.button_confirm);
-        languageSelected = root.findViewById(R.id.spinner_language);
+    }
 
+    private void initializeListeners() {
         topLanguages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 configPresenter.topLanguagesClicked();
             }
         });
+
         synchronize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 configPresenter.syncWithWifiOnlyLineClicked();
             }
         });
+
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,6 +86,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
                 configPresenter.confirmClicked(selected.getId(), selected.getLanguage(), syncWithWifiOnly.isChecked());
             }
         });
+
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,8 +100,6 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
                 configPresenter.syncWithWifiOnlyClicked();
             }
         });
-
-        return root;
     }
 
     @Override
@@ -105,18 +113,13 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
         String languageIds [] = getContext().getResources().getStringArray(R.array.languageIds);
         String languageNames [] = getContext().getResources().getStringArray(R.array.languageNames);
         String languages [] = getContext().getResources().getStringArray(R.array.languages);
-        String abbreviations [] = getContext().getResources().getStringArray(R.array.abbreviations);
 
         ArrayList<Country> countryList = new ArrayList<>();
-        for(int i=0;i<languageIds.length;i++) {
-            countryList.add(new Country(languageIds[i], languageNames[i],languages[i], abbreviations[i]));
+        for (int i = 0; i < languageIds.length; i++) {
+            countryList.add(new Country(languageIds[i], languageNames[i], languages[i]));
         }
-        return countryList;
-    }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+        return countryList;
     }
 
     @Override
@@ -158,7 +161,6 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     public void hideLanguages() {
         languages.setVisibility(View.GONE);
     }
-
 
     @Override
     public void setCountries(List<Country> countryList) {

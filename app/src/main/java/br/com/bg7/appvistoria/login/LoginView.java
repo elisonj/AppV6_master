@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 
 public class LoginView extends ConstraintLayout implements LoginContract.View {
-    LoginContract.Presenter loginPresenter;
+    private LoginContract.Presenter loginPresenter;
 
     public LoginView(Context context) {
         super(context);
@@ -49,16 +49,11 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
 
     @Override
     public boolean isConnected() {
-        boolean connected;
         ConnectivityManager connectivtyManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivtyManager.getActiveNetworkInfo() != null
+
+        return connectivtyManager.getActiveNetworkInfo() != null
                 && connectivtyManager.getActiveNetworkInfo().isAvailable()
-                && connectivtyManager.getActiveNetworkInfo().isConnected()) {
-            connected = true;
-        } else {
-            connected = false;
-        }
-        return connected;
+                && connectivtyManager.getActiveNetworkInfo().isConnected();
     }
 
     @Override
