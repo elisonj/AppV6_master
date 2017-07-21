@@ -29,6 +29,7 @@ public class ConfigPresenter implements ConfigContract.Presenter {
 
     @Override
     public void start() {
+        // TODO: Agora que o teste passou, refactoring disso aqui
         List<Language> languageList = languageRepository.getLanguages();
         configView.setLanguages(languageList);
 
