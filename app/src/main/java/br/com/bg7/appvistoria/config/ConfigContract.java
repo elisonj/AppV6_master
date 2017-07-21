@@ -19,11 +19,9 @@ public interface ConfigContract {
 
         void showButtons();
 
-        List<Language> initLanguageList();
-
         void setLanguages(List<Language> languageList);
 
-        void setLanguage(int id);
+        void setLanguage(String languageName);
 
         void setSyncWithWifiOnly(boolean syncWithWifiOnly);
 

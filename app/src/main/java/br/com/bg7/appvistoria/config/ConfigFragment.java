@@ -13,9 +13,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.ServiceConfigurationError;
 
 import br.com.bg7.appvistoria.Constants;
 import br.com.bg7.appvistoria.R;
@@ -35,7 +33,8 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
 
     private LinearLayout languagesContainer;
     private LinearLayout languagesLabel;
-    private Spinner languageList;
+    private Spinner languageSpinner;
+    private List<Language> languageList;
 
     private LinearLayout syncLabel;
     private CheckBox syncWithWifiOnly;
@@ -58,7 +57,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     private void initializeViewElements(View root) {
         languagesContainer = root.findViewById(R.id.linear_language);
         languagesLabel = root.findViewById(R.id.linear_language_top);
-        languageList = root.findViewById(R.id.spinner_language);
+        languageSpinner = root.findViewById(R.id.spinner_language);
 
         syncLabel = root.findViewById(R.id.linear_wifi);
         syncWithWifiOnly = root.findViewById(R.id.checkBox_wifi);
@@ -100,7 +99,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Language selectedLanguage = (Language) languageList.getSelectedItem();
+                Language selectedLanguage = (Language) languageSpinner.getSelectedItem();
 
                 configPresenter.confirmClicked(selectedLanguage.getName(), syncWithWifiOnly.isChecked());
             }
@@ -111,23 +110,6 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     public void onResume() {
         super.onResume();
         configPresenter.start();
-    }
-
-    @Override
-    public List<Language> initLanguageList() {
-        String languageNames[] = getResources().getStringArray(R.array.languageNames);
-        String displayNames[] = getResources().getStringArray(R.array.languageDisplayNames);
-
-        if (languageNames.length != displayNames.length) {
-            throw new ServiceConfigurationError("Language names and language display names do not match in size");
-        }
-
-        ArrayList<Language> languageList = new ArrayList<>();
-        for (int i = 0; i < languageNames.length; i++) {
-            languageList.add(new Language(languageNames[i], displayNames[i]));
-        }
-
-        return languageList;
     }
 
     @Override
@@ -146,8 +128,16 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     }
 
     @Override
-    public void setLanguage(int id) {
-        languageList.setSelection(id);
+    public void setLanguage(String languageName) {
+        int selected = 0;
+        for (int i = 0; i < languageList.size(); i++) {
+            Language languageFromList = languageList.get(i);
+            if (languageFromList.getName().equals(languageName)) {
+                selected = i;
+            }
+        }
+
+        languageSpinner.setSelection(selected);
     }
 
     @Override
@@ -173,7 +163,8 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     @Override
     public void setLanguages(List<Language> languageList) {
         ArrayAdapter<Language> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, languageList);
-        this.languageList.setAdapter(adapter);
+        this.languageSpinner.setAdapter(adapter);
+        this.languageList = languageList;
     }
 
     @Override

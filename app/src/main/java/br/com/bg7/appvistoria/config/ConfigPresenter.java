@@ -1,10 +1,13 @@
 package br.com.bg7.appvistoria.config;
 
+import com.google.common.base.Strings;
+
 import java.util.List;
 
 import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
 import br.com.bg7.appvistoria.data.Config;
 import br.com.bg7.appvistoria.config.vo.Language;
+import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
 
 /**
  * Created by: luciolucio
@@ -14,31 +17,41 @@ import br.com.bg7.appvistoria.config.vo.Language;
 public class ConfigPresenter implements ConfigContract.Presenter {
     private final ConfigContract.View configView;
     private final ConfigRepository configRepository;
+    private final LanguageRepository languageRepository;
 
-    public ConfigPresenter(ConfigRepository configRepository, ConfigContract.View configView) {
-        this.configView = configView;
+    public ConfigPresenter(ConfigRepository configRepository, LanguageRepository languageRepository, ConfigContract.View configView) {
         this.configRepository = configRepository;
+        this.languageRepository = languageRepository;
+        this.configView = configView;
 
         this.configView.setPresenter(this);
     }
 
     @Override
     public void start() {
-
-        List<Language> languageList = configView.initLanguageList();
+        List<Language> languageList = languageRepository.getLanguages();
         configView.setLanguages(languageList);
 
-        // TODO: Olhar isso quando descansado. Tem alguma responsabilidade da view perdida aqui
         Config config = configRepository.first(Config.class);
         if(config != null) {
-            int selected = 0;
-            for (int i = 0; i < languageList.size(); i++) {
-                Language language = languageList.get(i);
-                if (language.getName().equals(config.getLanguageName())) {
-                    selected = i;
+            String languageName = config.getLanguageName();
+            if (Strings.isNullOrEmpty(languageName) || Strings.isNullOrEmpty(languageName.trim())) {
+                languageName = languageList.get(0).getName();
+            }
+
+            boolean languageExists = false;
+            for (Language language : languageList) {
+                if (languageName.equals(language.getName())) {
+                    languageExists = true;
+                    break;
                 }
             }
-            configView.setLanguage(selected);
+
+            if (!languageExists) {
+                languageName = languageList.get(0).getName();
+            }
+
+            configView.setLanguage(languageName);
             configView.setSyncWithWifiOnly(config.isSyncWithWifiOnly());
         }
     }

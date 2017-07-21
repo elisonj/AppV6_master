@@ -14,6 +14,7 @@ import java.util.Map;
 import br.com.bg7.appvistoria.config.vo.Language;
 import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
 import br.com.bg7.appvistoria.data.Config;
+import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
 
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
@@ -31,6 +32,9 @@ public class ConfigPresenterTest {
     @Mock
     private ConfigRepository configRepository;
 
+    @Mock
+    private LanguageRepository languageRepository;
+
     private ConfigPresenter configPresenter;
 
     private List<Language> languages;
@@ -40,10 +44,10 @@ public class ConfigPresenterTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        configPresenter = new ConfigPresenter(configRepository, configView);
+        configPresenter = new ConfigPresenter(configRepository, languageRepository, configView);
 
         setUpLanguages();
-        setUpConfig("lang", true);
+        setUpConfig("pt_BR", true);
     }
 
     private void setUpLanguages() {
@@ -51,7 +55,7 @@ public class ConfigPresenterTest {
                 new Language("pt_BR", null),
                 new Language("en_US", null)
         );
-        when(configView.initLanguageList()).thenReturn(languages);
+        when(languageRepository.getLanguages()).thenReturn(languages);
     }
 
     private void setUpConfig(String language, boolean isSyncWithWifiOnly) {
@@ -60,19 +64,12 @@ public class ConfigPresenterTest {
     }
 
     @Test
-    public void shouldInitLanguageListOnStart() {
-        configPresenter.start();
-
-        verify(configView).initLanguageList();
-    }
-
-    @Test
     public void shouldSelectLanguageOnStart() {
         setUpConfig("en_US", true);
 
         configPresenter.start();
 
-        verify(configView).setLanguage(1);
+        verify(configView).setLanguage("en_US");
     }
 
     @Test
@@ -87,23 +84,20 @@ public class ConfigPresenterTest {
         HashMap<String, String> testCases = new HashMap<>();
         testCases.put("Not in list", "blah");
         testCases.put("Empty", "");
-        testCases.put("Blank", "");
-        testCases.put("Null", "");
+        testCases.put("Blank", "   ");
+        testCases.put("Null", null);
 
         for (Map.Entry<String, String> testCase : testCases.entrySet()) {
             String description = testCase.getKey();
             String configValueUnderTest = testCase.getValue();
 
-            setUpConfig(testCases.get(configValueUnderTest), true);
+            setUpConfig(configValueUnderTest, true);
             reset(configView);
 
             configPresenter.start();
 
-            try {
-                verify(configView).setLanguage(0);
-            } catch (MockitoAssertionError error) {
-                throw new MockitoAssertionError(error, "Config test case - " + description);
-            }
+            System.out.println("shouldSelectFirstItemIfConfigLanguageNotValid - " + description);
+            verify(configView).setLanguage("pt_BR");
         }
     }
 }

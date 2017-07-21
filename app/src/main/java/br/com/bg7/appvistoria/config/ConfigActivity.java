@@ -16,6 +16,7 @@ import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.MainFragment;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
+import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
 
 /**
  * Created by: luciolucio
@@ -30,6 +31,7 @@ public class ConfigActivity extends BaseActivity {
     private Menu menu = null;
 
     private final ConfigRepository configRepository = new ConfigRepository();
+    private final LanguageRepository languageRepository = new LanguageRepository(this);
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,7 +93,7 @@ public class ConfigActivity extends BaseActivity {
                 ConfigFragment configFrag = new ConfigFragment();
                 fragment = configFrag;
                 fragment.setRetainInstance(true);
-                new ConfigPresenter(configRepository, configFrag);
+                new ConfigPresenter(configRepository, languageRepository, configFrag);
                 break;
         }
         selectedItem = item.getItemId();
