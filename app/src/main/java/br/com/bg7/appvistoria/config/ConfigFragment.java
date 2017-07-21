@@ -32,14 +32,14 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
 
     private ConfigContract.Presenter configPresenter;
 
-    private LinearLayout languages;
-    private Spinner languageSelected;
-    private LinearLayout topLanguages;
-    private LinearLayout buttons;
-    private LinearLayout synchronize;
+    private LinearLayout languagesContainer;
+    private Spinner languageList;
+    private LinearLayout languagesLabel;
+    private LinearLayout buttonsContainer;
+    private LinearLayout syncLabel;
     private CheckBox syncWithWifiOnly;
-    private Button cancel;
-    private Button confirm;
+    private Button cancelButton;
+    private Button confirmButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,41 +53,43 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     }
 
     private void initializeViewElements(View root) {
-        languages = root.findViewById(R.id.linear_language);
-        languageSelected = root.findViewById(R.id.spinner_language);
-        buttons = root.findViewById(R.id.linear_buttons);
+        languagesContainer = root.findViewById(R.id.linear_language);
+        languagesLabel = root.findViewById(R.id.linear_language_top);
+        languageList = root.findViewById(R.id.spinner_language);
+
         syncWithWifiOnly = root.findViewById(R.id.checkBox_wifi);
-        topLanguages = root.findViewById(R.id.linear_language_top);
-        synchronize = root.findViewById(R.id.linear_wifi);
-        cancel = root.findViewById(R.id.button_cancel);
-        confirm = root.findViewById(R.id.button_confirm);
+        syncLabel = root.findViewById(R.id.linear_wifi);
+
+        buttonsContainer = root.findViewById(R.id.linear_buttons);
+        cancelButton = root.findViewById(R.id.button_cancel);
+        confirmButton = root.findViewById(R.id.button_confirm);
     }
 
     private void initializeListeners() {
-        topLanguages.setOnClickListener(new View.OnClickListener() {
+        languagesLabel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                configPresenter.topLanguagesClicked();
+                configPresenter.languagesLabelClicked();
             }
         });
 
-        synchronize.setOnClickListener(new View.OnClickListener() {
+        syncLabel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                configPresenter.syncWithWifiOnlyLineClicked();
+                configPresenter.syncLabelClicked();
             }
         });
 
-        confirm.setOnClickListener(new View.OnClickListener() {
+        confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Country selected = (Country) languageSelected.getSelectedItem();
+                Country selected = (Country) languageList.getSelectedItem();
 
                 configPresenter.confirmClicked(selected.getId(), selected.getLanguage(), syncWithWifiOnly.isChecked());
             }
         });
 
-        cancel.setOnClickListener(new View.OnClickListener() {
+        cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 configPresenter.cancelClicked();
@@ -129,17 +131,17 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
 
     @Override
     public void hideButtons() {
-        buttons.setVisibility(View.GONE);
+        buttonsContainer.setVisibility(View.GONE);
     }
 
     @Override
     public void showButtons() {
-        buttons.setVisibility(View.VISIBLE);
+        buttonsContainer.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void setLanguage(int id) {
-        languageSelected.setSelection(id);
+        languageList.setSelection(id);
     }
 
     @Override
@@ -149,7 +151,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
 
     @Override
     public void toggleLanguagesVisibility() {
-        toggleVisibility(languages);
+        toggleVisibility(languagesContainer);
     }
 
     @Override
@@ -159,13 +161,13 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
 
     @Override
     public void hideLanguages() {
-        languages.setVisibility(View.GONE);
+        languagesContainer.setVisibility(View.GONE);
     }
 
     @Override
     public void setCountries(List<Country> countryList) {
         ArrayAdapter<Country> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, countryList);
-        languageSelected.setAdapter(adapter);
+        languageList.setAdapter(adapter);
     }
 
     @Override

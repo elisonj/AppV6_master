@@ -44,7 +44,7 @@ public class ConfigPresenter implements ConfigContract.Presenter {
     }
 
     @Override
-    public void topLanguagesClicked() {
+    public void languagesLabelClicked() {
         configView.showButtons();
         configView.toggleLanguagesVisibility();
     }
@@ -55,7 +55,7 @@ public class ConfigPresenter implements ConfigContract.Presenter {
     }
 
     @Override
-    public void syncWithWifiOnlyLineClicked() {
+    public void syncLabelClicked() {
         configView.showButtons();
         configView.toggleSyncWithWifiOnly();
     }

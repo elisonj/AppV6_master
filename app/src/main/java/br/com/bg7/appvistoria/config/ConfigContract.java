@@ -37,11 +37,11 @@ public interface ConfigContract {
     }
 
     interface Presenter extends BasePresenter {
-        void topLanguagesClicked();
+        void languagesLabelClicked();
 
         void syncWithWifiOnlyClicked();
 
-        void syncWithWifiOnlyLineClicked();
+        void syncLabelClicked();
 
         void confirmClicked(String languageId, String language, boolean syncWithWifiOnly);
 
