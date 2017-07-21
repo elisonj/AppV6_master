@@ -1,12 +1,15 @@
 package br.com.bg7.appvistoria.login;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.Mock;
 
 import java.util.concurrent.TimeoutException;
 
 import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
+import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.vo.User;
 
@@ -22,8 +25,18 @@ import static org.mockito.Mockito.when;
 
 public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTest {
 
+
     @Captor
     private ArgumentCaptor<HttpCallback<Token>> tokenCallBackCaptor;
+
+    @Mock
+    HttpResponse<Token> tokenHttpResponse;
+
+
+    @Before
+    public void setUp() {
+        super.setUp();
+    }
 
     @Test
     public void shouldShowCannotLoginWhenNoConnectionAndNoUser() {
@@ -97,6 +110,19 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
         verify(loginView).showMainScreen();
     }
 
+
+    @Test
+    public void shouldShowCannotLoginWhenNoTokenBodyAndNoUser() {
+        when(loginView.isConnected()).thenReturn(true);
+
+        when(userRepository.findByUsername(anyString())).thenReturn(null);
+
+        callLogin();
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
+
+        verify(loginView).showCannotLoginError();
+    }
 
 
 }
