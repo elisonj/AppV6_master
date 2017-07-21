@@ -135,7 +135,11 @@ public class LoginPresenter implements LoginContract.Presenter {
                 return;
             }
 
-            callUserService(username, password, token);
+            if (loginView.isConnected()) {
+                callUserService(username, password, token);
+                return;
+            }
+            loginView.showCannotLoginError();
             return;
         }
 
