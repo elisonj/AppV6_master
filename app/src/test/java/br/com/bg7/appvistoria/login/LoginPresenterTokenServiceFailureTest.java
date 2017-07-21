@@ -142,5 +142,19 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
         verify(loginView).showWrongPasswordError();
     }
 
+    @Test
+    public void showMainScreenWhenNoTokenBodyButUserAndPassOk() {
+        when(loginView.isConnected()).thenReturn(true);
+        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+        loginPresenter.checkpw = true;
 
+        callLogin();
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
+        when(tokenHttpResponse.body()).thenReturn(null);
+
+        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
+
+        verify(loginView).showMainScreen();
+    }
 }
