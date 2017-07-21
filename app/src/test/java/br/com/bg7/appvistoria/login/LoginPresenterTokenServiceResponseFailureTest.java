@@ -61,7 +61,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
     }
 
     @Test
-    public void shouldShowCannotLoginWhenNoSuccessButUserAndPassOk() {
+    public void shouldShowMainScreenWhenNoSuccessButUserAndPassOk() {
         when(loginView.isConnected()).thenReturn(true);
         when(userRepository.findByUsername(anyString())).thenReturn(new User());
         when(tokenHttpResponse.isSuccessful()).thenReturn(false);
@@ -101,5 +101,20 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
         tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
         verify(loginView).showWrongPasswordError();
+    }
+
+    @Test
+    public void shouldShowMainScreenWhenNoBodyButUserAndPasswordOk() {
+        when(loginView.isConnected()).thenReturn(true);
+        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
+        when(tokenHttpResponse.body()).thenReturn(null);
+        loginPresenter.checkpw = true;
+
+        callLogin();
+
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
+        verify(loginView).showMainScreen();
     }
 }
