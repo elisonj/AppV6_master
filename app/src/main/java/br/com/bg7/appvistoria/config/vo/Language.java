@@ -8,16 +8,16 @@ package br.com.bg7.appvistoria.config.vo;
  */
 public class Language {
 
-    private final String locale;
+    private final String name;
     private final String displayName;
 
-    public Language(String locale, String displayName) {
-        this.locale = locale;
+    public Language(String name, String displayName) {
+        this.name = name;
         this.displayName = displayName;
     }
 
-    public String getLocale() {
-        return locale;
+    public String getName() {
+        return name;
     }
 
     @Override

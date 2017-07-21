@@ -100,9 +100,9 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Language selected = (Language) languageList.getSelectedItem();
+                Language selectedLanguage = (Language) languageList.getSelectedItem();
 
-                configPresenter.confirmClicked(selected.getLocale(), syncWithWifiOnly.isChecked());
+                configPresenter.confirmClicked(selectedLanguage.getName(), syncWithWifiOnly.isChecked());
             }
         });
     }

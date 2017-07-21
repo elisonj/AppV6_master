@@ -34,7 +34,7 @@ public class ConfigPresenter implements ConfigContract.Presenter {
             int selected = 0;
             for (int i = 0; i < languageList.size(); i++) {
                 Language language = languageList.get(i);
-                if (language.getLocale().equals(config.getLanguage())) {
+                if (language.getName().equals(config.getLanguageName())) {
                     selected = i;
                 }
             }
