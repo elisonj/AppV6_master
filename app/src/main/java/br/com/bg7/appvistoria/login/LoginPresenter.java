@@ -53,12 +53,24 @@ public class LoginPresenter implements LoginContract.Presenter {
     public void login(final String username, final String password) {
         if (checkInput(username, password)) return;
 
-        if (loginView.isConnected()) {
-            attemptTokenLogin(username, password);
+        User user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            if (loginView.isConnected()) {
+                attemptTokenLogin(username, password);
+                return;
+            }
+
+            loginView.showCannotLoginError();
             return;
         }
 
-        attemptOfflineLogin(username, password);
+        if (!checkpw(password, user.getPassword())) {
+            loginView.showWrongPasswordError();
+            return;
+        }
+
+        loginView.showMainScreen();
     }
 
     /**
@@ -159,23 +171,6 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     private void onGetUserFailure() {
         loginView.showCannotLoginError();
-    }
-
-    private void attemptOfflineLogin(String username, String password) {
-        // TODO: Limpar esta lógica: exibir mensagens melhores para o usuário
-        User user = userRepository.findByUsername(username);
-
-        if (user == null) {
-            loginView.showUserNotFoundError();
-            return;
-        }
-
-        if (!checkpw(password, user.getPassword())) {
-            loginView.showWrongPasswordError();
-            return;
-        }
-
-        loginView.showMainScreen();
     }
 
     boolean checkpw(String password, String passwordHash) {
