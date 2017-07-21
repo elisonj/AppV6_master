@@ -4,7 +4,7 @@ import java.util.List;
 
 import br.com.bg7.appvistoria.BasePresenter;
 import br.com.bg7.appvistoria.BaseView;
-import br.com.bg7.appvistoria.vo.Country;
+import br.com.bg7.appvistoria.config.vo.Country;
 
 /**
  * Created by: luciolucio

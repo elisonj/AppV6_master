@@ -18,7 +18,7 @@ import java.util.List;
 
 import br.com.bg7.appvistoria.Constants;
 import br.com.bg7.appvistoria.R;
-import br.com.bg7.appvistoria.vo.Country;
+import br.com.bg7.appvistoria.config.vo.Country;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

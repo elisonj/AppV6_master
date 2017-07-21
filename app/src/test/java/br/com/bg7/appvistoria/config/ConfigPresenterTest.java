@@ -13,7 +13,7 @@ import java.util.Map;
 
 import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
 import br.com.bg7.appvistoria.data.Config;
-import br.com.bg7.appvistoria.vo.Country;
+import br.com.bg7.appvistoria.config.vo.Country;
 
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
