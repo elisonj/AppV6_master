@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
+import br.com.bg7.appvistoria.vo.User;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.matches;
@@ -33,16 +34,29 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
     }
 
     @Test
-    public void shouldShowCannotLoginWhenNoConnectionAndNoUser() {
+    public void shouldShowCannotLoginWhenNoSuccessAndNoUser() {
         when(loginView.isConnected()).thenReturn(true);
-
         when(userRepository.findByUsername(anyString())).thenReturn(null);
+        when(tokenHttpResponse.isSuccessful()).thenReturn(false);
 
         callLogin();
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        when(tokenHttpResponse.isSuccessful()).thenReturn(false);
-        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
 
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
         verify(loginView).showCannotLoginError();
+    }
+
+    @Test
+    public void shouldShowCannotLoginWhenNoSuccessAndBadPassword() {
+        when(loginView.isConnected()).thenReturn(true);
+        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+        when(tokenHttpResponse.isSuccessful()).thenReturn(false);
+        loginPresenter.checkpw = false;
+
+        callLogin();
+
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
+        verify(loginView).showWrongPasswordError();
     }
 }
