@@ -49,4 +49,7 @@ public class User extends SugarRecord<User> {
         return password;
     }
 
+    public void setToken(br.com.bg7.appvistoria.data.source.remote.dto.Token tokenFromService) {
+        this.token = new Token(tokenFromService);
+    }
 }

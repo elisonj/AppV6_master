@@ -37,13 +37,29 @@ public class LoginPresenterUserServiceResponseTest extends LoginPresenterBaseTes
         when(userRepository.findByUsername(anyString())).thenReturn(null);
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
         when(tokenHttpResponse.body()).thenReturn(new Token());
-
         callLogin();
 
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
         tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
 
         verify(loginView).showCannotLoginError();
+    }
+
+
+    @Test
+    public void shouldMainScreenLoginWhenNoSuccessAndBadPassword() {
+        when(loginView.isConnected()).thenReturn(true, false);
+        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+        loginPresenter.checkpw = false;
+        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
+        when(tokenHttpResponse.body()).thenReturn(new Token());
+
+        callLogin();
+
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
+
+        verify(loginView).showMainScreen();
     }
 
 }

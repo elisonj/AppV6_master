@@ -139,7 +139,14 @@ public class LoginPresenter implements LoginContract.Presenter {
                 callUserService(username, password, token);
                 return;
             }
-            loginView.showCannotLoginError();
+            if(user == null) {
+                loginView.showCannotLoginError();
+                return;
+            }
+
+            user.setToken(token);
+            userRepository.save(user);
+            loginView.showMainScreen();
             return;
         }
 
