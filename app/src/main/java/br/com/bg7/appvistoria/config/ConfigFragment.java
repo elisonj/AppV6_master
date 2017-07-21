@@ -33,11 +33,13 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     private ConfigContract.Presenter configPresenter;
 
     private LinearLayout languagesContainer;
-    private Spinner languageList;
     private LinearLayout languagesLabel;
-    private LinearLayout buttonsContainer;
+    private Spinner languageList;
+
     private LinearLayout syncLabel;
     private CheckBox syncWithWifiOnly;
+
+    private LinearLayout buttonsContainer;
     private Button cancelButton;
     private Button confirmButton;
 
@@ -57,8 +59,8 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
         languagesLabel = root.findViewById(R.id.linear_language_top);
         languageList = root.findViewById(R.id.spinner_language);
 
-        syncWithWifiOnly = root.findViewById(R.id.checkBox_wifi);
         syncLabel = root.findViewById(R.id.linear_wifi);
+        syncWithWifiOnly = root.findViewById(R.id.checkBox_wifi);
 
         buttonsContainer = root.findViewById(R.id.linear_buttons);
         cancelButton = root.findViewById(R.id.button_cancel);
@@ -80,12 +82,10 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
             }
         });
 
-        confirmButton.setOnClickListener(new View.OnClickListener() {
+        syncWithWifiOnly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Country selected = (Country) languageList.getSelectedItem();
-
-                configPresenter.confirmClicked(selected.getId(), selected.getLanguage(), syncWithWifiOnly.isChecked());
+                configPresenter.syncWithWifiOnlyClicked();
             }
         });
 
@@ -96,10 +96,12 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
             }
         });
 
-        syncWithWifiOnly.setOnClickListener(new View.OnClickListener() {
+        confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                configPresenter.syncWithWifiOnlyClicked();
+                Country selected = (Country) languageList.getSelectedItem();
+
+                configPresenter.confirmClicked(selected.getId(), selected.getLanguage(), syncWithWifiOnly.isChecked());
             }
         });
     }
