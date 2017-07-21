@@ -18,7 +18,7 @@ import java.util.List;
 
 import br.com.bg7.appvistoria.Constants;
 import br.com.bg7.appvistoria.R;
-import br.com.bg7.appvistoria.config.vo.Country;
+import br.com.bg7.appvistoria.config.vo.Language;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -99,7 +99,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Country selected = (Country) languageList.getSelectedItem();
+                Language selected = (Language) languageList.getSelectedItem();
 
                 configPresenter.confirmClicked(selected.getId(), selected.getLanguage(), syncWithWifiOnly.isChecked());
             }
@@ -113,17 +113,17 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     }
 
     @Override
-    public List<Country> initCountryList() {
+    public List<Language> initLanguageList() {
         String languageIds [] = getContext().getResources().getStringArray(R.array.languageIds);
         String languageNames [] = getContext().getResources().getStringArray(R.array.languageNames);
         String languages [] = getContext().getResources().getStringArray(R.array.languages);
 
-        ArrayList<Country> countryList = new ArrayList<>();
+        ArrayList<Language> languageList = new ArrayList<>();
         for (int i = 0; i < languageIds.length; i++) {
-            countryList.add(new Country(languageIds[i], languageNames[i], languages[i]));
+            languageList.add(new Language(languageIds[i], languageNames[i], languages[i]));
         }
 
-        return countryList;
+        return languageList;
     }
 
     @Override
@@ -167,9 +167,9 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     }
 
     @Override
-    public void setCountries(List<Country> countryList) {
-        ArrayAdapter<Country> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, countryList);
-        languageList.setAdapter(adapter);
+    public void setLanguages(List<Language> languageList) {
+        ArrayAdapter<Language> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, languageList);
+        this.languageList.setAdapter(adapter);
     }
 
     @Override

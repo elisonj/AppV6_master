@@ -11,9 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.com.bg7.appvistoria.config.vo.Language;
 import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
 import br.com.bg7.appvistoria.data.Config;
-import br.com.bg7.appvistoria.config.vo.Country;
 
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
@@ -33,7 +33,7 @@ public class ConfigPresenterTest {
 
     private ConfigPresenter configPresenter;
 
-    private List<Country> countries;
+    private List<Language> languages;
 
     private Config config;
 
@@ -42,16 +42,16 @@ public class ConfigPresenterTest {
         MockitoAnnotations.initMocks(this);
         configPresenter = new ConfigPresenter(configRepository, configView);
 
-        setUpCountries();
+        setUpLanguages();
         setUpConfig("lang", true);
     }
 
-    private void setUpCountries() {
-        countries = Arrays.asList(
-                new Country("lang", null, null),
-                new Country("lang2", null, null)
+    private void setUpLanguages() {
+        languages = Arrays.asList(
+                new Language("lang", null, null),
+                new Language("lang2", null, null)
         );
-        when(configView.initCountryList()).thenReturn(countries);
+        when(configView.initLanguageList()).thenReturn(languages);
     }
 
     private void setUpConfig(String language, boolean isSyncWithWifiOnly) {
@@ -60,10 +60,10 @@ public class ConfigPresenterTest {
     }
 
     @Test
-    public void shouldInitCountryListOnStart() {
+    public void shouldInitLanguageListOnStart() {
         configPresenter.start();
 
-        verify(configView).initCountryList();
+        verify(configView).initLanguageList();
     }
 
     @Test

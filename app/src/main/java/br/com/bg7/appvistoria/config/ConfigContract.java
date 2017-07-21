@@ -4,7 +4,7 @@ import java.util.List;
 
 import br.com.bg7.appvistoria.BasePresenter;
 import br.com.bg7.appvistoria.BaseView;
-import br.com.bg7.appvistoria.config.vo.Country;
+import br.com.bg7.appvistoria.config.vo.Language;
 
 /**
  * Created by: luciolucio
@@ -19,9 +19,9 @@ public interface ConfigContract {
 
         void showButtons();
 
-        List<Country> initCountryList();
+        List<Language> initLanguageList();
 
-        void setCountries(List<Country> countryList);
+        void setLanguages(List<Language> languageList);
 
         void setLanguage(int id);
 

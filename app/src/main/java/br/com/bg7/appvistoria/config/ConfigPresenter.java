@@ -4,7 +4,7 @@ import java.util.List;
 
 import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
 import br.com.bg7.appvistoria.data.Config;
-import br.com.bg7.appvistoria.config.vo.Country;
+import br.com.bg7.appvistoria.config.vo.Language;
 
 /**
  * Created by: luciolucio
@@ -25,16 +25,16 @@ public class ConfigPresenter implements ConfigContract.Presenter {
     @Override
     public void start() {
 
-        List<Country> countryList = configView.initCountryList();
-        configView.setCountries(countryList);
+        List<Language> languageList = configView.initLanguageList();
+        configView.setLanguages(languageList);
 
         // TODO: Olhar isso quando descansado. Tem alguma responsabilidade da view perdida aqui
         Config config = configRepository.first(Config.class);
         if(config != null) {
             int selected = 0;
-            for (int i = 0; i < countryList.size(); i++) {
-                Country country = countryList.get(i);
-                if (country.getId().equals(config.getLanguage())) {
+            for (int i = 0; i < languageList.size(); i++) {
+                Language language = languageList.get(i);
+                if (language.getId().equals(config.getLanguage())) {
                     selected = i;
                 }
             }
