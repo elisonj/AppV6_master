@@ -30,6 +30,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     private final UserService userService;
     private final LoginContract.View loginView;
     private final UserRepository userRepository;
+    private User user = null;
 
     public LoginPresenter(
             @NonNull TokenService tokenService,
@@ -53,7 +54,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     public void login(final String username, final String password) {
         if (checkInput(username, password)) return;
 
-        User user = userRepository.findByUsername(username);
+        user = userRepository.findByUsername(username);
 
         if (user == null) {
             if (loginView.isConnected()) {
@@ -66,7 +67,16 @@ public class LoginPresenter implements LoginContract.Presenter {
         }
 
         if (!checkpw(password, user.getPassword())) {
+            if (loginView.isConnected()) {
+                attemptTokenLogin(username, password);
+                return;
+            }
             loginView.showWrongPasswordError();
+            return;
+        }
+
+        if (loginView.isConnected()) {
+            attemptTokenLogin(username, password);
             return;
         }
 
@@ -104,7 +114,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
             @Override
             public void onFailure(Throwable t) {
-                onGetTokenFailure(t);
+                onGetTokenFailure(password, t);
             }
         });
     }
@@ -125,10 +135,17 @@ public class LoginPresenter implements LoginContract.Presenter {
         loginView.showCannotLoginError();
     }
 
-    private void onGetTokenFailure(Throwable t) {
+    private void onGetTokenFailure(String password, Throwable t) {
         if (t instanceof TimeoutException) {
-            loginView.showCannotLoginOfflineError();
-            return;
+            if(user == null) {
+                loginView.showCannotLoginOfflineError();
+                return;
+            }
+            if (!checkpw(password, user.getPassword())) {
+                loginView.showWrongPasswordError();
+                return;
+            }
+            loginView.showMainScreen();
         }
 
         if (t instanceof ConnectException) {
