@@ -15,6 +15,7 @@ import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ServiceConfigurationError;
 
 import br.com.bg7.appvistoria.Constants;
 import br.com.bg7.appvistoria.R;
@@ -101,7 +102,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
             public void onClick(View view) {
                 Language selected = (Language) languageList.getSelectedItem();
 
-                configPresenter.confirmClicked(selected.getId(), selected.getLanguage(), syncWithWifiOnly.isChecked());
+                configPresenter.confirmClicked(selected.getLocale(), syncWithWifiOnly.isChecked());
             }
         });
     }
@@ -114,13 +115,16 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
 
     @Override
     public List<Language> initLanguageList() {
-        String languageIds [] = getContext().getResources().getStringArray(R.array.languageIds);
-        String languageNames [] = getContext().getResources().getStringArray(R.array.languageNames);
-        String languages [] = getContext().getResources().getStringArray(R.array.languages);
+        String locales[] = getResources().getStringArray(R.array.languageLocales);
+        String displayNames[] = getResources().getStringArray(R.array.languageDisplayNames);
+
+        if (locales.length != displayNames.length) {
+            throw new ServiceConfigurationError("Locale list and language display name list do not match in size");
+        }
 
         ArrayList<Language> languageList = new ArrayList<>();
-        for (int i = 0; i < languageIds.length; i++) {
-            languageList.add(new Language(languageIds[i], languageNames[i], languages[i]));
+        for (int i = 0; i < locales.length; i++) {
+            languageList.add(new Language(locales[i], displayNames[i]));
         }
 
         return languageList;
@@ -173,10 +177,10 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     }
 
     @Override
-    public void changeLanguage(String language) {
+    public void changeLanguage(String locale) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(Constants.PREFERENCE_LANGUAGE_KEY, language);
+        editor.putString(Constants.PREFERENCE_LOCALE_KEY, locale);
         editor.apply();
     }
 

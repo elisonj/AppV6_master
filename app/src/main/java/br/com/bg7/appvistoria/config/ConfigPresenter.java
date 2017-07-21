@@ -34,7 +34,7 @@ public class ConfigPresenter implements ConfigContract.Presenter {
             int selected = 0;
             for (int i = 0; i < languageList.size(); i++) {
                 Language language = languageList.get(i);
-                if (language.getId().equals(config.getLanguage())) {
+                if (language.getLocale().equals(config.getLanguage())) {
                     selected = i;
                 }
             }
@@ -61,7 +61,7 @@ public class ConfigPresenter implements ConfigContract.Presenter {
     }
 
     @Override
-    public void confirmClicked(String languageId, String language, boolean syncWithWifiOnly) {
+    public void confirmClicked(String locale, boolean syncWithWifiOnly) {
         configView.hideButtons();
         configView.hideLanguages();
 
@@ -70,10 +70,10 @@ public class ConfigPresenter implements ConfigContract.Presenter {
             configRepository.deleteAll(Config.class);
         }
 
-        config = new Config(languageId, syncWithWifiOnly);
+        config = new Config(locale, syncWithWifiOnly);
         configRepository.save(config);
 
-        configView.changeLanguage(language);
+        configView.changeLanguage(locale);
         configView.refresh();
     }
 

@@ -15,8 +15,8 @@
     <string name="cancel">CANCELAR</string>
     <string name="spin">Selecione a linguagem</string>
     <string name="sync_with_wifi_only">SINCRONIZAR APENAS COM WI-FI</string>
-    <string name="portuguese_br">Português (Brasil)</string>
-    <string name="english">Inglês</string>
+    <string name="language_ptBR">Português (Brasil)</string>
+    <string name="language_enUS">Inglês</string>
     <string name="config_saved">Configuração salva com sucesso.</string>
     <string name="change_language">ALTERAR IDIOMA</string>
     <string name="login_success">Login executado com sucesso.</string>

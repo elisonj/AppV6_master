@@ -15,8 +15,8 @@
     <string name="cancel">CANCEL</string>
     <string name="spin">Choose a language</string>
     <string name="sync_with_wifi_only">SYNC ONLY WITH WI-FI</string>
-    <string name="portuguese_br">Portuguese (Brazil)</string>
-    <string name="english">English</string>
+    <string name="language_ptBR">Portuguese (Brazil)</string>
+    <string name="language_enUS">English</string>
     <string name="config_saved">Configuration saved.</string>
     <string name="change_language">CHANGE LANGUAGE</string>
     <string name="login_success">Login success.</string>

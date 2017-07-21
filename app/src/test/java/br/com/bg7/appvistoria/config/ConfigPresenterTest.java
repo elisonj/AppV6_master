@@ -48,8 +48,8 @@ public class ConfigPresenterTest {
 
     private void setUpLanguages() {
         languages = Arrays.asList(
-                new Language("lang", null, null),
-                new Language("lang2", null, null)
+                new Language("pt_BR", null),
+                new Language("en_US", null)
         );
         when(configView.initLanguageList()).thenReturn(languages);
     }
@@ -68,7 +68,7 @@ public class ConfigPresenterTest {
 
     @Test
     public void shouldSelectLanguageOnStart() {
-        setUpConfig("lang2", true);
+        setUpConfig("en_US", true);
 
         configPresenter.start();
 
