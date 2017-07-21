@@ -157,4 +157,17 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
         verify(loginView).showMainScreen();
     }
+
+    @Test
+    public void shouldShowCannotLoginWhenSomeErrorAndNoUser() {
+        when(loginView.isConnected()).thenReturn(true);
+        when(userRepository.findByUsername(anyString())).thenReturn(null);
+
+        callLogin();
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        tokenCallBackCaptor.getValue().onFailure(new Exception());
+
+        verify(loginView).showCannotLoginError();
+    }
+
 }
