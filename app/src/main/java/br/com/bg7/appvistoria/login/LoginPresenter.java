@@ -131,7 +131,6 @@ public class LoginPresenter implements LoginContract.Presenter {
 
             return;
         }
-
         loginView.showCannotLoginError();
     }
 
