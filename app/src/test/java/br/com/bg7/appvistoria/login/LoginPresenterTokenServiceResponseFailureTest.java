@@ -144,4 +144,18 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
         verify(loginView).showWrongPasswordError();
     }
+    @Test
+    public void shouldShowCannotLoginWhenUnauthorizedButUserAndPasswordOk() {
+        when(loginView.isConnected()).thenReturn(true);
+        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+        when(tokenHttpResponse.isSuccessful()).thenReturn(false);
+        when(tokenHttpResponse.code()).thenReturn(loginPresenter.UNAUTHORIZED_CODE);
+        loginPresenter.checkpw = true;
+
+        callLogin();
+
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
+        verify(loginView).showWrongPasswordError();
+    }
 }
