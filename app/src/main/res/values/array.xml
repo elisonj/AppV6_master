@@ -5,7 +5,7 @@
         <item>en</item>
     </string-array>
     <string-array name="languageDisplayNames">
-        <item>@string/language_ptBR</item>
-        <item>@string/language_enUS</item>
+        <item>@string/language_pt</item>
+        <item>@string/language_en</item>
     </string-array>
 </resources>
