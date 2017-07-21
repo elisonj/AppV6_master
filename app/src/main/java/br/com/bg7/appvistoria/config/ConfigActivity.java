@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.MainFragment;
 import br.com.bg7.appvistoria.R;
+import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
 
 /**
  * Created by: luciolucio
@@ -27,6 +28,8 @@ public class ConfigActivity extends BaseActivity {
 
     private int selectedItem = DEFAULT_SCREEN_MENU_ITEM_INDEX;
     private Menu menu = null;
+
+    private final ConfigRepository configRepository = new ConfigRepository();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,7 +91,7 @@ public class ConfigActivity extends BaseActivity {
                 ConfigFragment configFrag = new ConfigFragment();
                 fragment = configFrag;
                 fragment.setRetainInstance(true);
-                new ConfigPresenter(configFrag);
+                new ConfigPresenter(configRepository, configFrag);
                 break;
         }
         selectedItem = item.getItemId();

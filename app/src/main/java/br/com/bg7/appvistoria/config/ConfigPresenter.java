@@ -2,6 +2,7 @@ package br.com.bg7.appvistoria.config;
 
 import java.util.List;
 
+import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
 import br.com.bg7.appvistoria.vo.Config;
 import br.com.bg7.appvistoria.vo.Country;
 
@@ -12,9 +13,11 @@ import br.com.bg7.appvistoria.vo.Country;
 
 public class ConfigPresenter implements ConfigContract.Presenter {
     private final ConfigContract.View configView;
+    private final ConfigRepository configRepository;
 
-    public ConfigPresenter(ConfigContract.View configView) {
+    public ConfigPresenter(ConfigRepository configRepository, ConfigContract.View configView) {
         this.configView = configView;
+        this.configRepository = configRepository;
 
         this.configView.setPresenter(this);
     }
@@ -26,17 +29,17 @@ public class ConfigPresenter implements ConfigContract.Presenter {
         configView.setCountries(countryList);
 
         // TODO: Olhar isso quando descansado. Tem alguma responsabilidade da view perdida aqui
-        List<Config> list = Config.listAll(Config.class);
-        if(list != null && list.size() > 0) {
+        Config config = configRepository.first(Config.class);
+        if(config != null) {
             int selected = 0;
             for (int i = 0; i < countryList.size(); i++) {
                 Country country = countryList.get(i);
-                if (country.getId().equals(list.get(0).getLanguage())) {
+                if (country.getId().equals(config.getLanguage())) {
                     selected = i;
                 }
             }
             configView.setLanguage(selected);
-            configView.setSyncWithWifiOnly(list.get(0).isSyncWithWifiOnly());
+            configView.setSyncWithWifiOnly(config.isSyncWithWifiOnly());
         }
     }
 
@@ -62,12 +65,13 @@ public class ConfigPresenter implements ConfigContract.Presenter {
         configView.hideButtons();
         configView.hideLanguages();
 
-        List<Config> list = Config.listAll(Config.class);
-        if(list != null && list.size() > 0) {
-            Config.deleteAll(Config.class);
+        Config config = configRepository.first(Config.class);
+        if(config != null) {
+            configRepository.deleteAll(Config.class);
         }
-        Config config = new Config(languageId, syncWithWifiOnly);
-        config.save();
+
+        config = new Config(languageId, syncWithWifiOnly);
+        configRepository.save(config);
 
         configView.changeLanguage(language);
         configView.refresh();

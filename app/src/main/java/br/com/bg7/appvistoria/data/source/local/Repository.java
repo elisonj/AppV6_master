@@ -24,11 +24,11 @@ public abstract class Repository<T extends SugarRecord<T>> {
         return iterator.next();
     }
 
-    void delete(T entity) {
+    public void delete(T entity) {
         entity.delete();
     }
 
-    void deleteAll(Class<T> type) {
+    public void deleteAll(Class<T> type) {
         T.deleteAll(type);
     }
 }
