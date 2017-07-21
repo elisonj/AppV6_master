@@ -3,7 +3,7 @@ package br.com.bg7.appvistoria.config;
 import java.util.List;
 
 import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
-import br.com.bg7.appvistoria.vo.Config;
+import br.com.bg7.appvistoria.data.Config;
 import br.com.bg7.appvistoria.vo.Country;
 
 /**

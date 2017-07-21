@@ -2,7 +2,7 @@ package br.com.bg7.appvistoria.login;
 
 import org.junit.Test;
 
-import br.com.bg7.appvistoria.vo.User;
+import br.com.bg7.appvistoria.data.User;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;

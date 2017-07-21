@@ -2,7 +2,7 @@ package br.com.bg7.appvistoria.data.source.local;
 
 import java.util.List;
 
-import br.com.bg7.appvistoria.vo.User;
+import br.com.bg7.appvistoria.data.User;
 
 /**
  * Created by: luciolucio

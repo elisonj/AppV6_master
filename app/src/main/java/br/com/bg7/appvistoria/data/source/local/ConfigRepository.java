@@ -1,6 +1,6 @@
 package br.com.bg7.appvistoria.data.source.local;
 
-import br.com.bg7.appvistoria.vo.Config;
+import br.com.bg7.appvistoria.data.Config;
 
 /**
  * Created by: luciolucio
