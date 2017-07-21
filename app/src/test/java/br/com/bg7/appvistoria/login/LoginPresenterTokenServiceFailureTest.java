@@ -170,4 +170,18 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
         verify(loginView).showCannotLoginError();
     }
 
+    @Test
+    public void shouldShowCannotLoginWhenSomeErrorAndBadPassword() {
+        when(loginView.isConnected()).thenReturn(true);
+
+        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+        loginPresenter.checkpw = false;
+
+        callLogin();
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        tokenCallBackCaptor.getValue().onFailure(new Exception());
+
+        verify(loginView).showWrongPasswordError();
+    }
+
 }
