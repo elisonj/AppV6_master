@@ -122,13 +122,20 @@ public class LoginPresenter implements LoginContract.Presenter {
     private void onGetTokenResponse(String username, String password, HttpResponse<Token> httpResponse) {
         if (httpResponse.isSuccessful()) {
             Token token = httpResponse.body();
-            if (token == null) {
+            if (user == null && token == null) {
                 loginView.showCannotLoginError();
+                return;
+            }
+            if (user != null && token == null) {
+                if (!checkpw(password, user.getPassword())) {
+                    loginView.showWrongPasswordError();
+                    return;
+                }
+                loginView.showMainScreen();
                 return;
             }
 
             callUserService(username, password, token);
-
             return;
         }
         loginView.showCannotLoginError();
@@ -149,6 +156,15 @@ public class LoginPresenter implements LoginContract.Presenter {
 
         if (t instanceof ConnectException) {
             loginView.showCannotLoginOfflineError();
+            return;
+        }
+
+        if(user != null) {
+            if (!checkpw(password, user.getPassword())) {
+                loginView.showWrongPasswordError();
+                return;
+            }
+            loginView.showMainScreen();
             return;
         }
 
