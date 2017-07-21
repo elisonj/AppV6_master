@@ -51,65 +51,17 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void login(final String username, final String password) {
-        if (Strings.isNullOrEmpty(username) || Strings.isNullOrEmpty(username.trim())) {
-            loginView.showUsernameEmptyError();
-            return;
-        }
+        if (checkInput(username, password)) return;
 
-        if (Strings.isNullOrEmpty(password) || Strings.isNullOrEmpty(password.trim())) {
-            loginView.showPasswordEmptyError();
-            return;
-        }
-
-        if (attemptOnlineLogin(username, password)) return;
-
-        attemptOfflineLogin(username, password);
-    }
-
-    private boolean attemptOnlineLogin(final String username, final String password) {
-        if (loginView.isConnected()) {
-            // TODO: Tentar o login offline se der erro no online
-            tokenService.getToken(username, password, new HttpCallback<Token>() {
-                @Override
-                public void onResponse(HttpResponse<Token> httpResponse) {
-                    if (httpResponse.isSuccessful()) {
-                        Token token = httpResponse.body();
-                        if (token != null) {
-                            userService.getUser(token.getAccessToken(), token.getUserId(), new UserCallback(username, password, token));
-                        }
-                    } else {
-                        loginView.showCannotLoginError();
-                    }
-                }
-
-                @Override
-                public void onFailure(Throwable t) {
-                    if (t instanceof TimeoutException) {
-                        loginView.showCannotLoginOfflineError();
-                        return;
-                    }
-
-                    if (t instanceof ConnectException) {
-                        loginView.showCannotLoginOfflineError();
-                        return;
-                    }
-
-                    loginView.showCannotLoginError();
-                }
-            });
-
-            return true;
-        }
-
-        return false;
-    }
-
-    private void attemptOfflineLogin(String username, String password) {
-        // TODO: Limpar esta lógica: exibir mensagens melhores para o usuário
         User user = userRepository.findByUsername(username);
 
         if (user == null) {
-            loginView.showUserNotFoundError();
+            if (loginView.isConnected()) {
+                attemptTokenLogin(username, password);
+                return;
+            }
+
+            loginView.showCannotLoginError();
             return;
         }
 
@@ -121,42 +73,107 @@ public class LoginPresenter implements LoginContract.Presenter {
         loginView.showMainScreen();
     }
 
-    boolean checkpw(String password, String passwordHash) {
-        return BCrypt.checkpw(password, passwordHash);
+    /**
+     * Checks the login information of the user and tells the view what to do
+     * @param username Username
+     * @param password Password
+     * @return true if the input is valid, false if it's not. Validity means that username
+     * and password are both not null and not empty
+     */
+    private boolean checkInput(String username, String password) {
+        if (Strings.isNullOrEmpty(username) || Strings.isNullOrEmpty(username.trim())) {
+            loginView.showUsernameEmptyError();
+            return true;
+        }
+
+        if (Strings.isNullOrEmpty(password) || Strings.isNullOrEmpty(password.trim())) {
+            loginView.showPasswordEmptyError();
+            return true;
+        }
+
+        return false;
     }
 
-    private class UserCallback implements HttpCallback<UserResponse> {
+    private void attemptTokenLogin(final String username, final String password) {
+        // TODO: Tentar o login offline se der erro no online
+        tokenService.getToken(username, password, new HttpCallback<Token>() {
+            @Override
+            public void onResponse(HttpResponse<Token> httpResponse) {
+                onGetTokenResponse(username, password, httpResponse);
+            }
 
-        private final String username;
-        private final String password;
-        private final Token token;
+            @Override
+            public void onFailure(Throwable t) {
+                onGetTokenFailure(t);
+            }
+        });
+    }
 
-        UserCallback(String username, String password, Token token) {
-            this.username = username;
-            this.password = password;
-            this.token = token;
+    private void onGetTokenResponse(String username, String password, HttpResponse<Token> httpResponse) {
+        if (httpResponse.isSuccessful()) {
+            Token token = httpResponse.body();
+            if (token == null) {
+                loginView.showCannotLoginError();
+                return;
+            }
+
+            callUserService(username, password, token);
+
+            return;
         }
 
-        @Override
-        public void onResponse(HttpResponse<UserResponse> httpResponse) {
-            if(httpResponse.isSuccessful()) {
-                UserResponse userResponse = httpResponse.body();
+        loginView.showCannotLoginError();
+    }
 
-                if(userResponse != null) {
-                    User userFromRepository = userRepository.findByUsername(username);
-                    if(userFromRepository == null) {
-                        User user = new User(userResponse, token, password);
-                        userRepository.save(user);
-                    }
+    private void onGetTokenFailure(Throwable t) {
+        if (t instanceof TimeoutException) {
+            loginView.showCannotLoginOfflineError();
+            return;
+        }
 
-                    loginView.showMainScreen();
+        if (t instanceof ConnectException) {
+            loginView.showCannotLoginOfflineError();
+            return;
+        }
+
+        loginView.showCannotLoginError();
+    }
+
+    private void callUserService(final String username, final String password, @NonNull final Token token) {
+        userService.getUser(token.getAccessToken(), token.getUserId(), new HttpCallback<UserResponse>() {
+            @Override
+            public void onResponse(HttpResponse<UserResponse> httpResponse) {
+                onGetUserResponse(httpResponse, username, token, password);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                onGetUserFailure();
+            }
+        });
+    }
+
+    private void onGetUserResponse(HttpResponse<UserResponse> httpResponse, String username, Token token, String password) {
+        if(httpResponse.isSuccessful()) {
+            UserResponse userResponse = httpResponse.body();
+
+            if(userResponse != null) {
+                User userFromRepository = userRepository.findByUsername(username);
+                if(userFromRepository == null) {
+                    User user = new User(userResponse, token, password);
+                    userRepository.save(user);
                 }
+
+                loginView.showMainScreen();
             }
         }
+    }
 
-        @Override
-        public void onFailure(Throwable t) {
-            loginView.showCannotLoginError();
-        }
+    private void onGetUserFailure() {
+        loginView.showCannotLoginError();
+    }
+
+    boolean checkpw(String password, String passwordHash) {
+        return BCrypt.checkpw(password, passwordHash);
     }
 }
