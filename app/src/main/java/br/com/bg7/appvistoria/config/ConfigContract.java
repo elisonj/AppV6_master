@@ -31,7 +31,7 @@ public interface ConfigContract {
 
         void hideLanguages();
 
-        void changeLanguage(String locale);
+        void changeLanguage(String language);
 
         void refresh();
     }
@@ -43,7 +43,7 @@ public interface ConfigContract {
 
         void syncLabelClicked();
 
-        void confirmClicked(String locale, boolean syncWithWifiOnly);
+        void confirmClicked(String language, boolean syncWithWifiOnly);
 
         void cancelClicked();
     }

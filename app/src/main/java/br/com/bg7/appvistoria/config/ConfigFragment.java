@@ -115,16 +115,16 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
 
     @Override
     public List<Language> initLanguageList() {
-        String locales[] = getResources().getStringArray(R.array.languageLocales);
+        String languageNames[] = getResources().getStringArray(R.array.languageNames);
         String displayNames[] = getResources().getStringArray(R.array.languageDisplayNames);
 
-        if (locales.length != displayNames.length) {
-            throw new ServiceConfigurationError("Locale list and language display name list do not match in size");
+        if (languageNames.length != displayNames.length) {
+            throw new ServiceConfigurationError("Language names and language display names do not match in size");
         }
 
         ArrayList<Language> languageList = new ArrayList<>();
-        for (int i = 0; i < locales.length; i++) {
-            languageList.add(new Language(locales[i], displayNames[i]));
+        for (int i = 0; i < languageNames.length; i++) {
+            languageList.add(new Language(languageNames[i], displayNames[i]));
         }
 
         return languageList;
@@ -177,10 +177,10 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     }
 
     @Override
-    public void changeLanguage(String locale) {
+    public void changeLanguage(String language) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(Constants.PREFERENCE_LOCALE_KEY, locale);
+        editor.putString(Constants.PREFERENCE_LANGUAGE_KEY, language);
         editor.apply();
     }
 

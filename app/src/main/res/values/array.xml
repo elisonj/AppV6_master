@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="languageLocales">
+    <string-array name="languageNames">
         <item>pt</item>
         <item>en</item>
     </string-array>

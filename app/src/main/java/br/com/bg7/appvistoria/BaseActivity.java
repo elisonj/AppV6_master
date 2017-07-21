@@ -18,8 +18,8 @@ public class BaseActivity extends LocalizationActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         String defaultLanguage = preferences.getString(
-                Constants.PREFERENCE_LOCALE_KEY,
-                Constants.DEFAULT_LOCALE);
+                Constants.PREFERENCE_LANGUAGE_KEY,
+                Constants.DEFAULT_LANGUAGE);
         setLanguage(defaultLanguage);
     }
 }

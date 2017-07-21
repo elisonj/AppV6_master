@@ -6,7 +6,7 @@ package br.com.bg7.appvistoria;
  */
 public class Constants {
 
-    public static final String PREFERENCE_LOCALE_KEY = "PREFERENCE_LOCALE_KEY";
-    public static final String DEFAULT_LOCALE = "pt";
+    public static final String PREFERENCE_LANGUAGE_KEY = "PREFERENCE_LANGUAGE_KEY";
+    public static final String DEFAULT_LANGUAGE = "pt";
 
 }

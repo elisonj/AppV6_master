@@ -61,7 +61,7 @@ public class ConfigPresenter implements ConfigContract.Presenter {
     }
 
     @Override
-    public void confirmClicked(String locale, boolean syncWithWifiOnly) {
+    public void confirmClicked(String language, boolean syncWithWifiOnly) {
         configView.hideButtons();
         configView.hideLanguages();
 
@@ -70,10 +70,10 @@ public class ConfigPresenter implements ConfigContract.Presenter {
             configRepository.deleteAll(Config.class);
         }
 
-        config = new Config(locale, syncWithWifiOnly);
+        config = new Config(language, syncWithWifiOnly);
         configRepository.save(config);
 
-        configView.changeLanguage(locale);
+        configView.changeLanguage(language);
         configView.refresh();
     }
 
