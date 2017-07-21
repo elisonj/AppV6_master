@@ -73,4 +73,18 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
         verify(loginView).showMainScreen();
     }
+
+    @Test
+    public void shouldShowCannotLoginWhenNoBodyAndNoUser() {
+        when(loginView.isConnected()).thenReturn(true);
+        when(userRepository.findByUsername(anyString())).thenReturn(null);
+        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
+        when(tokenHttpResponse.body()).thenReturn(null);
+
+        callLogin();
+
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
+        verify(loginView).showCannotLoginError();
+    }
 }
