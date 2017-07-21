@@ -2,10 +2,6 @@ package br.com.bg7.appvistoria.vo;
 
 import com.orm.SugarRecord;
 
-import org.mindrot.jbcrypt.BCrypt;
-
-import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
-
 /**
  * Created by: elison
  * Date: 2017-07-12
@@ -17,19 +13,11 @@ import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
  */
 public class User extends SugarRecord<User> {
 
-    @SuppressWarnings("FieldCanBeLocal")
-    private String fullName;
-
-    @SuppressWarnings("FieldCanBeLocal")
     private String userName;
 
-    @SuppressWarnings("FieldCanBeLocal")
-    private String email;
+    private String passwordHash;
 
-    private String password;
-
-    @SuppressWarnings("FieldCanBeLocal")
-    private Token token;
+    private String token;
 
     /**
      * Default constructor used by Sugar
@@ -37,16 +25,14 @@ public class User extends SugarRecord<User> {
     @SuppressWarnings("unused")
     public User() {}
 
-    public User(UserResponse user, br.com.bg7.appvistoria.data.source.remote.dto.Token tokenFromService, String password) {
-        fullName = user.getUserAccounts().get(0).getBasicInfo().getFullName();
-        userName = user.getUserAccounts().get(0).getCredentials().getLogin();
-        email = user.getUserAccounts().get(0).getBasicInfo().getEmail().getAddress();
-        this.password  = BCrypt.hashpw(password, BCrypt.gensalt());
-        token = new Token(tokenFromService);
+    public User(String username, String token, String passwordHash) {
+        this.userName = username;
+        this.token = token;
+        this.passwordHash = passwordHash;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
 }

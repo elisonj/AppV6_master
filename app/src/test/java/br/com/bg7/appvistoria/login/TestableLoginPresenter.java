@@ -8,6 +8,7 @@ import br.com.bg7.appvistoria.data.source.local.UserRepository;
 
 class TestableLoginPresenter extends LoginPresenter {
 
+    String passwordHash = "";
     boolean checkpw = true;
 
     TestableLoginPresenter(
@@ -16,6 +17,11 @@ class TestableLoginPresenter extends LoginPresenter {
             @NonNull UserRepository userRepository,
             @NonNull LoginContract.View loginView) {
         super(tokenService, userService, userRepository, loginView);
+    }
+
+    @Override
+    String hashpw(String password) {
+        return passwordHash;
     }
 
     @Override

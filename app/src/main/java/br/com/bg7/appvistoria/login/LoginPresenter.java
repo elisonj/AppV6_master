@@ -65,7 +65,7 @@ public class LoginPresenter implements LoginContract.Presenter {
             return;
         }
 
-        if (!checkpw(password, user.getPassword())) {
+        if (!checkpw(password, user.getPasswordHash())) {
             loginView.showWrongPasswordError();
             return;
         }
@@ -160,7 +160,8 @@ public class LoginPresenter implements LoginContract.Presenter {
             if(userResponse != null) {
                 User userFromRepository = userRepository.findByUsername(username);
                 if(userFromRepository == null) {
-                    User user = new User(userResponse, token, password);
+                    String passwordHash = hashpw(password);
+                    User user = new User(username, token.getAccessToken(), passwordHash);
                     userRepository.save(user);
                 }
 
@@ -175,5 +176,9 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     boolean checkpw(String password, String passwordHash) {
         return BCrypt.checkpw(password, passwordHash);
+    }
+
+    String hashpw(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 }
