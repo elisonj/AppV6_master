@@ -4,8 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.google.common.base.Strings;
 
-import org.mindrot.jbcrypt.BCrypt;
-
 import java.net.ConnectException;
 import java.util.concurrent.TimeoutException;
 
@@ -26,6 +24,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 
 public class LoginPresenter implements LoginContract.Presenter {
+    public final int UNAUTHORIZED_CODE = 401;
+
     private final TokenService tokenService;
     private final UserService userService;
     private final LoginContract.View loginView;
@@ -138,6 +138,20 @@ public class LoginPresenter implements LoginContract.Presenter {
             callUserService(username, password, token);
             return;
         }
+
+        if(httpResponse.code() == UNAUTHORIZED_CODE) {
+            loginView.showWrongPasswordError();
+            return;
+        }
+
+        if (user != null) {
+            if (!checkpw(password, user.getPassword())) {
+                loginView.showWrongPasswordError();
+                return;
+            }
+            loginView.showMainScreen();
+            return;
+        }
         loginView.showCannotLoginError();
     }
 
@@ -152,6 +166,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                 return;
             }
             loginView.showMainScreen();
+            return;
         }
 
         if (t instanceof ConnectException) {
@@ -206,6 +221,6 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     boolean checkpw(String password, String passwordHash) {
-        return BCrypt.checkpw(password, passwordHash);
+        return checkpw(password, passwordHash);
     }
 }
