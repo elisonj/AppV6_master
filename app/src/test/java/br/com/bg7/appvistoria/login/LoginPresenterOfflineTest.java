@@ -24,15 +24,6 @@ public class LoginPresenterOfflineTest extends LoginPresenterBaseTest {
     }
 
     @Test
-    public void shouldShowUserNotFoundIfRepositoryReturnsNull() {
-        when(userRepository.findByUsername(USERNAME)).thenReturn(null);
-
-        callLogin();
-
-        verify(loginView).showUserNotFoundError();
-    }
-
-    @Test
     public void shouldShowWrongPasswordWhenPasswordCheckFails() {
         loginPresenter.checkpw = false;
 

@@ -31,6 +31,17 @@ public class User extends SugarRecord<User> {
         this.passwordHash = passwordHash;
     }
 
+    public User clone(String token) {
+        User user = new User();
+
+        user.id = this.id;
+        user.userName = this.userName;
+        user.passwordHash = this.passwordHash;
+        user.token = token;
+
+        return user;
+    }
+
     public String getPasswordHash() {
         return passwordHash;
     }
