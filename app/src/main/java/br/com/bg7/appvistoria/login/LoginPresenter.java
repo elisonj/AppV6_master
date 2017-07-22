@@ -25,8 +25,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Date: 2017-07-14
  */
 
-public class LoginPresenter implements LoginContract.Presenter {
-    public final int UNAUTHORIZED_CODE = 401;
+class LoginPresenter implements LoginContract.Presenter {
+    final int UNAUTHORIZED_CODE = 401;
 
     private final TokenService tokenService;
     private final UserService userService;
@@ -34,7 +34,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     private final UserRepository userRepository;
     private User user = null;
 
-    public LoginPresenter(
+    LoginPresenter(
             @NonNull TokenService tokenService,
             @NonNull UserService userService,
             @NonNull UserRepository userRepository,

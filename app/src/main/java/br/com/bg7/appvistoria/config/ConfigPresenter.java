@@ -14,12 +14,12 @@ import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
  * Date: 2017-07-17
  */
 
-public class ConfigPresenter implements ConfigContract.Presenter {
+class ConfigPresenter implements ConfigContract.Presenter {
     private final ConfigContract.View configView;
     private final ConfigRepository configRepository;
     private final LanguageRepository languageRepository;
 
-    public ConfigPresenter(ConfigRepository configRepository, LanguageRepository languageRepository, ConfigContract.View configView) {
+    ConfigPresenter(ConfigRepository configRepository, LanguageRepository languageRepository, ConfigContract.View configView) {
         this.configRepository = configRepository;
         this.languageRepository = languageRepository;
         this.configView = configView;
