@@ -9,6 +9,8 @@ import br.com.bg7.appvistoria.data.Config;
 import br.com.bg7.appvistoria.config.vo.Language;
 import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by: luciolucio
  * Date: 2017-07-17
@@ -20,9 +22,9 @@ class ConfigPresenter implements ConfigContract.Presenter {
     private final LanguageRepository languageRepository;
 
     ConfigPresenter(ConfigRepository configRepository, LanguageRepository languageRepository, ConfigContract.View configView) {
-        this.configRepository = configRepository;
-        this.languageRepository = languageRepository;
-        this.configView = configView;
+        this.configRepository = checkNotNull(configRepository);
+        this.languageRepository = checkNotNull(languageRepository);
+        this.configView = checkNotNull(configView);
 
         this.configView.setPresenter(this);
     }

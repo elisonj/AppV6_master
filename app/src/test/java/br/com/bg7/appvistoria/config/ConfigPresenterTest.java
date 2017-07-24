@@ -64,6 +64,30 @@ public class ConfigPresenterTest {
     }
 
     @Test
+    public void shouldInitializePresenter()
+    {
+        verify(configView).setPresenter(configPresenter);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldNotAcceptNullForConfigRepository()
+    {
+        new ConfigPresenter(null, languageRepository, configView);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldNotAcceptNullForLanguageRepository()
+    {
+        new ConfigPresenter(configRepository, null, configView);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldNotAcceptNullForConfigView()
+    {
+        new ConfigPresenter(configRepository, languageRepository, null);
+    }
+
+    @Test
     public void shouldSelectLanguageOnStart() {
         setUpConfig("en_US", true);
 
