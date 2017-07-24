@@ -54,9 +54,20 @@ class ConfigPresenter implements ConfigContract.Presenter {
                 languageName = languageList.get(0).getName();
             }
 
-            configView.setLanguage(languageName);
-            configView.setSyncWithWifiOnly(config.isSyncWithWifiOnly());
+            applyConfig(languageName, config.isSyncWithWifiOnly());
+            return;
         }
+
+        applyDefaultConfig(languageList);
+    }
+
+    private void applyDefaultConfig(List<Language> languageList) {
+        applyConfig(languageList.get(0).getName(), true);
+    }
+
+    private void applyConfig(String name, boolean syncWithWifiOnly) {
+        configView.setLanguage(name);
+        configView.setSyncWithWifiOnly(syncWithWifiOnly);
     }
 
     @Override

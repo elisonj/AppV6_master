@@ -124,4 +124,14 @@ public class ConfigPresenterTest {
             verify(configView).setLanguage("pt_BR");
         }
     }
+
+    @Test
+    public void shouldSetDefaultsWhenNoConfig() {
+        when(configRepository.first(Config.class)).thenReturn(null);
+
+        configPresenter.start();
+
+        verify(configView).setLanguage("pt_BR");
+        verify(configView).setSyncWithWifiOnly(true);
+    }
 }
