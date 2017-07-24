@@ -173,10 +173,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(Constants.PREFERENCE_LANGUAGE_KEY, language);
         editor.apply();
-    }
 
-    @Override
-    public void refresh() {
         getActivity().recreate();
     }
 

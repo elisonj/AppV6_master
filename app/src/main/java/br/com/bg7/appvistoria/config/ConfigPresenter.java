@@ -4,9 +4,9 @@ import com.google.common.base.Strings;
 
 import java.util.List;
 
-import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
-import br.com.bg7.appvistoria.data.Config;
 import br.com.bg7.appvistoria.config.vo.Language;
+import br.com.bg7.appvistoria.data.Config;
+import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
 import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -17,6 +17,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 
 class ConfigPresenter implements ConfigContract.Presenter {
+    private static final boolean DEFAULT_WIFI_OPTION = true;
+    private static final int DEFAULT_LANGUAGE_INDEX = 0;
+
     private final ConfigContract.View configView;
     private final ConfigRepository configRepository;
     private final LanguageRepository languageRepository;
@@ -31,38 +34,41 @@ class ConfigPresenter implements ConfigContract.Presenter {
 
     @Override
     public void start() {
-        // TODO: Agora que o teste passou, refactoring disso aqui
         List<Language> languageList = languageRepository.getLanguages();
         configView.setLanguages(languageList);
 
         Config config = configRepository.first(Config.class);
-        if(config != null) {
-            String languageName = config.getLanguageName();
-            if (Strings.isNullOrEmpty(languageName) || Strings.isNullOrEmpty(languageName.trim())) {
-                languageName = languageList.get(0).getName();
-            }
-
-            boolean languageExists = false;
-            for (Language language : languageList) {
-                if (languageName.equals(language.getName())) {
-                    languageExists = true;
-                    break;
-                }
-            }
-
-            if (!languageExists) {
-                languageName = languageList.get(0).getName();
-            }
-
-            applyConfig(languageName, config.isSyncWithWifiOnly());
+        if(config == null) {
+            applyDefaultConfig(languageList);
             return;
         }
 
-        applyDefaultConfig(languageList);
+        loadConfig(config, languageList);
+    }
+
+    private void loadConfig(Config config, List<Language> languageList) {
+        String languageName = config.getLanguageName();
+        if (Strings.isNullOrEmpty(languageName) || Strings.isNullOrEmpty(languageName.trim())) {
+            languageName = languageList.get(DEFAULT_LANGUAGE_INDEX).getName();
+        }
+
+        boolean languageExists = false;
+        for (Language language : languageList) {
+            if (languageName.equals(language.getName())) {
+                languageExists = true;
+                break;
+            }
+        }
+
+        if (!languageExists) {
+            languageName = languageList.get(DEFAULT_LANGUAGE_INDEX).getName();
+        }
+
+        applyConfig(languageName, config.isSyncWithWifiOnly());
     }
 
     private void applyDefaultConfig(List<Language> languageList) {
-        applyConfig(languageList.get(0).getName(), true);
+        applyConfig(languageList.get(DEFAULT_LANGUAGE_INDEX).getName(), DEFAULT_WIFI_OPTION);
     }
 
     private void applyConfig(String name, boolean syncWithWifiOnly) {
@@ -101,7 +107,6 @@ class ConfigPresenter implements ConfigContract.Presenter {
         configRepository.save(config);
 
         configView.changeLanguage(language);
-        configView.refresh();
     }
 
     @Override

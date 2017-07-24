@@ -134,4 +134,66 @@ public class ConfigPresenterTest {
         verify(configView).setLanguage("pt_BR");
         verify(configView).setSyncWithWifiOnly(true);
     }
+
+    @Test
+    public void shouldShowButtonsAndToggleLanguagesWhenLanguagesLabelClicked()
+    {
+        configPresenter.languagesLabelClicked();
+
+        verify(configView).showButtons();
+        verify(configView).toggleLanguagesVisibility();
+    }
+
+    @Test
+    public void showShowButtonsWhenSyncClicked()
+    {
+        configPresenter.syncWithWifiOnlyClicked();
+
+        verify(configView).showButtons();
+    }
+
+    @Test
+    public void showShowButtonsAndToggleSyncWhenSyncLabelClicked()
+    {
+        configPresenter.syncLabelClicked();
+
+        verify(configView).showButtons();
+        verify(configView).toggleSyncWithWifiOnly();
+    }
+
+    @Test
+    public void shouldHideElementsWhenCancelClicked()
+    {
+        configPresenter.cancelClicked();
+
+        verify(configView).hideButtons();
+        verify(configView).hideLanguages();
+    }
+
+    @Test
+    public void shouldResetOptionsWhenCancelClicked()
+    {
+        configPresenter.syncWithWifiOnlyClicked();
+
+        configPresenter.cancelClicked();
+
+        verify(configView).setSyncWithWifiOnly(true);
+    }
+
+    @Test
+    public void shouldHideButtonsAndLanguagesWhenConfirmClicked()
+    {
+        configPresenter.confirmClicked(null, true);
+
+        verify(configView).hideButtons();
+        verify(configView).hideLanguages();
+    }
+
+    @Test
+    public void shouldChangeLanguageWhenConfirmClicked()
+    {
+        configPresenter.confirmClicked("pt_BR", true);
+
+        verify(configView).changeLanguage("pt_BR");
+    }
 }

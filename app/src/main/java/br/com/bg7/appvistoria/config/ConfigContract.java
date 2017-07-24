@@ -30,8 +30,6 @@ public interface ConfigContract {
         void hideLanguages();
 
         void changeLanguage(String language);
-
-        void refresh();
     }
 
     interface Presenter extends BasePresenter {
