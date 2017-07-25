@@ -224,7 +224,20 @@ public class LoginPresenter implements LoginContract.Presenter {
 
                 loginView.showMainScreen();
             }
+            return;
         }
+
+        if(user != null) {
+            user.setToken(token);
+            if (!checkpw(password, user.getPassword())) {
+                user.setPassword(password);
+            }
+            userRepository.save(user);
+            loginView.showMainScreen();
+            return;
+        }
+        loginView.showCannotLoginError();
+
     }
 
     private void onGetUserFailure(final String password, @NonNull final Token token) {

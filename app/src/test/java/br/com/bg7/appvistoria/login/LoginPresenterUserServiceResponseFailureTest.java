@@ -42,7 +42,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         Token token = new Token(TOKEN, USER_ID);
         token.setExpiresIn(0);
         when(tokenHttpResponse.body()).thenReturn(token);
-        when(userHttpResponse.isSuccessful()).thenReturn(true);
+        when(userHttpResponse.isSuccessful()).thenReturn(false);
         UserResponse userResponse = new UserResponse();
         when(userHttpResponse.body()).thenReturn(userResponse);
 
@@ -51,7 +51,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
         tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
-        userCallBackCaptor.getValue().onFailure(new Exception());
+        userCallBackCaptor.getValue().onResponse(userHttpResponse);
         verify(loginView).showCannotLoginError();
     }
 
@@ -64,7 +64,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         Token token = new Token(TOKEN, USER_ID);
         token.setExpiresIn(0);
         when(tokenHttpResponse.body()).thenReturn(token);
-        when(userHttpResponse.isSuccessful()).thenReturn(true);
+        when(userHttpResponse.isSuccessful()).thenReturn(false);
         UserResponse userResponse = new UserResponse();
         when(userHttpResponse.body()).thenReturn(userResponse);
 
@@ -73,7 +73,29 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
         tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
-        userCallBackCaptor.getValue().onFailure(new Exception());
+        userCallBackCaptor.getValue().onResponse(userHttpResponse);
+        verify(loginView).showMainScreen();
+    }
+
+    @Test
+    public void shouldShowMainScreenWhenNoSuccessButUserAndPasswordOk() {
+        when(loginView.isConnected()).thenReturn(true);
+        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+        loginPresenter.checkpw = true;
+        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
+        Token token = new Token(TOKEN, USER_ID);
+        token.setExpiresIn(0);
+        when(tokenHttpResponse.body()).thenReturn(token);
+        when(userHttpResponse.isSuccessful()).thenReturn(false);
+        UserResponse userResponse = new UserResponse();
+        when(userHttpResponse.body()).thenReturn(userResponse);
+
+        callLogin();
+
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
+        verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
+        userCallBackCaptor.getValue().onResponse(userHttpResponse);
         verify(loginView).showMainScreen();
     }
 
