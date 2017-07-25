@@ -39,7 +39,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="16dp"
-            android:text="unicornio"
+            android:text=""
             android:inputType="textPersonName"/>
 
 
@@ -61,7 +61,7 @@
             android:layout_marginRight="15dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="8dp"
-            android:text="unicornio"
+            android:text=""
             android:inputType="textPassword"/>
 
         <Button
