@@ -11,10 +11,8 @@ import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
 import br.com.bg7.appvistoria.vo.User;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.matches;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -22,7 +20,7 @@ import static org.mockito.Mockito.when;
  * Created by: elison
  * Date: 2017-07-25
  */
-public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseTest {
+public class LoginPresenterUserRepositoryTest extends LoginPresenterBaseTest {
 
     @Captor
     private ArgumentCaptor<HttpCallback<Token>> tokenCallBackCaptor;
@@ -38,7 +36,7 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
 
 
     @Test
-    public void shouldShowApplicationErrorWhenRepositoryFails() {
+    public void shouldShowMainScreenWhenSaveUser() {
         when(loginView.isConnected()).thenReturn(true);
         when(userRepository.findByUsername(anyString())).thenReturn(null);
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
@@ -49,21 +47,18 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
         UserResponse userResponse = new UserResponse();
         when(userHttpResponse.body()).thenReturn(userResponse);
 
-        doThrow(new RuntimeException("Error saving user"))
-                .when(userRepository).save((User)any());
-
         callLogin();
 
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
         tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
         userCallBackCaptor.getValue().onResponse(userHttpResponse);
-        verify(loginView).showApplicationError();
+        verify(loginView).showMainScreen();
     }
 
 
     @Test
-    public void shouldShowApplicationErrorWhenRepositoryFailsAndBadPassword() {
+    public void shouldShowMainScreenWhenBadPassword() {
         when(loginView.isConnected()).thenReturn(true);
         when(userRepository.findByUsername(anyString())).thenReturn(new User());
         loginPresenter.checkpw = false;
@@ -75,20 +70,17 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
         UserResponse userResponse = new UserResponse();
         when(userHttpResponse.body()).thenReturn(userResponse);
 
-        doThrow(new RuntimeException("Error saving user"))
-                .when(userRepository).save((User)any());
-
         callLogin();
 
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
         tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
         userCallBackCaptor.getValue().onResponse(userHttpResponse);
-        verify(loginView).showApplicationError();
+        verify(loginView).showMainScreen();
     }
 
     @Test
-    public void shouldShowApplicationErrorWhenRepositoryFailsAndUserAndPasswordOK() {
+    public void shouldShowMainScreenWhenUserAndPasswordOK() {
         when(loginView.isConnected()).thenReturn(true);
         when(userRepository.findByUsername(anyString())).thenReturn(new User());
         loginPresenter.checkpw = true;
@@ -100,8 +92,6 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
         UserResponse userResponse = new UserResponse();
         when(userHttpResponse.body()).thenReturn(userResponse);
 
-        doThrow(new RuntimeException("Error saving user"))
-                .when(userRepository).save((User)any());
 
         callLogin();
 
@@ -109,6 +99,6 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
         tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
         userCallBackCaptor.getValue().onResponse(userHttpResponse);
-        verify(loginView).showApplicationError();
+        verify(loginView).showMainScreen();
     }
 }
