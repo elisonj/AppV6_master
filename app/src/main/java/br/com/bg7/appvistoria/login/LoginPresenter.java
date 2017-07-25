@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.google.common.base.Strings;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.net.ConnectException;
 import java.util.concurrent.TimeoutException;
 
@@ -105,7 +107,6 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     private void attemptTokenLogin(final String username, final String password) {
-        // TODO: Tentar o login offline se der erro no online
         tokenService.getToken(username, password, new HttpCallback<Token>() {
             @Override
             public void onResponse(HttpResponse<Token> httpResponse) {
@@ -253,6 +254,7 @@ public class LoginPresenter implements LoginContract.Presenter {
             }
             return;
         }
+
         loginView.showCannotLoginError();
 
     }
@@ -276,7 +278,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     boolean checkpw(String password, String passwordHash) {
-        return checkpw(password, passwordHash);
+        return BCrypt.checkpw(password, passwordHash);
     }
 
     public User getUser() {
