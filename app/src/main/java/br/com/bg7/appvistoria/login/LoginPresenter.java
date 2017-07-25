@@ -227,6 +227,11 @@ public class LoginPresenter implements LoginContract.Presenter {
             }
         }
 
+        if(httpResponse.code() == UNAUTHORIZED_CODE) {
+            loginView.showWrongPasswordError();
+            return;
+        }
+
         if(user != null) {
             user.setToken(token);
             if (!checkpw(password, user.getPassword())) {
