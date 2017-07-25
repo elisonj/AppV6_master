@@ -86,7 +86,7 @@ public class LoginPresenterUserServiceResponseTest extends LoginPresenterBaseTes
 
     @Test
     public void shouldShowCannotLoginWhenAnyErrorAndNoUser() {
-        when(loginView.isConnected()).thenReturn(true, true);
+        when(loginView.isConnected()).thenReturn(true);
         when(userRepository.findByUsername(anyString())).thenReturn(null);
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
         Token token = new Token(TOKEN, USER_ID);
@@ -102,6 +102,27 @@ public class LoginPresenterUserServiceResponseTest extends LoginPresenterBaseTes
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
         userCallBackCaptor.getValue().onFailure(new Exception());
         verify(loginView).showCannotLoginError();
+    }
+
+    @Test
+    public void shouldShowMainScreenLoginWhenAnyErrorAndBadPassword() {
+        when(loginView.isConnected()).thenReturn(true);
+        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+        loginPresenter.checkpw = false;
+        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
+        Token token = new Token(TOKEN, USER_ID);
+        token.setExpiresIn(0);
+        when(tokenHttpResponse.body()).thenReturn(token);
+        when(userHttpResponse.isSuccessful()).thenReturn(false);
+        when(userHttpResponse.body()).thenReturn(null);
+
+        callLogin();
+
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
+        verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
+        userCallBackCaptor.getValue().onFailure(new Exception());
+        verify(loginView).showMainScreen();
     }
 
 }

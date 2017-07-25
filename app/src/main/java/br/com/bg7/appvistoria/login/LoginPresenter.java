@@ -197,7 +197,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         loginView.showCannotLoginError();
     }
 
-    private void callUserService(final String username, final String password, @NonNull final Token token) {
+        private void callUserService(final String username, final String password, @NonNull final Token token) {
         userService.getUser(token.getAccessToken(), token.getUserId(), new HttpCallback<UserResponse>() {
             @Override
             public void onResponse(HttpResponse<UserResponse> httpResponse) {
@@ -206,7 +206,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
             @Override
             public void onFailure(Throwable t) {
-                onGetUserFailure();
+                onGetUserFailure(password, token);
             }
         });
     }
@@ -227,7 +227,17 @@ public class LoginPresenter implements LoginContract.Presenter {
         }
     }
 
-    private void onGetUserFailure() {
+    private void onGetUserFailure(final String password, @NonNull final Token token) {
+        if(user != null) {
+            user.setToken(token);
+            if (!checkpw(password, user.getPassword())) {
+                user.setPassword(password);
+            }
+            userRepository.save(user);
+            loginView.showMainScreen();
+            return;
+        }
+
         loginView.showCannotLoginError();
     }
 
