@@ -125,4 +125,25 @@ public class LoginPresenterUserServiceResponseTest extends LoginPresenterBaseTes
         verify(loginView).showMainScreen();
     }
 
+    @Test
+    public void shouldShowMainScreenLoginWhenAnyErrorButUserAndPassOk() {
+        when(loginView.isConnected()).thenReturn(true);
+        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+        loginPresenter.checkpw = true;
+        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
+        Token token = new Token(TOKEN, USER_ID);
+        token.setExpiresIn(0);
+        when(tokenHttpResponse.body()).thenReturn(token);
+        when(userHttpResponse.isSuccessful()).thenReturn(false);
+        when(userHttpResponse.body()).thenReturn(null);
+
+        callLogin();
+
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
+        verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
+        userCallBackCaptor.getValue().onFailure(new Exception());
+        verify(loginView).showMainScreen();
+    }
+
 }
