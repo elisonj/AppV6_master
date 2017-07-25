@@ -145,8 +145,12 @@ public class LoginPresenter implements LoginContract.Presenter {
             }
 
             user.setToken(token);
-            userRepository.save(user);
-            loginView.showMainScreen();
+            try{
+                userRepository.save(user);
+                loginView.showMainScreen();
+            } catch (Exception ex) {
+                loginView.showApplicationError();
+            }
             return;
         }
 
@@ -218,8 +222,12 @@ public class LoginPresenter implements LoginContract.Presenter {
             if(userResponse != null) {
                 User userFromRepository = userRepository.findByUsername(username);
                 if(userFromRepository == null) {
-                    User user = new User(userResponse, token, password);
-                    userRepository.save(user);
+                    try {
+                        User user = new User(userResponse, token, password);
+                        userRepository.save(user);
+                    } catch (Exception ex) {
+                        loginView.showApplicationError();
+                    }
                 }
 
                 loginView.showMainScreen();
@@ -237,8 +245,12 @@ public class LoginPresenter implements LoginContract.Presenter {
             if (!checkpw(password, user.getPassword())) {
                 user.setPassword(password);
             }
-            userRepository.save(user);
-            loginView.showMainScreen();
+            try{
+                userRepository.save(user);
+                loginView.showMainScreen();
+            } catch (Exception ex) {
+                loginView.showApplicationError();
+            }
             return;
         }
         loginView.showCannotLoginError();
@@ -251,8 +263,12 @@ public class LoginPresenter implements LoginContract.Presenter {
             if (!checkpw(password, user.getPassword())) {
                 user.setPassword(password);
             }
-            userRepository.save(user);
-            loginView.showMainScreen();
+            try {
+                userRepository.save(user);
+                loginView.showMainScreen();
+            } catch (Exception ex) {
+                loginView.showApplicationError();
+            }
             return;
         }
 
@@ -261,5 +277,9 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     boolean checkpw(String password, String passwordHash) {
         return checkpw(password, passwordHash);
+    }
+
+    public User getUser() {
+        return user;
     }
 }

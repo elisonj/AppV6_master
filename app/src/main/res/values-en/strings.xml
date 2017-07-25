@@ -20,6 +20,7 @@
     <string name="config_saved">Configuration saved.</string>
     <string name="change_language">CHANGE LANGUAGE</string>
     <string name="login_success">Login success.</string>
+    <string name="application_error">Application error.</string>
     <string name="login_error">Login failed. Please verify your user and password and try again.</string>
     <string name="login_offline_success">Login offline success.</string>
     <string name="validation_user_field_not_empty">User field cannot be empty.</string>

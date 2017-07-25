@@ -67,6 +67,11 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
     }
 
     @Override
+    public void showApplicationError() {
+        showWarning(getContext().getString(R.string.application_error));
+    }
+
+    @Override
     public void showCannotLoginOfflineError() {
         showWarning(getContext().getString(R.string.validation_user_not_found));
     }
