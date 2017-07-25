@@ -162,7 +162,6 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         verify(loginView).showMainScreen();
     }
 
-
     @Test
     public void shouldShowCannotLoginWhenUserDoNotExistAndUserIsUnauthorized() {
         when(loginView.isConnected()).thenReturn(true);
@@ -182,7 +181,6 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         userCallBackCaptor.getValue().onResponse(userHttpResponse);
         verify(loginView).showWrongPasswordError();
     }
-
 
     @Test
     public void shouldShowWrongPasswordWhenUserIsUnauthorizedAndBadPassword() {
@@ -225,5 +223,4 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         userCallBackCaptor.getValue().onResponse(userHttpResponse);
         verify(loginView).showWrongPasswordError();
     }
-
 }
