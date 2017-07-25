@@ -128,11 +128,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                 return;
             }
             if (user != null && token == null) {
-                if (!checkpw(password, user.getPassword())) {
-                    loginView.showWrongPasswordError();
-                    return;
-                }
-                loginView.showMainScreen();
+                verifyPasswordAndEnter(password);
                 return;
             }
 
@@ -146,12 +142,7 @@ public class LoginPresenter implements LoginContract.Presenter {
             }
 
             user.setToken(token);
-            try{
-                userRepository.save(user);
-                loginView.showMainScreen();
-            } catch (Exception ex) {
-                loginView.showApplicationError();
-            }
+            saveUserAndEnter(user);
             return;
         }
 
@@ -161,14 +152,18 @@ public class LoginPresenter implements LoginContract.Presenter {
         }
 
         if (user != null) {
-            if (!checkpw(password, user.getPassword())) {
-                loginView.showWrongPasswordError();
-                return;
-            }
-            loginView.showMainScreen();
-            return;
+            verifyPasswordAndEnter(password);
         }
         loginView.showCannotLoginError();
+    }
+
+    private void verifyPasswordAndEnter(String password) {
+        if (!checkpw(password, user.getPassword())) {
+            loginView.showWrongPasswordError();
+            return;
+        }
+        loginView.showMainScreen();
+        return;
     }
 
     private void onGetTokenFailure(String password, Throwable t) {
@@ -177,11 +172,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                 loginView.showCannotLoginOfflineError();
                 return;
             }
-            if (!checkpw(password, user.getPassword())) {
-                loginView.showWrongPasswordError();
-                return;
-            }
-            loginView.showMainScreen();
+            verifyPasswordAndEnter(password);
             return;
         }
 
@@ -191,11 +182,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         }
 
         if(user != null) {
-            if (!checkpw(password, user.getPassword())) {
-                loginView.showWrongPasswordError();
-                return;
-            }
-            loginView.showMainScreen();
+            verifyPasswordAndEnter(password);
             return;
         }
 
@@ -223,12 +210,9 @@ public class LoginPresenter implements LoginContract.Presenter {
             if(userResponse != null) {
                 User userFromRepository = userRepository.findByUsername(username);
                 if(userFromRepository == null) {
-                    try {
-                        User user = new User(userResponse, token, password);
-                        userRepository.save(user);
-                    } catch (Exception ex) {
-                        loginView.showApplicationError();
-                    }
+                    User user = new User(userResponse, token, password);
+                    saveUserAndEnter(user);
+                    return;
                 }
 
                 loginView.showMainScreen();
@@ -246,17 +230,21 @@ public class LoginPresenter implements LoginContract.Presenter {
             if (!checkpw(password, user.getPassword())) {
                 user.setPassword(password);
             }
-            try{
-                userRepository.save(user);
-                loginView.showMainScreen();
-            } catch (Exception ex) {
-                loginView.showApplicationError();
-            }
+            saveUserAndEnter(user);
             return;
         }
 
         loginView.showCannotLoginError();
 
+    }
+
+    private void saveUserAndEnter(User user) {
+        try{
+            userRepository.save(user);
+            loginView.showMainScreen();
+        } catch (Exception ex) {
+            loginView.showApplicationError();
+        }
     }
 
     private void onGetUserFailure(final String password, @NonNull final Token token) {
@@ -265,12 +253,7 @@ public class LoginPresenter implements LoginContract.Presenter {
             if (!checkpw(password, user.getPassword())) {
                 user.setPassword(password);
             }
-            try {
-                userRepository.save(user);
-                loginView.showMainScreen();
-            } catch (Exception ex) {
-                loginView.showApplicationError();
-            }
+            saveUserAndEnter(user);
             return;
         }
 
