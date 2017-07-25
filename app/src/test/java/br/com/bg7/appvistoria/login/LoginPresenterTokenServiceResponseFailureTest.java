@@ -31,11 +31,12 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
     @Before
     public void setUp() {
         super.setUp();
+        when(loginView.isConnected()).thenReturn(true);
     }
 
     @Test
     public void shouldShowCannotLoginWhenNoSuccessAndNoUser() {
-        when(loginView.isConnected()).thenReturn(true);
+
         when(userRepository.findByUsername(anyString())).thenReturn(null);
         when(tokenHttpResponse.isSuccessful()).thenReturn(false);
 
@@ -48,10 +49,8 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
 
     @Test
     public void shouldShowCannotLoginWhenNoSuccessAndBadPassword() {
-        when(loginView.isConnected()).thenReturn(true);
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+        setUpBadPassword();
         when(tokenHttpResponse.isSuccessful()).thenReturn(false);
-        loginPresenter.checkpw = false;
 
         callLogin();
 
@@ -62,10 +61,8 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
 
     @Test
     public void shouldShowMainScreenWhenNoSuccessButUserAndPassOk() {
-        when(loginView.isConnected()).thenReturn(true);
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+        setUpUserAndPasswordOk();
         when(tokenHttpResponse.isSuccessful()).thenReturn(false);
-        loginPresenter.checkpw = true;
 
         callLogin();
 
@@ -74,9 +71,13 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         verify(loginView).showMainScreen();
     }
 
+    private void setUpUserAndPasswordOk() {
+        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+        loginPresenter.checkpw = true;
+    }
+
     @Test
     public void shouldShowCannotLoginWhenNoBodyAndNoUser() {
-        when(loginView.isConnected()).thenReturn(true);
         when(userRepository.findByUsername(anyString())).thenReturn(null);
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
         when(tokenHttpResponse.body()).thenReturn(null);
@@ -90,11 +91,9 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
 
     @Test
     public void shouldShowCannotLoginWhenNoBodyAndBadPassword() {
-        when(loginView.isConnected()).thenReturn(true);
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+        setUpBadPassword();
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
         when(tokenHttpResponse.body()).thenReturn(null);
-        loginPresenter.checkpw = false;
 
         callLogin();
 
@@ -105,11 +104,9 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
 
     @Test
     public void shouldShowMainScreenWhenNoBodyButUserAndPasswordOk() {
-        when(loginView.isConnected()).thenReturn(true);
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+        setUpUserAndPasswordOk();
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
         when(tokenHttpResponse.body()).thenReturn(null);
-        loginPresenter.checkpw = true;
 
         callLogin();
 
@@ -119,7 +116,6 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
     }
     @Test
     public void shouldShowCannotLoginWhenUnauthorizedAndNoUser() {
-        when(loginView.isConnected()).thenReturn(true);
         when(userRepository.findByUsername(anyString())).thenReturn(null);
         when(tokenHttpResponse.isSuccessful()).thenReturn(false);
         when(tokenHttpResponse.code()).thenReturn(loginPresenter.UNAUTHORIZED_CODE);
@@ -132,11 +128,9 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
     }
     @Test
     public void shouldShowCannotLoginWhenUnauthorizedAndBadPassword() {
-        when(loginView.isConnected()).thenReturn(true);
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+        setUpBadPassword();
         when(tokenHttpResponse.isSuccessful()).thenReturn(false);
         when(tokenHttpResponse.code()).thenReturn(loginPresenter.UNAUTHORIZED_CODE);
-        loginPresenter.checkpw = false;
 
         callLogin();
 
@@ -144,13 +138,17 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
         verify(loginView).showWrongPasswordError();
     }
+
+    private void setUpBadPassword() {
+        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+        loginPresenter.checkpw = false;
+    }
+
     @Test
     public void shouldShowCannotLoginWhenUnauthorizedButUserAndPasswordOk() {
-        when(loginView.isConnected()).thenReturn(true);
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+        setUpUserAndPasswordOk();
         when(tokenHttpResponse.isSuccessful()).thenReturn(false);
         when(tokenHttpResponse.code()).thenReturn(loginPresenter.UNAUTHORIZED_CODE);
-        loginPresenter.checkpw = true;
 
         callLogin();
 

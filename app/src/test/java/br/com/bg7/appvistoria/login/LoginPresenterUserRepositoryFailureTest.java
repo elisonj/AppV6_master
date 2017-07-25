@@ -1,5 +1,6 @@
 package br.com.bg7.appvistoria.login;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -36,18 +37,24 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
     @Mock
     private HttpResponse<UserResponse> userHttpResponse;
 
-
-    @Test
-    public void shouldShowApplicationErrorWhenRepositoryFails() {
+    @Before
+    public void setUp() {
+        super.setUp();
         when(loginView.isConnected()).thenReturn(true);
-        when(userRepository.findByUsername(anyString())).thenReturn(null);
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
         Token token = new Token(TOKEN, USER_ID);
         token.setExpiresIn(0);
         when(tokenHttpResponse.body()).thenReturn(token);
-        when(userHttpResponse.isSuccessful()).thenReturn(true);
         UserResponse userResponse = new UserResponse();
         when(userHttpResponse.body()).thenReturn(userResponse);
+
+
+    }
+
+    @Test
+    public void shouldShowApplicationErrorWhenRepositoryFails() {
+        when(userRepository.findByUsername(anyString())).thenReturn(null);
+        when(userHttpResponse.isSuccessful()).thenReturn(true);
 
         doThrow(new RuntimeException("Error saving user"))
                 .when(userRepository).save((User)any());
@@ -64,16 +71,9 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
 
     @Test
     public void shouldShowApplicationErrorWhenRepositoryFailsAndBadPassword() {
-        when(loginView.isConnected()).thenReturn(true);
         when(userRepository.findByUsername(anyString())).thenReturn(new User());
         loginPresenter.checkpw = false;
-        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
-        Token token = new Token(TOKEN, USER_ID);
-        token.setExpiresIn(0);
-        when(tokenHttpResponse.body()).thenReturn(token);
         when(userHttpResponse.isSuccessful()).thenReturn(false);
-        UserResponse userResponse = new UserResponse();
-        when(userHttpResponse.body()).thenReturn(userResponse);
 
         doThrow(new RuntimeException("Error saving user"))
                 .when(userRepository).save((User)any());
@@ -89,16 +89,9 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
 
     @Test
     public void shouldShowApplicationErrorWhenRepositoryFailsAndUserAndPasswordOK() {
-        when(loginView.isConnected()).thenReturn(true);
         when(userRepository.findByUsername(anyString())).thenReturn(new User());
         loginPresenter.checkpw = true;
-        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
-        Token token = new Token(TOKEN, USER_ID);
-        token.setExpiresIn(0);
-        when(tokenHttpResponse.body()).thenReturn(token);
         when(userHttpResponse.isSuccessful()).thenReturn(false);
-        UserResponse userResponse = new UserResponse();
-        when(userHttpResponse.body()).thenReturn(userResponse);
 
         doThrow(new RuntimeException("Error saving user"))
                 .when(userRepository).save((User)any());

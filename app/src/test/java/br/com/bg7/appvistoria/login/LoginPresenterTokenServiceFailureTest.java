@@ -51,8 +51,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     @Test
     public void showBadCredentialsWhenNoConnectionAndBadPassword() {
         when(loginView.isConnected()).thenReturn(false);
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
-        loginPresenter.checkpw = false;
+        setUpBadPassword();
 
         callLogin();
 
@@ -62,12 +61,16 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     @Test
     public void showMainScreenWhenNoConnection() {
         when(loginView.isConnected()).thenReturn(false);
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
-        loginPresenter.checkpw = true;
+        setUpUserAndPasswordOk();
 
         callLogin();
 
         verify(loginView).showMainScreen();
+    }
+
+    private void setUpUserAndPasswordOk() {
+        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+        loginPresenter.checkpw = true;
     }
 
     @Test
@@ -87,8 +90,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     @Test
     public void showBadCredentialsWhenNoTokenAndBadPassword() {
         when(loginView.isConnected()).thenReturn(true);
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
-        loginPresenter.checkpw = false;
+        setUpBadPassword();
 
         callLogin();
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
@@ -100,8 +102,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     @Test
     public void showMainScreenWhenNoTokenButUserAndPassOk() {
         when(loginView.isConnected()).thenReturn(true);
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
-        loginPresenter.checkpw = true;
+        setUpUserAndPasswordOk();
 
         callLogin();
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
@@ -129,8 +130,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     public void shouldShowCannotLoginWhenNoTokenBodyAndBadPassword() {
         when(loginView.isConnected()).thenReturn(true);
 
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
-        loginPresenter.checkpw = false;
+        setUpBadPassword();
 
         callLogin();
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
@@ -145,8 +145,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     @Test
     public void showMainScreenWhenNoTokenBodyButUserAndPassOk() {
         when(loginView.isConnected()).thenReturn(true);
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
-        loginPresenter.checkpw = true;
+        setUpUserAndPasswordOk();
 
         callLogin();
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
@@ -174,8 +173,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     public void shouldShowCannotLoginWhenSomeErrorAndBadPassword() {
         when(loginView.isConnected()).thenReturn(true);
 
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
-        loginPresenter.checkpw = false;
+        setUpBadPassword();
 
         callLogin();
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
@@ -184,12 +182,16 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
         verify(loginView).showWrongPasswordError();
     }
 
+    private void setUpBadPassword() {
+        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+        loginPresenter.checkpw = false;
+    }
+
     @Test
     public void shouldShowMainScreenWhenSomeErrorButUserAndPassOk() {
         when(loginView.isConnected()).thenReturn(true);
 
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
-        loginPresenter.checkpw = true;
+        setUpUserAndPasswordOk();
 
         callLogin();
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
