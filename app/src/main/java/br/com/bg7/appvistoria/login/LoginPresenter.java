@@ -223,8 +223,8 @@ public class LoginPresenter implements LoginContract.Presenter {
                 }
 
                 loginView.showMainScreen();
+                return;
             }
-            return;
         }
 
         if(user != null) {
