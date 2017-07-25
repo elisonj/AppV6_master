@@ -162,4 +162,25 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         verify(loginView).showMainScreen();
     }
 
+
+    @Test
+    public void shouldShowCannotLoginWhenUserDoNotExistAndUserIsUnauthorized() {
+        when(loginView.isConnected()).thenReturn(true);
+        when(userRepository.findByUsername(anyString())).thenReturn(null);
+        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
+        Token token = new Token(TOKEN, USER_ID);
+        token.setExpiresIn(0);
+        when(tokenHttpResponse.body()).thenReturn(token);
+        when(userHttpResponse.isSuccessful()).thenReturn(false);
+        when(userHttpResponse.code()).thenReturn(loginPresenter.UNAUTHORIZED_CODE);
+
+        callLogin();
+
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
+        verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
+        userCallBackCaptor.getValue().onResponse(userHttpResponse);
+        verify(loginView).showWrongPasswordError();
+    }
+
 }
