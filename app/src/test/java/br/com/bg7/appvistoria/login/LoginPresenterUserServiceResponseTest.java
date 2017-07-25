@@ -52,7 +52,9 @@ public class LoginPresenterUserServiceResponseTest extends LoginPresenterBaseTes
         when(userRepository.findByUsername(anyString())).thenReturn(new User());
         loginPresenter.checkpw = false;
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
-        when(tokenHttpResponse.body()).thenReturn(new Token());
+        Token token = new Token();
+        token.setExpiresIn(0);
+        when(tokenHttpResponse.body()).thenReturn(token);
 
         callLogin();
 
