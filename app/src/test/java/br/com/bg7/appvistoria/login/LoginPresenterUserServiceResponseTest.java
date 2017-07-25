@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
+import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
 import br.com.bg7.appvistoria.vo.User;
 
 import static org.mockito.ArgumentMatchers.anyString;
@@ -25,10 +26,13 @@ public class LoginPresenterUserServiceResponseTest extends LoginPresenterBaseTes
     private ArgumentCaptor<HttpCallback<Token>> tokenCallBackCaptor;
 
     @Captor
-    private ArgumentCaptor<HttpCallback<User>> userCallBackCaptor;
+    private ArgumentCaptor<HttpCallback<UserResponse>> userCallBackCaptor;
 
     @Mock
     private HttpResponse<Token> tokenHttpResponse;
+
+    @Mock
+    private HttpResponse<UserResponse> userHttpResponse;
 
     @Test
     public void shouldShowCannotLoginWhenNoSuccessAndNoUser() {
@@ -78,6 +82,26 @@ public class LoginPresenterUserServiceResponseTest extends LoginPresenterBaseTes
         tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
 
         verify(loginView).showMainScreen();
+    }
+
+    @Test
+    public void shouldShowCannotLoginWhenAnyErrorAndNoUser() {
+        when(loginView.isConnected()).thenReturn(true, true);
+        when(userRepository.findByUsername(anyString())).thenReturn(null);
+        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
+        Token token = new Token(TOKEN, USER_ID);
+        token.setExpiresIn(0);
+        when(tokenHttpResponse.body()).thenReturn(token);
+        when(userHttpResponse.isSuccessful()).thenReturn(false);
+        when(userHttpResponse.body()).thenReturn(null);
+
+        callLogin();
+
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
+        verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
+        userCallBackCaptor.getValue().onFailure(new Exception());
+        verify(loginView).showCannotLoginError();
     }
 
 }

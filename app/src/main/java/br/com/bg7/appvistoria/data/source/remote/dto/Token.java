@@ -45,4 +45,8 @@ public class Token {
     public Integer getExpiresIn() {
         return expiresIn;
     }
+
+    public void setExpiresIn(Integer expiresIn) {
+        this.expiresIn = expiresIn;
+    }
 }

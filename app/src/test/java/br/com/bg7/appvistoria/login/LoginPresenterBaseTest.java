@@ -30,6 +30,8 @@ public class LoginPresenterBaseTest {
 
     static final String USERNAME = "user";
     static final String PASSWORD = "password";
+    static final String TOKEN = "token";
+    static final String USER_ID = "user_id";
 
     @Before
     public void setUp() {
