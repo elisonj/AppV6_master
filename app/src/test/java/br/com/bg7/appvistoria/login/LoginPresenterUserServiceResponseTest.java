@@ -30,7 +30,6 @@ public class LoginPresenterUserServiceResponseTest extends LoginPresenterBaseTes
     @Mock
     private HttpResponse<Token> tokenHttpResponse;
 
-
     @Test
     public void shouldShowCannotLoginWhenNoSuccessAndNoUser() {
         when(loginView.isConnected()).thenReturn(true, false);
@@ -45,12 +44,29 @@ public class LoginPresenterUserServiceResponseTest extends LoginPresenterBaseTes
         verify(loginView).showCannotLoginError();
     }
 
-
     @Test
     public void shouldMainScreenLoginWhenNoSuccessAndBadPassword() {
         when(loginView.isConnected()).thenReturn(true, false);
         when(userRepository.findByUsername(anyString())).thenReturn(new User());
         loginPresenter.checkpw = false;
+        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
+        Token token = new Token();
+        token.setExpiresIn(0);
+        when(tokenHttpResponse.body()).thenReturn(token);
+
+        callLogin();
+
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
+
+        verify(loginView).showMainScreen();
+    }
+
+    @Test
+    public void shouldMainScreenLoginWhenNoSuccessButUserAndPassOk() {
+        when(loginView.isConnected()).thenReturn(true, false);
+        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+        loginPresenter.checkpw = true;
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
         Token token = new Token();
         token.setExpiresIn(0);
