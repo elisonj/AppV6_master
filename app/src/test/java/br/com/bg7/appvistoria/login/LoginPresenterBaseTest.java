@@ -27,28 +27,28 @@ import static org.mockito.Mockito.when;
 
 public class LoginPresenterBaseTest {
     @Mock
-    protected LoginContract.View loginView;
+    LoginContract.View loginView;
 
     @Mock
-    protected TokenService tokenService;
+    TokenService tokenService;
 
     @Mock
-    protected UserService userService;
+    UserService userService;
 
     @Mock
-    protected UserRepository userRepository;
+    UserRepository userRepository;
 
     @Mock
-    protected HttpResponse<Token> tokenHttpResponse;
+    HttpResponse<Token> tokenHttpResponse;
 
     @Mock
-    protected HttpResponse<UserResponse> userHttpResponse;
+    HttpResponse<UserResponse> userHttpResponse;
 
     @Captor
-    protected ArgumentCaptor<HttpCallback<Token>> tokenCallBackCaptor;
+    ArgumentCaptor<HttpCallback<Token>> tokenCallBackCaptor;
 
     @Captor
-    protected ArgumentCaptor<HttpCallback<UserResponse>> userCallBackCaptor;
+    ArgumentCaptor<HttpCallback<UserResponse>> userCallBackCaptor;
 
     TestableLoginPresenter loginPresenter;
 
@@ -68,33 +68,33 @@ public class LoginPresenterBaseTest {
     }
 
 
-    protected void setUpBadPassword() {
+    void setUpBadPassword() {
         when(userRepository.findByUsername(anyString())).thenReturn(new User());
         loginPresenter.checkpw = false;
     }
 
-    protected void setUpUserAndPasswordOk() {
+    void setUpUserAndPasswordOk() {
         when(userRepository.findByUsername(anyString())).thenReturn(new User());
         loginPresenter.checkpw = true;
     }
 
-    protected void setUpUserResponse() {
+    void setUpUserResponse() {
         UserResponse userResponse = new UserResponse();
         when(userHttpResponse.body()).thenReturn(userResponse);
     }
 
-    protected void setUpToken() {
+    void setUpToken() {
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
         Token token = new Token(TOKEN, USER_ID, 0);
         when(tokenHttpResponse.body()).thenReturn(token);
     }
 
-    protected void verifyTokenService() {
+    void verifyTokenService() {
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
         tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
     }
 
-    protected void verifyUserService() {
+    void verifyUserService() {
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
         userCallBackCaptor.getValue().onResponse(userHttpResponse);
     }
