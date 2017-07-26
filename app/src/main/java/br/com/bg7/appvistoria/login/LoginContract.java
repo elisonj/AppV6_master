@@ -14,8 +14,8 @@ public interface LoginContract {
 
         boolean isConnected();
         void showMainScreen();
-        void showUsernameEmptyWarning();
-        void showPasswordEmptyErrorWarning();
+        void showUsernameEmptyError();
+        void showPasswordEmptyError();
         void showCannotLoginError();
         void showBadCredentialsError();
         void showCriticalError();
