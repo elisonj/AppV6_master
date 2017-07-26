@@ -11,6 +11,7 @@ import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -19,13 +20,14 @@ import static org.mockito.Mockito.when;
  * Created by: elison
  * Date: 2017-07-21
  */
-public class LoginPresenterUserServiceResponseTest extends LoginPresenterBaseTest {
+public class UserServiceFailureTest extends LoginPresenterBaseTest {
 
     @Captor
     private ArgumentCaptor<HttpCallback<UserResponse>> userCallBackCaptor;
 
     @Mock
     private HttpResponse<UserResponse> userHttpResponse;
+
 
     @Before
     public void setUp() {
@@ -36,13 +38,13 @@ public class LoginPresenterUserServiceResponseTest extends LoginPresenterBaseTes
     @Test
     public void shouldShowCannotLoginWhenNoSuccessAndNoUser() {
         when(loginView.isConnected()).thenReturn(true, false);
-        setUpNullUser();
+        when(userRepository.findByUsername(anyString())).thenReturn(null);
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
         when(tokenHttpResponse.body()).thenReturn(new Token());
 
         callLogin();
 
-        verifyTokenService();
+        invokeTokenServiceOnResponse();
         verify(loginView).showCannotLoginError();
     }
 
@@ -55,7 +57,7 @@ public class LoginPresenterUserServiceResponseTest extends LoginPresenterBaseTes
 
         callLogin();
 
-        verifyTokenService();
+        invokeTokenServiceOnResponse();
         verify(loginView).showMainScreen();
     }
 
@@ -68,13 +70,13 @@ public class LoginPresenterUserServiceResponseTest extends LoginPresenterBaseTes
 
         callLogin();
 
-        verifyTokenService();
+        invokeTokenServiceOnResponse();
         verify(loginView).showMainScreen();
     }
 
     @Test
     public void shouldShowCannotLoginWhenAnyErrorAndNoUser() {
-        setUpNullUser();
+        when(userRepository.findByUsername(anyString())).thenReturn(null);
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
         Token token = new Token(TOKEN, USER_ID, 0);
         when(tokenHttpResponse.body()).thenReturn(token);
@@ -83,9 +85,9 @@ public class LoginPresenterUserServiceResponseTest extends LoginPresenterBaseTes
 
         callLogin();
 
-        verifyTokenService();
+        invokeTokenServiceOnResponse();
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
-        userCallBackCaptor.getValue().onFailure(new Exception());
+        userCallBackCaptor.getValue().onFailure(new RuntimeException());
         verify(loginView).showCannotLoginError();
     }
 
@@ -100,15 +102,16 @@ public class LoginPresenterUserServiceResponseTest extends LoginPresenterBaseTes
 
         callLogin();
 
-        verifyTokenService();
+        invokeTokenServiceOnResponse();
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
-        userCallBackCaptor.getValue().onFailure(new Exception());
+        userCallBackCaptor.getValue().onFailure(new RuntimeException());
         verify(loginView).showMainScreen();
     }
 
 
     @Test
     public void shouldShowMainScreenLoginWhenAnyErrorButUserAndPassOk() {
+        when(loginView.isConnected()).thenReturn(true);
         setUpUserAndPasswordOk();
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
         Token token = new Token(TOKEN, USER_ID, 0);
@@ -118,9 +121,9 @@ public class LoginPresenterUserServiceResponseTest extends LoginPresenterBaseTes
 
         callLogin();
 
-        verifyTokenService();
+        invokeTokenServiceOnResponse();
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
-        userCallBackCaptor.getValue().onFailure(new Exception());
+        userCallBackCaptor.getValue().onFailure(new RuntimeException());
         verify(loginView).showMainScreen();
     }
 }

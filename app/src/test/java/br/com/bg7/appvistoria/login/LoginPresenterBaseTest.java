@@ -90,12 +90,12 @@ public class LoginPresenterBaseTest {
         when(tokenHttpResponse.body()).thenReturn(token);
     }
 
-    void verifyTokenService() {
+    void invokeTokenServiceOnResponse() {
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
         tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
     }
 
-    void verifyUserService() {
+    void invokeUserServiceOnResponse() {
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
         userCallBackCaptor.getValue().onResponse(userHttpResponse);
     }

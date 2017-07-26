@@ -27,8 +27,8 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
         callLogin();
 
-        verifyTokenService();
-        verifyUserService();
+        invokeTokenServiceOnResponse();
+        invokeUserServiceOnResponse();
         verify(loginView).showCannotLoginError();
     }
 
@@ -40,8 +40,8 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
         callLogin();
 
-        verifyTokenService();
-        verifyUserService();
+        invokeTokenServiceOnResponse();
+        invokeUserServiceOnResponse();
         verify(loginView).showMainScreen();
     }
 
@@ -53,8 +53,8 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
         callLogin();
 
-        verifyTokenService();
-        verifyUserService();
+        invokeTokenServiceOnResponse();
+        invokeUserServiceOnResponse();
         verify(loginView).showMainScreen();
     }
 
@@ -67,8 +67,8 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
         callLogin();
 
-        verifyTokenService();
-        verifyUserService();
+        invokeTokenServiceOnResponse();
+        invokeUserServiceOnResponse();
         verify(loginView).showCannotLoginError();
     }
 
@@ -80,8 +80,8 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
         callLogin();
 
-        verifyTokenService();
-        verifyUserService();
+        invokeTokenServiceOnResponse();
+        invokeUserServiceOnResponse();
         verify(loginView).showMainScreen();
     }
 
@@ -93,8 +93,8 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
         callLogin();
 
-        verifyTokenService();
-        verifyUserService();
+        invokeTokenServiceOnResponse();
+        invokeUserServiceOnResponse();
         verify(loginView).showMainScreen();
     }
 
@@ -106,8 +106,8 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
         callLogin();
 
-        verifyTokenService();
-        verifyUserService();
+        invokeTokenServiceOnResponse();
+        invokeUserServiceOnResponse();
         verify(loginView).showBadCredentialsError();
     }
 
@@ -119,8 +119,8 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
         callLogin();
 
-        verifyTokenService();
-        verifyUserService();
+        invokeTokenServiceOnResponse();
+        invokeUserServiceOnResponse();
         verify(loginView).showBadCredentialsError();
     }
 
@@ -132,8 +132,8 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
         callLogin();
 
-        verifyTokenService();
-        verifyUserService();
+        invokeTokenServiceOnResponse();
+        invokeUserServiceOnResponse();
         verify(loginView).showBadCredentialsError();
     }
 
