@@ -1,5 +1,6 @@
 package br.com.bg7.appvistoria.login;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -29,9 +30,15 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     @Mock
     HttpResponse<Token> tokenHttpResponse;
 
+    @Before
+    public void setUp() {
+        super.setUp();
+        when(loginView.isConnected()).thenReturn(true);
+    }
+
     @Test
     public void shouldShowCannotLoginWhenNoConnectionAndNoUser() {
-        when(loginView.isConnected()).thenReturn(false);
+        setUpNoConnection();
         when(userRepository.findByUsername(anyString())).thenReturn(null);
 
         callLogin();
@@ -41,7 +48,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
     @Test
     public void shouldShowBadCredentialsWhenNoConnectionAndBadPassword() {
-        when(loginView.isConnected()).thenReturn(false);
+        setUpNoConnection();
         setUpBadPassword();
 
         callLogin();
@@ -51,7 +58,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
     @Test
     public void shouldShowMainScreenWhenNoConnection() {
-        when(loginView.isConnected()).thenReturn(false);
+        setUpNoConnection();
         setUpUserAndPasswordOk();
 
         callLogin();
@@ -61,7 +68,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
     @Test
     public void shouldShowCannotLoginWhenNoTokenAndNoUser() {
-        when(loginView.isConnected()).thenReturn(true);
+
         when(userRepository.findByUsername(anyString())).thenReturn(null);
 
         callLogin();
@@ -72,7 +79,6 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
     @Test
     public void shouldShowBadCredentialsWhenNoTokenAndBadPassword() {
-        when(loginView.isConnected()).thenReturn(true);
         setUpBadPassword();
 
         callLogin();
@@ -83,7 +89,6 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
     @Test
     public void shouldShowMainScreenWhenNoTokenButUserAndPassOk() {
-        when(loginView.isConnected()).thenReturn(true);
         setUpUserAndPasswordOk();
 
         callLogin();
@@ -94,7 +99,6 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
     @Test
     public void shouldShowCannotLoginWhenNoTokenBodyAndNoUser() {
-        when(loginView.isConnected()).thenReturn(true);
         when(userRepository.findByUsername(anyString())).thenReturn(null);
 
         callLogin();
@@ -106,7 +110,6 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
     @Test
     public void shouldShowCannotLoginWhenNoTokenBodyAndBadPassword() {
-        when(loginView.isConnected()).thenReturn(true);
         setUpBadPassword();
 
         callLogin();
@@ -119,7 +122,6 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
     @Test
     public void shuldShowMainScreenWhenNoTokenBodyButUserAndPassOk() {
-        when(loginView.isConnected()).thenReturn(true);
         setUpUserAndPasswordOk();
 
         callLogin();
@@ -132,7 +134,6 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
     @Test
     public void shouldShowCannotLoginWhenSomeErrorAndNoUser() {
-        when(loginView.isConnected()).thenReturn(true);
         when(userRepository.findByUsername(anyString())).thenReturn(null);
 
         callLogin();
@@ -143,7 +144,6 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
     @Test
     public void shouldShowCannotLoginWhenSomeErrorAndBadPassword() {
-        when(loginView.isConnected()).thenReturn(true);
         setUpBadPassword();
 
         callLogin();
@@ -154,7 +154,6 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
     @Test
     public void shouldShowMainScreenWhenSomeErrorButUserAndPassOk() {
-        when(loginView.isConnected()).thenReturn(true);
         setUpUserAndPasswordOk();
 
         callLogin();

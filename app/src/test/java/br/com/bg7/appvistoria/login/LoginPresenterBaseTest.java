@@ -98,4 +98,7 @@ public class LoginPresenterBaseTest {
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
         userCallBackCaptor.getValue().onResponse(userHttpResponse);
     }
+    void setUpNoConnection() {
+        when(loginView.isConnected()).thenReturn(false);
+    }
 }
