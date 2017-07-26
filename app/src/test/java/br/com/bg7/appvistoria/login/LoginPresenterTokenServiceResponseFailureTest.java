@@ -53,7 +53,6 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         verify(loginView).showMainScreen();
     }
 
-
     @Test
     public void shouldShowCannotLoginWhenNoBodyAndNoUser() {
         setUpNullUser();
