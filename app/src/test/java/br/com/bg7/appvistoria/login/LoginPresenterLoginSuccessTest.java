@@ -14,7 +14,7 @@ import static org.mockito.Mockito.when;
  * Created by: elison
  * Date: 2017-07-25
  */
-public class LoginPresenterUserRepositoryTest extends LoginPresenterBaseTest {
+public class LoginPresenterLoginSuccessTest extends LoginPresenterBaseTest {
 
     @Before
     public void setUp() {
