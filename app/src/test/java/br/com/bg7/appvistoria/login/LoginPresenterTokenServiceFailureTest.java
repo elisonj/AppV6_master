@@ -23,7 +23,6 @@ import static org.mockito.Mockito.when;
 
 public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTest {
 
-
     @Captor
     private ArgumentCaptor<HttpCallback<Token>> tokenCallBackCaptor;
 
@@ -41,7 +40,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     }
 
     @Test
-    public void showBadCredentialsWhenNoConnectionAndBadPassword() {
+    public void shouldShowBadCredentialsWhenNoConnectionAndBadPassword() {
         when(loginView.isConnected()).thenReturn(false);
         setUpBadPassword();
 
@@ -51,7 +50,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     }
 
     @Test
-    public void showMainScreenWhenNoConnection() {
+    public void shouldShowMainScreenWhenNoConnection() {
         when(loginView.isConnected()).thenReturn(false);
         setUpUserAndPasswordOk();
 
@@ -72,7 +71,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     }
 
     @Test
-    public void showBadCredentialsWhenNoTokenAndBadPassword() {
+    public void shouldShowBadCredentialsWhenNoTokenAndBadPassword() {
         when(loginView.isConnected()).thenReturn(true);
         setUpBadPassword();
 
@@ -83,7 +82,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     }
 
     @Test
-    public void showMainScreenWhenNoTokenButUserAndPassOk() {
+    public void shouldShowMainScreenWhenNoTokenButUserAndPassOk() {
         when(loginView.isConnected()).thenReturn(true);
         setUpUserAndPasswordOk();
 
@@ -119,7 +118,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     }
 
     @Test
-    public void showMainScreenWhenNoTokenBodyButUserAndPassOk() {
+    public void shuldShowMainScreenWhenNoTokenBodyButUserAndPassOk() {
         when(loginView.isConnected()).thenReturn(true);
         setUpUserAndPasswordOk();
 
