@@ -85,8 +85,7 @@ public class LoginPresenterBaseTest {
 
     protected void setUpToken() {
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
-        Token token = new Token(TOKEN, USER_ID);
-        token.setExpiresIn(0);
+        Token token = new Token(TOKEN, USER_ID, 0);
         when(tokenHttpResponse.body()).thenReturn(token);
     }
 

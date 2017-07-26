@@ -71,8 +71,7 @@ public class LoginPresenterUserServiceResponseTest extends LoginPresenterBaseTes
         when(loginView.isConnected()).thenReturn(true);
         when(userRepository.findByUsername(anyString())).thenReturn(null);
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
-        Token token = new Token(TOKEN, USER_ID);
-        token.setExpiresIn(0);
+        Token token = new Token(TOKEN, USER_ID, 0);
         when(tokenHttpResponse.body()).thenReturn(token);
         when(userHttpResponse.isSuccessful()).thenReturn(false);
         when(userHttpResponse.body()).thenReturn(null);
@@ -90,8 +89,7 @@ public class LoginPresenterUserServiceResponseTest extends LoginPresenterBaseTes
         when(loginView.isConnected()).thenReturn(true);
         setUpBadPassword();
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
-        Token token = new Token(TOKEN, USER_ID);
-        token.setExpiresIn(0);
+        Token token = new Token(TOKEN, USER_ID, 0);
         when(tokenHttpResponse.body()).thenReturn(token);
         when(userHttpResponse.isSuccessful()).thenReturn(false);
         when(userHttpResponse.body()).thenReturn(null);
@@ -110,8 +108,7 @@ public class LoginPresenterUserServiceResponseTest extends LoginPresenterBaseTes
         when(loginView.isConnected()).thenReturn(true);
         setUpUserAndPasswordOk();
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
-        Token token = new Token(TOKEN, USER_ID);
-        token.setExpiresIn(0);
+        Token token = new Token(TOKEN, USER_ID, 0);
         when(tokenHttpResponse.body()).thenReturn(token);
         when(userHttpResponse.isSuccessful()).thenReturn(false);
         when(userHttpResponse.body()).thenReturn(null);
