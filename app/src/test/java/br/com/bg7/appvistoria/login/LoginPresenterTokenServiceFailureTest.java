@@ -102,7 +102,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
         callLogin();
 
-        verifyException();
+        setUpRuntimeException();
         verify(loginView).showCannotLoginError();
     }
 
@@ -112,7 +112,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
         callLogin();
 
-        verifyException();
+        setUpRuntimeException();
         verify(loginView).showBadCredentialsError();
     }
 
@@ -122,7 +122,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
         callLogin();
 
-        verifyException();
+        setUpRuntimeException();
         verify(loginView).showMainScreen();
     }
 
@@ -131,8 +131,8 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
         tokenCallBackCaptor.getValue().onFailure(new IOException());
     }
 
-    private void verifyException() {
+    private void setUpRuntimeException() {
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        tokenCallBackCaptor.getValue().onFailure(new Exception());
+        tokenCallBackCaptor.getValue().onFailure(new RuntimeException());
     }
 }
