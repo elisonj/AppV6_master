@@ -99,7 +99,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     }
 
     @Test
-    public void shouldShowCannotLoginWhenUserDoNotExistAndUserIsUnauthorized() {
+    public void shouldShowBadCredentialsWhenUserDoNotExistAndUserIsUnauthorized() {
         setUpNullUser();
         setUpToken();
         setUpUserUnauthorizedCode();
