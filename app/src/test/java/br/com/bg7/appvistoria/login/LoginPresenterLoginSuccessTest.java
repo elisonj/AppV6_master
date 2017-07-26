@@ -3,7 +3,6 @@ package br.com.bg7.appvistoria.login;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.vo.User;
 
 import static org.mockito.ArgumentMatchers.anyString;
@@ -63,11 +62,5 @@ public class LoginPresenterLoginSuccessTest extends LoginPresenterBaseTest {
         invokeTokenServiceOnResponse();
         invokeUserServiceOnResponse();
         verify(loginView).showMainScreen();
-    }
-
-    protected void setUpToken() {
-        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
-        Token token = new Token(TOKEN, USER_ID, 0);
-        when(tokenHttpResponse.body()).thenReturn(token);
     }
 }
