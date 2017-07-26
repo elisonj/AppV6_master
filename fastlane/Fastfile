@@ -10,10 +10,10 @@ platform :android do
     gradle(task: "test")
   end
 
-  desc "Deploy a new version to the Google Play"
+  desc "Deploy a new version to Google Play - Alpha channel"
   lane :alpha do
     gradle(task: "assembleRelease")
-    supply
+    supply(track: 'alpha')
   end
 end
 
