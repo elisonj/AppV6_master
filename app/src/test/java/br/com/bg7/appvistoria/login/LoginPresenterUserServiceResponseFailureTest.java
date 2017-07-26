@@ -1,8 +1,8 @@
 package br.com.bg7.appvistoria.login;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -13,10 +13,15 @@ import static org.mockito.Mockito.when;
 public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenterBaseTest {
 
 
+    @Before
+    public void setUp() {
+        super.setUp();
+        when(loginView.isConnected()).thenReturn(true);
+    }
+
     @Test
     public void shouldShowCannotLoginWhenUserDoNotExist() {
-        when(loginView.isConnected()).thenReturn(true);
-        when(userRepository.findByUsername(anyString())).thenReturn(null);
+        setUpNullUser();
         setUpToken();
         when(userHttpResponse.isSuccessful()).thenReturn(false);
         setUpUserResponse();
@@ -30,7 +35,6 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
     @Test
     public void shouldShowMainScreenWhenNoSuccessAndBadPassword() {
-        when(loginView.isConnected()).thenReturn(true);
         setUpBadPassword();
         setUpToken();
         when(userHttpResponse.isSuccessful()).thenReturn(false);
@@ -45,7 +49,6 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
     @Test
     public void shouldShowMainScreenWhenNoSuccessButUserAndPasswordOk() {
-        when(loginView.isConnected()).thenReturn(true);
         setUpUserAndPasswordOk();
         setUpToken();
         when(userHttpResponse.isSuccessful()).thenReturn(false);
@@ -60,8 +63,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
     @Test
     public void shouldShowCannotLoginWhenUserDoNotExistAndBodyIsNull() {
-        when(loginView.isConnected()).thenReturn(true);
-        when(userRepository.findByUsername(anyString())).thenReturn(null);
+        setUpNullUser();
         setUpToken();
         when(userHttpResponse.isSuccessful()).thenReturn(true);
         when(userHttpResponse.body()).thenReturn(null);
@@ -75,7 +77,6 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
     @Test
     public void shouldShowMainScreenWhenNoBodyAndBadPassword() {
-        when(loginView.isConnected()).thenReturn(true);
         setUpBadPassword();
         setUpToken();
         when(userHttpResponse.isSuccessful()).thenReturn(false);
@@ -90,7 +91,6 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
     @Test
     public void shouldShowMainScreenWhenNoBodyButUserAndPasswordOk() {
-        when(loginView.isConnected()).thenReturn(true);
         setUpUserAndPasswordOk();
         setUpToken();
         when(userHttpResponse.isSuccessful()).thenReturn(false);
@@ -105,8 +105,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
     @Test
     public void shouldShowCannotLoginWhenUserDoNotExistAndUserIsUnauthorized() {
-        when(loginView.isConnected()).thenReturn(true);
-        when(userRepository.findByUsername(anyString())).thenReturn(null);
+        setUpNullUser();
         setUpToken();
         when(userHttpResponse.isSuccessful()).thenReturn(false);
         when(userHttpResponse.code()).thenReturn(loginPresenter.UNAUTHORIZED_CODE);
@@ -120,7 +119,6 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
     @Test
     public void shouldShowWrongPasswordWhenUserIsUnauthorizedAndBadPassword() {
-        when(loginView.isConnected()).thenReturn(true);
         setUpBadPassword();
         setUpToken();
         when(userHttpResponse.isSuccessful()).thenReturn(false);
@@ -135,7 +133,6 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
     @Test
     public void shouldShowWrongPasswordWhenUserIsUnauthorizedButUserAndPasswordOk() {
-        when(loginView.isConnected()).thenReturn(true);
         setUpUserAndPasswordOk();
         setUpToken();
         when(userHttpResponse.isSuccessful()).thenReturn(false);

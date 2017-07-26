@@ -12,7 +12,6 @@ import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -39,7 +38,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     @Test
     public void shouldShowCannotLoginWhenNoConnectionAndNoUser() {
         setUpNoConnection();
-        when(userRepository.findByUsername(anyString())).thenReturn(null);
+        setUpNullUser();
 
         callLogin();
 
@@ -67,9 +66,9 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     }
 
     @Test
-    public void shouldShowCannotLoginWhenNoTokenAndNoUser() {
+    public void shouldShowCannotLoginWhenConnectivityErrorAndNoUser() {
 
-        when(userRepository.findByUsername(anyString())).thenReturn(null);
+        setUpNullUser();
 
         callLogin();
 
@@ -78,7 +77,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     }
 
     @Test
-    public void shouldShowBadCredentialsWhenNoTokenAndBadPassword() {
+    public void shouldShowBadCredentialsWhenConnectivityErrorAndBadPassword() {
         setUpBadPassword();
 
         callLogin();
@@ -99,7 +98,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
     @Test
     public void shouldShowCannotLoginWhenNoTokenBodyAndNoUser() {
-        when(userRepository.findByUsername(anyString())).thenReturn(null);
+        setUpNullUser();
 
         callLogin();
 
@@ -134,7 +133,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
     @Test
     public void shouldShowCannotLoginWhenSomeErrorAndNoUser() {
-        when(userRepository.findByUsername(anyString())).thenReturn(null);
+        setUpNullUser();
 
         callLogin();
 

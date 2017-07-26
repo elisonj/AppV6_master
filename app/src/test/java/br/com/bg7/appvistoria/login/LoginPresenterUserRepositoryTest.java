@@ -1,5 +1,6 @@
 package br.com.bg7.appvistoria.login;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
@@ -15,10 +16,15 @@ import static org.mockito.Mockito.when;
  */
 public class LoginPresenterUserRepositoryTest extends LoginPresenterBaseTest {
 
+    @Before
+    public void setUp() {
+        super.setUp();
+        when(loginView.isConnected()).thenReturn(true);
+    }
+
     @Test
     public void shouldShowMainScreenWhenSaveUser() {
-        when(loginView.isConnected()).thenReturn(true);
-        when(userRepository.findByUsername(anyString())).thenReturn(null);
+        setUpNullUser();
         setUpToken();
         when(userHttpResponse.isSuccessful()).thenReturn(true);
         setUpUserResponse();
@@ -32,7 +38,6 @@ public class LoginPresenterUserRepositoryTest extends LoginPresenterBaseTest {
 
     @Test
     public void shouldShowMainScreenWhenBadPassword() {
-        when(loginView.isConnected()).thenReturn(true);
         setUpBadPassword();
         setUpToken();
         when(userHttpResponse.isSuccessful()).thenReturn(false);
@@ -47,7 +52,6 @@ public class LoginPresenterUserRepositoryTest extends LoginPresenterBaseTest {
 
     @Test
     public void shouldShowMainScreenWhenUserAndPasswordOK() {
-        when(loginView.isConnected()).thenReturn(true);
         when(userRepository.findByUsername(anyString())).thenReturn(new User());
         loginPresenter.checkpw = true;
         setUpToken();

@@ -101,4 +101,8 @@ public class LoginPresenterBaseTest {
     void setUpNoConnection() {
         when(loginView.isConnected()).thenReturn(false);
     }
+
+    void setUpNullUser() {
+        when(userRepository.findByUsername(USERNAME)).thenReturn(null);
+    }
 }

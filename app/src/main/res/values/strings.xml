@@ -10,6 +10,7 @@
     <string name="user">Usuário</string>
     <string name="login">LOGIN</string>
     <string name="warning">Atenção</string>
+    <string name="error">Erro</string>
     <string name="success">Sucesso!</string>
     <string name="confirm">CONFIRMAR</string>
     <string name="cancel">CANCELAR</string>

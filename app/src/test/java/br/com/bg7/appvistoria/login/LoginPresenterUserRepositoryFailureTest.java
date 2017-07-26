@@ -30,7 +30,7 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
 
     @Test
     public void shouldShowApplicationErrorWhenRepositoryFails() {
-        when(userRepository.findByUsername(anyString())).thenReturn(null);
+        setUpNullUser();
         when(userHttpResponse.isSuccessful()).thenReturn(true);
         doThrow(new RuntimeException("Error saving user"))
                 .when(userRepository).save((User)any());

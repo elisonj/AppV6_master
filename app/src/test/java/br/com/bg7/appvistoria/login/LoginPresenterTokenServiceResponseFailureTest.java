@@ -3,7 +3,6 @@ package br.com.bg7.appvistoria.login;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -22,7 +21,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
     @Test
     public void shouldShowCannotLoginWhenNoSuccessAndNoUser() {
 
-        when(userRepository.findByUsername(anyString())).thenReturn(null);
+        setUpNullUser();
         when(tokenHttpResponse.isSuccessful()).thenReturn(false);
 
         callLogin();
@@ -56,7 +55,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
 
     @Test
     public void shouldShowCannotLoginWhenNoBodyAndNoUser() {
-        when(userRepository.findByUsername(anyString())).thenReturn(null);
+        setUpNullUser();
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
         when(tokenHttpResponse.body()).thenReturn(null);
 
@@ -91,7 +90,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
     }
     @Test
     public void shouldShowCannotLoginWhenUnauthorizedAndNoUser() {
-        when(userRepository.findByUsername(anyString())).thenReturn(null);
+        setUpNullUser();
         when(tokenHttpResponse.isSuccessful()).thenReturn(false);
         when(tokenHttpResponse.code()).thenReturn(loginPresenter.UNAUTHORIZED_CODE);
 

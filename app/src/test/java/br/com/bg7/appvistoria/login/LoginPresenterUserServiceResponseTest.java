@@ -1,5 +1,6 @@
 package br.com.bg7.appvistoria.login;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -10,7 +11,6 @@ import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
 
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -27,10 +27,16 @@ public class LoginPresenterUserServiceResponseTest extends LoginPresenterBaseTes
     @Mock
     private HttpResponse<UserResponse> userHttpResponse;
 
+    @Before
+    public void setUp() {
+        super.setUp();
+        when(loginView.isConnected()).thenReturn(true);
+    }
+
     @Test
     public void shouldShowCannotLoginWhenNoSuccessAndNoUser() {
         when(loginView.isConnected()).thenReturn(true, false);
-        when(userRepository.findByUsername(anyString())).thenReturn(null);
+        setUpNullUser();
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
         when(tokenHttpResponse.body()).thenReturn(new Token());
 
@@ -68,8 +74,7 @@ public class LoginPresenterUserServiceResponseTest extends LoginPresenterBaseTes
 
     @Test
     public void shouldShowCannotLoginWhenAnyErrorAndNoUser() {
-        when(loginView.isConnected()).thenReturn(true);
-        when(userRepository.findByUsername(anyString())).thenReturn(null);
+        setUpNullUser();
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
         Token token = new Token(TOKEN, USER_ID, 0);
         when(tokenHttpResponse.body()).thenReturn(token);
@@ -86,7 +91,6 @@ public class LoginPresenterUserServiceResponseTest extends LoginPresenterBaseTes
 
     @Test
     public void shouldShowMainScreenLoginWhenAnyErrorAndBadPassword() {
-        when(loginView.isConnected()).thenReturn(true);
         setUpBadPassword();
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
         Token token = new Token(TOKEN, USER_ID, 0);
@@ -105,7 +109,6 @@ public class LoginPresenterUserServiceResponseTest extends LoginPresenterBaseTes
 
     @Test
     public void shouldShowMainScreenLoginWhenAnyErrorButUserAndPassOk() {
-        when(loginView.isConnected()).thenReturn(true);
         setUpUserAndPasswordOk();
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
         Token token = new Token(TOKEN, USER_ID, 0);
