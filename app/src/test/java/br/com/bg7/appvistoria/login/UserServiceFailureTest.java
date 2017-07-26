@@ -12,7 +12,9 @@ import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
+import br.com.bg7.appvistoria.vo.User;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -59,6 +61,7 @@ public class UserServiceFailureTest extends LoginPresenterBaseTest {
         callLogin();
 
         invokeTokenServiceOnResponse();
+        verify(userRepository).save((User)any());
         verify(loginView).showMainScreen();
     }
 
@@ -72,6 +75,7 @@ public class UserServiceFailureTest extends LoginPresenterBaseTest {
         callLogin();
 
         invokeTokenServiceOnResponse();
+        verify(userRepository).save((User)any());
         verify(loginView).showMainScreen();
     }
 
@@ -102,6 +106,7 @@ public class UserServiceFailureTest extends LoginPresenterBaseTest {
         invokeTokenServiceOnResponse();
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
         userCallBackCaptor.getValue().onFailure(new IOException());
+        verify(userRepository).save((User)any());
         verify(loginView).showMainScreen();
     }
 
@@ -118,6 +123,7 @@ public class UserServiceFailureTest extends LoginPresenterBaseTest {
         invokeTokenServiceOnResponse();
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
         userCallBackCaptor.getValue().onFailure(new IOException());
+        verify(userRepository).save((User)any());
         verify(loginView).showMainScreen();
     }
 
@@ -148,6 +154,7 @@ public class UserServiceFailureTest extends LoginPresenterBaseTest {
         invokeTokenServiceOnResponse();
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
         userCallBackCaptor.getValue().onFailure(new RuntimeException());
+        verify(userRepository).save((User)any());
         verify(loginView).showMainScreen();
     }
 
@@ -164,6 +171,9 @@ public class UserServiceFailureTest extends LoginPresenterBaseTest {
         invokeTokenServiceOnResponse();
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
         userCallBackCaptor.getValue().onFailure(new RuntimeException());
+        verify(userRepository).save((User)any());
         verify(loginView).showMainScreen();
     }
+
+
 }
