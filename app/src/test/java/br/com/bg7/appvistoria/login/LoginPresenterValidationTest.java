@@ -13,36 +13,36 @@ public class LoginPresenterValidationTest extends LoginPresenterBaseTest {
     @Test
     public void shouldShowUserNameErrorWhenUserIsNull() {
         loginPresenter.login(null, "password");
-        verify(loginView).showUsernameEmptyError();
+        verify(loginView).showUsernameEmptyWarning();
     }
 
     @Test
     public void shouldShowUserNameErrorWhenUserIsEmpty() {
         loginPresenter.login("", "password");
-        verify(loginView).showUsernameEmptyError();
+        verify(loginView).showUsernameEmptyWarning();
     }
 
     @Test
     public void shouldShowUserNameErrorWhenUserIsBlank() {
         loginPresenter.login("   ", "password");
-        verify(loginView).showUsernameEmptyError();
+        verify(loginView).showUsernameEmptyWarning();
     }
 
     @Test
     public void shouldShowPasswordErrorWhenPasswordIsNull() {
         loginPresenter.login("user", null);
-        verify(loginView).showPasswordEmptyError();
+        verify(loginView).showPasswordEmptyErrorWarning();
     }
 
     @Test
     public void shouldShowPasswordErrorWhenPasswordIsEmpty() {
         loginPresenter.login("user", "");
-        verify(loginView).showPasswordEmptyError();
+        verify(loginView).showPasswordEmptyErrorWarning();
     }
 
     @Test
     public void shouldShowPasswordErrorWhenPasswordIsBlank() {
         loginPresenter.login("user", "  ");
-        verify(loginView).showPasswordEmptyError();
+        verify(loginView).showPasswordEmptyErrorWarning();
     }
 }

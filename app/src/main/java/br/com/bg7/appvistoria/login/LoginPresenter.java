@@ -94,12 +94,12 @@ public class LoginPresenter implements LoginContract.Presenter {
      */
     private boolean checkInput(String username, String password) {
         if (Strings.isNullOrEmpty(username) || Strings.isNullOrEmpty(username.trim())) {
-            loginView.showUsernameEmptyError();
+            loginView.showUsernameEmptyWarning();
             return true;
         }
 
         if (Strings.isNullOrEmpty(password) || Strings.isNullOrEmpty(password.trim())) {
-            loginView.showPasswordEmptyError();
+            loginView.showPasswordEmptyErrorWarning();
             return true;
         }
 

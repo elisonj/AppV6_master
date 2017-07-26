@@ -57,23 +57,23 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
     }
 
     @Override
-    public void showUsernameEmptyError() {
+    public void showUsernameEmptyWarning() {
         showWarning(getContext().getString(R.string.validation_user_field_not_empty));
     }
 
     @Override
-    public void showPasswordEmptyError() {
+    public void showPasswordEmptyErrorWarning() {
         showWarning(getContext().getString(R.string.validation_password_field_not_empty));
     }
 
     @Override
     public void showCriticalError() {
-        showWarning(getContext().getString(R.string.application_error));
+        showError(getContext().getString(R.string.application_error));
     }
 
     @Override
     public void showCannotLoginError() {
-        showWarning(getContext().getString(R.string.login_error));
+        showError(getContext().getString(R.string.login_error));
     }
 
     @Override
@@ -84,7 +84,11 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
 
     @Override
     public void showBadCredentialsError() {
-        showWarning(getContext().getString(R.string.validation_password_dont_match));
+        showError(getContext().getString(R.string.validation_password_dont_match));
+    }
+
+    private void showError(String message) {
+        showMessage(getContext().getString(R.string.warning), message);
     }
 
     private void showWarning(String message) {
