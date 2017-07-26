@@ -31,10 +31,6 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         verify(loginView).showCannotLoginError();
     }
 
-    private void setUpNoSuccessful() {
-        when(tokenHttpResponse.isSuccessful()).thenReturn(false);
-    }
-
     @Test
     public void shouldShowCannotLoginWhenNoSuccessAndBadPassword() {
         setUpBadPassword();
@@ -103,10 +99,6 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         verify(loginView).showBadCredentialsError();
     }
 
-    private void setUpUnauthorizedCod() {
-        when(tokenHttpResponse.code()).thenReturn(loginPresenter.UNAUTHORIZED_CODE);
-    }
-
     @Test
     public void shouldShowCannotLoginWhenUnauthorizedAndBadPassword() {
         setUpBadPassword();
@@ -130,5 +122,13 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
 
         verifyTokenService();
         verify(loginView).showBadCredentialsError();
+    }
+
+    private void setUpNoSuccessful() {
+        when(tokenHttpResponse.isSuccessful()).thenReturn(false);
+    }
+
+    private void setUpUnauthorizedCod() {
+        when(tokenHttpResponse.code()).thenReturn(loginPresenter.UNAUTHORIZED_CODE);
     }
 }
