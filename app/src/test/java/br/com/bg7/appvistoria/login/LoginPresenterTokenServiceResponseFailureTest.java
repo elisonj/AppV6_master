@@ -87,6 +87,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         verifyTokenService();
         verify(loginView).showMainScreen();
     }
+
     @Test
     public void shouldShowCannotLoginWhenUnauthorizedAndNoUser() {
         setUpNullUser();
@@ -110,7 +111,6 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         verifyTokenService();
         verify(loginView).showBadCredentialsError();
     }
-
 
     @Test
     public void shouldShowCannotLoginWhenUnauthorizedButUserAndPasswordOk() {
