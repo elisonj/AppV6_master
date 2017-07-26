@@ -22,7 +22,7 @@ public class LoginPresenterLoginSuccessTest extends LoginPresenterBaseTest {
     }
 
     @Test
-    public void shouldShowMainScreenWhenSaveUser() {
+    public void shouldShowMainScreenWhenServicesWorkAndNoUser() {
         setUpNullUser();
         setUpToken();
         when(userHttpResponse.isSuccessful()).thenReturn(true);
@@ -36,7 +36,7 @@ public class LoginPresenterLoginSuccessTest extends LoginPresenterBaseTest {
     }
 
     @Test
-    public void shouldShowMainScreenWhenBadPassword() {
+    public void shouldSaveUserAndShowMainScreenWhenServicesWorkAndBadPassword() {
         setUpBadPassword();
         setUpToken();
         when(userHttpResponse.isSuccessful()).thenReturn(false);
@@ -50,7 +50,7 @@ public class LoginPresenterLoginSuccessTest extends LoginPresenterBaseTest {
     }
 
     @Test
-    public void shouldShowMainScreenWhenUserAndPasswordOK() {
+    public void shouldSaveUserAndShowMainScreenWhenServicesWorkAndPasswordOK() {
         when(userRepository.findByUsername(anyString())).thenReturn(new User());
         loginPresenter.checkpw = true;
         setUpToken();
