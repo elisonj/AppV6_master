@@ -39,7 +39,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         callLogin();
 
         verifyTokenService();
-        verify(loginView).showWrongPasswordError();
+        verify(loginView).showBadCredentialsError();
     }
 
     @Test
@@ -75,7 +75,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         callLogin();
 
         verifyTokenService();
-        verify(loginView).showWrongPasswordError();
+        verify(loginView).showBadCredentialsError();
     }
 
     @Test
@@ -98,7 +98,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         callLogin();
 
         verifyTokenService();
-        verify(loginView).showWrongPasswordError();
+        verify(loginView).showBadCredentialsError();
     }
     @Test
     public void shouldShowCannotLoginWhenUnauthorizedAndBadPassword() {
@@ -109,7 +109,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         callLogin();
 
         verifyTokenService();
-        verify(loginView).showWrongPasswordError();
+        verify(loginView).showBadCredentialsError();
     }
 
 
@@ -122,6 +122,6 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         callLogin();
 
         verifyTokenService();
-        verify(loginView).showWrongPasswordError();
+        verify(loginView).showBadCredentialsError();
     }
 }

@@ -24,12 +24,12 @@ public class LoginPresenterOfflineTest extends LoginPresenterBaseTest {
     }
 
     @Test
-    public void shouldShowUserNotFoundIfRepositoryReturnsNull() {
+    public void shouldShowCannotLoginIfRepositoryReturnsNull() {
         when(userRepository.findByUsername(USERNAME)).thenReturn(null);
 
         callLogin();
 
-        verify(loginView).showUserNotFoundError();
+        verify(loginView).showCannotLoginError();
     }
 
     @Test
@@ -38,7 +38,7 @@ public class LoginPresenterOfflineTest extends LoginPresenterBaseTest {
 
         callLogin();
 
-        verify(loginView).showWrongPasswordError();
+        verify(loginView).showBadCredentialsError();
     }
 
     @Test

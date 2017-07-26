@@ -44,7 +44,7 @@ public class LoginPresenterOnlineTest extends LoginPresenterBaseTest {
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), loginCallbackCaptor.capture());
         loginCallbackCaptor.getValue().onFailure(new TimeoutException());
 
-        verify(loginView).showCannotLoginOfflineError();
+        verify(loginView).showCannotLoginError();
     }
 
     @Test
@@ -54,7 +54,7 @@ public class LoginPresenterOnlineTest extends LoginPresenterBaseTest {
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), loginCallbackCaptor.capture());
         loginCallbackCaptor.getValue().onFailure(new ConnectException());
 
-        verify(loginView).showCannotLoginOfflineError();
+        verify(loginView).showCannotLoginError();
     }
 
     @Test

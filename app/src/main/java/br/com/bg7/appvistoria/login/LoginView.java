@@ -67,13 +67,8 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
     }
 
     @Override
-    public void showApplicationError() {
+    public void showCriticalError() {
         showWarning(getContext().getString(R.string.application_error));
-    }
-
-    @Override
-    public void showCannotLoginOfflineError() {
-        showWarning(getContext().getString(R.string.validation_user_not_found));
     }
 
     @Override
@@ -88,18 +83,8 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
     }
 
     @Override
-    public void showOfflineLoginSuccess() {
-        showSuccess(getContext().getString(R.string.login_offline_success));
-    }
-
-    @Override
-    public void showWrongPasswordError() {
+    public void showBadCredentialsError() {
         showWarning(getContext().getString(R.string.validation_password_dont_match));
-    }
-
-    @Override
-    public void showUserNotFoundError() {
-        showWarning(getContext().getString(R.string.validation_user_not_found));
     }
 
     private void showWarning(String message) {

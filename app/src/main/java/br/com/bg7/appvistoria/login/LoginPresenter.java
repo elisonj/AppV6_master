@@ -73,7 +73,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                 attemptTokenLogin(username, password);
                 return;
             }
-            loginView.showWrongPasswordError();
+            loginView.showBadCredentialsError();
             return;
         }
 
@@ -147,7 +147,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         }
 
         if(httpResponse.code() == UNAUTHORIZED_CODE) {
-            loginView.showWrongPasswordError();
+            loginView.showBadCredentialsError();
             return;
         }
 
@@ -159,7 +159,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     private void verifyPasswordAndEnter(String password) {
         if (!checkpw(password, user.getPassword())) {
-            loginView.showWrongPasswordError();
+            loginView.showBadCredentialsError();
             return;
         }
         loginView.showMainScreen();
@@ -169,7 +169,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     private void onGetTokenFailure(String password, Throwable t) {
         if (t instanceof TimeoutException) {
             if(user == null) {
-                loginView.showCannotLoginOfflineError();
+                loginView.showCannotLoginError();
                 return;
             }
             verifyPasswordAndEnter(password);
@@ -177,7 +177,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         }
 
         if (t instanceof ConnectException) {
-            loginView.showCannotLoginOfflineError();
+            loginView.showCannotLoginError();
             return;
         }
 
@@ -221,7 +221,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         }
 
         if(httpResponse.code() == UNAUTHORIZED_CODE) {
-            loginView.showWrongPasswordError();
+            loginView.showBadCredentialsError();
             return;
         }
 
@@ -243,7 +243,7 @@ public class LoginPresenter implements LoginContract.Presenter {
             userRepository.save(user);
             loginView.showMainScreen();
         } catch (Exception ex) {
-            loginView.showApplicationError();
+            loginView.showCriticalError();
         }
     }
 

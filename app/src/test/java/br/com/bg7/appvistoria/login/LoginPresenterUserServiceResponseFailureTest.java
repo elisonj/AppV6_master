@@ -115,7 +115,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
         verifyTokenService();
         verifyUserService();
-        verify(loginView).showWrongPasswordError();
+        verify(loginView).showBadCredentialsError();
     }
 
     @Test
@@ -130,7 +130,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
         verifyTokenService();
         verifyUserService();
-        verify(loginView).showWrongPasswordError();
+        verify(loginView).showBadCredentialsError();
     }
 
     @Test
@@ -145,6 +145,6 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
         verifyTokenService();
         verifyUserService();
-        verify(loginView).showWrongPasswordError();
+        verify(loginView).showBadCredentialsError();
     }
 }

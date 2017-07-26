@@ -54,7 +54,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
         callLogin();
 
-        verify(loginView).showWrongPasswordError();
+        verify(loginView).showBadCredentialsError();
     }
 
     @Test
@@ -75,7 +75,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
         callLogin();
 
         verifyTimeoutException();
-        verify(loginView).showCannotLoginOfflineError();
+        verify(loginView).showCannotLoginError();
     }
 
     @Test
@@ -86,7 +86,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
         callLogin();
 
         verifyTimeoutException();
-        verify(loginView).showWrongPasswordError();
+        verify(loginView).showBadCredentialsError();
     }
 
     private void verifyTimeoutException() {
@@ -132,7 +132,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
         verifyTokenSuccessful();
         when(tokenHttpResponse.body()).thenReturn(null);
         tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
-        verify(loginView).showWrongPasswordError();
+        verify(loginView).showBadCredentialsError();
     }
 
     @Test
@@ -172,7 +172,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
         callLogin();
 
         verifyException();
-        verify(loginView).showWrongPasswordError();
+        verify(loginView).showBadCredentialsError();
     }
 
     @Test

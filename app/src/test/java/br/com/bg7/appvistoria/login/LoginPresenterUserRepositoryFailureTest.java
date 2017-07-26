@@ -39,7 +39,7 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
 
         verifyTokenService();
         verifyUserService();
-        verify(loginView).showApplicationError();
+        verify(loginView).showCriticalError();
     }
 
     @Test
@@ -53,7 +53,7 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
 
         verifyTokenService();
         verifyUserService();
-        verify(loginView).showApplicationError();
+        verify(loginView).showCriticalError();
     }
 
     @Test
@@ -68,6 +68,6 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
 
         verifyTokenService();
         verifyUserService();
-        verify(loginView).showApplicationError();
+        verify(loginView).showCriticalError();
     }
 }
