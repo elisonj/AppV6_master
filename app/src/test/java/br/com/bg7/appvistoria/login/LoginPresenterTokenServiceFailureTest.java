@@ -97,7 +97,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     }
 
     @Test
-    public void shouldShowCannotLoginWhenSomeErrorAndNoUser() {
+    public void shouldShowCannotLoginWhenOtherErrorAndNoUser() {
         setUpNullUser();
 
         callLogin();
@@ -107,7 +107,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     }
 
     @Test
-    public void shouldShowCannotLoginWhenSomeErrorAndBadPassword() {
+    public void shouldShowCannotLoginWhenOtherErrorAndBadPassword() {
         setUpBadPassword();
 
         callLogin();
@@ -117,7 +117,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     }
 
     @Test
-    public void shouldShowMainScreenWhenSomeErrorButUserAndPassOk() {
+    public void shouldShowMainScreenWhenOtherErrorButUserAndPassOk() {
         setUpUserAndPasswordOk();
 
         callLogin();
