@@ -12,18 +12,17 @@ import static org.mockito.Mockito.when;
  */
 public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenterBaseTest {
 
-
     @Before
     public void setUp() {
         super.setUp();
         when(loginView.isConnected()).thenReturn(true);
+        when(userHttpResponse.isSuccessful()).thenReturn(false);
     }
 
     @Test
     public void shouldShowCannotLoginWhenUserDoNotExist() {
         setUpNullUser();
         setUpToken();
-        when(userHttpResponse.isSuccessful()).thenReturn(false);
         setUpUserResponse();
 
         callLogin();
@@ -37,7 +36,6 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     public void shouldShowMainScreenWhenNoSuccessAndBadPassword() {
         setUpBadPassword();
         setUpToken();
-        when(userHttpResponse.isSuccessful()).thenReturn(false);
         setUpUserResponse();
 
         callLogin();
@@ -51,7 +49,6 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     public void shouldShowMainScreenWhenNoSuccessButUserAndPasswordOk() {
         setUpUserAndPasswordOk();
         setUpToken();
-        when(userHttpResponse.isSuccessful()).thenReturn(false);
         setUpUserResponse();
 
         callLogin();
@@ -65,7 +62,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     public void shouldShowCannotLoginWhenUserDoNotExistAndBodyIsNull() {
         setUpNullUser();
         setUpToken();
-        when(userHttpResponse.isSuccessful()).thenReturn(true);
+        setUpUserResponseSuccessful();
         when(userHttpResponse.body()).thenReturn(null);
 
         callLogin();
@@ -79,7 +76,6 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     public void shouldShowMainScreenWhenNoBodyAndBadPassword() {
         setUpBadPassword();
         setUpToken();
-        when(userHttpResponse.isSuccessful()).thenReturn(false);
         when(userHttpResponse.body()).thenReturn(null);
 
         callLogin();
@@ -93,7 +89,6 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     public void shouldShowMainScreenWhenNoBodyButUserAndPasswordOk() {
         setUpUserAndPasswordOk();
         setUpToken();
-        when(userHttpResponse.isSuccessful()).thenReturn(false);
         when(userHttpResponse.body()).thenReturn(null);
 
         callLogin();
@@ -107,8 +102,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     public void shouldShowCannotLoginWhenUserDoNotExistAndUserIsUnauthorized() {
         setUpNullUser();
         setUpToken();
-        when(userHttpResponse.isSuccessful()).thenReturn(false);
-        when(userHttpResponse.code()).thenReturn(loginPresenter.UNAUTHORIZED_CODE);
+        setUpUserUnauthorizedCode();
 
         callLogin();
 
@@ -121,8 +115,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     public void shouldShowWrongPasswordWhenUserIsUnauthorizedAndBadPassword() {
         setUpBadPassword();
         setUpToken();
-        when(userHttpResponse.isSuccessful()).thenReturn(false);
-        when(userHttpResponse.code()).thenReturn(loginPresenter.UNAUTHORIZED_CODE);
+        setUpUserUnauthorizedCode();
 
         callLogin();
 
@@ -135,13 +128,16 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     public void shouldShowWrongPasswordWhenUserIsUnauthorizedButUserAndPasswordOk() {
         setUpUserAndPasswordOk();
         setUpToken();
-        when(userHttpResponse.isSuccessful()).thenReturn(false);
-        when(userHttpResponse.code()).thenReturn(loginPresenter.UNAUTHORIZED_CODE);
+        setUpUserUnauthorizedCode();
 
         callLogin();
 
         verifyTokenService();
         verifyUserService();
         verify(loginView).showBadCredentialsError();
+    }
+
+    private void setUpUserResponseSuccessful() {
+        when(userHttpResponse.isSuccessful()).thenReturn(true);
     }
 }

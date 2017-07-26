@@ -91,7 +91,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
     public void shouldShowBadCredentialsWhenUnauthorizedAndNoUser() {
         setUpNullUser();
         setUpNoSuccessful();
-        setUpUnauthorizedCod();
+        setUpTokenUnauthorizedCode();
 
         callLogin();
 
@@ -103,7 +103,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
     public void shouldShowBadCredentialsWhenUnauthorizedAndBadPassword() {
         setUpBadPassword();
         setUpNoSuccessful();
-        setUpUnauthorizedCod();
+        setUpTokenUnauthorizedCode();
 
         callLogin();
 
@@ -115,7 +115,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
     public void shouldShowBadCredentialsWhenUnauthorizedButUserAndPasswordOk() {
         setUpUserAndPasswordOk();
         setUpNoSuccessful();
-        setUpUnauthorizedCod();
+        setUpTokenUnauthorizedCode();
 
         callLogin();
 
@@ -127,7 +127,4 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         when(tokenHttpResponse.isSuccessful()).thenReturn(false);
     }
 
-    private void setUpUnauthorizedCod() {
-        when(tokenHttpResponse.code()).thenReturn(loginPresenter.UNAUTHORIZED_CODE);
-    }
 }

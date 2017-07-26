@@ -15,6 +15,7 @@ import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
 import br.com.bg7.appvistoria.vo.User;
 
+import static br.com.bg7.appvistoria.login.LoginPresenter.UNAUTHORIZED_CODE;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.verify;
@@ -104,5 +105,12 @@ public class LoginPresenterBaseTest {
 
     void setUpNullUser() {
         when(userRepository.findByUsername(USERNAME)).thenReturn(null);
+    }
+
+    void setUpTokenUnauthorizedCode() {
+        when(tokenHttpResponse.code()).thenReturn(UNAUTHORIZED_CODE);
+    }
+    void setUpUserUnauthorizedCode() {
+        when(userHttpResponse.code()).thenReturn(UNAUTHORIZED_CODE);
     }
 }
