@@ -1,6 +1,5 @@
 package br.com.bg7.appvistoria.login;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -30,12 +29,6 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
     @Mock
     HttpResponse<Token> tokenHttpResponse;
-
-
-    @Before
-    public void setUp() {
-        super.setUp();
-    }
 
     @Test
     public void shouldShowCannotLoginWhenNoConnectionAndNoUser() {
@@ -89,11 +82,6 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
         verify(loginView).showBadCredentialsError();
     }
 
-    private void verifyTimeoutException() {
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        tokenCallBackCaptor.getValue().onFailure(new TimeoutException());
-    }
-
     @Test
     public void showMainScreenWhenNoTokenButUserAndPassOk() {
         when(loginView.isConnected()).thenReturn(true);
@@ -115,11 +103,6 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
         verifyTokenSuccessful();
         tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
         verify(loginView).showCannotLoginError();
-    }
-
-    private void verifyTokenSuccessful() {
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
     }
 
     @Test
@@ -159,11 +142,6 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
         verify(loginView).showCannotLoginError();
     }
 
-    private void verifyException() {
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        tokenCallBackCaptor.getValue().onFailure(new Exception());
-    }
-
     @Test
     public void shouldShowCannotLoginWhenSomeErrorAndBadPassword() {
         when(loginView.isConnected()).thenReturn(true);
@@ -184,5 +162,20 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
         verifyException();
         verify(loginView).showMainScreen();
+    }
+
+    private void verifyTimeoutException() {
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        tokenCallBackCaptor.getValue().onFailure(new TimeoutException());
+    }
+
+    private void verifyException() {
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        tokenCallBackCaptor.getValue().onFailure(new Exception());
+    }
+
+    private void verifyTokenSuccessful() {
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
     }
 }
