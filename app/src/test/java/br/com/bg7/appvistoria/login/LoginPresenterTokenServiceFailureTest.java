@@ -11,7 +11,6 @@ import java.util.concurrent.TimeoutException;
 import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
-import br.com.bg7.appvistoria.vo.User;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.matches;
@@ -68,24 +67,16 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
         verify(loginView).showMainScreen();
     }
 
-    private void setUpUserAndPasswordOk() {
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
-        loginPresenter.checkpw = true;
-    }
-
     @Test
     public void shouldShowCannotLoginWhenNoTokenAndNoUser() {
         when(loginView.isConnected()).thenReturn(true);
-
         when(userRepository.findByUsername(anyString())).thenReturn(null);
 
         callLogin();
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        tokenCallBackCaptor.getValue().onFailure(new TimeoutException());
 
+        verifyTimeoutException();
         verify(loginView).showCannotLoginOfflineError();
     }
-
 
     @Test
     public void showBadCredentialsWhenNoTokenAndBadPassword() {
@@ -93,10 +84,14 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
         setUpBadPassword();
 
         callLogin();
+
+        verifyTimeoutException();
+        verify(loginView).showWrongPasswordError();
+    }
+
+    private void verifyTimeoutException() {
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
         tokenCallBackCaptor.getValue().onFailure(new TimeoutException());
-
-        verify(loginView).showWrongPasswordError();
     }
 
     @Test
@@ -105,40 +100,38 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
         setUpUserAndPasswordOk();
 
         callLogin();
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        tokenCallBackCaptor.getValue().onFailure(new TimeoutException());
 
+        verifyTimeoutException();
         verify(loginView).showMainScreen();
     }
-
 
     @Test
     public void shouldShowCannotLoginWhenNoTokenBodyAndNoUser() {
         when(loginView.isConnected()).thenReturn(true);
-
         when(userRepository.findByUsername(anyString())).thenReturn(null);
 
         callLogin();
+
+        verifyTokenSuccessful();
+        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
+        verify(loginView).showCannotLoginError();
+    }
+
+    private void verifyTokenSuccessful() {
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
-        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
-
-        verify(loginView).showCannotLoginError();
     }
 
     @Test
     public void shouldShowCannotLoginWhenNoTokenBodyAndBadPassword() {
         when(loginView.isConnected()).thenReturn(true);
-
         setUpBadPassword();
 
         callLogin();
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
+
+        verifyTokenSuccessful();
         when(tokenHttpResponse.body()).thenReturn(null);
-
         tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
-
         verify(loginView).showWrongPasswordError();
     }
 
@@ -148,12 +141,10 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
         setUpUserAndPasswordOk();
 
         callLogin();
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
+
+        verifyTokenSuccessful();
         when(tokenHttpResponse.body()).thenReturn(null);
-
         tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
-
         verify(loginView).showMainScreen();
     }
 
@@ -163,40 +154,35 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
         when(userRepository.findByUsername(anyString())).thenReturn(null);
 
         callLogin();
+
+        verifyException();
+        verify(loginView).showCannotLoginError();
+    }
+
+    private void verifyException() {
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
         tokenCallBackCaptor.getValue().onFailure(new Exception());
-
-        verify(loginView).showCannotLoginError();
     }
 
     @Test
     public void shouldShowCannotLoginWhenSomeErrorAndBadPassword() {
         when(loginView.isConnected()).thenReturn(true);
-
         setUpBadPassword();
 
         callLogin();
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        tokenCallBackCaptor.getValue().onFailure(new Exception());
 
+        verifyException();
         verify(loginView).showWrongPasswordError();
-    }
-
-    private void setUpBadPassword() {
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
-        loginPresenter.checkpw = false;
     }
 
     @Test
     public void shouldShowMainScreenWhenSomeErrorButUserAndPassOk() {
         when(loginView.isConnected()).thenReturn(true);
-
         setUpUserAndPasswordOk();
 
         callLogin();
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        tokenCallBackCaptor.getValue().onFailure(new Exception());
 
+        verifyException();
         verify(loginView).showMainScreen();
     }
 }
