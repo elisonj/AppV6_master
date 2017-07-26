@@ -6,7 +6,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 
-import java.util.concurrent.TimeoutException;
+import java.io.IOException;
 
 import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
@@ -73,7 +73,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
         callLogin();
 
-        verifyTimeoutException();
+        setUpConnectivityError();
         verify(loginView).showCannotLoginError();
     }
 
@@ -83,7 +83,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
         callLogin();
 
-        verifyTimeoutException();
+        setUpConnectivityError();
         verify(loginView).showBadCredentialsError();
     }
 
@@ -93,7 +93,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
         callLogin();
 
-        verifyTimeoutException();
+        setUpConnectivityError();
         verify(loginView).showMainScreen();
     }
 
@@ -162,9 +162,9 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
         verify(loginView).showMainScreen();
     }
 
-    private void verifyTimeoutException() {
+    private void setUpConnectivityError() {
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        tokenCallBackCaptor.getValue().onFailure(new TimeoutException());
+        tokenCallBackCaptor.getValue().onFailure(new IOException());
     }
 
     private void verifyException() {
