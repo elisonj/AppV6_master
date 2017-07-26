@@ -16,13 +16,14 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
     public void setUp() {
         super.setUp();
         when(loginView.isConnected()).thenReturn(true);
+        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
     }
 
     @Test
     public void shouldShowCannotLoginWhenNoSuccessAndNoUser() {
 
         setUpNullUser();
-        when(tokenHttpResponse.isSuccessful()).thenReturn(false);
+        setUpNoSuccessful();
 
         callLogin();
 
@@ -30,10 +31,14 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         verify(loginView).showCannotLoginError();
     }
 
+    private void setUpNoSuccessful() {
+        when(tokenHttpResponse.isSuccessful()).thenReturn(false);
+    }
+
     @Test
     public void shouldShowCannotLoginWhenNoSuccessAndBadPassword() {
         setUpBadPassword();
-        when(tokenHttpResponse.isSuccessful()).thenReturn(false);
+        setUpNoSuccessful();
 
         callLogin();
 
@@ -44,7 +49,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
     @Test
     public void shouldShowMainScreenWhenNoSuccessButUserAndPassOk() {
         setUpUserAndPasswordOk();
-        when(tokenHttpResponse.isSuccessful()).thenReturn(false);
+        setUpNoSuccessful();
 
         callLogin();
 
@@ -56,7 +61,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
     @Test
     public void shouldShowCannotLoginWhenNoBodyAndNoUser() {
         setUpNullUser();
-        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
+
         when(tokenHttpResponse.body()).thenReturn(null);
 
         callLogin();
@@ -68,7 +73,6 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
     @Test
     public void shouldShowCannotLoginWhenNoBodyAndBadPassword() {
         setUpBadPassword();
-        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
         when(tokenHttpResponse.body()).thenReturn(null);
 
         callLogin();
@@ -80,7 +84,6 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
     @Test
     public void shouldShowMainScreenWhenNoBodyButUserAndPasswordOk() {
         setUpUserAndPasswordOk();
-        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
         when(tokenHttpResponse.body()).thenReturn(null);
 
         callLogin();
@@ -91,19 +94,24 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
     @Test
     public void shouldShowCannotLoginWhenUnauthorizedAndNoUser() {
         setUpNullUser();
-        when(tokenHttpResponse.isSuccessful()).thenReturn(false);
-        when(tokenHttpResponse.code()).thenReturn(loginPresenter.UNAUTHORIZED_CODE);
+        setUpNoSuccessful();
+        setUpUnauthorizedCod();
 
         callLogin();
 
         verifyTokenService();
         verify(loginView).showBadCredentialsError();
     }
+
+    private void setUpUnauthorizedCod() {
+        when(tokenHttpResponse.code()).thenReturn(loginPresenter.UNAUTHORIZED_CODE);
+    }
+
     @Test
     public void shouldShowCannotLoginWhenUnauthorizedAndBadPassword() {
         setUpBadPassword();
-        when(tokenHttpResponse.isSuccessful()).thenReturn(false);
-        when(tokenHttpResponse.code()).thenReturn(loginPresenter.UNAUTHORIZED_CODE);
+        setUpNoSuccessful();
+        setUpUnauthorizedCod();
 
         callLogin();
 
@@ -115,8 +123,8 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
     @Test
     public void shouldShowCannotLoginWhenUnauthorizedButUserAndPasswordOk() {
         setUpUserAndPasswordOk();
-        when(tokenHttpResponse.isSuccessful()).thenReturn(false);
-        when(tokenHttpResponse.code()).thenReturn(loginPresenter.UNAUTHORIZED_CODE);
+        setUpNoSuccessful();
+        setUpUnauthorizedCod();
 
         callLogin();
 
