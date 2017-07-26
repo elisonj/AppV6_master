@@ -97,41 +97,6 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     }
 
     @Test
-    public void shouldShowCannotLoginWhenNoTokenBodyAndNoUser() {
-        setUpNullUser();
-
-        callLogin();
-
-        verifyTokenSuccessful();
-        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
-        verify(loginView).showCannotLoginError();
-    }
-
-    @Test
-    public void shouldShowCannotLoginWhenNoTokenBodyAndBadPassword() {
-        setUpBadPassword();
-
-        callLogin();
-
-        verifyTokenSuccessful();
-        when(tokenHttpResponse.body()).thenReturn(null);
-        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
-        verify(loginView).showBadCredentialsError();
-    }
-
-    @Test
-    public void shuldShowMainScreenWhenNoTokenBodyButUserAndPassOk() {
-        setUpUserAndPasswordOk();
-
-        callLogin();
-
-        verifyTokenSuccessful();
-        when(tokenHttpResponse.body()).thenReturn(null);
-        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
-        verify(loginView).showMainScreen();
-    }
-
-    @Test
     public void shouldShowCannotLoginWhenSomeErrorAndNoUser() {
         setUpNullUser();
 
@@ -169,10 +134,5 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     private void verifyException() {
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
         tokenCallBackCaptor.getValue().onFailure(new Exception());
-    }
-
-    private void verifyTokenSuccessful() {
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
     }
 }
