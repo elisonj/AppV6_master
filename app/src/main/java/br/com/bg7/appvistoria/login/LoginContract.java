@@ -6,8 +6,11 @@ import br.com.bg7.appvistoria.BaseView;
 /**
  * Created by: luciolucio
  * Date: 2017-07-14
+ *
+ * {@link SuppressWarnings pois so as sub-classes sao implementadas, de proposito}
  */
 
+@SuppressWarnings("unused")
 public interface LoginContract {
 
     interface View extends BaseView<Presenter> {

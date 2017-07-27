@@ -8,8 +8,10 @@ import java.util.List;
 /**
  * Created by: elison
  * Date: 2017-07-11
+ *
+ * {@link SuppressWarnings pois o DTO tem campos requeridos usados para serializar}
  */
-
+@SuppressWarnings("unused")
 public class UserAccount {
 
     @SerializedName("id")
