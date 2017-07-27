@@ -5,3 +5,14 @@ local.properties
 build/
 captures/
 .externalNativeBuild
+fastlane/.env
+fastlane/README.md
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+fastlane/key.json
+keystore*.properties
+*.jks
+*.pem
+
