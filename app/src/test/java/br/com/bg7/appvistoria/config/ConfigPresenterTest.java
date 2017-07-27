@@ -36,10 +36,6 @@ public class ConfigPresenterTest {
 
     private ConfigPresenter configPresenter;
 
-    private List<Language> languages;
-
-    private Config config;
-
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -50,7 +46,7 @@ public class ConfigPresenterTest {
     }
 
     private void setUpLanguages() {
-        languages = Arrays.asList(
+        List<Language> languages = Arrays.asList(
                 new Language("pt_BR", null),
                 new Language("en_US", null)
         );
@@ -58,7 +54,7 @@ public class ConfigPresenterTest {
     }
 
     private void setUpConfig(String language, boolean isSyncWithWifiOnly) {
-        config = new Config(language, isSyncWithWifiOnly);
+        Config config = new Config(language, isSyncWithWifiOnly);
         when(configRepository.first(Config.class)).thenReturn(config);
     }
 
