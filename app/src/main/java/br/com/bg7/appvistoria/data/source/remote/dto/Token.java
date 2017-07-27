@@ -29,9 +29,10 @@ public class Token {
     public Token() {
     }
 
-    public Token(String accessToken, String userId) {
+    public Token(String accessToken, String userId, int expiresIn) {
         this.accessToken = accessToken;
         this.userId = userId;
+        this.expiresIn = expiresIn;
     }
 
     public String getAccessToken() {

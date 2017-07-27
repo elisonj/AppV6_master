@@ -38,9 +38,11 @@ public class User extends SugarRecord<User> {
     public User() {}
 
     public User(UserResponse user, br.com.bg7.appvistoria.data.source.remote.dto.Token tokenFromService, String password) {
-        fullName = user.getUserAccounts().get(0).getBasicInfo().getFullName();
-        userName = user.getUserAccounts().get(0).getCredentials().getLogin();
-        email = user.getUserAccounts().get(0).getBasicInfo().getEmail().getAddress();
+        if(user != null && user.getUserAccounts() != null) {
+            fullName = user.getUserAccounts().get(0).getBasicInfo().getFullName();
+            userName = user.getUserAccounts().get(0).getCredentials().getLogin();
+            email = user.getUserAccounts().get(0).getBasicInfo().getEmail().getAddress();
+        }
         this.password  = BCrypt.hashpw(password, BCrypt.gensalt());
         token = new Token(tokenFromService);
     }
@@ -49,4 +51,11 @@ public class User extends SugarRecord<User> {
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+
+    public void setToken(br.com.bg7.appvistoria.data.source.remote.dto.Token tokenFromService) {
+        this.token = new Token(tokenFromService);
+    }
 }
