@@ -68,7 +68,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
     @Test
     public void shouldMainScreenLoginWhenNoSuccessButUserAndPassOk() {
         when(loginView.isConnected()).thenReturn(true, false);
-        setUpUserAndPasswordOk();
+        setUpGoodPassword();
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
         setUpToken();
 
@@ -113,7 +113,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
     @Test
     public void shouldShowMainScreenLoginWhenConnectivityErrorButUserAndPassOk() {
         when(loginView.isConnected()).thenReturn(true);
-        setUpUserAndPasswordOk();
+        setUpGoodPassword();
         setUpToken();
         when(userHttpResponse.isSuccessful()).thenReturn(false);
         when(userHttpResponse.body()).thenReturn(null);
@@ -161,7 +161,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
     @Test
     public void shouldShowMainScreenLoginWhenOtherErrorButUserAndPassOk() {
         when(loginView.isConnected()).thenReturn(true);
-        setUpUserAndPasswordOk();
+        setUpGoodPassword();
         setUpToken();
         when(userHttpResponse.isSuccessful()).thenReturn(false);
         when(userHttpResponse.body()).thenReturn(null);

@@ -74,7 +74,7 @@ public class LoginPresenterBaseTest {
         loginPresenter.checkpw = false;
     }
 
-    void setUpUserAndPasswordOk() {
+    void setUpGoodPassword() {
         when(userRepository.findByUsername(anyString())).thenReturn(new User());
         loginPresenter.checkpw = true;
     }

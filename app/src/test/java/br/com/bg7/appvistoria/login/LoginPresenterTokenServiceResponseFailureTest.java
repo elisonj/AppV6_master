@@ -44,7 +44,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
 
     @Test
     public void shouldShowMainScreenWhenNoSuccessButUserAndPassOk() {
-        setUpUserAndPasswordOk();
+        setUpGoodPassword();
         setUpNoSuccessful();
 
         callLogin();
@@ -78,7 +78,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
 
     @Test
     public void shouldShowMainScreenWhenNoBodyButUserAndPasswordOk() {
-        setUpUserAndPasswordOk();
+        setUpGoodPassword();
         when(tokenHttpResponse.body()).thenReturn(null);
 
         callLogin();
@@ -113,7 +113,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
 
     @Test
     public void shouldShowBadCredentialsWhenUnauthorizedButUserAndPasswordOk() {
-        setUpUserAndPasswordOk();
+        setUpGoodPassword();
         setUpNoSuccessful();
         setUpTokenUnauthorizedCode();
 

@@ -56,9 +56,9 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     }
 
     @Test
-    public void shouldShowMainScreenWhenNoConnection() {
+    public void shouldShowMainScreenWhenNoConnectionAndGoodPassword() {
         setUpNoConnection();
-        setUpUserAndPasswordOk();
+        setUpGoodPassword();
 
         callLogin();
 
@@ -66,7 +66,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     }
 
     @Test
-    public void shouldShowCannotLoginWhenConnectivityErrorAndNoUser() {
+    public void shouldShowCannotLoginWhenNoUserAndConnectivityError() {
         setUpNoUser();
 
         callLogin();
@@ -76,7 +76,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     }
 
     @Test
-    public void shouldShowBadCredentialsWhenConnectivityErrorAndBadPassword() {
+    public void shouldShowBadCredentialsWhenBadPasswordAndConnectivityError() {
         setUpBadPassword();
 
         callLogin();
@@ -86,8 +86,8 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     }
 
     @Test
-    public void shouldShowMainScreenWhenNoTokenButUserAndPassOk() {
-        setUpUserAndPasswordOk();
+    public void shouldShowMainScreenWhenGoodPasswordAndConnectivityError() {
+        setUpGoodPassword();
 
         callLogin();
 
@@ -96,7 +96,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     }
 
     @Test
-    public void shouldShowCannotLoginWhenOtherErrorAndNoUser() {
+    public void shouldShowCannotLoginWhenNoUserAndOtherError() {
         setUpNoUser();
 
         callLogin();
@@ -106,7 +106,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     }
 
     @Test
-    public void shouldShowCannotLoginWhenOtherErrorAndBadPassword() {
+    public void shouldShowBadCredentialsWhenBadPasswordAndOtherError() {
         setUpBadPassword();
 
         callLogin();
@@ -116,8 +116,8 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     }
 
     @Test
-    public void shouldShowMainScreenWhenOtherErrorButUserAndPassOk() {
-        setUpUserAndPasswordOk();
+    public void shouldShowMainScreenWhenGoodPasswordAndOtherError() {
+        setUpGoodPassword();
 
         callLogin();
 
