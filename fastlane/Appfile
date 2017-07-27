@@ -1,2 +1,2 @@
-json_key_file "key.json"
+json_key_file ENV['JSON_KEY_FILE']
 package_name "br.com.bg7.appvistoria"
