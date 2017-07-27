@@ -122,7 +122,7 @@ class LoginPresenter implements LoginContract.Presenter {
 
             @Override
             public void onFailure(Throwable t) {
-                onGetTokenFailure(password, t);
+                onGetTokenFailure(t);
             }
         });
     }
@@ -135,7 +135,7 @@ class LoginPresenter implements LoginContract.Presenter {
                 return;
             }
             if (userExists && token == null) {
-                verifyPasswordAndEnter(password);
+                verifyPasswordAndEnter();
                 return;
             }
 
@@ -159,12 +159,12 @@ class LoginPresenter implements LoginContract.Presenter {
         }
 
         if (userExists) {
-            verifyPasswordAndEnter(password);
+            verifyPasswordAndEnter();
         }
         loginView.showCannotLoginError();
     }
 
-    private void verifyPasswordAndEnter(String password) {
+    private void verifyPasswordAndEnter() {
         if (!passwordMatches) {
             loginView.showBadCredentialsError();
             return;
@@ -172,13 +172,13 @@ class LoginPresenter implements LoginContract.Presenter {
         loginView.showMainScreen();
     }
 
-    private void onGetTokenFailure(String password, Throwable t) {
+    private void onGetTokenFailure(Throwable t) {
         if (t instanceof TimeoutException) {
             if(!userExists) {
                 loginView.showCannotLoginError();
                 return;
             }
-            verifyPasswordAndEnter(password);
+            verifyPasswordAndEnter();
             return;
         }
 
@@ -188,7 +188,7 @@ class LoginPresenter implements LoginContract.Presenter {
         }
 
         if(userExists) {
-            verifyPasswordAndEnter(password);
+            verifyPasswordAndEnter();
             return;
         }
 
