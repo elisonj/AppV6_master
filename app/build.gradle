@@ -11,8 +11,8 @@ android {
         applicationId "br.com.bg7.appvistoria"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 2
-        versionName "0.2.1"
+        versionCode 3
+        versionName "0.2.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         // Build config fields
