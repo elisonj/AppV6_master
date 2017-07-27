@@ -41,7 +41,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
     @Test
     public void shouldShowCannotLoginWhenNoSuccessAndNoUser() {
         when(loginView.isConnected()).thenReturn(true, false);
-        setUpNullUser();
+        setUpNoUser();
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
         when(tokenHttpResponse.body()).thenReturn(new Token());
 
@@ -81,7 +81,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
 
     @Test
     public void shouldShowCannotLoginWhenConnectivityErrorAndNoUser() {
-        setUpNullUser();
+        setUpNoUser();
         setUpToken();
         when(userHttpResponse.isSuccessful()).thenReturn(false);
         when(userHttpResponse.body()).thenReturn(null);
@@ -129,7 +129,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
 
     @Test
     public void shouldShowCannotLoginWhenOtherErrorAndNoUser() {
-        setUpNullUser();
+        setUpNoUser();
         setUpToken();
         when(userHttpResponse.isSuccessful()).thenReturn(false);
         when(userHttpResponse.body()).thenReturn(null);

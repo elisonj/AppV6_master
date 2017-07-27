@@ -21,7 +21,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
     @Test
     public void shouldShowCannotLoginWhenUserDoNotExist() {
-        setUpNullUser();
+        setUpNoUser();
         setUpToken();
         setUpUserResponse();
 
@@ -60,7 +60,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
     @Test
     public void shouldShowCannotLoginWhenUserDoNotExistAndBodyIsNull() {
-        setUpNullUser();
+        setUpNoUser();
         setUpToken();
         setUpUserResponseSuccessful();
         when(userHttpResponse.body()).thenReturn(null);
@@ -100,7 +100,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
     @Test
     public void shouldShowBadCredentialsWhenUserDoNotExistAndUserIsUnauthorized() {
-        setUpNullUser();
+        setUpNoUser();
         setUpToken();
         setUpUserUnauthorizedCode();
 

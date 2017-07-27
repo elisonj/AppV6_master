@@ -23,7 +23,7 @@ public class LoginPresenterLoginSuccessTest extends LoginPresenterBaseTest {
 
     @Test
     public void shouldShowMainScreenWhenServicesWorkAndNoUser() {
-        setUpNullUser();
+        setUpNoUser();
         setUpToken();
         when(userHttpResponse.isSuccessful()).thenReturn(true);
         setUpUserResponse();

@@ -103,7 +103,7 @@ public class LoginPresenterBaseTest {
         when(loginView.isConnected()).thenReturn(false);
     }
 
-    void setUpNullUser() {
+    void setUpNoUser() {
         when(userRepository.findByUsername(USERNAME)).thenReturn(null);
     }
 

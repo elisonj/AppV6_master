@@ -22,7 +22,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
     @Test
     public void shouldShowCannotLoginWhenNoSuccessAndNoUser() {
 
-        setUpNullUser();
+        setUpNoUser();
         setUpNoSuccessful();
 
         callLogin();
@@ -55,7 +55,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
 
     @Test
     public void shouldShowCannotLoginWhenNoBodyAndNoUser() {
-        setUpNullUser();
+        setUpNoUser();
 
         when(tokenHttpResponse.body()).thenReturn(null);
 
@@ -89,7 +89,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
 
     @Test
     public void shouldShowBadCredentialsWhenUnauthorizedAndNoUser() {
-        setUpNullUser();
+        setUpNoUser();
         setUpNoSuccessful();
         setUpTokenUnauthorizedCode();
 

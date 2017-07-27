@@ -38,7 +38,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     @Test
     public void shouldShowCannotLoginWhenNoConnectionAndNoUser() {
         setUpNoConnection();
-        setUpNullUser();
+        setUpNoUser();
 
         callLogin();
 
@@ -67,7 +67,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
     @Test
     public void shouldShowCannotLoginWhenConnectivityErrorAndNoUser() {
-        setUpNullUser();
+        setUpNoUser();
 
         callLogin();
 
@@ -97,7 +97,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
     @Test
     public void shouldShowCannotLoginWhenOtherErrorAndNoUser() {
-        setUpNullUser();
+        setUpNoUser();
 
         callLogin();
 
