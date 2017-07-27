@@ -91,14 +91,6 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
         showMessage(getContext().getString(R.string.error), message);
     }
 
-    private void showWarning(String message) {
-        showMessage(getContext().getString(R.string.warning), message);
-    }
-
-    private void showSuccess(String message) {
-        showMessage(getContext().getString(R.string.success), message);
-    }
-
     private void showMessage(String title, String message) {
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
         alert.setTitle(title);
