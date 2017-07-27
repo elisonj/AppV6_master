@@ -1,4 +1,4 @@
-fastlane_version "2.48.0"
+fastlane_version "2.49.0"
 
 opt_out_crash_reporting
 
@@ -10,10 +10,27 @@ platform :android do
     gradle(task: "test")
   end
 
-  desc "Deploy a new version to Google Play - Alpha channel"
+  desc "Validate a new version to Google Play - Alpha channel"
   lane :alpha do
-    gradle(task: "assembleRelease")
-    supply(track: 'alpha')
+    gradle(
+        task: 'assembleRelease'
+    )
+    supply(
+        track: 'alpha',
+        skip_upload_screenshots: true,
+        validate_only: true
+    )
+  end
+
+  desc "Deploy a new version to Google Play - Alpha channel"
+  lane :alphadeploy do
+    gradle(
+        task: 'assembleRelease'
+    )
+    supply(
+        track: 'alpha',
+        skip_upload_screenshots: true
+    )
   end
 end
 
