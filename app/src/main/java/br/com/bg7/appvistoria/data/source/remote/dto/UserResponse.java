@@ -23,9 +23,4 @@ public class UserResponse {
     @SerializedName("userAccounts")
     @Expose
     private final List<UserAccount> userAccounts = null;
-
-    public List<UserAccount> getUserAccounts() {
-        return userAccounts;
-    }
-
 }
