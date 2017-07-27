@@ -125,11 +125,9 @@
     <orderEntry type="library" exported="" name="slf4j-api-1.7.25" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="objenesis-2.5" level="project" />
     <orderEntry type="library" exported="" name="transition-26.0.0" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="screengrab-1.0.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="espresso-core-2.2.2" level="project" />
     <orderEntry type="library" exported="" name="support-fragment-26.0.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="rules-0.5" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="uiautomator-v18-2.1.2" level="project" />
     <orderEntry type="library" exported="" name="constraint-layout-solver-1.0.2" level="project" />
     <orderEntry type="library" exported="" name="support-compat-26.0.0" level="project" />
     <orderEntry type="library" exported="" name="okio-1.13.0" level="project" />
