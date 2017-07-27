@@ -3,8 +3,8 @@ package br.com.bg7.appvistoria.login;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.data.User;
+import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
