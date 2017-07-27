@@ -35,7 +35,7 @@ public class User extends SugarRecord<User> {
 
     public User withToken(String token) {
         User user = cloneUser();
-        user.token = this.token;
+        user.token = token;
 
         return user;
     }
