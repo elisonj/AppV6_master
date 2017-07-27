@@ -1,5 +1,7 @@
 package br.com.bg7.appvistoria.data;
 
+import android.support.annotation.NonNull;
+
 import com.orm.SugarRecord;
 
 /**
@@ -31,14 +33,28 @@ public class User extends SugarRecord<User> {
         this.passwordHash = passwordHash;
     }
 
-    public User clone(String token) {
+    public User withToken(String token) {
+        User user = cloneUser();
+        user.token = this.token;
+
+        return user;
+    }
+
+    public User withPasswordHash(String passwordHash) {
+        User user = cloneUser();
+        user.passwordHash = passwordHash;
+
+        return user;
+    }
+
+    @NonNull
+    private User cloneUser() {
         User user = new User();
 
         user.id = this.id;
         user.userName = this.userName;
         user.passwordHash = this.passwordHash;
-        user.token = token;
-
+        user.token = this.token;
         return user;
     }
 

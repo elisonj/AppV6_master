@@ -6,14 +6,12 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 
-import java.util.concurrent.TimeoutException;
+import java.io.IOException;
 
 import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
-import br.com.bg7.appvistoria.data.User;
 
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -25,23 +23,22 @@ import static org.mockito.Mockito.when;
 
 public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTest {
 
-
     @Captor
     private ArgumentCaptor<HttpCallback<Token>> tokenCallBackCaptor;
 
     @Mock
     HttpResponse<Token> tokenHttpResponse;
 
-
     @Before
     public void setUp() {
         super.setUp();
+        when(loginView.isConnected()).thenReturn(true);
     }
 
     @Test
     public void shouldShowCannotLoginWhenNoConnectionAndNoUser() {
-        when(loginView.isConnected()).thenReturn(false);
-        when(userRepository.findByUsername(anyString())).thenReturn(null);
+        setUpNoConnection();
+        setUpNullUser();
 
         callLogin();
 
@@ -49,21 +46,19 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     }
 
     @Test
-    public void showBadCredentialsWhenNoConnectionAndBadPassword() {
-        when(loginView.isConnected()).thenReturn(false);
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
-        loginPresenter.checkpw = false;
+    public void shouldShowBadCredentialsWhenNoConnectionAndBadPassword() {
+        setUpNoConnection();
+        setUpBadPassword();
 
         callLogin();
 
-        verify(loginView).showWrongPasswordError();
+        verify(loginView).showBadCredentialsError();
     }
 
     @Test
-    public void showMainScreenWhenNoConnection() {
-        when(loginView.isConnected()).thenReturn(false);
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
-        loginPresenter.checkpw = true;
+    public void shouldShowMainScreenWhenNoConnection() {
+        setUpNoConnection();
+        setUpUserAndPasswordOk();
 
         callLogin();
 
@@ -71,130 +66,73 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     }
 
     @Test
-    public void shouldShowCannotLoginWhenNoTokenAndNoUser() {
-        when(loginView.isConnected()).thenReturn(true);
+    public void shouldShowCannotLoginWhenConnectivityErrorAndNoUser() {
 
-        when(userRepository.findByUsername(anyString())).thenReturn(null);
-
-        callLogin();
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        tokenCallBackCaptor.getValue().onFailure(new TimeoutException());
-
-        verify(loginView).showCannotLoginOfflineError();
-    }
-
-
-    @Test
-    public void showBadCredentialsWhenNoTokenAndBadPassword() {
-        when(loginView.isConnected()).thenReturn(true);
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
-        loginPresenter.checkpw = false;
+        setUpNullUser();
 
         callLogin();
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        tokenCallBackCaptor.getValue().onFailure(new TimeoutException());
 
-        verify(loginView).showWrongPasswordError();
-    }
-
-    @Test
-    public void showMainScreenWhenNoTokenButUserAndPassOk() {
-        when(loginView.isConnected()).thenReturn(true);
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
-        loginPresenter.checkpw = true;
-
-        callLogin();
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        tokenCallBackCaptor.getValue().onFailure(new TimeoutException());
-
-        verify(loginView).showMainScreen();
-    }
-
-
-    @Test
-    public void shouldShowCannotLoginWhenNoTokenBodyAndNoUser() {
-        when(loginView.isConnected()).thenReturn(true);
-
-        when(userRepository.findByUsername(anyString())).thenReturn(null);
-
-        callLogin();
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
-        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
-
+        setUpConnectivityError();
         verify(loginView).showCannotLoginError();
     }
 
     @Test
-    public void shouldShowCannotLoginWhenNoTokenBodyAndBadPassword() {
-        when(loginView.isConnected()).thenReturn(true);
-
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
-        loginPresenter.checkpw = false;
+    public void shouldShowBadCredentialsWhenConnectivityErrorAndBadPassword() {
+        setUpBadPassword();
 
         callLogin();
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
-        when(tokenHttpResponse.body()).thenReturn(null);
 
-        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
-
-        verify(loginView).showWrongPasswordError();
+        setUpConnectivityError();
+        verify(loginView).showBadCredentialsError();
     }
 
     @Test
-    public void showMainScreenWhenNoTokenBodyButUserAndPassOk() {
-        when(loginView.isConnected()).thenReturn(true);
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
-        loginPresenter.checkpw = true;
+    public void shouldShowMainScreenWhenNoTokenButUserAndPassOk() {
+        setUpUserAndPasswordOk();
 
         callLogin();
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
-        when(tokenHttpResponse.body()).thenReturn(null);
 
-        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
-
+        setUpConnectivityError();
         verify(loginView).showMainScreen();
     }
 
     @Test
-    public void shouldShowCannotLoginWhenSomeErrorAndNoUser() {
-        when(loginView.isConnected()).thenReturn(true);
-        when(userRepository.findByUsername(anyString())).thenReturn(null);
+    public void shouldShowCannotLoginWhenOtherErrorAndNoUser() {
+        setUpNullUser();
 
         callLogin();
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        tokenCallBackCaptor.getValue().onFailure(new Exception());
 
+        setUpRuntimeException();
         verify(loginView).showCannotLoginError();
     }
 
     @Test
-    public void shouldShowCannotLoginWhenSomeErrorAndBadPassword() {
-        when(loginView.isConnected()).thenReturn(true);
-
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
-        loginPresenter.checkpw = false;
+    public void shouldShowCannotLoginWhenOtherErrorAndBadPassword() {
+        setUpBadPassword();
 
         callLogin();
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        tokenCallBackCaptor.getValue().onFailure(new Exception());
 
-        verify(loginView).showWrongPasswordError();
+        setUpRuntimeException();
+        verify(loginView).showBadCredentialsError();
     }
 
     @Test
-    public void shouldShowMainScreenWhenSomeErrorButUserAndPassOk() {
-        when(loginView.isConnected()).thenReturn(true);
-
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
-        loginPresenter.checkpw = true;
+    public void shouldShowMainScreenWhenOtherErrorButUserAndPassOk() {
+        setUpUserAndPasswordOk();
 
         callLogin();
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        tokenCallBackCaptor.getValue().onFailure(new Exception());
 
+        setUpRuntimeException();
         verify(loginView).showMainScreen();
+    }
+
+    private void setUpConnectivityError() {
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        tokenCallBackCaptor.getValue().onFailure(new IOException());
+    }
+
+    private void setUpRuntimeException() {
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        tokenCallBackCaptor.getValue().onFailure(new RuntimeException());
     }
 }

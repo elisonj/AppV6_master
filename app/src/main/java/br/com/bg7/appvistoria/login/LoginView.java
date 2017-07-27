@@ -58,22 +58,22 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
 
     @Override
     public void showUsernameEmptyError() {
-        showWarning(getContext().getString(R.string.validation_user_field_not_empty));
+        showError(getContext().getString(R.string.validation_user_field_not_empty));
     }
 
     @Override
     public void showPasswordEmptyError() {
-        showWarning(getContext().getString(R.string.validation_password_field_not_empty));
+        showError(getContext().getString(R.string.validation_password_field_not_empty));
     }
 
     @Override
-    public void showCannotLoginOfflineError() {
-        showWarning(getContext().getString(R.string.validation_user_not_found));
+    public void showCriticalError() {
+        showError(getContext().getString(R.string.application_error));
     }
 
     @Override
     public void showCannotLoginError() {
-        showWarning(getContext().getString(R.string.login_error));
+        showError(getContext().getString(R.string.login_error));
     }
 
     @Override
@@ -83,18 +83,12 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
     }
 
     @Override
-    public void showOfflineLoginSuccess() {
-        showSuccess(getContext().getString(R.string.login_offline_success));
+    public void showBadCredentialsError() {
+        showError(getContext().getString(R.string.validation_password_dont_match));
     }
 
-    @Override
-    public void showWrongPasswordError() {
-        showWarning(getContext().getString(R.string.validation_password_dont_match));
-    }
-
-    @Override
-    public void showUserNotFoundError() {
-        showWarning(getContext().getString(R.string.validation_user_not_found));
+    private void showError(String message) {
+        showMessage(getContext().getString(R.string.error), message);
     }
 
     private void showWarning(String message) {

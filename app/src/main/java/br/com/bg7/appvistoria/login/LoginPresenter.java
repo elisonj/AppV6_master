@@ -9,6 +9,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.net.ConnectException;
 import java.util.concurrent.TimeoutException;
 
+import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.TokenService;
 import br.com.bg7.appvistoria.data.source.UserService;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
@@ -16,7 +17,6 @@ import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
-import br.com.bg7.appvistoria.data.User;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -26,7 +26,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 
 class LoginPresenter implements LoginContract.Presenter {
-    final int UNAUTHORIZED_CODE = 401;
+    static final int UNAUTHORIZED_CODE = 401;
 
     private final TokenService tokenService;
     private final UserService userService;
@@ -73,7 +73,7 @@ class LoginPresenter implements LoginContract.Presenter {
                 attemptTokenLogin(username, password);
                 return;
             }
-            loginView.showWrongPasswordError();
+            loginView.showBadCredentialsError();
             return;
         }
 
@@ -128,11 +128,7 @@ class LoginPresenter implements LoginContract.Presenter {
                 return;
             }
             if (user != null && token == null) {
-                if (!checkpw(password, user.getPasswordHash())) {
-                    loginView.showWrongPasswordError();
-                    return;
-                }
-                loginView.showMainScreen();
+                verifyPasswordAndEnter(password);
                 return;
             }
 
@@ -145,60 +141,55 @@ class LoginPresenter implements LoginContract.Presenter {
                 return;
             }
 
-            user = user.clone(token.getAccessToken());
-            userRepository.save(user);
-            loginView.showMainScreen();
+            user = user.withToken(token.getAccessToken());
+            saveUserAndEnter(user);
             return;
         }
 
         if(httpResponse.code() == UNAUTHORIZED_CODE) {
-            loginView.showWrongPasswordError();
+            loginView.showBadCredentialsError();
             return;
         }
 
         if (user != null) {
-            if (!checkpw(password, user.getPasswordHash())) {
-                loginView.showWrongPasswordError();
-                return;
-            }
-            loginView.showMainScreen();
-            return;
+            verifyPasswordAndEnter(password);
         }
         loginView.showCannotLoginError();
+    }
+
+    private void verifyPasswordAndEnter(String password) {
+        if (!checkpw(password, user.getPasswordHash())) {
+            loginView.showBadCredentialsError();
+            return;
+        }
+        loginView.showMainScreen();
+        return;
     }
 
     private void onGetTokenFailure(String password, Throwable t) {
         if (t instanceof TimeoutException) {
             if(user == null) {
-                loginView.showCannotLoginOfflineError();
+                loginView.showCannotLoginError();
                 return;
             }
-            if (!checkpw(password, user.getPasswordHash())) {
-                loginView.showWrongPasswordError();
-                return;
-            }
-            loginView.showMainScreen();
+            verifyPasswordAndEnter(password);
             return;
         }
 
         if (t instanceof ConnectException) {
-            loginView.showCannotLoginOfflineError();
+            loginView.showCannotLoginError();
             return;
         }
 
         if(user != null) {
-            if (!checkpw(password, user.getPasswordHash())) {
-                loginView.showWrongPasswordError();
-                return;
-            }
-            loginView.showMainScreen();
+            verifyPasswordAndEnter(password);
             return;
         }
 
         loginView.showCannotLoginError();
     }
 
-    private void callUserService(final String username, final String password, @NonNull final Token token) {
+        private void callUserService(final String username, final String password, @NonNull final Token token) {
         userService.getUser(token.getAccessToken(), token.getUserId(), new HttpCallback<UserResponse>() {
             @Override
             public void onResponse(HttpResponse<UserResponse> httpResponse) {
@@ -207,7 +198,7 @@ class LoginPresenter implements LoginContract.Presenter {
 
             @Override
             public void onFailure(Throwable t) {
-                onGetUserFailure();
+                onGetUserFailure(password, token);
             }
         });
     }
@@ -219,17 +210,53 @@ class LoginPresenter implements LoginContract.Presenter {
             if(userResponse != null) {
                 User userFromRepository = userRepository.findByUsername(username);
                 if(userFromRepository == null) {
-                    String passwordHash = hashpw(password);
-                    User user = new User(username, token.getAccessToken(), passwordHash);
-                    userRepository.save(user);
+                    User user = new User(username, token.getAccessToken(), hashpw(password));
+                    saveUserAndEnter(user);
+                    return;
                 }
 
                 loginView.showMainScreen();
+                return;
             }
+        }
+
+        if(httpResponse.code() == UNAUTHORIZED_CODE) {
+            loginView.showBadCredentialsError();
+            return;
+        }
+
+        if(user != null) {
+            user = user.withToken(token.getAccessToken());
+            if (!checkpw(password, user.getPasswordHash())) {
+                user = user.withPasswordHash(hashpw(password));
+            }
+            saveUserAndEnter(user);
+            return;
+        }
+
+        loginView.showCannotLoginError();
+
+    }
+
+    private void saveUserAndEnter(User user) {
+        try{
+            userRepository.save(user);
+            loginView.showMainScreen();
+        } catch (Exception ex) {
+            loginView.showCriticalError();
         }
     }
 
-    private void onGetUserFailure() {
+    private void onGetUserFailure(final String password, @NonNull final Token token) {
+        if(user != null) {
+            user = user.withToken(token.getAccessToken());
+            if (!checkpw(password, user.getPasswordHash())) {
+                user = user.withPasswordHash(hashpw(password));
+            }
+            saveUserAndEnter(user);
+            return;
+        }
+
         loginView.showCannotLoginError();
     }
 

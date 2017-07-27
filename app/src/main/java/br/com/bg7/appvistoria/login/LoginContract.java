@@ -17,10 +17,8 @@ public interface LoginContract {
         void showUsernameEmptyError();
         void showPasswordEmptyError();
         void showCannotLoginError();
-        void showCannotLoginOfflineError();
-        void showOfflineLoginSuccess();
-        void showWrongPasswordError();
-        void showUserNotFoundError();
+        void showBadCredentialsError();
+        void showCriticalError();
     }
 
     interface Presenter extends BasePresenter {

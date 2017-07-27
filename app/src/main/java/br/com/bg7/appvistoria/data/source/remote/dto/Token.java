@@ -41,8 +41,4 @@ public class Token {
     public String getUserId() {
         return userId;
     }
-
-    public Integer getExpiresIn() {
-        return expiresIn;
-    }
 }
