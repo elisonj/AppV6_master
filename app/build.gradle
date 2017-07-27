@@ -1,8 +1,15 @@
 apply plugin: 'com.android.application'
 
-def keystorePropertiesFile = rootProject.file("keystore-upload.properties")
 def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+keystoreProperties.setProperty('storePassword', '')
+keystoreProperties.setProperty('keyPassword', '')
+keystoreProperties.setProperty('keyAlias', '')
+keystoreProperties.setProperty('storeFile', '.')
+
+if (rootProject.file("keystore.properties").exists()) {
+    def keystorePropertiesFile = rootProject.file("keystore.properties")
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
 
 android {
     compileSdkVersion 26
