@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceConfigurationError;
 
+import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.config.vo.Language;
 
@@ -22,7 +23,7 @@ public class LanguageRepository {
     }
 
     public List<Language> getLanguages() {
-        String languageNames[] = context.getResources().getStringArray(R.array.languageNames);
+        String languageNames[] = BuildConfig.LANGUAGE_NAMES;
         String displayNames[] = context.getResources().getStringArray(R.array.languageDisplayNames);
 
         if (languageNames.length != displayNames.length) {

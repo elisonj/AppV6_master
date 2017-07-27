@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+def keystorePropertiesFile = rootProject.file("keystore-upload.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
@@ -10,14 +14,32 @@ android {
         versionCode 2
         versionName "0.2.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        // Build config fields
+        buildConfigField 'String', 'GRANT_TYPE', '"password"'
+        buildConfigField 'String', 'CLIENT_ID', '"61922-5b5d19794c749cfbc5d20becc3826e08-s4b-cda-app"'
+        buildConfigField "String[]", "LANGUAGE_NAMES", '{ "pt", "en" }'
+        buildConfigField 'String', 'BASE_URL', '"https://preapi.s4bdigital.net"'
     }
+    signingConfigs {
+        signing {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+    configurations.all {
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
+    }
+    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/sugar_updates'] } }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.signing
         }
     }
-    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/sugar_updates'] } }
 }
 
 repositories {
@@ -25,33 +47,6 @@ repositories {
     jcenter()
     maven {
         url 'https://maven.google.com'
-    }
-}
-
-def keystorePropertiesFile = rootProject.file("keystore-upload.properties")
-def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-
-android {
-    configurations.all {
-        resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
-    }
-    signingConfigs {
-        release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
-        }
-    }
-    buildTypes {
-        release {
-            signingConfig signingConfigs.release
-        }
-    }
-    // TODO: resolver os problemas de lint e tirar abortOnError
-    lintOptions {
-        abortOnError false
     }
 }
 
