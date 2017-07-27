@@ -4,7 +4,7 @@ import java.util.List;
 
 import br.com.bg7.appvistoria.BasePresenter;
 import br.com.bg7.appvistoria.BaseView;
-import br.com.bg7.appvistoria.vo.Country;
+import br.com.bg7.appvistoria.config.vo.Language;
 
 /**
  * Created by: luciolucio
@@ -19,11 +19,9 @@ public interface ConfigContract {
 
         void showButtons();
 
-        List<Country> initCountryList();
+        void setLanguages(List<Language> languageList);
 
-        void setCountries(List<Country> countryList);
-
-        void setLanguage(int id);
+        void setLanguage(String languageName);
 
         void setSyncWithWifiOnly(boolean syncWithWifiOnly);
 
@@ -32,18 +30,16 @@ public interface ConfigContract {
         void hideLanguages();
 
         void changeLanguage(String language);
-
-        void refresh();
     }
 
     interface Presenter extends BasePresenter {
-        void topLanguagesClicked();
+        void languagesLabelClicked();
 
         void syncWithWifiOnlyClicked();
 
-        void syncWithWifiOnlyLineClicked();
+        void syncLabelClicked();
 
-        void confirmClicked(String languageId, String language, boolean syncWithWifiOnly);
+        void confirmClicked(String language, boolean syncWithWifiOnly);
 
         void cancelClicked();
     }

@@ -12,7 +12,7 @@ import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
-import br.com.bg7.appvistoria.vo.User;
+import br.com.bg7.appvistoria.data.User;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.matches;

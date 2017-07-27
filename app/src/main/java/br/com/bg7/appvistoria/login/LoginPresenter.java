@@ -9,6 +9,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.net.ConnectException;
 import java.util.concurrent.TimeoutException;
 
+import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.TokenService;
 import br.com.bg7.appvistoria.data.source.UserService;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
@@ -16,7 +17,6 @@ import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
-import br.com.bg7.appvistoria.vo.User;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -25,8 +25,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Date: 2017-07-14
  */
 
-public class LoginPresenter implements LoginContract.Presenter {
-    public static final int UNAUTHORIZED_CODE = 401;
+class LoginPresenter implements LoginContract.Presenter {
+    static final int UNAUTHORIZED_CODE = 401;
 
     private final TokenService tokenService;
     private final UserService userService;
@@ -34,7 +34,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     private final UserRepository userRepository;
     private User user = null;
 
-    public LoginPresenter(
+    LoginPresenter(
             @NonNull TokenService tokenService,
             @NonNull UserService userService,
             @NonNull UserRepository userRepository,
@@ -68,7 +68,7 @@ public class LoginPresenter implements LoginContract.Presenter {
             return;
         }
 
-        if (!checkpw(password, user.getPassword())) {
+        if (!checkpw(password, user.getPasswordHash())) {
             if (loginView.isConnected()) {
                 attemptTokenLogin(username, password);
                 return;
@@ -141,7 +141,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                 return;
             }
 
-            user.setToken(token);
+            user = user.withToken(token.getAccessToken());
             saveUserAndEnter(user);
             return;
         }
@@ -158,7 +158,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     private void verifyPasswordAndEnter(String password) {
-        if (!checkpw(password, user.getPassword())) {
+        if (!checkpw(password, user.getPasswordHash())) {
             loginView.showBadCredentialsError();
             return;
         }
@@ -210,7 +210,7 @@ public class LoginPresenter implements LoginContract.Presenter {
             if(userResponse != null) {
                 User userFromRepository = userRepository.findByUsername(username);
                 if(userFromRepository == null) {
-                    User user = new User(userResponse, token, password);
+                    User user = new User(username, token.getAccessToken(), hashpw(password));
                     saveUserAndEnter(user);
                     return;
                 }
@@ -226,9 +226,9 @@ public class LoginPresenter implements LoginContract.Presenter {
         }
 
         if(user != null) {
-            user.setToken(token);
-            if (!checkpw(password, user.getPassword())) {
-                user.setPassword(password);
+            user = user.withToken(token.getAccessToken());
+            if (!checkpw(password, user.getPasswordHash())) {
+                user = user.withPasswordHash(hashpw(password));
             }
             saveUserAndEnter(user);
             return;
@@ -249,9 +249,9 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     private void onGetUserFailure(final String password, @NonNull final Token token) {
         if(user != null) {
-            user.setToken(token);
-            if (!checkpw(password, user.getPassword())) {
-                user.setPassword(password);
+            user = user.withToken(token.getAccessToken());
+            if (!checkpw(password, user.getPasswordHash())) {
+                user = user.withPasswordHash(hashpw(password));
             }
             saveUserAndEnter(user);
             return;
@@ -264,7 +264,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         return BCrypt.checkpw(password, passwordHash);
     }
 
-    public User getUser() {
-        return user;
+    String hashpw(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 }

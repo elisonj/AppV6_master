@@ -13,7 +13,7 @@ import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
-import br.com.bg7.appvistoria.vo.User;
+import br.com.bg7.appvistoria.data.User;
 
 import static br.com.bg7.appvistoria.login.LoginPresenter.UNAUTHORIZED_CODE;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -86,7 +86,7 @@ public class LoginPresenterBaseTest {
 
     void setUpToken() {
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
-        Token token = new Token(TOKEN, USER_ID, 0);
+        Token token = new Token(TOKEN, USER_ID);
         when(tokenHttpResponse.body()).thenReturn(token);
     }
 

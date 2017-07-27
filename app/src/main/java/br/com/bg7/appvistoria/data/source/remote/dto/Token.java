@@ -29,10 +29,9 @@ public class Token {
     public Token() {
     }
 
-    public Token(String accessToken, String userId, int expiresIn) {
+    public Token(String accessToken, String userId) {
         this.accessToken = accessToken;
         this.userId = userId;
-        this.expiresIn = expiresIn;
     }
 
     public String getAccessToken() {
@@ -41,9 +40,5 @@ public class Token {
 
     public String getUserId() {
         return userId;
-    }
-
-    public Integer getExpiresIn() {
-        return expiresIn;
     }
 }

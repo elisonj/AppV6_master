@@ -7,6 +7,6 @@ package br.com.bg7.appvistoria;
 public class Constants {
 
     public static final String PREFERENCE_LANGUAGE_KEY = "PREFERENCE_LANGUAGE_KEY";
-    public static final String PREFERENCE_LANGUAGE_DEFAULT = "pt";
+    public static final String DEFAULT_LANGUAGE = "pt";
 
 }

@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
-import br.com.bg7.appvistoria.vo.User;
+import br.com.bg7.appvistoria.data.User;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -23,7 +23,7 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
         super.setUp();
         when(loginView.isConnected()).thenReturn(true);
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
-        Token token = new Token(TOKEN, USER_ID, 0);
+        Token token = new Token(TOKEN, USER_ID);
         when(tokenHttpResponse.body()).thenReturn(token);
         setUpUserResponse();
     }

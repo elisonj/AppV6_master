@@ -1,47 +1,83 @@
 package br.com.bg7.appvistoria.config;
 
+import com.google.common.base.Strings;
+
 import java.util.List;
 
-import br.com.bg7.appvistoria.vo.Config;
-import br.com.bg7.appvistoria.vo.Country;
+import br.com.bg7.appvistoria.config.vo.Language;
+import br.com.bg7.appvistoria.data.Config;
+import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
+import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by: luciolucio
  * Date: 2017-07-17
  */
 
-public class ConfigPresenter implements ConfigContract.Presenter {
-    private final ConfigContract.View configView;
+class ConfigPresenter implements ConfigContract.Presenter {
+    private static final boolean DEFAULT_WIFI_OPTION = true;
+    private static final int DEFAULT_LANGUAGE_INDEX = 0;
 
-    public ConfigPresenter(ConfigContract.View configView) {
-        this.configView = configView;
+    private final ConfigContract.View configView;
+    private final ConfigRepository configRepository;
+    private final LanguageRepository languageRepository;
+
+    ConfigPresenter(ConfigRepository configRepository, LanguageRepository languageRepository, ConfigContract.View configView) {
+        this.configRepository = checkNotNull(configRepository);
+        this.languageRepository = checkNotNull(languageRepository);
+        this.configView = checkNotNull(configView);
 
         this.configView.setPresenter(this);
     }
 
     @Override
     public void start() {
+        List<Language> languageList = languageRepository.getLanguages();
+        configView.setLanguages(languageList);
 
-        List<Country> countryList = configView.initCountryList();
-        configView.setCountries(countryList);
-
-        // TODO: Olhar isso quando descansado. Tem alguma responsabilidade da view perdida aqui
-        List<Config> list = Config.listAll(Config.class);
-        if(list != null && list.size() > 0) {
-            int selected = 0;
-            for (int i = 0; i < countryList.size(); i++) {
-                Country country = countryList.get(i);
-                if (country.getId().equals(list.get(0).getLanguage())) {
-                    selected = i;
-                }
-            }
-            configView.setLanguage(selected);
-            configView.setSyncWithWifiOnly(list.get(0).isSyncWithWifiOnly());
+        Config config = configRepository.first(Config.class);
+        if(config == null) {
+            applyDefaultConfig(languageList);
+            return;
         }
+
+        loadConfig(config, languageList);
+    }
+
+    private void loadConfig(Config config, List<Language> languageList) {
+        String languageName = config.getLanguageName();
+        if (Strings.isNullOrEmpty(languageName) || Strings.isNullOrEmpty(languageName.trim())) {
+            languageName = languageList.get(DEFAULT_LANGUAGE_INDEX).getName();
+        }
+
+        boolean languageExists = false;
+        for (Language language : languageList) {
+            if (languageName.equals(language.getName())) {
+                languageExists = true;
+                break;
+            }
+        }
+
+        if (!languageExists) {
+            languageName = languageList.get(DEFAULT_LANGUAGE_INDEX).getName();
+        }
+
+        applyConfig(languageName, config.isSyncWithWifiOnly());
+    }
+
+    private void applyDefaultConfig(List<Language> languageList) {
+        applyConfig(languageList.get(DEFAULT_LANGUAGE_INDEX).getName(), DEFAULT_WIFI_OPTION);
+    }
+
+    private void applyConfig(String name, boolean syncWithWifiOnly) {
+        configView.setLanguage(name);
+        configView.setSyncWithWifiOnly(syncWithWifiOnly);
     }
 
     @Override
-    public void topLanguagesClicked() {
+    public void languagesLabelClicked() {
         configView.showButtons();
         configView.toggleLanguagesVisibility();
     }
@@ -52,25 +88,25 @@ public class ConfigPresenter implements ConfigContract.Presenter {
     }
 
     @Override
-    public void syncWithWifiOnlyLineClicked() {
+    public void syncLabelClicked() {
         configView.showButtons();
         configView.toggleSyncWithWifiOnly();
     }
 
     @Override
-    public void confirmClicked(String languageId, String language, boolean syncWithWifiOnly) {
+    public void confirmClicked(String language, boolean syncWithWifiOnly) {
         configView.hideButtons();
         configView.hideLanguages();
 
-        List<Config> list = Config.listAll(Config.class);
-        if(list != null && list.size() > 0) {
-            Config.deleteAll(Config.class);
+        Config config = configRepository.first(Config.class);
+        if(config != null) {
+            configRepository.deleteAll(Config.class);
         }
-        Config config = new Config(languageId, syncWithWifiOnly);
-        config.save();
+
+        config = new Config(language, syncWithWifiOnly);
+        configRepository.save(config);
 
         configView.changeLanguage(language);
-        configView.refresh();
     }
 
     @Override
