@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by: elison
  * Date: 2017-07-12
  */
+@SuppressWarnings("unused")
 public class BasicInfo {
     @SerializedName("fullName")
     @Expose

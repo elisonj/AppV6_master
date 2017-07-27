@@ -2,7 +2,6 @@ package br.com.bg7.appvistoria.data.source.remote.retrofit;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import br.com.bg7.appvistoria.data.source.remote.HttpCall;
 import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -13,16 +12,15 @@ import retrofit2.Response;
  * Date: 2017-07-19
  */
 
-public class RetrofitHttpCall<T> implements HttpCall<T> {
+class RetrofitHttpCall<T> {
 
     private final Call<T> call;
 
-    public RetrofitHttpCall(Call<T> call) {
+    RetrofitHttpCall(Call<T> call) {
         this.call = call;
     }
 
-    @Override
-    public void enqueue(final HttpCallback<T> httpCallback) {
+    void enqueue(final HttpCallback<T> httpCallback) {
         call.enqueue(new Callback<T>() {
             @Override
             @ParametersAreNonnullByDefault

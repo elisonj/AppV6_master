@@ -9,8 +9,10 @@ import br.com.bg7.appvistoria.config.vo.Language;
 /**
  * Created by: luciolucio
  * Date: 2017-07-17
+ *
+ * {@link SuppressWarnings pois so as sub-classes sao implementadas, de proposito}
  */
-
+@SuppressWarnings("unused")
 public interface ConfigContract {
     interface View extends BaseView<ConfigContract.Presenter> {
         void hideButtons();

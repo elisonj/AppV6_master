@@ -163,7 +163,6 @@ class LoginPresenter implements LoginContract.Presenter {
             return;
         }
         loginView.showMainScreen();
-        return;
     }
 
     private void onGetTokenFailure(String password, Throwable t) {

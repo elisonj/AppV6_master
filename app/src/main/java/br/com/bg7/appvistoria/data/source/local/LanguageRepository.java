@@ -16,7 +16,7 @@ import br.com.bg7.appvistoria.config.vo.Language;
  */
 
 public class LanguageRepository {
-    Context context;
+    private Context context;
 
     public LanguageRepository(Context context) {
         this.context = context;
