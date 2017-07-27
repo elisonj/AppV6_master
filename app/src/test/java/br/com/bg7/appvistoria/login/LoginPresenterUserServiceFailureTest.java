@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
  * Created by: elison
  * Date: 2017-07-21
  */
-public class UserServiceFailureTest extends LoginPresenterBaseTest {
+public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest {
 
     @Captor
     private ArgumentCaptor<HttpCallback<UserResponse>> userCallBackCaptor;
