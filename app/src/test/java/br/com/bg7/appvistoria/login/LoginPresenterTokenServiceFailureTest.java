@@ -67,12 +67,11 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
     @Test
     public void shouldShowCannotLoginWhenConnectivityErrorAndNoUser() {
-
         setUpNullUser();
 
         callLogin();
 
-        setUpConnectivityError();
+        invokeIOException();
         verify(loginView).showCannotLoginError();
     }
 
@@ -82,7 +81,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
         callLogin();
 
-        setUpConnectivityError();
+        invokeIOException();
         verify(loginView).showBadCredentialsError();
     }
 
@@ -92,7 +91,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
         callLogin();
 
-        setUpConnectivityError();
+        invokeIOException();
         verify(loginView).showMainScreen();
     }
 
@@ -102,7 +101,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
         callLogin();
 
-        setUpRuntimeException();
+        invokeRuntimeException();
         verify(loginView).showCannotLoginError();
     }
 
@@ -112,7 +111,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
         callLogin();
 
-        setUpRuntimeException();
+        invokeRuntimeException();
         verify(loginView).showBadCredentialsError();
     }
 
@@ -122,16 +121,16 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
 
         callLogin();
 
-        setUpRuntimeException();
+        invokeRuntimeException();
         verify(loginView).showMainScreen();
     }
 
-    private void setUpConnectivityError() {
+    private void invokeIOException() {
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
         tokenCallBackCaptor.getValue().onFailure(new IOException());
     }
 
-    private void setUpRuntimeException() {
+    private void invokeRuntimeException() {
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
         tokenCallBackCaptor.getValue().onFailure(new RuntimeException());
     }
