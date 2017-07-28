@@ -7,5 +7,5 @@ import br.com.bg7.appvistoria.data.Config;
  * Date: 2017-07-21
  */
 
-public class ConfigRepository extends Repository<Config> {
+public interface ConfigRepository extends Repository<Config> {
 }
