@@ -1,12 +1,11 @@
-package br.com.bg7.appvistoria.data.source.remote;
+package br.com.bg7.appvistoria.data.source.remote.retrofit;
 
-import android.os.Handler;
-import android.os.Looper;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import br.com.bg7.appvistoria.data.source.remote.HttpProgressCallback;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okio.BufferedSink;
@@ -15,16 +14,15 @@ import okio.BufferedSink;
  * Created by: elison
  * Date: 2017-07-27
  */
-public class HttpProgress extends RequestBody {
+public class ProgressRequestBody extends RequestBody {
 
     private static final int DEFAULT_BUFFER_SIZE = 2048;
 
     private File file;
     private HttpProgressCallback listener;
 
-    public HttpProgress(final File file,
-                        final HttpProgressCallback listener) {
-
+    public ProgressRequestBody(final File file,
+                               final HttpProgressCallback listener) {
         this.file = file;
         this.listener = listener;
     }
@@ -48,31 +46,13 @@ public class HttpProgress extends RequestBody {
 
         try {
             int read;
-            Handler handler = new Handler(Looper.getMainLooper());
             while ((read = in.read(buffer)) != -1) {
-
-                handler.post(new ProgressUpdater(uploaded, fileLength));
-
+                listener.onProgressUpdate((int)(100 * uploaded / fileLength));
                 uploaded += read;
                 sink.write(buffer, 0, read);
             }
         } finally {
             in.close();
-        }
-    }
-
-    private class ProgressUpdater implements Runnable {
-        private long uploaded;
-        private long total;
-
-        public ProgressUpdater(long uploaded, long total) {
-            this.uploaded = uploaded;
-            this.total = total;
-        }
-
-        @Override
-        public void run() {
-            listener.onProgressUpdate((int)(100 * uploaded / total));
         }
     }
 }
