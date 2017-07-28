@@ -26,38 +26,36 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
     }
 
     @Test
-    public void shouldShowCannotLoginWhenNoSuccessAndNoUser() {
+    public void shouldShowCannotLoginWhenNoConnectionAndNoUser() {
         setUpNoConnection();
         setUpNoUser();
 
         callLogin();
 
-        invokeTokenService();
+        invokeTokenService(); // TokenService only because there is no connection
         verify(loginView).showCannotLoginError();
     }
 
     @Test
-    public void shouldMainScreenLoginWhenNoSuccessAndBadPassword() {
+    public void shouldMainScreenLoginWhenNoConnectionAndBadPassword() {
         setUpNoConnection();
         setUpBadPassword();
 
         callLogin();
 
-        invokeTokenService();
-        verify(userRepository).save((User)any());
-        verify(loginView).showMainScreen();
+        invokeTokenService(); // TokenService only because there is no connection
+        verifyThatUserGetsSavedAndShowsMainScreen();
     }
 
     @Test
-    public void shouldMainScreenLoginWhenNoSuccessButUserAndPassOk() {
+    public void shouldMainScreenLoginWhenNoConnectionAndGoodPassword() {
         setUpNoConnection();
         setUpGoodPassword();
 
         callLogin();
 
-        invokeTokenService();
-        verify(userRepository).save((User)any());
-        verify(loginView).showMainScreen();
+        invokeTokenService(); // TokenService only because there is no connection
+        verifyThatUserGetsSavedAndShowsMainScreen();
     }
 
     @Test
@@ -67,8 +65,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
         callLogin();
 
         invokeTokenService();
-        verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
-        userCallBackCaptor.getValue().onFailure(new IOException());
+        invokeIOException();
         verify(loginView).showCannotLoginError();
     }
 
@@ -79,23 +76,19 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
         callLogin();
 
         invokeTokenService();
-        verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
-        userCallBackCaptor.getValue().onFailure(new IOException());
-        verify(userRepository).save((User)any());
-        verify(loginView).showMainScreen();
+        invokeIOException();
+        verifyThatUserGetsSavedAndShowsMainScreen();
     }
 
     @Test
-    public void shouldShowMainScreenLoginWhenConnectivityErrorButUserAndPassOk() {
+    public void shouldShowMainScreenLoginWhenConnectivityErrorAndGoodPassword() {
         setUpGoodPassword();
 
         callLogin();
 
         invokeTokenService();
-        verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
-        userCallBackCaptor.getValue().onFailure(new IOException());
-        verify(userRepository).save((User)any());
-        verify(loginView).showMainScreen();
+        invokeIOException();
+        verifyThatUserGetsSavedAndShowsMainScreen();
     }
 
     @Test
@@ -105,8 +98,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
         callLogin();
 
         invokeTokenService();
-        verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
-        userCallBackCaptor.getValue().onFailure(new RuntimeException());
+        invokeRuntimeException();
         verify(loginView).showCannotLoginError();
     }
 
@@ -117,23 +109,19 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
         callLogin();
 
         invokeTokenService();
-        verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
-        userCallBackCaptor.getValue().onFailure(new RuntimeException());
-        verify(userRepository).save((User)any());
-        verify(loginView).showMainScreen();
+        invokeRuntimeException();
+        verifyThatUserGetsSavedAndShowsMainScreen();
     }
 
     @Test
-    public void shouldShowMainScreenLoginWhenOtherErrorButUserAndPassOk() {
+    public void shouldShowMainScreenLoginWhenOtherErrorAndGoodPassword() {
         setUpGoodPassword();
 
         callLogin();
 
         invokeTokenService();
-        verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
-        userCallBackCaptor.getValue().onFailure(new RuntimeException());
-        verify(userRepository).save((User)any());
-        verify(loginView).showMainScreen();
+        invokeRuntimeException();
+        verifyThatUserGetsSavedAndShowsMainScreen();
     }
 
     /**
@@ -143,5 +131,24 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
      */
     void setUpNoConnection() {
         when(loginView.isConnected()).thenReturn(true, false);
+    }
+
+    private void verifyThatUserGetsSavedAndShowsMainScreen() {
+        verify(userRepository).save((User)any());
+        verify(loginView).showMainScreen();
+    }
+
+    private void invokeIOException() {
+        invokeException(new IOException());
+    }
+
+
+    private void invokeRuntimeException() {
+        invokeException(new RuntimeException());
+    }
+
+    private void invokeException(Throwable t) {
+        verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
+        userCallBackCaptor.getValue().onFailure(t);
     }
 }
