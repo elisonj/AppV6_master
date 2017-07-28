@@ -62,6 +62,11 @@ public class LoginPresenterBaseTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         loginPresenter = new TestableLoginPresenter(tokenService, userService, userRepository, loginView);
+
+        when(loginView.isConnected()).thenReturn(true);
+
+        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
+        when(tokenHttpResponse.body()).thenReturn(new Token(TOKEN, USER_ID));
     }
 
     void callLogin() {
@@ -82,12 +87,6 @@ public class LoginPresenterBaseTest {
     void setUpUserResponse() {
         UserResponse userResponse = new UserResponse();
         when(userHttpResponse.body()).thenReturn(userResponse);
-    }
-
-    void setUpToken() {
-        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
-        Token token = new Token(TOKEN, USER_ID);
-        when(tokenHttpResponse.body()).thenReturn(token);
     }
 
     void invokeTokenService() {

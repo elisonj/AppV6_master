@@ -22,7 +22,6 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     @Test
     public void shouldShowCannotLoginWhenUserDoNotExist() {
         setUpNoUser();
-        setUpToken();
         setUpUserResponse();
 
         callLogin();
@@ -35,7 +34,6 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     @Test
     public void shouldShowMainScreenWhenNoSuccessAndBadPassword() {
         setUpBadPassword();
-        setUpToken();
         setUpUserResponse();
 
         callLogin();
@@ -48,7 +46,6 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     @Test
     public void shouldShowMainScreenWhenNoSuccessButUserAndPasswordOk() {
         setUpGoodPassword();
-        setUpToken();
         setUpUserResponse();
 
         callLogin();
@@ -61,7 +58,6 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     @Test
     public void shouldShowCannotLoginWhenUserDoNotExistAndBodyIsNull() {
         setUpNoUser();
-        setUpToken();
         setUpUserResponseSuccessful();
         when(userHttpResponse.body()).thenReturn(null);
 
@@ -75,7 +71,6 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     @Test
     public void shouldShowMainScreenWhenNoBodyAndBadPassword() {
         setUpBadPassword();
-        setUpToken();
         when(userHttpResponse.body()).thenReturn(null);
 
         callLogin();
@@ -88,7 +83,6 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     @Test
     public void shouldShowMainScreenWhenNoBodyButUserAndPasswordOk() {
         setUpGoodPassword();
-        setUpToken();
         when(userHttpResponse.body()).thenReturn(null);
 
         callLogin();
@@ -101,7 +95,6 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     @Test
     public void shouldShowBadCredentialsWhenUserDoNotExistAndUserIsUnauthorized() {
         setUpNoUser();
-        setUpToken();
         setUpUserUnauthorizedCode();
 
         callLogin();
@@ -114,7 +107,6 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     @Test
     public void shouldShowWrongPasswordWhenUserIsUnauthorizedAndBadPassword() {
         setUpBadPassword();
-        setUpToken();
         setUpUserUnauthorizedCode();
 
         callLogin();
@@ -127,7 +119,6 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     @Test
     public void shouldShowWrongPasswordWhenUserIsUnauthorizedButUserAndPasswordOk() {
         setUpGoodPassword();
-        setUpToken();
         setUpUserUnauthorizedCode();
 
         callLogin();

@@ -2,17 +2,11 @@ package br.com.bg7.appvistoria.login;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
 
 import java.io.IOException;
 
 import br.com.bg7.appvistoria.data.User;
-import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
-import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
-import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.matches;
@@ -25,25 +19,16 @@ import static org.mockito.Mockito.when;
  */
 public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest {
 
-    @Captor
-    private ArgumentCaptor<HttpCallback<UserResponse>> userCallBackCaptor;
-
-    @Mock
-    private HttpResponse<UserResponse> userHttpResponse;
-
-
     @Before
     public void setUp() {
         super.setUp();
-        when(loginView.isConnected()).thenReturn(true);
+        when(userHttpResponse.isSuccessful()).thenReturn(false);
     }
 
     @Test
     public void shouldShowCannotLoginWhenNoSuccessAndNoUser() {
-        when(loginView.isConnected()).thenReturn(true, false);
+        setUpNoConnection();
         setUpNoUser();
-        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
-        when(tokenHttpResponse.body()).thenReturn(new Token());
 
         callLogin();
 
@@ -53,10 +38,8 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
 
     @Test
     public void shouldMainScreenLoginWhenNoSuccessAndBadPassword() {
-        when(loginView.isConnected()).thenReturn(true, false);
+        setUpNoConnection();
         setUpBadPassword();
-        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
-        setUpToken();
 
         callLogin();
 
@@ -67,10 +50,8 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
 
     @Test
     public void shouldMainScreenLoginWhenNoSuccessButUserAndPassOk() {
-        when(loginView.isConnected()).thenReturn(true, false);
+        setUpNoConnection();
         setUpGoodPassword();
-        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
-        setUpToken();
 
         callLogin();
 
@@ -82,9 +63,6 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
     @Test
     public void shouldShowCannotLoginWhenConnectivityErrorAndNoUser() {
         setUpNoUser();
-        setUpToken();
-        when(userHttpResponse.isSuccessful()).thenReturn(false);
-        when(userHttpResponse.body()).thenReturn(null);
 
         callLogin();
 
@@ -97,9 +75,6 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
     @Test
     public void shouldShowMainScreenLoginWhenConnectivityErrorAndBadPassword() {
         setUpBadPassword();
-        setUpToken();
-        when(userHttpResponse.isSuccessful()).thenReturn(false);
-        when(userHttpResponse.body()).thenReturn(null);
 
         callLogin();
 
@@ -112,11 +87,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
 
     @Test
     public void shouldShowMainScreenLoginWhenConnectivityErrorButUserAndPassOk() {
-        when(loginView.isConnected()).thenReturn(true);
         setUpGoodPassword();
-        setUpToken();
-        when(userHttpResponse.isSuccessful()).thenReturn(false);
-        when(userHttpResponse.body()).thenReturn(null);
 
         callLogin();
 
@@ -130,9 +101,6 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
     @Test
     public void shouldShowCannotLoginWhenOtherErrorAndNoUser() {
         setUpNoUser();
-        setUpToken();
-        when(userHttpResponse.isSuccessful()).thenReturn(false);
-        when(userHttpResponse.body()).thenReturn(null);
 
         callLogin();
 
@@ -145,9 +113,6 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
     @Test
     public void shouldShowMainScreenLoginWhenOtherErrorAndBadPassword() {
         setUpBadPassword();
-        setUpToken();
-        when(userHttpResponse.isSuccessful()).thenReturn(false);
-        when(userHttpResponse.body()).thenReturn(null);
 
         callLogin();
 
@@ -160,11 +125,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
 
     @Test
     public void shouldShowMainScreenLoginWhenOtherErrorButUserAndPassOk() {
-        when(loginView.isConnected()).thenReturn(true);
         setUpGoodPassword();
-        setUpToken();
-        when(userHttpResponse.isSuccessful()).thenReturn(false);
-        when(userHttpResponse.body()).thenReturn(null);
 
         callLogin();
 
@@ -175,5 +136,12 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
         verify(loginView).showMainScreen();
     }
 
-
+    /**
+     * The TokenService call checks isConnected() before this one, so we need to return
+     * true to that first, then return false so that UserService will think there is no
+     * connection now
+     */
+    void setUpNoConnection() {
+        when(loginView.isConnected()).thenReturn(true, false);
+    }
 }

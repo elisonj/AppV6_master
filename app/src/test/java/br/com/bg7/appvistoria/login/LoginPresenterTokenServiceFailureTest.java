@@ -18,12 +18,6 @@ import static org.mockito.Mockito.when;
  */
 public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTest {
 
-    @Before
-    public void setUp() {
-        super.setUp();
-        when(loginView.isConnected()).thenReturn(true);
-    }
-
     /**
      * 1.1 (a)
      */

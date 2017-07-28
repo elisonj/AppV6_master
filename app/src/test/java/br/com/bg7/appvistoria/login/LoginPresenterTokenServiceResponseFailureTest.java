@@ -18,7 +18,6 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
     @Before
     public void setUp() {
         super.setUp();
-        when(loginView.isConnected()).thenReturn(true);
         when(tokenHttpResponse.isSuccessful()).thenReturn(false);
     }
 
