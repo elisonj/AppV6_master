@@ -95,7 +95,13 @@ public class LoginPresenterBaseTest {
         tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
     }
 
+    /**
+     * TokenService always gets called first, so we call it before actually calling
+     * the UserService itself
+     */
     void invokeUserService() {
+        invokeTokenService();
+
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
         userCallBackCaptor.getValue().onResponse(userHttpResponse);
     }

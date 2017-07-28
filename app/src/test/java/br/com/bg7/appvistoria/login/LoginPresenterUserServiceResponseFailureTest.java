@@ -150,16 +150,6 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         when(userHttpResponse.body()).thenReturn(null);
     }
 
-    /**
-     * TokenService always gets called first, so we call it before actually calling
-     * the UserService itself
-     */
-    @Override
-    void invokeUserService() {
-        invokeTokenService();
-        super.invokeUserService();
-    }
-
     private void setUpUserUnauthorized() {
         when(userHttpResponse.isSuccessful()).thenReturn(true);
         when(userHttpResponse.code()).thenReturn(LoginPresenter.UNAUTHORIZED_CODE);

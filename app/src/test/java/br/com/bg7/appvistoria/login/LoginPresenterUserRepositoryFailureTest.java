@@ -15,6 +15,9 @@ import static org.mockito.Mockito.when;
 /**
  * Created by: elison
  * Date: 2017-07-25
+ *
+ * Linha 5 da tabela
+ * https://bg7.easyredmine.com/projects/185/wiki/Pode_falar_mais_sobre_a_tela_de_login
  */
 public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseTest {
 
@@ -23,18 +26,16 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
         super.setUp();
 
         when(userHttpResponse.isSuccessful()).thenReturn(false);
+        doThrow(new RuntimeException("Error saving user"))
+                .when(userRepository).save((User)any());
     }
 
     @Test
     public void shouldShowApplicationErrorWhenRepositoryFails() {
         setUpNoUser();
 
-        doThrow(new RuntimeException("Error saving user"))
-                .when(userRepository).save((User)any());
-
         callLogin();
 
-        invokeTokenService();
         invokeUserService();
         verify(loginView).showCriticalError();
     }
@@ -43,12 +44,8 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
     public void shouldShowApplicationErrorWhenRepositoryFailsAndBadPassword() {
         setUpBadPassword();
 
-        doThrow(new RuntimeException("Error saving user"))
-                .when(userRepository).save((User)any());
-
         callLogin();
 
-        invokeTokenService();
         invokeUserService();
         verify(loginView).showCriticalError();
     }
@@ -57,13 +54,8 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
     public void shouldShowApplicationErrorWhenRepositoryFailsAndGoodPassword() {
         setUpGoodPassword();
 
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
-        doThrow(new RuntimeException("Error saving user"))
-                .when(userRepository).save((User)any());
-
         callLogin();
 
-        invokeTokenService();
         invokeUserService();
         verify(loginView).showCriticalError();
     }
