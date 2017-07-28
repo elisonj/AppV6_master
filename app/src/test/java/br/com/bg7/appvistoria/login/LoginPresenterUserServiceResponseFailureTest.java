@@ -39,26 +39,26 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
      * 4.1 (b)
      */
     @Test
-    public void shouldSaveUserAndEnterWhenBadPassword() {
+    public void shouldSaveTokenAndPasswordAndEnterWhenBadPassword() {
         setUpBadPassword();
 
         callLogin();
 
         invokeUserService();
-        verifySaveUserAndShowMainScreen();
+        verifySaveTokenAndPasswordAndShowMainScreen();
     }
 
     /**
      * 4.1 (c)
      */
     @Test
-    public void shouldSaveUserAndEnterWhenGoodPassword() {
+    public void shouldSaveTokenAndEnterWhenGoodPassword() {
         setUpGoodPassword();
 
         callLogin();
 
         invokeUserService();
-        verifySaveUserAndShowMainScreen();
+        verifySaveTokenAndShowMainScreen();
     }
 
     /**
@@ -79,28 +79,28 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
      * 4.2 (b)
      */
     @Test
-    public void shouldSaveUserAndEnterWhenBodyNullAndBadPassword() {
+    public void shouldSaveTokenAndPasswordAndEnterWhenBodyNullAndBadPassword() {
         setUpNullBody();
         setUpBadPassword();
 
         callLogin();
 
         invokeUserService();
-        verifySaveUserAndShowMainScreen();
+        verifySaveTokenAndPasswordAndShowMainScreen();
     }
 
     /**
      * 4.2 (c)
      */
     @Test
-    public void shouldSaveUserAndEnterWhenBodyNullAndGoodPassword() {
+    public void shouldSaveTokenAndEnterWhenBodyNullAndGoodPassword() {
         setUpNullBody();
         setUpGoodPassword();
 
         callLogin();
 
         invokeUserService();
-        verifySaveUserAndShowMainScreen();
+        verifySaveTokenAndShowMainScreen();
     }
 
     /**

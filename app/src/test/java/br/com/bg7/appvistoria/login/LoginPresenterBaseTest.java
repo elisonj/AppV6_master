@@ -114,4 +114,14 @@ public class LoginPresenterBaseTest {
         verify(userRepository).save((User)any());
         verify(loginView).showMainScreen();
     }
+
+    void verifySaveTokenAndPasswordAndShowMainScreen() {
+        // TODO: Realmente verificar o salvamento de token e password
+        verifySaveUserAndShowMainScreen();
+    }
+
+    void verifySaveTokenAndShowMainScreen() {
+        // TODO: Realmente verificar o salvamento do token
+        verifySaveUserAndShowMainScreen();
+    }
 }
