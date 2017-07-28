@@ -15,16 +15,9 @@ import static org.mockito.Mockito.when;
  */
 public class LoginPresenterLoginSuccessTest extends LoginPresenterBaseTest {
 
-    @Before
-    public void setUp() {
-        super.setUp();
-        when(loginView.isConnected()).thenReturn(true);
-    }
-
     @Test
     public void shouldShowMainScreenWhenServicesWorkAndNoUser() {
         setUpNoUser();
-        when(userHttpResponse.isSuccessful()).thenReturn(true);
 
         callLogin();
 
@@ -35,7 +28,6 @@ public class LoginPresenterLoginSuccessTest extends LoginPresenterBaseTest {
     @Test
     public void shouldSaveUserAndShowMainScreenWhenServicesWorkAndBadPassword() {
         setUpBadPassword();
-        when(userHttpResponse.isSuccessful()).thenReturn(false);
 
         callLogin();
 
@@ -45,9 +37,7 @@ public class LoginPresenterLoginSuccessTest extends LoginPresenterBaseTest {
 
     @Test
     public void shouldSaveUserAndShowMainScreenWhenServicesWorkAndPasswordOK() {
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
-        loginPresenter.checkpw = true;
-        when(userHttpResponse.isSuccessful()).thenReturn(false);
+        setUpGoodPassword();
 
         callLogin();
 
