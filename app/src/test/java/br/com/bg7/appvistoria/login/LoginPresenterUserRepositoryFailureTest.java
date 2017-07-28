@@ -25,7 +25,6 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
         Token token = new Token(TOKEN, USER_ID);
         when(tokenHttpResponse.body()).thenReturn(token);
-        setUpUserResponse();
     }
 
     @Test
@@ -38,7 +37,7 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
         callLogin();
 
         invokeTokenService();
-        invokeUserServiceOnResponse();
+        invokeUserService();
         verify(loginView).showCriticalError();
     }
 
@@ -52,7 +51,7 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
         callLogin();
 
         invokeTokenService();
-        invokeUserServiceOnResponse();
+        invokeUserService();
         verify(loginView).showCriticalError();
     }
 
@@ -67,7 +66,7 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
         callLogin();
 
         invokeTokenService();
-        invokeUserServiceOnResponse();
+        invokeUserService();
         verify(loginView).showCriticalError();
     }
 }

@@ -67,6 +67,9 @@ public class LoginPresenterBaseTest {
 
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
         when(tokenHttpResponse.body()).thenReturn(new Token(TOKEN, USER_ID));
+
+        when(userHttpResponse.isSuccessful()).thenReturn(true);
+        when(userHttpResponse.body()).thenReturn(new UserResponse());
     }
 
     void callLogin() {
@@ -84,17 +87,12 @@ public class LoginPresenterBaseTest {
         loginPresenter.checkpw = true;
     }
 
-    void setUpUserResponse() {
-        UserResponse userResponse = new UserResponse();
-        when(userHttpResponse.body()).thenReturn(userResponse);
-    }
-
     void invokeTokenService() {
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
         tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
     }
 
-    void invokeUserServiceOnResponse() {
+    void invokeUserService() {
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
         userCallBackCaptor.getValue().onResponse(userHttpResponse);
     }

@@ -45,7 +45,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
      * 3.1 (b)
      */
     @Test
-    public void shouldMainScreenLoginWhenNoConnectionAndBadPassword() {
+    public void shouldSaveUserAndEnterWhenNoConnectionAndBadPassword() {
         setUpNoConnection();
         setUpBadPassword();
 
@@ -59,7 +59,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
      * 3.1 (c)
      */
     @Test
-    public void shouldMainScreenLoginWhenNoConnectionAndGoodPassword() {
+    public void shouldSaveUserAndEnterWhenNoConnectionAndGoodPassword() {
         setUpNoConnection();
         setUpGoodPassword();
 
@@ -87,7 +87,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
      * 3.2 (b)
      */
     @Test
-    public void shouldShowMainScreenLoginWhenConnectivityErrorAndBadPassword() {
+    public void shouldSaveUserAndEnterWhenConnectivityErrorAndBadPassword() {
         setUpBadPassword();
 
         callLogin();
@@ -101,7 +101,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
      * 3.2 (c)
      */
     @Test
-    public void shouldShowMainScreenLoginWhenConnectivityErrorAndGoodPassword() {
+    public void shouldSaveUserAndEnterWhenConnectivityErrorAndGoodPassword() {
         setUpGoodPassword();
 
         callLogin();
@@ -129,7 +129,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
      * 3.3 (b)
      */
     @Test
-    public void shouldShowMainScreenLoginWhenOtherErrorAndBadPassword() {
+    public void shouldSaveUserAndEnterWhenOtherErrorAndBadPassword() {
         setUpBadPassword();
 
         callLogin();
@@ -143,7 +143,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
      * 3.3 (c)
      */
     @Test
-    public void shouldShowMainScreenLoginWhenOtherErrorAndGoodPassword() {
+    public void shouldSaveUserAndEnterWhenOtherErrorAndGoodPassword() {
         setUpGoodPassword();
 
         callLogin();

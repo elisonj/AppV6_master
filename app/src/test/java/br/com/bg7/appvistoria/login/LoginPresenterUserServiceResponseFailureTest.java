@@ -22,73 +22,69 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     @Test
     public void shouldShowCannotLoginWhenUserDoNotExist() {
         setUpNoUser();
-        setUpUserResponse();
 
         callLogin();
 
         invokeTokenService();
-        invokeUserServiceOnResponse();
+        invokeUserService();
         verify(loginView).showCannotLoginError();
     }
 
     @Test
-    public void shouldShowMainScreenWhenNoSuccessAndBadPassword() {
+    public void shouldShowMainScreenWhenBadPassword() {
         setUpBadPassword();
-        setUpUserResponse();
 
         callLogin();
 
         invokeTokenService();
-        invokeUserServiceOnResponse();
+        invokeUserService();
         verify(loginView).showMainScreen();
     }
 
     @Test
-    public void shouldShowMainScreenWhenNoSuccessButUserAndPasswordOk() {
+    public void shouldShowMainScreenWhenGoodPassword() {
         setUpGoodPassword();
-        setUpUserResponse();
 
         callLogin();
 
         invokeTokenService();
-        invokeUserServiceOnResponse();
+        invokeUserService();
         verify(loginView).showMainScreen();
     }
 
     @Test
     public void shouldShowCannotLoginWhenUserDoNotExistAndBodyIsNull() {
         setUpNoUser();
-        setUpUserResponseSuccessful();
-        when(userHttpResponse.body()).thenReturn(null);
+        setUpNullBody();
 
         callLogin();
 
         invokeTokenService();
-        invokeUserServiceOnResponse();
+        invokeUserService();
         verify(loginView).showCannotLoginError();
     }
 
     @Test
     public void shouldShowMainScreenWhenNoBodyAndBadPassword() {
         setUpBadPassword();
-        when(userHttpResponse.body()).thenReturn(null);
+        setUpNullBody();
 
         callLogin();
 
         invokeTokenService();
-        invokeUserServiceOnResponse();
+        invokeUserService();
         verify(loginView).showMainScreen();
     }
 
     @Test
     public void shouldShowMainScreenWhenNoBodyButUserAndPasswordOk() {
         setUpGoodPassword();
-        when(userHttpResponse.body()).thenReturn(null);
+        setUpNullBody();
 
         callLogin();
 
         invokeTokenService();
-        invokeUserServiceOnResponse();
+        invokeUserService();
         verify(loginView).showMainScreen();
     }
 
@@ -100,7 +96,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         callLogin();
 
         invokeTokenService();
-        invokeUserServiceOnResponse();
+        invokeUserService();
         verify(loginView).showBadCredentialsError();
     }
 
@@ -112,7 +108,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         callLogin();
 
         invokeTokenService();
-        invokeUserServiceOnResponse();
+        invokeUserService();
         verify(loginView).showBadCredentialsError();
     }
 
@@ -124,11 +120,11 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         callLogin();
 
         invokeTokenService();
-        invokeUserServiceOnResponse();
+        invokeUserService();
         verify(loginView).showBadCredentialsError();
     }
 
-    private void setUpUserResponseSuccessful() {
-        when(userHttpResponse.isSuccessful()).thenReturn(true);
+    private void setUpNullBody() {
+        when(userHttpResponse.body()).thenReturn(null);
     }
 }
