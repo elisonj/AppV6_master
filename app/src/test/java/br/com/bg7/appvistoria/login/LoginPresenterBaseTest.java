@@ -109,12 +109,6 @@ public class LoginPresenterBaseTest {
         when(tokenHttpResponse.code()).thenReturn(UNAUTHORIZED_CODE);
     }
 
-    void verifySaveUserAndShowMainScreen() {
-        // TODO: Realmente verificar o usuário
-        verify(userRepository).save((User)any());
-        verify(loginView).showMainScreen();
-    }
-
     void verifySaveTokenAndPasswordAndShowMainScreen() {
         // TODO: Realmente verificar o salvamento de token e password
         verifySaveUserAndShowMainScreen();
@@ -123,5 +117,11 @@ public class LoginPresenterBaseTest {
     void verifySaveTokenAndShowMainScreen() {
         // TODO: Realmente verificar o salvamento do token
         verifySaveUserAndShowMainScreen();
+    }
+
+    private void verifySaveUserAndShowMainScreen() {
+        // TODO: Realmente verificar o usuário
+        verify(userRepository).save((User)any());
+        verify(loginView).showMainScreen();
     }
 }

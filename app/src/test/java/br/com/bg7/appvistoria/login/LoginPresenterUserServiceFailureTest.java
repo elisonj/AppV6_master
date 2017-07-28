@@ -45,28 +45,28 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
      * 3.1 (b)
      */
     @Test
-    public void shouldSaveUserAndEnterWhenNoConnectionAndBadPassword() {
+    public void shouldSaveTokenAndPasswordAndEnterWhenNoConnectionAndBadPassword() {
         setUpNoConnection();
         setUpBadPassword();
 
         callLogin();
 
         invokeTokenService();
-        verifySaveUserAndShowMainScreen();
+        verifySaveTokenAndPasswordAndShowMainScreen();
     }
 
     /**
      * 3.1 (c)
      */
     @Test
-    public void shouldSaveUserAndEnterWhenNoConnectionAndGoodPassword() {
+    public void shouldSaveTokenAndEnterWhenNoConnectionAndGoodPassword() {
         setUpNoConnection();
         setUpGoodPassword();
 
         callLogin();
 
         invokeTokenService();
-        verifySaveUserAndShowMainScreen();
+        verifySaveTokenAndShowMainScreen();
     }
 
     /**
@@ -87,28 +87,28 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
      * 3.2 (b)
      */
     @Test
-    public void shouldSaveUserAndEnterWhenConnectivityErrorAndBadPassword() {
+    public void shouldSaveTokenAndPasswordAndEnterWhenConnectivityErrorAndBadPassword() {
         setUpBadPassword();
 
         callLogin();
 
         invokeTokenService();
         invokeIOException();
-        verifySaveUserAndShowMainScreen();
+        verifySaveTokenAndPasswordAndShowMainScreen();
     }
 
     /**
      * 3.2 (c)
      */
     @Test
-    public void shouldSaveUserAndEnterWhenConnectivityErrorAndGoodPassword() {
+    public void shouldSaveTokenAndEnterWhenConnectivityErrorAndGoodPassword() {
         setUpGoodPassword();
 
         callLogin();
 
         invokeTokenService();
         invokeIOException();
-        verifySaveUserAndShowMainScreen();
+        verifySaveTokenAndShowMainScreen();
     }
 
     /**
@@ -129,28 +129,28 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
      * 3.3 (b)
      */
     @Test
-    public void shouldSaveUserAndEnterWhenOtherErrorAndBadPassword() {
+    public void shouldSaveTokenAndPasswordAndEnterWhenOtherErrorAndBadPassword() {
         setUpBadPassword();
 
         callLogin();
 
         invokeTokenService();
         invokeRuntimeException();
-        verifySaveUserAndShowMainScreen();
+        verifySaveTokenAndPasswordAndShowMainScreen();
     }
 
     /**
      * 3.3 (c)
      */
     @Test
-    public void shouldSaveUserAndEnterWhenOtherErrorAndGoodPassword() {
+    public void shouldSaveTokenAndEnterWhenOtherErrorAndGoodPassword() {
         setUpGoodPassword();
 
         callLogin();
 
         invokeTokenService();
         invokeRuntimeException();
-        verifySaveUserAndShowMainScreen();
+        verifySaveTokenAndShowMainScreen();
     }
 
     /**
