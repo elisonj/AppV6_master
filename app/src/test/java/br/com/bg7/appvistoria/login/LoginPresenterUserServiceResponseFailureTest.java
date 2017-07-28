@@ -151,7 +151,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     }
 
     private void setUpUserUnauthorized() {
-        when(userHttpResponse.isSuccessful()).thenReturn(true);
+        when(userHttpResponse.isSuccessful()).thenReturn(false);
         when(userHttpResponse.code()).thenReturn(LoginPresenter.UNAUTHORIZED_CODE);
     }
 }
