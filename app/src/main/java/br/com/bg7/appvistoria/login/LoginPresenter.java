@@ -214,7 +214,9 @@ class LoginPresenter implements LoginContract.Presenter {
             UserResponse userResponse = httpResponse.body();
 
             if(userResponse != null) {
-                userRepository.deleteAll(User.class);
+                if (userRepository.first(User.class) == null) {
+                    userRepository.deleteAll(User.class);
+                }
 
                 User user = new User(username, token.getAccessToken(), hashpw(password));
                 saveUserAndEnter(user);

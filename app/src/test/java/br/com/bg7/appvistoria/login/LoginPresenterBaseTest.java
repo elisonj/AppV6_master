@@ -113,7 +113,6 @@ public class LoginPresenterBaseTest {
 
     private void verifySaveUserAndShowMainScreen() {
         // TODO: Realmente verificar o usuário
-        verify(userRepository).deleteAll(User.class);
         verify(userRepository).save((User)any());
         verify(loginView).showMainScreen();
     }
