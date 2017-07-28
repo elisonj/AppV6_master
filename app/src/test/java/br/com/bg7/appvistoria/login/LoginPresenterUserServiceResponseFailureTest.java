@@ -20,7 +20,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     }
 
     @Test
-    public void shouldShowCannotLoginWhenUserDoNotExist() {
+    public void shouldShowCannotLoginWhenNoUser() {
         setUpNoUser();
 
         callLogin();
@@ -53,7 +53,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     }
 
     @Test
-    public void shouldShowCannotLoginWhenUserDoNotExistAndBodyIsNull() {
+    public void shouldShowCannotLoginWhenBodyNullAndNoUser() {
         setUpNoUser();
         setUpNullBody();
 
@@ -65,7 +65,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     }
 
     @Test
-    public void shouldShowMainScreenWhenNoBodyAndBadPassword() {
+    public void shouldShowMainScreenWhenBodyNullAndBadPassword() {
         setUpBadPassword();
         setUpNullBody();
 
@@ -77,7 +77,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     }
 
     @Test
-    public void shouldShowMainScreenWhenNoBodyButUserAndPasswordOk() {
+    public void shouldShowMainScreenWhenBodyNullAndGoodPassword() {
         setUpGoodPassword();
         setUpNullBody();
 
@@ -89,7 +89,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     }
 
     @Test
-    public void shouldShowBadCredentialsWhenUserDoNotExistAndUserIsUnauthorized() {
+    public void shouldShowBadCredentialsWhenNoUserAndUserIsUnauthorized() {
         setUpNoUser();
         setUpUserUnauthorizedCode();
 
@@ -113,7 +113,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     }
 
     @Test
-    public void shouldShowWrongPasswordWhenUserIsUnauthorizedButUserAndPasswordOk() {
+    public void shouldShowWrongPasswordWhenUserIsUnauthorizedAndGoodPassword() {
         setUpGoodPassword();
         setUpUserUnauthorizedCode();
 
