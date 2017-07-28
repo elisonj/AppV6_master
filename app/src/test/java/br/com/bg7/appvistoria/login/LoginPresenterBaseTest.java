@@ -80,29 +80,12 @@ public class LoginPresenterBaseTest {
         loginPresenter.login(USERNAME, PASSWORD);
     }
 
-
     void setUpBadPassword() {
         loginPresenter.checkpw = false;
     }
 
     void setUpGoodPassword() {
         loginPresenter.checkpw = true;
-    }
-
-    void invokeTokenService() {
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
-    }
-
-    /**
-     * TokenService always gets called first, so we call it before actually calling
-     * the UserService itself
-     */
-    void invokeUserService() {
-        invokeTokenService();
-
-        verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
-        userCallBackCaptor.getValue().onResponse(userHttpResponse);
     }
 
     void setUpNoConnection() {
@@ -124,13 +107,29 @@ public class LoginPresenterBaseTest {
     }
 
     void verifySaveAllUserDataAndEnter() {
-        // TODO: Realmente verificar o salvamento dos dados
-        verify(loginView).showMainScreen();
+        // TODO: Realmente verificar o salvamento de todos os dados
+        verifySaveUserAndShowMainScreen();
     }
 
     private void verifySaveUserAndShowMainScreen() {
         // TODO: Realmente verificar o usuário
         verify(userRepository).save((User)any());
         verify(loginView).showMainScreen();
+    }
+
+    void invokeTokenService() {
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
+    }
+
+    /**
+     * TokenService always gets called first, so we call it before actually calling
+     * the UserService itself
+     */
+    void invokeUserService() {
+        invokeTokenService();
+
+        verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
+        userCallBackCaptor.getValue().onResponse(userHttpResponse);
     }
 }
