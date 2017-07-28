@@ -9,6 +9,9 @@ import static org.mockito.Mockito.when;
 /**
  * Created by: elison
  * Date: 2017-07-21
+ *
+ * Linha 2 da tabela
+ * https://bg7.easyredmine.com/projects/185/wiki/Pode_falar_mais_sobre_a_tela_de_login
  */
 public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresenterBaseTest {
 
@@ -19,6 +22,9 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
     }
 
+    /**
+     * 2.1 (a)
+     */
     @Test
     public void shouldShowCannotLoginWhenNoSuccessAndNoUser() {
 
@@ -31,6 +37,9 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         verify(loginView).showCannotLoginError();
     }
 
+    /**
+     * 2.1 (b)
+     */
     @Test
     public void shouldShowBadCredentialsWhenNoSuccessAndBadPassword() {
         setUpBadPassword();
@@ -42,6 +51,9 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         verify(loginView).showBadCredentialsError();
     }
 
+    /**
+     * 2.1 (c)
+     */
     @Test
     public void shouldShowMainScreenWhenNoSuccessButUserAndPassOk() {
         setUpGoodPassword();
@@ -53,6 +65,9 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         verify(loginView).showMainScreen();
     }
 
+    /**
+     * 2.2 (a)
+     */
     @Test
     public void shouldShowCannotLoginWhenNoBodyAndNoUser() {
         setUpNoUser();
@@ -65,6 +80,9 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         verify(loginView).showCannotLoginError();
     }
 
+    /**
+     * 2.2 (b)
+     */
     @Test
     public void shouldShowBadCredentialsWhenNoBodyAndBadPassword() {
         setUpBadPassword();
@@ -76,6 +94,9 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         verify(loginView).showBadCredentialsError();
     }
 
+    /**
+     * 2.2 (c)
+     */
     @Test
     public void shouldShowMainScreenWhenNoBodyButUserAndPasswordOk() {
         setUpGoodPassword();
@@ -87,6 +108,9 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         verify(loginView).showMainScreen();
     }
 
+    /**
+     * 2.3 (a)
+     */
     @Test
     public void shouldShowBadCredentialsWhenUnauthorizedAndNoUser() {
         setUpNoUser();
@@ -99,6 +123,9 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         verify(loginView).showBadCredentialsError();
     }
 
+    /**
+     * 2.3 (b)
+     */
     @Test
     public void shouldShowBadCredentialsWhenUnauthorizedAndBadPassword() {
         setUpBadPassword();
@@ -111,6 +138,9 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         verify(loginView).showBadCredentialsError();
     }
 
+    /**
+     * 2.3 (c)
+     */
     @Test
     public void shouldShowBadCredentialsWhenUnauthorizedButUserAndPasswordOk() {
         setUpGoodPassword();
