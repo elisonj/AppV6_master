@@ -128,6 +128,11 @@ public class LoginPresenterBaseTest {
         verifySaveUserAndShowMainScreen();
     }
 
+    void verifySaveAllUserDataAndEnter() {
+        // TODO: Realmente verificar o salvamento dos dados
+        verify(loginView).showMainScreen();
+    }
+
     private void verifySaveUserAndShowMainScreen() {
         // TODO: Realmente verificar o usuário
         verify(userRepository).save((User)any());

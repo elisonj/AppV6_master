@@ -22,38 +22,38 @@ public class LoginPresenterLoginSuccessTest extends LoginPresenterBaseTest {
      * 6.1 (a)
      */
     @Test
-    public void shouldShowMainScreenWhenNoUser() {
+    public void shouldSaveAllUserDataAndShowMainScreenWhenNoUser() {
         setUpNoUser();
 
         callLogin();
 
         invokeUserService();
-        verify(loginView).showMainScreen();
+        verifySaveAllUserDataAndEnter();
     }
 
     /**
      * 6.1 (b)
      */
     @Test
-    public void shouldSaveUserAndShowMainScreenWhenBadPassword() {
+    public void shouldSaveAllUserDataAndShowMainScreenWhenBadPassword() {
         setUpBadPassword();
 
         callLogin();
 
         invokeUserService();
-        verify(loginView).showMainScreen();
+        verifySaveAllUserDataAndEnter();
     }
 
     /**
      * 6.1 (c)
      */
     @Test
-    public void shouldSaveUserAndShowMainScreenWhenGoodPassword() {
+    public void shouldSaveAllUserDataAndShowMainScreenWhenGoodPassword() {
         setUpGoodPassword();
 
         callLogin();
 
         invokeUserService();
-        verify(loginView).showMainScreen();
+        verifySaveAllUserDataAndEnter();
     }
 }
