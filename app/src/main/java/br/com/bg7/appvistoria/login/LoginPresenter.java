@@ -23,6 +23,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by: luciolucio
  * Date: 2017-07-14
+ *
+ * TODO: Refactoring final do LoginPresenter
  */
 
 class LoginPresenter implements LoginContract.Presenter {

@@ -74,6 +74,7 @@ public class ConfigActivity extends BaseActivity {
         super.onBackPressed();
     }
 
+    // TODO: Separar telas em fragments próprios
     private void selectFragment(MenuItem item) {
         Fragment fragment = null;
         switch (item.getItemId()) {
