@@ -71,6 +71,10 @@ public class LoginPresenterBaseTest {
 
         when(userHttpResponse.isSuccessful()).thenReturn(true);
         when(userHttpResponse.body()).thenReturn(new UserResponse());
+
+        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+
+        setUpGoodPassword();
     }
 
     void callLogin() {
@@ -79,12 +83,10 @@ public class LoginPresenterBaseTest {
 
 
     void setUpBadPassword() {
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
         loginPresenter.checkpw = false;
     }
 
     void setUpGoodPassword() {
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
         loginPresenter.checkpw = true;
     }
 
@@ -97,6 +99,7 @@ public class LoginPresenterBaseTest {
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
         userCallBackCaptor.getValue().onResponse(userHttpResponse);
     }
+
     void setUpNoConnection() {
         when(loginView.isConnected()).thenReturn(false);
     }

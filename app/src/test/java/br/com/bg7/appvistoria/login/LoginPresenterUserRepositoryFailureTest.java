@@ -21,16 +21,14 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
     @Before
     public void setUp() {
         super.setUp();
-        when(loginView.isConnected()).thenReturn(true);
-        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
-        Token token = new Token(TOKEN, USER_ID);
-        when(tokenHttpResponse.body()).thenReturn(token);
+
+        when(userHttpResponse.isSuccessful()).thenReturn(false);
     }
 
     @Test
     public void shouldShowApplicationErrorWhenRepositoryFails() {
         setUpNoUser();
-        when(userHttpResponse.isSuccessful()).thenReturn(true);
+
         doThrow(new RuntimeException("Error saving user"))
                 .when(userRepository).save((User)any());
 
@@ -44,7 +42,7 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
     @Test
     public void shouldShowApplicationErrorWhenRepositoryFailsAndBadPassword() {
         setUpBadPassword();
-        when(userHttpResponse.isSuccessful()).thenReturn(false);
+
         doThrow(new RuntimeException("Error saving user"))
                 .when(userRepository).save((User)any());
 
@@ -56,10 +54,10 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
     }
 
     @Test
-    public void shouldShowApplicationErrorWhenRepositoryFailsAndUserAndPasswordOK() {
+    public void shouldShowApplicationErrorWhenRepositoryFailsAndGoodPassword() {
+        setUpGoodPassword();
+
         when(userRepository.findByUsername(anyString())).thenReturn(new User());
-        loginPresenter.checkpw = true;
-        when(userHttpResponse.isSuccessful()).thenReturn(false);
         doThrow(new RuntimeException("Error saving user"))
                 .when(userRepository).save((User)any());
 
