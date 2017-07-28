@@ -6,7 +6,6 @@ import org.junit.Test;
 import java.io.IOException;
 
 import br.com.bg7.appvistoria.data.User;
-import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.matches;
@@ -16,6 +15,9 @@ import static org.mockito.Mockito.when;
 /**
  * Created by: elison
  * Date: 2017-07-21
+ *
+ * Linha 3 da tabela
+ * https://bg7.easyredmine.com/projects/185/wiki/Pode_falar_mais_sobre_a_tela_de_login
  */
 public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest {
 
@@ -25,6 +27,9 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
         when(userHttpResponse.isSuccessful()).thenReturn(false);
     }
 
+    /**
+     * 3.1 (a)
+     */
     @Test
     public void shouldShowCannotLoginWhenNoConnectionAndNoUser() {
         setUpNoConnection();
@@ -32,10 +37,13 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
 
         callLogin();
 
-        invokeTokenService(); // TokenService only because there is no connection
+        invokeTokenService();
         verify(loginView).showCannotLoginError();
     }
 
+    /**
+     * 3.1 (b)
+     */
     @Test
     public void shouldMainScreenLoginWhenNoConnectionAndBadPassword() {
         setUpNoConnection();
@@ -43,10 +51,13 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
 
         callLogin();
 
-        invokeTokenService(); // TokenService only because there is no connection
-        verifyThatUserGetsSavedAndShowsMainScreen();
+        invokeTokenService();
+        verifySaveUserAndShowMainScreen();
     }
 
+    /**
+     * 3.1 (c)
+     */
     @Test
     public void shouldMainScreenLoginWhenNoConnectionAndGoodPassword() {
         setUpNoConnection();
@@ -54,10 +65,13 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
 
         callLogin();
 
-        invokeTokenService(); // TokenService only because there is no connection
-        verifyThatUserGetsSavedAndShowsMainScreen();
+        invokeTokenService();
+        verifySaveUserAndShowMainScreen();
     }
 
+    /**
+     * 3.2 (a)
+     */
     @Test
     public void shouldShowCannotLoginWhenConnectivityErrorAndNoUser() {
         setUpNoUser();
@@ -69,6 +83,9 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
         verify(loginView).showCannotLoginError();
     }
 
+    /**
+     * 3.2 (b)
+     */
     @Test
     public void shouldShowMainScreenLoginWhenConnectivityErrorAndBadPassword() {
         setUpBadPassword();
@@ -77,9 +94,12 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
 
         invokeTokenService();
         invokeIOException();
-        verifyThatUserGetsSavedAndShowsMainScreen();
+        verifySaveUserAndShowMainScreen();
     }
 
+    /**
+     * 3.2 (c)
+     */
     @Test
     public void shouldShowMainScreenLoginWhenConnectivityErrorAndGoodPassword() {
         setUpGoodPassword();
@@ -88,9 +108,12 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
 
         invokeTokenService();
         invokeIOException();
-        verifyThatUserGetsSavedAndShowsMainScreen();
+        verifySaveUserAndShowMainScreen();
     }
 
+    /**
+     * 3.3 (a)
+     */
     @Test
     public void shouldShowCannotLoginWhenOtherErrorAndNoUser() {
         setUpNoUser();
@@ -102,6 +125,9 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
         verify(loginView).showCannotLoginError();
     }
 
+    /**
+     * 3.3 (b)
+     */
     @Test
     public void shouldShowMainScreenLoginWhenOtherErrorAndBadPassword() {
         setUpBadPassword();
@@ -110,9 +136,12 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
 
         invokeTokenService();
         invokeRuntimeException();
-        verifyThatUserGetsSavedAndShowsMainScreen();
+        verifySaveUserAndShowMainScreen();
     }
 
+    /**
+     * 3.3 (c)
+     */
     @Test
     public void shouldShowMainScreenLoginWhenOtherErrorAndGoodPassword() {
         setUpGoodPassword();
@@ -121,7 +150,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
 
         invokeTokenService();
         invokeRuntimeException();
-        verifyThatUserGetsSavedAndShowsMainScreen();
+        verifySaveUserAndShowMainScreen();
     }
 
     /**
@@ -133,7 +162,8 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
         when(loginView.isConnected()).thenReturn(true, false);
     }
 
-    private void verifyThatUserGetsSavedAndShowsMainScreen() {
+    private void verifySaveUserAndShowMainScreen() {
+        // TODO: Realmente verificar o usuário
         verify(userRepository).save((User)any());
         verify(loginView).showMainScreen();
     }
