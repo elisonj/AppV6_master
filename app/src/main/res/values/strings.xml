@@ -21,7 +21,6 @@
     <string name="config_saved">Configuração salva com sucesso.</string>
     <string name="change_language">ALTERAR IDIOMA</string>
     <string name="login_success">Login executado com sucesso.</string>
-    <string name="application_error">Erro do aplicativo.</string>
     <string name="login_error">Não foi possível realizar o login. Por favor, verifique seu usuário e senha e tente novamente.</string>
     <string name="login_offline_success">Login offline executado com sucesso.</string>
     <string name="validation_user_field_not_empty">Preencha o campo Usuário para continuar.</string>

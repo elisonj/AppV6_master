@@ -241,12 +241,8 @@ class LoginPresenter implements LoginContract.Presenter {
     }
 
     private void saveUserAndEnter(User user) {
-        try{
-            userRepository.save(user);
-            loginView.showMainScreen();
-        } catch (Exception ex) {
-            loginView.showCriticalError();
-        }
+        userRepository.save(user);
+        loginView.showMainScreen();
     }
 
     private void onGetUserFailure(final String password, @NonNull final Token token) {
