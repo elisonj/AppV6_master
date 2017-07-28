@@ -114,10 +114,6 @@ public class LoginPresenterBaseTest {
         when(userRepository.findByUsername(USERNAME)).thenReturn(null);
     }
 
-    void setUpTokenUnauthorizedCode() {
-        when(tokenHttpResponse.code()).thenReturn(UNAUTHORIZED_CODE);
-    }
-
     void verifySaveTokenAndPasswordAndShowMainScreen() {
         // TODO: Realmente verificar o salvamento de token e password
         verifySaveUserAndShowMainScreen();

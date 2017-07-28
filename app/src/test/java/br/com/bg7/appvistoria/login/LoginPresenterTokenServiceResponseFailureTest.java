@@ -148,4 +148,8 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
         when(tokenHttpResponse.body()).thenReturn(null);
     }
+
+    private void setUpTokenUnauthorizedCode() {
+        when(tokenHttpResponse.code()).thenReturn(LoginPresenter.UNAUTHORIZED_CODE);
+    }
 }
