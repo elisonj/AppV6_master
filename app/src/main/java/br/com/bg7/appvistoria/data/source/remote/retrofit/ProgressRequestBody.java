@@ -19,16 +19,16 @@ import okio.BufferedSink;
 class ProgressRequestBody extends RequestBody {
 
     private static final String MEDIA_TYPE = "image/*";
-    private int defaultBufferSize;
+    private int bufferSize;
 
     private File file;
     private HttpProgressCallback listener;
 
     ProgressRequestBody(final File file,
-                               final HttpProgressCallback listener, int defaultBufferSize) {
+                               final HttpProgressCallback listener, int bufferSize) {
         this.file = file;
         this.listener = listener;
-        this.defaultBufferSize = defaultBufferSize;
+        this.bufferSize = bufferSize;
     }
 
     @Override
@@ -44,19 +44,16 @@ class ProgressRequestBody extends RequestBody {
     @Override
     public void writeTo(@NonNull BufferedSink sink) throws IOException {
         long fileLength = file.length();
-        byte[] buffer = new byte[defaultBufferSize];
-        FileInputStream in = new FileInputStream(file);
+        byte[] buffer = new byte[bufferSize];
         long uploaded = 0;
 
-        try {
+        try (FileInputStream in = new FileInputStream(file)) {
             int read;
             while ((read = in.read(buffer)) != -1) {
                 listener.onProgressUpdated((double) (100 * uploaded / fileLength));
                 uploaded += read;
                 sink.write(buffer, 0, read);
             }
-        } finally {
-            in.close();
         }
     }
 }

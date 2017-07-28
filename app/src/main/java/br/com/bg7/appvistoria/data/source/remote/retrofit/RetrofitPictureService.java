@@ -17,13 +17,14 @@ import retrofit2.http.Part;
  */
 public class RetrofitPictureService implements PictureService {
 
-    private static final int DEFAULT_BUFFER_SIZE = 2048;
     private final PictureService pictureService;
+    private int bufferSize;
 
     ProductInspection productInspection;
 
-    public RetrofitPictureService(String baseUrl, ProductInspection productInspection) {
+    public RetrofitPictureService(String baseUrl, ProductInspection productInspection, int bufferSize) {
         this.productInspection = productInspection;
+        this.bufferSize = bufferSize;
         this.pictureService = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -33,7 +34,7 @@ public class RetrofitPictureService implements PictureService {
     @Override
     public Call<PictureResponse> send(File attachment, @Part MultipartBody.Part file, ProductInspection productInspection, HttpProgressCallback httpProgressCallback) {
 
-        ProgressRequestBody fileBody = new ProgressRequestBody(attachment, httpProgressCallback, DEFAULT_BUFFER_SIZE);
+        ProgressRequestBody fileBody = new ProgressRequestBody(attachment, httpProgressCallback, bufferSize);
         MultipartBody.Part filePart = MultipartBody.Part.createFormData("image", attachment.getName(), fileBody);
 
         Call<PictureResponse> call = pictureService.send(attachment, filePart, productInspection, httpProgressCallback);
