@@ -22,7 +22,7 @@ public class LoginPresenterLoginSuccessTest extends LoginPresenterBaseTest {
      * 6.1 (a)
      */
     @Test
-    public void shouldShowMainScreenWhenServicesWorkAndNoUser() {
+    public void shouldShowMainScreenWhenNoUser() {
         setUpNoUser();
 
         callLogin();
@@ -35,7 +35,7 @@ public class LoginPresenterLoginSuccessTest extends LoginPresenterBaseTest {
      * 6.1 (b)
      */
     @Test
-    public void shouldSaveUserAndShowMainScreenWhenServicesWorkAndBadPassword() {
+    public void shouldSaveUserAndShowMainScreenWhenBadPassword() {
         setUpBadPassword();
 
         callLogin();
@@ -48,7 +48,7 @@ public class LoginPresenterLoginSuccessTest extends LoginPresenterBaseTest {
      * 6.1 (c)
      */
     @Test
-    public void shouldSaveUserAndShowMainScreenWhenServicesWorkAndPasswordOK() {
+    public void shouldSaveUserAndShowMainScreenWhenGoodPassword() {
         setUpGoodPassword();
 
         callLogin();
