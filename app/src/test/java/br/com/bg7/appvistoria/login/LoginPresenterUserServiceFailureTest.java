@@ -162,12 +162,6 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
         when(loginView.isConnected()).thenReturn(true, false);
     }
 
-    private void verifySaveUserAndShowMainScreen() {
-        // TODO: Realmente verificar o usuário
-        verify(userRepository).save((User)any());
-        verify(loginView).showMainScreen();
-    }
-
     private void invokeIOException() {
         invokeException(new IOException());
     }

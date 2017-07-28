@@ -16,6 +16,7 @@ import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
 
 import static br.com.bg7.appvistoria.login.LoginPresenter.UNAUTHORIZED_CODE;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.verify;
@@ -107,7 +108,10 @@ public class LoginPresenterBaseTest {
     void setUpTokenUnauthorizedCode() {
         when(tokenHttpResponse.code()).thenReturn(UNAUTHORIZED_CODE);
     }
-    void setUpUserUnauthorizedCode() {
-        when(userHttpResponse.code()).thenReturn(UNAUTHORIZED_CODE);
+
+    void verifySaveUserAndShowMainScreen() {
+        // TODO: Realmente verificar o usuário
+        verify(userRepository).save((User)any());
+        verify(loginView).showMainScreen();
     }
 }

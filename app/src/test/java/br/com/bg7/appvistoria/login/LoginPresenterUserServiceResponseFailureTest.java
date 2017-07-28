@@ -25,106 +25,111 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
 
         callLogin();
 
-        invokeTokenService();
         invokeUserService();
         verify(loginView).showCannotLoginError();
     }
 
     @Test
-    public void shouldShowMainScreenWhenBadPassword() {
+    public void shouldSaveUserAndEnterWhenBadPassword() {
         setUpBadPassword();
 
         callLogin();
 
-        invokeTokenService();
         invokeUserService();
-        verify(loginView).showMainScreen();
+        verifySaveUserAndShowMainScreen();
     }
 
     @Test
-    public void shouldShowMainScreenWhenGoodPassword() {
+    public void shouldSaveUserAndEnterWhenGoodPassword() {
         setUpGoodPassword();
 
         callLogin();
 
-        invokeTokenService();
         invokeUserService();
-        verify(loginView).showMainScreen();
+        verifySaveUserAndShowMainScreen();
     }
 
     @Test
     public void shouldShowCannotLoginWhenBodyNullAndNoUser() {
-        setUpNoUser();
         setUpNullBody();
+        setUpNoUser();
 
         callLogin();
 
-        invokeTokenService();
         invokeUserService();
         verify(loginView).showCannotLoginError();
     }
 
     @Test
-    public void shouldShowMainScreenWhenBodyNullAndBadPassword() {
-        setUpBadPassword();
+    public void shouldSaveUserAndEnterWhenBodyNullAndBadPassword() {
         setUpNullBody();
+        setUpBadPassword();
 
         callLogin();
 
-        invokeTokenService();
         invokeUserService();
-        verify(loginView).showMainScreen();
+        verifySaveUserAndShowMainScreen();
     }
 
     @Test
-    public void shouldShowMainScreenWhenBodyNullAndGoodPassword() {
-        setUpGoodPassword();
+    public void shouldSaveUserAndEnterWhenBodyNullAndGoodPassword() {
         setUpNullBody();
+        setUpGoodPassword();
 
         callLogin();
 
-        invokeTokenService();
         invokeUserService();
-        verify(loginView).showMainScreen();
+        verifySaveUserAndShowMainScreen();
     }
 
     @Test
     public void shouldShowBadCredentialsWhenNoUserAndUserIsUnauthorized() {
         setUpNoUser();
-        setUpUserUnauthorizedCode();
+        setUpUserUnauthorized();
 
         callLogin();
 
-        invokeTokenService();
         invokeUserService();
         verify(loginView).showBadCredentialsError();
     }
 
     @Test
-    public void shouldShowWrongPasswordWhenUserIsUnauthorizedAndBadPassword() {
+    public void shouldShowBadCredentialsWhenUserIsUnauthorizedAndBadPassword() {
         setUpBadPassword();
-        setUpUserUnauthorizedCode();
+        setUpUserUnauthorized();
 
         callLogin();
 
-        invokeTokenService();
         invokeUserService();
         verify(loginView).showBadCredentialsError();
     }
 
     @Test
-    public void shouldShowWrongPasswordWhenUserIsUnauthorizedAndGoodPassword() {
+    public void shouldShowBadCredentialsWhenUserIsUnauthorizedAndGoodPassword() {
         setUpGoodPassword();
-        setUpUserUnauthorizedCode();
+        setUpUserUnauthorized();
 
         callLogin();
 
-        invokeTokenService();
         invokeUserService();
         verify(loginView).showBadCredentialsError();
     }
 
     private void setUpNullBody() {
         when(userHttpResponse.body()).thenReturn(null);
+    }
+
+    /**
+     * TokenService always gets called first, so we call it before actually calling
+     * the UserService itself
+     */
+    @Override
+    void invokeUserService() {
+        invokeTokenService();
+        super.invokeUserService();
+    }
+
+    private void setUpUserUnauthorized() {
+        when(userHttpResponse.code()).thenReturn(LoginPresenter.UNAUTHORIZED_CODE);
     }
 }
