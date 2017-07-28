@@ -60,7 +60,7 @@ class LoginPresenter implements LoginContract.Presenter {
 
         user = userRepository.findByUsername(username);
 
-        if(user != null) {
+        if (user != null) {
             userExists = true;
             if (checkpw(password, user.getPasswordHash())) passwordMatches = true;
         }
@@ -122,7 +122,7 @@ class LoginPresenter implements LoginContract.Presenter {
 
             @Override
             public void onFailure(Throwable t) {
-                onGetTokenFailure(password, t);
+                onGetTokenFailure(t);
             }
         });
     }
@@ -135,7 +135,7 @@ class LoginPresenter implements LoginContract.Presenter {
                 return;
             }
             if (userExists && token == null) {
-                verifyPasswordAndEnter(password);
+                verifyPasswordAndEnter();
                 return;
             }
 
@@ -159,12 +159,12 @@ class LoginPresenter implements LoginContract.Presenter {
         }
 
         if (userExists) {
-            verifyPasswordAndEnter(password);
+            verifyPasswordAndEnter();
         }
         loginView.showCannotLoginError();
     }
 
-    private void verifyPasswordAndEnter(String password) {
+    private void verifyPasswordAndEnter() {
         if (!passwordMatches) {
             loginView.showBadCredentialsError();
             return;
@@ -172,13 +172,13 @@ class LoginPresenter implements LoginContract.Presenter {
         loginView.showMainScreen();
     }
 
-    private void onGetTokenFailure(String password, Throwable t) {
+    private void onGetTokenFailure(Throwable t) {
         if (t instanceof TimeoutException) {
             if(!userExists) {
                 loginView.showCannotLoginError();
                 return;
             }
-            verifyPasswordAndEnter(password);
+            verifyPasswordAndEnter();
             return;
         }
 
@@ -188,14 +188,14 @@ class LoginPresenter implements LoginContract.Presenter {
         }
 
         if(userExists) {
-            verifyPasswordAndEnter(password);
+            verifyPasswordAndEnter();
             return;
         }
 
         loginView.showCannotLoginError();
     }
 
-        private void callUserService(final String username, final String password, @NonNull final Token token) {
+    private void callUserService(final String username, final String password, @NonNull final Token token) {
         userService.getUser(token.getAccessToken(), token.getUserId(), new HttpCallback<UserResponse>() {
             @Override
             public void onResponse(HttpResponse<UserResponse> httpResponse) {
@@ -214,14 +214,12 @@ class LoginPresenter implements LoginContract.Presenter {
             UserResponse userResponse = httpResponse.body();
 
             if(userResponse != null) {
-                User userFromRepository = userRepository.findByUsername(username);
-                if(userFromRepository == null) {
-                    User user = new User(username, token.getAccessToken(), hashpw(password));
-                    saveUserAndEnter(user);
-                    return;
+                if (userRepository.first(User.class) == null) {
+                    userRepository.deleteAll(User.class);
                 }
 
-                loginView.showMainScreen();
+                User user = new User(username, token.getAccessToken(), hashpw(password));
+                saveUserAndEnter(user);
                 return;
             }
         }
@@ -245,12 +243,8 @@ class LoginPresenter implements LoginContract.Presenter {
     }
 
     private void saveUserAndEnter(User user) {
-        try{
-            userRepository.save(user);
-            loginView.showMainScreen();
-        } catch (Exception ex) {
-            loginView.showCriticalError();
-        }
+        userRepository.save(user);
+        loginView.showMainScreen();
     }
 
     private void onGetUserFailure(final String password, @NonNull final Token token) {

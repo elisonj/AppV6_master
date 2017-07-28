@@ -9,6 +9,9 @@ import static org.mockito.Mockito.when;
 /**
  * Created by: elison
  * Date: 2017-07-25
+ *
+ * Linha 4 da tabela
+ * https://bg7.easyredmine.com/projects/185/wiki/Pode_falar_mais_sobre_a_tela_de_login
  */
 public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenterBaseTest {
 
@@ -19,125 +22,136 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         when(userHttpResponse.isSuccessful()).thenReturn(false);
     }
 
+    /**
+     * 4.1 (a)
+     */
     @Test
-    public void shouldShowCannotLoginWhenUserDoNotExist() {
-        setUpNullUser();
-        setUpToken();
-        setUpUserResponse();
+    public void shouldShowCannotLoginWhenNoUser() {
+        setUpNoUser();
 
         callLogin();
 
-        invokeTokenServiceOnResponse();
-        invokeUserServiceOnResponse();
+        invokeUserService();
         verify(loginView).showCannotLoginError();
     }
 
+    /**
+     * 4.1 (b)
+     */
     @Test
-    public void shouldShowMainScreenWhenNoSuccessAndBadPassword() {
+    public void shouldSaveTokenAndPasswordAndEnterWhenBadPassword() {
         setUpBadPassword();
-        setUpToken();
-        setUpUserResponse();
 
         callLogin();
 
-        invokeTokenServiceOnResponse();
-        invokeUserServiceOnResponse();
-        verify(loginView).showMainScreen();
+        invokeUserService();
+        verifySaveTokenAndPasswordAndShowMainScreen();
     }
 
+    /**
+     * 4.1 (c)
+     */
     @Test
-    public void shouldShowMainScreenWhenNoSuccessButUserAndPasswordOk() {
-        setUpUserAndPasswordOk();
-        setUpToken();
-        setUpUserResponse();
+    public void shouldSaveTokenAndEnterWhenGoodPassword() {
+        setUpGoodPassword();
 
         callLogin();
 
-        invokeTokenServiceOnResponse();
-        invokeUserServiceOnResponse();
-        verify(loginView).showMainScreen();
+        invokeUserService();
+        verifySaveTokenAndShowMainScreen();
     }
 
+    /**
+     * 4.2 (a)
+     */
     @Test
-    public void shouldShowCannotLoginWhenUserDoNotExistAndBodyIsNull() {
-        setUpNullUser();
-        setUpToken();
-        setUpUserResponseSuccessful();
-        when(userHttpResponse.body()).thenReturn(null);
+    public void shouldShowCannotLoginWhenBodyNullAndNoUser() {
+        setUpNullBody();
+        setUpNoUser();
 
         callLogin();
 
-        invokeTokenServiceOnResponse();
-        invokeUserServiceOnResponse();
+        invokeUserService();
         verify(loginView).showCannotLoginError();
     }
 
+    /**
+     * 4.2 (b)
+     */
     @Test
-    public void shouldShowMainScreenWhenNoBodyAndBadPassword() {
+    public void shouldSaveTokenAndPasswordAndEnterWhenBodyNullAndBadPassword() {
+        setUpNullBody();
         setUpBadPassword();
-        setUpToken();
-        when(userHttpResponse.body()).thenReturn(null);
 
         callLogin();
 
-        invokeTokenServiceOnResponse();
-        invokeUserServiceOnResponse();
-        verify(loginView).showMainScreen();
+        invokeUserService();
+        verifySaveTokenAndPasswordAndShowMainScreen();
     }
 
+    /**
+     * 4.2 (c)
+     */
     @Test
-    public void shouldShowMainScreenWhenNoBodyButUserAndPasswordOk() {
-        setUpUserAndPasswordOk();
-        setUpToken();
-        when(userHttpResponse.body()).thenReturn(null);
+    public void shouldSaveTokenAndEnterWhenBodyNullAndGoodPassword() {
+        setUpNullBody();
+        setUpGoodPassword();
 
         callLogin();
 
-        invokeTokenServiceOnResponse();
-        invokeUserServiceOnResponse();
-        verify(loginView).showMainScreen();
+        invokeUserService();
+        verifySaveTokenAndShowMainScreen();
     }
 
+    /**
+     * 4.3 (a)
+     */
     @Test
-    public void shouldShowBadCredentialsWhenUserDoNotExistAndUserIsUnauthorized() {
-        setUpNullUser();
-        setUpToken();
-        setUpUserUnauthorizedCode();
+    public void shouldShowBadCredentialsWhenNoUserAndUserIsUnauthorized() {
+        setUpNoUser();
+        setUpUserUnauthorized();
 
         callLogin();
 
-        invokeTokenServiceOnResponse();
-        invokeUserServiceOnResponse();
+        invokeUserService();
         verify(loginView).showBadCredentialsError();
     }
 
+    /**
+     * 4.3 (b)
+     */
     @Test
-    public void shouldShowWrongPasswordWhenUserIsUnauthorizedAndBadPassword() {
+    public void shouldShowBadCredentialsWhenUserIsUnauthorizedAndBadPassword() {
         setUpBadPassword();
-        setUpToken();
-        setUpUserUnauthorizedCode();
+        setUpUserUnauthorized();
 
         callLogin();
 
-        invokeTokenServiceOnResponse();
-        invokeUserServiceOnResponse();
+        invokeUserService();
         verify(loginView).showBadCredentialsError();
     }
 
+    /**
+     * 4.3 (c)
+     */
     @Test
-    public void shouldShowWrongPasswordWhenUserIsUnauthorizedButUserAndPasswordOk() {
-        setUpUserAndPasswordOk();
-        setUpToken();
-        setUpUserUnauthorizedCode();
+    public void shouldShowBadCredentialsWhenUserIsUnauthorizedAndGoodPassword() {
+        setUpGoodPassword();
+        setUpUserUnauthorized();
 
         callLogin();
 
-        invokeTokenServiceOnResponse();
-        invokeUserServiceOnResponse();
+        invokeUserService();
         verify(loginView).showBadCredentialsError();
     }
 
-    private void setUpUserResponseSuccessful() {
+    private void setUpNullBody() {
         when(userHttpResponse.isSuccessful()).thenReturn(true);
+        when(userHttpResponse.body()).thenReturn(null);
+    }
+
+    private void setUpUserUnauthorized() {
+        when(userHttpResponse.isSuccessful()).thenReturn(false);
+        when(userHttpResponse.code()).thenReturn(LoginPresenter.UNAUTHORIZED_CODE);
     }
 }

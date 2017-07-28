@@ -1,50 +1,37 @@
 package br.com.bg7.appvistoria.login;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
 
 import java.io.IOException;
 
-import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
-import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
-import br.com.bg7.appvistoria.data.source.remote.dto.Token;
-
 import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by: luciolucio
  * Date: 2017-07-21
+ *
+ * Linha 1 da tabela
+ * https://bg7.easyredmine.com/projects/185/wiki/Pode_falar_mais_sobre_a_tela_de_login
  */
-
 public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTest {
 
-    @Captor
-    private ArgumentCaptor<HttpCallback<Token>> tokenCallBackCaptor;
-
-    @Mock
-    HttpResponse<Token> tokenHttpResponse;
-
-    @Before
-    public void setUp() {
-        super.setUp();
-        when(loginView.isConnected()).thenReturn(true);
-    }
-
+    /**
+     * 1.1 (a)
+     */
     @Test
     public void shouldShowCannotLoginWhenNoConnectionAndNoUser() {
         setUpNoConnection();
-        setUpNullUser();
+        setUpNoUser();
 
         callLogin();
 
         verify(loginView).showCannotLoginError();
     }
 
+    /**
+     * 1.1 (b)
+     */
     @Test
     public void shouldShowBadCredentialsWhenNoConnectionAndBadPassword() {
         setUpNoConnection();
@@ -55,83 +42,103 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
         verify(loginView).showBadCredentialsError();
     }
 
+    /**
+     * 1.1 (c)
+     */
     @Test
-    public void shouldShowMainScreenWhenNoConnection() {
+    public void shouldShowMainScreenWhenNoConnectionAndGoodPassword() {
         setUpNoConnection();
-        setUpUserAndPasswordOk();
+        setUpGoodPassword();
 
         callLogin();
 
         verify(loginView).showMainScreen();
     }
 
+    /**
+     * 1.2 (a)
+     */
     @Test
-    public void shouldShowCannotLoginWhenConnectivityErrorAndNoUser() {
-
-        setUpNullUser();
+    public void shouldShowCannotLoginWhenNoUserAndConnectivityError() {
+        setUpNoUser();
 
         callLogin();
 
-        setUpConnectivityError();
+        invokeIOException();
         verify(loginView).showCannotLoginError();
     }
 
+    /**
+     * 1.2 (b)
+     */
     @Test
-    public void shouldShowBadCredentialsWhenConnectivityErrorAndBadPassword() {
+    public void shouldShowBadCredentialsWhenBadPasswordAndConnectivityError() {
         setUpBadPassword();
 
         callLogin();
 
-        setUpConnectivityError();
+        invokeIOException();
         verify(loginView).showBadCredentialsError();
     }
 
+    /**
+     * 1.2 (c)
+     */
     @Test
-    public void shouldShowMainScreenWhenNoTokenButUserAndPassOk() {
-        setUpUserAndPasswordOk();
+    public void shouldShowMainScreenWhenGoodPasswordAndConnectivityError() {
+        setUpGoodPassword();
 
         callLogin();
 
-        setUpConnectivityError();
+        invokeIOException();
         verify(loginView).showMainScreen();
     }
 
+    /**
+     * 1.3 (a)
+     */
     @Test
-    public void shouldShowCannotLoginWhenOtherErrorAndNoUser() {
-        setUpNullUser();
+    public void shouldShowCannotLoginWhenNoUserAndOtherError() {
+        setUpNoUser();
 
         callLogin();
 
-        setUpRuntimeException();
+        invokeRuntimeException();
         verify(loginView).showCannotLoginError();
     }
 
+    /**
+     * 1.3 (b)
+     */
     @Test
-    public void shouldShowCannotLoginWhenOtherErrorAndBadPassword() {
+    public void shouldShowBadCredentialsWhenBadPasswordAndOtherError() {
         setUpBadPassword();
 
         callLogin();
 
-        setUpRuntimeException();
+        invokeRuntimeException();
         verify(loginView).showBadCredentialsError();
     }
 
+    /**
+     * 1.3 (c)
+     */
     @Test
-    public void shouldShowMainScreenWhenOtherErrorButUserAndPassOk() {
-        setUpUserAndPasswordOk();
+    public void shouldShowMainScreenWhenGoodPasswordAndOtherError() {
+        setUpGoodPassword();
 
         callLogin();
 
-        setUpRuntimeException();
+        invokeRuntimeException();
         verify(loginView).showMainScreen();
     }
 
-    private void setUpConnectivityError() {
+    private void invokeIOException() {
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
         tokenCallBackCaptor.getValue().onFailure(new IOException());
     }
 
-    private void setUpRuntimeException() {
+    private void invokeRuntimeException() {
         verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
         tokenCallBackCaptor.getValue().onFailure(new RuntimeException());
     }

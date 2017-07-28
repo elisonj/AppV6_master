@@ -15,7 +15,7 @@ import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
 
-import static br.com.bg7.appvistoria.login.LoginPresenter.UNAUTHORIZED_CODE;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.verify;
@@ -62,55 +62,74 @@ public class LoginPresenterBaseTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         loginPresenter = new TestableLoginPresenter(tokenService, userService, userRepository, loginView);
+
+        when(loginView.isConnected()).thenReturn(true);
+
+        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
+        when(tokenHttpResponse.body()).thenReturn(new Token(TOKEN, USER_ID));
+
+        when(userHttpResponse.isSuccessful()).thenReturn(true);
+        when(userHttpResponse.body()).thenReturn(new UserResponse());
+
+        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+
+        setUpGoodPassword();
     }
 
     void callLogin() {
         loginPresenter.login(USERNAME, PASSWORD);
     }
 
-
     void setUpBadPassword() {
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
         loginPresenter.checkpw = false;
     }
 
-    void setUpUserAndPasswordOk() {
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+    void setUpGoodPassword() {
         loginPresenter.checkpw = true;
     }
 
-    void setUpUserResponse() {
-        UserResponse userResponse = new UserResponse();
-        when(userHttpResponse.body()).thenReturn(userResponse);
-    }
-
-    void setUpToken() {
-        when(tokenHttpResponse.isSuccessful()).thenReturn(true);
-        Token token = new Token(TOKEN, USER_ID);
-        when(tokenHttpResponse.body()).thenReturn(token);
-    }
-
-    void invokeTokenServiceOnResponse() {
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
-        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
-    }
-
-    void invokeUserServiceOnResponse() {
-        verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
-        userCallBackCaptor.getValue().onResponse(userHttpResponse);
-    }
     void setUpNoConnection() {
         when(loginView.isConnected()).thenReturn(false);
     }
 
-    void setUpNullUser() {
+    void setUpNoUser() {
         when(userRepository.findByUsername(USERNAME)).thenReturn(null);
     }
 
-    void setUpTokenUnauthorizedCode() {
-        when(tokenHttpResponse.code()).thenReturn(UNAUTHORIZED_CODE);
+    void verifySaveTokenAndPasswordAndShowMainScreen() {
+        // TODO: Realmente verificar o salvamento de token e password
+        verifySaveUserAndShowMainScreen();
     }
-    void setUpUserUnauthorizedCode() {
-        when(userHttpResponse.code()).thenReturn(UNAUTHORIZED_CODE);
+
+    void verifySaveTokenAndShowMainScreen() {
+        // TODO: Realmente verificar o salvamento do token
+        verifySaveUserAndShowMainScreen();
+    }
+
+    void verifySaveAllUserDataAndEnter() {
+        // TODO: Realmente verificar o salvamento de todos os dados
+        verifySaveUserAndShowMainScreen();
+    }
+
+    private void verifySaveUserAndShowMainScreen() {
+        // TODO: Realmente verificar o usuário
+        verify(userRepository).save((User)any());
+        verify(loginView).showMainScreen();
+    }
+
+    void invokeTokenService() {
+        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
+    }
+
+    /**
+     * TokenService always gets called first, so we call it before actually calling
+     * the UserService itself
+     */
+    void invokeUserService() {
+        invokeTokenService();
+
+        verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
+        userCallBackCaptor.getValue().onResponse(userHttpResponse);
     }
 }
