@@ -50,7 +50,7 @@ class ProgressRequestBody extends RequestBody {
         try (FileInputStream in = new FileInputStream(file)) {
             int read;
             while ((read = in.read(buffer)) != -1) {
-                listener.onProgressUpdated((double) (100 * uploaded / fileLength));
+                listener.onProgressUpdated(100 * uploaded / fileLength);
                 uploaded += read;
                 sink.write(buffer, 0, read);
             }
