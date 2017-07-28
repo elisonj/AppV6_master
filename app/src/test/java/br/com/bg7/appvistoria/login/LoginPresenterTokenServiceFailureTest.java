@@ -1,13 +1,11 @@
 package br.com.bg7.appvistoria.login;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 
 import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by: luciolucio

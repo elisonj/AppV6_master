@@ -5,9 +5,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import br.com.bg7.appvistoria.data.User;
-
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
