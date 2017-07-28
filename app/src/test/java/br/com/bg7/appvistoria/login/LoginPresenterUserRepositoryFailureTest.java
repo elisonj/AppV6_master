@@ -31,7 +31,7 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
     }
 
     @Test
-    public void shouldShowApplicationErrorWhenRepositoryFails() {
+    public void shouldShowApplicationErrorWhenNoUser() {
         setUpNoUser();
 
         callLogin();
@@ -41,7 +41,7 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
     }
 
     @Test
-    public void shouldShowApplicationErrorWhenRepositoryFailsAndBadPassword() {
+    public void shouldShowApplicationErrorWhenBadPassword() {
         setUpBadPassword();
 
         callLogin();
@@ -51,7 +51,7 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
     }
 
     @Test
-    public void shouldShowApplicationErrorWhenRepositoryFailsAndGoodPassword() {
+    public void shouldShowApplicationErrorWhenGoodPassword() {
         setUpGoodPassword();
 
         callLogin();
