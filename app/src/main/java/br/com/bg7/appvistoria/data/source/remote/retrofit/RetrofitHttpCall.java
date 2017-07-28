@@ -42,13 +42,13 @@ class RetrofitHttpCall<T> {
             @Override
             @ParametersAreNonnullByDefault
             public void onResponse(Call<T> call, Response<T> response) {
-                httpCallback.onFinish(new RetrofitHttpResponse<>(response));
+                httpCallback.onResponse(new RetrofitHttpResponse<>(response));
             }
 
             @Override
             @ParametersAreNonnullByDefault
             public void onFailure(Call<T> call, Throwable t) {
-                httpCallback.onError(t);
+                httpCallback.onFailure(t);
             }
         });
     }
