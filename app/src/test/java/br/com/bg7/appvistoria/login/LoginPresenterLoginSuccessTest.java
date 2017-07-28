@@ -12,9 +12,15 @@ import static org.mockito.Mockito.when;
 /**
  * Created by: elison
  * Date: 2017-07-25
+ *
+ * Linha 6 da tabela
+ * https://bg7.easyredmine.com/projects/185/wiki/Pode_falar_mais_sobre_a_tela_de_login
  */
 public class LoginPresenterLoginSuccessTest extends LoginPresenterBaseTest {
 
+    /**
+     * 6.1 (a)
+     */
     @Test
     public void shouldShowMainScreenWhenServicesWorkAndNoUser() {
         setUpNoUser();
@@ -25,6 +31,9 @@ public class LoginPresenterLoginSuccessTest extends LoginPresenterBaseTest {
         verify(loginView).showMainScreen();
     }
 
+    /**
+     * 6.1 (b)
+     */
     @Test
     public void shouldSaveUserAndShowMainScreenWhenServicesWorkAndBadPassword() {
         setUpBadPassword();
@@ -35,6 +44,9 @@ public class LoginPresenterLoginSuccessTest extends LoginPresenterBaseTest {
         verify(loginView).showMainScreen();
     }
 
+    /**
+     * 6.1 (c)
+     */
     @Test
     public void shouldSaveUserAndShowMainScreenWhenServicesWorkAndPasswordOK() {
         setUpGoodPassword();

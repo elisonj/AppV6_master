@@ -30,6 +30,9 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
                 .when(userRepository).save((User)any());
     }
 
+    /**
+     * 5.1 (a)
+     */
     @Test
     public void shouldShowApplicationErrorWhenNoUser() {
         setUpNoUser();
@@ -40,6 +43,9 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
         verify(loginView).showCriticalError();
     }
 
+    /**
+     * 5.1 (b)
+     */
     @Test
     public void shouldShowApplicationErrorWhenBadPassword() {
         setUpBadPassword();
@@ -50,6 +56,9 @@ public class LoginPresenterUserRepositoryFailureTest extends LoginPresenterBaseT
         verify(loginView).showCriticalError();
     }
 
+    /**
+     * 5.1 (c)
+     */
     @Test
     public void shouldShowApplicationErrorWhenGoodPassword() {
         setUpGoodPassword();
