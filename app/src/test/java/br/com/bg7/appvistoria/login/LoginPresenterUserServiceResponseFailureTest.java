@@ -9,6 +9,9 @@ import static org.mockito.Mockito.when;
 /**
  * Created by: elison
  * Date: 2017-07-25
+ *
+ * Linha 4 da tabela
+ * https://bg7.easyredmine.com/projects/185/wiki/Pode_falar_mais_sobre_a_tela_de_login
  */
 public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenterBaseTest {
 
@@ -19,6 +22,9 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         when(userHttpResponse.isSuccessful()).thenReturn(false);
     }
 
+    /**
+     * 4.1 (a)
+     */
     @Test
     public void shouldShowCannotLoginWhenNoUser() {
         setUpNoUser();
@@ -29,6 +35,9 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         verify(loginView).showCannotLoginError();
     }
 
+    /**
+     * 4.1 (b)
+     */
     @Test
     public void shouldSaveUserAndEnterWhenBadPassword() {
         setUpBadPassword();
@@ -39,6 +48,9 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         verifySaveUserAndShowMainScreen();
     }
 
+    /**
+     * 4.1 (c)
+     */
     @Test
     public void shouldSaveUserAndEnterWhenGoodPassword() {
         setUpGoodPassword();
@@ -49,6 +61,9 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         verifySaveUserAndShowMainScreen();
     }
 
+    /**
+     * 4.2 (a)
+     */
     @Test
     public void shouldShowCannotLoginWhenBodyNullAndNoUser() {
         setUpNullBody();
@@ -60,6 +75,9 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         verify(loginView).showCannotLoginError();
     }
 
+    /**
+     * 4.2 (b)
+     */
     @Test
     public void shouldSaveUserAndEnterWhenBodyNullAndBadPassword() {
         setUpNullBody();
@@ -71,6 +89,9 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         verifySaveUserAndShowMainScreen();
     }
 
+    /**
+     * 4.2 (c)
+     */
     @Test
     public void shouldSaveUserAndEnterWhenBodyNullAndGoodPassword() {
         setUpNullBody();
@@ -82,6 +103,9 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         verifySaveUserAndShowMainScreen();
     }
 
+    /**
+     * 4.3 (a)
+     */
     @Test
     public void shouldShowBadCredentialsWhenNoUserAndUserIsUnauthorized() {
         setUpNoUser();
@@ -93,6 +117,9 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         verify(loginView).showBadCredentialsError();
     }
 
+    /**
+     * 4.3 (b)
+     */
     @Test
     public void shouldShowBadCredentialsWhenUserIsUnauthorizedAndBadPassword() {
         setUpBadPassword();
@@ -104,6 +131,9 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         verify(loginView).showBadCredentialsError();
     }
 
+    /**
+     * 4.3 (c)
+     */
     @Test
     public void shouldShowBadCredentialsWhenUserIsUnauthorizedAndGoodPassword() {
         setUpGoodPassword();
@@ -116,6 +146,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     }
 
     private void setUpNullBody() {
+        when(userHttpResponse.isSuccessful()).thenReturn(true);
         when(userHttpResponse.body()).thenReturn(null);
     }
 
@@ -130,6 +161,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
     }
 
     private void setUpUserUnauthorized() {
+        when(userHttpResponse.isSuccessful()).thenReturn(true);
         when(userHttpResponse.code()).thenReturn(LoginPresenter.UNAUTHORIZED_CODE);
     }
 }
