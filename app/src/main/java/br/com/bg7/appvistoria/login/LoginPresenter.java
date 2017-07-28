@@ -60,7 +60,7 @@ class LoginPresenter implements LoginContract.Presenter {
 
         user = userRepository.findByUsername(username);
 
-        if(user != null) {
+        if (user != null) {
             userExists = true;
             if (checkpw(password, user.getPasswordHash())) passwordMatches = true;
         }
@@ -195,7 +195,7 @@ class LoginPresenter implements LoginContract.Presenter {
         loginView.showCannotLoginError();
     }
 
-        private void callUserService(final String username, final String password, @NonNull final Token token) {
+    private void callUserService(final String username, final String password, @NonNull final Token token) {
         userService.getUser(token.getAccessToken(), token.getUserId(), new HttpCallback<UserResponse>() {
             @Override
             public void onResponse(HttpResponse<UserResponse> httpResponse) {
@@ -214,14 +214,10 @@ class LoginPresenter implements LoginContract.Presenter {
             UserResponse userResponse = httpResponse.body();
 
             if(userResponse != null) {
-                User userFromRepository = userRepository.findByUsername(username);
-                if(userFromRepository == null) {
-                    User user = new User(username, token.getAccessToken(), hashpw(password));
-                    saveUserAndEnter(user);
-                    return;
-                }
+                userRepository.deleteAll(User.class);
 
-                loginView.showMainScreen();
+                User user = new User(username, token.getAccessToken(), hashpw(password));
+                saveUserAndEnter(user);
                 return;
             }
         }
