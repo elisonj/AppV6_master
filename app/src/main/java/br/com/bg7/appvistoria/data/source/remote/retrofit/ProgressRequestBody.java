@@ -18,7 +18,7 @@ import okio.BufferedSink;
  */
 class ProgressRequestBody extends RequestBody {
 
-    private static final String MEDIA_TYPE = "image/*";
+    private static final MediaType MEDIA_TYPE = MediaType.parse("image/*");
     private int bufferSize;
 
     private File file;
@@ -33,7 +33,7 @@ class ProgressRequestBody extends RequestBody {
 
     @Override
     public MediaType contentType() {
-        return MediaType.parse(MEDIA_TYPE);
+        return MEDIA_TYPE ;
     }
 
     @Override
