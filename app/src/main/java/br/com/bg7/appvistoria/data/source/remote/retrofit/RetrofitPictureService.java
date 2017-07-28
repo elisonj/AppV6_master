@@ -17,6 +17,7 @@ import retrofit2.http.Part;
  */
 public class RetrofitPictureService implements PictureService {
 
+    private static final int DEFAULT_BUFFER_SIZE = 2048;
     private final PictureService pictureService;
 
     ProductInspection productInspection;
@@ -32,7 +33,7 @@ public class RetrofitPictureService implements PictureService {
     @Override
     public Call<PictureResponse> send(File attachment, @Part MultipartBody.Part file, ProductInspection productInspection, HttpProgressCallback httpProgressCallback) {
 
-        ProgressRequestBody fileBody = new ProgressRequestBody(attachment, httpProgressCallback);
+        ProgressRequestBody fileBody = new ProgressRequestBody(attachment, httpProgressCallback, DEFAULT_BUFFER_SIZE);
         MultipartBody.Part filePart = MultipartBody.Part.createFormData("image", attachment.getName(), fileBody);
 
         Call<PictureResponse> call = pictureService.send(attachment, filePart, productInspection, httpProgressCallback);
