@@ -47,7 +47,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
 
         callLogin();
 
-        invokeTokenServiceOnResponse();
+        invokeTokenService();
         verify(loginView).showCannotLoginError();
     }
 
@@ -60,7 +60,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
 
         callLogin();
 
-        invokeTokenServiceOnResponse();
+        invokeTokenService();
         verify(userRepository).save((User)any());
         verify(loginView).showMainScreen();
     }
@@ -74,7 +74,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
 
         callLogin();
 
-        invokeTokenServiceOnResponse();
+        invokeTokenService();
         verify(userRepository).save((User)any());
         verify(loginView).showMainScreen();
     }
@@ -88,7 +88,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
 
         callLogin();
 
-        invokeTokenServiceOnResponse();
+        invokeTokenService();
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
         userCallBackCaptor.getValue().onFailure(new IOException());
         verify(loginView).showCannotLoginError();
@@ -103,7 +103,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
 
         callLogin();
 
-        invokeTokenServiceOnResponse();
+        invokeTokenService();
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
         userCallBackCaptor.getValue().onFailure(new IOException());
         verify(userRepository).save((User)any());
@@ -120,7 +120,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
 
         callLogin();
 
-        invokeTokenServiceOnResponse();
+        invokeTokenService();
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
         userCallBackCaptor.getValue().onFailure(new IOException());
         verify(userRepository).save((User)any());
@@ -136,7 +136,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
 
         callLogin();
 
-        invokeTokenServiceOnResponse();
+        invokeTokenService();
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
         userCallBackCaptor.getValue().onFailure(new RuntimeException());
         verify(loginView).showCannotLoginError();
@@ -151,7 +151,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
 
         callLogin();
 
-        invokeTokenServiceOnResponse();
+        invokeTokenService();
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
         userCallBackCaptor.getValue().onFailure(new RuntimeException());
         verify(userRepository).save((User)any());
@@ -168,7 +168,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
 
         callLogin();
 
-        invokeTokenServiceOnResponse();
+        invokeTokenService();
         verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
         userCallBackCaptor.getValue().onFailure(new RuntimeException());
         verify(userRepository).save((User)any());

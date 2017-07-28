@@ -30,7 +30,7 @@ public class LoginPresenterLoginSuccessTest extends LoginPresenterBaseTest {
 
         callLogin();
 
-        invokeTokenServiceOnResponse();
+        invokeTokenService();
         invokeUserServiceOnResponse();
         verify(loginView).showMainScreen();
     }
@@ -44,7 +44,7 @@ public class LoginPresenterLoginSuccessTest extends LoginPresenterBaseTest {
 
         callLogin();
 
-        invokeTokenServiceOnResponse();
+        invokeTokenService();
         invokeUserServiceOnResponse();
         verify(loginView).showMainScreen();
     }
@@ -59,7 +59,7 @@ public class LoginPresenterLoginSuccessTest extends LoginPresenterBaseTest {
 
         callLogin();
 
-        invokeTokenServiceOnResponse();
+        invokeTokenService();
         invokeUserServiceOnResponse();
         verify(loginView).showMainScreen();
     }
