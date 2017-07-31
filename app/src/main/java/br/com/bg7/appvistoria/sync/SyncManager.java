@@ -2,9 +2,7 @@ package br.com.bg7.appvistoria.sync;
 
 import com.google.common.collect.Sets;
 
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import br.com.bg7.appvistoria.Constants;
@@ -32,16 +30,20 @@ class SyncManager {
         this.productInspectionRepository = checkNotNull(productInspectionRepository);
         syncExecutor = checkNotNull(syncExecutor);
 
-        updatePendingInspectionQueue();
+        initQueue(syncExecutor);
+    }
+
+    private void initQueue(SyncExecutor syncExecutor) {
+        checkForInspections();
         syncExecutor.scheduleQueueUpdates(new Runnable() {
             @Override
             public void run() {
-                updatePendingInspectionQueue();
+                checkForInspections();
             }
         });
     }
 
-    private void updatePendingInspectionQueue() {
+    private void checkForInspections() {
         for (SyncStatus status : Constants.PENDING_INSPECTIONS_STATUS_INITIALIZATION_ORDER) {
             queueNewInspectionsWithStatus(status);
         }
