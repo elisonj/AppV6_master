@@ -3,6 +3,7 @@ package br.com.bg7.appvistoria.sync;
 import java.util.HashSet;
 import java.util.concurrent.ArrayBlockingQueue;
 
+import br.com.bg7.appvistoria.Constants;
 import br.com.bg7.appvistoria.data.ProductInspection;
 import br.com.bg7.appvistoria.data.source.local.ProductInspectionRepository;
 import br.com.bg7.appvistoria.data.source.remote.SyncCallback;
@@ -15,30 +16,34 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 
 class SyncManager {
+
     private HashSet<SyncCallback> subscribers = new HashSet<>();
+
+    private static final int LOCAL_QUEUE_SIZE = 5;
+    private ArrayBlockingQueue<ProductInspection> inspectionQueue = new ArrayBlockingQueue<>(LOCAL_QUEUE_SIZE);
+
     private ProductInspectionRepository productInspectionRepository;
-    private ArrayBlockingQueue<ProductInspection> inspectionQueue;
-    private SyncStatus[] statusInitializationOrder = {
-            SyncStatus.PICTURES_BEING_SYNCED,
-            SyncStatus.PRODUCT_INSPECTION_SYNCED,
-            SyncStatus.PRODUCT_INSPECTION_BEING_SYNCED,
-            SyncStatus.READY
-    };
 
-    SyncManager(int queueSize, ProductInspectionRepository productInspectionRepository) {
-        inspectionQueue = new ArrayBlockingQueue<>(queueSize);
+    SyncManager(ProductInspectionRepository productInspectionRepository, SyncExecutor syncExecutor) {
         this.productInspectionRepository = checkNotNull(productInspectionRepository);
+        syncExecutor = checkNotNull(syncExecutor);
 
-        initQueue();
+        updatePendingInspectionQueue();
+        syncExecutor.scheduleQueueUpdates(new Runnable() {
+            @Override
+            public void run() {
+                updatePendingInspectionQueue();
+            }
+        });
     }
 
-    private void initQueue() {
-        for (SyncStatus status : statusInitializationOrder) {
-            queueInspectionsWithStatus(status);
+    private void updatePendingInspectionQueue() {
+        for (SyncStatus status : Constants.PENDING_INSPECTIONS_STATUS_INITIALIZATION_ORDER) {
+            queueNewInspectionsWithStatus(status);
         }
     }
 
-    private void queueInspectionsWithStatus(SyncStatus status) {
+    private void queueNewInspectionsWithStatus(SyncStatus status) {
         Iterable<ProductInspection> inspections = productInspectionRepository.findBySyncStatus(status);
 
         for (ProductInspection inspection : inspections) {
