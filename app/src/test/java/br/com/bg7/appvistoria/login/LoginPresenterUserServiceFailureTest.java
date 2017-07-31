@@ -169,7 +169,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest
     }
 
     private void invokeException(Throwable t) {
-        verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
+        verify(userService).getUser(matches(TOKEN_FROM_SERVICE), matches(USER_ID), userCallBackCaptor.capture());
         userCallBackCaptor.getValue().onFailure(t);
     }
 }

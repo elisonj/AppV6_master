@@ -3,7 +3,6 @@ package br.com.bg7.appvistoria.login;
 import junit.framework.Assert;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -111,30 +110,6 @@ public class LoginPresenterBaseTest {
         userRepository.deleteAll(User.class);
     }
 
-    void verifySaveTokenAndPasswordAndShowMainScreen() {
-        User user = userRepository.findByUsername(USERNAME);
-        Assert.assertNotNull(user);
-        Assert.assertEquals(TOKEN_FROM_SERVICE, user.getToken());
-        Assert.assertTrue(BCrypt.checkpw(WRONG_PASSWORD, user.getPasswordHash()));
-
-        verifySaveUserAndShowMainScreen();
-    }
-
-    void verifySaveTokenAndShowMainScreen() {
-        // TODO: Realmente verificar o salvamento do token
-        verifySaveUserAndShowMainScreen();
-    }
-
-    void verifySaveAllUserDataAndEnter() {
-        // TODO: Realmente verificar o salvamento de todos os dados
-        verifySaveUserAndShowMainScreen();
-    }
-
-    private void verifySaveUserAndShowMainScreen() {
-        // TODO: Realmente verificar o usuário
-        verify(loginView).showMainScreen();
-    }
-
     void invokeTokenService() {
         verify(tokenService).getToken(matches(USERNAME), matches(password), tokenCallBackCaptor.capture());
         tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
@@ -149,5 +124,29 @@ public class LoginPresenterBaseTest {
 
         verify(userService).getUser(matches(TOKEN_FROM_SERVICE), matches(USER_ID), userCallBackCaptor.capture());
         userCallBackCaptor.getValue().onResponse(userHttpResponse);
+    }
+
+    void verifySaveTokenAndPasswordAndShowMainScreen() {
+        User user = userRepository.findByUsername(USERNAME);
+        Assert.assertEquals(TOKEN_FROM_SERVICE, user.getToken());
+        Assert.assertTrue(BCrypt.checkpw(password, user.getPasswordHash()));
+
+        verifyShowMainScreen();
+    }
+
+    void verifySaveTokenAndShowMainScreen() {
+        User user = userRepository.findByUsername(USERNAME);
+        Assert.assertEquals(TOKEN_FROM_SERVICE, user.getToken());
+
+        verifyShowMainScreen();
+    }
+
+    void verifySaveAllUserDataAndEnter() {
+        // Quando salvarmos o nome do usuario, adicionar aqui
+        verifySaveTokenAndPasswordAndShowMainScreen();
+    }
+
+    private void verifyShowMainScreen() {
+        verify(loginView).showMainScreen();
     }
 }
