@@ -43,6 +43,11 @@ class SyncManager {
         });
     }
 
+    /**
+     * Queues any new inspections by status
+     *
+     * If we need to, we can optimize here by checking {@link ArrayBlockingQueue#remainingCapacity()}
+     */
     private void checkForInspections() {
         for (SyncStatus status : Constants.PENDING_INSPECTIONS_STATUS_INITIALIZATION_ORDER) {
             queueNewInspectionsWithStatus(status);
