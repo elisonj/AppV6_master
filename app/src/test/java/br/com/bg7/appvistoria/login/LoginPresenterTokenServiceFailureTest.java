@@ -134,12 +134,12 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTes
     }
 
     private void invokeIOException() {
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        verify(tokenService).getToken(matches(USERNAME), matches(password), tokenCallBackCaptor.capture());
         tokenCallBackCaptor.getValue().onFailure(new IOException());
     }
 
     private void invokeRuntimeException() {
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        verify(tokenService).getToken(matches(USERNAME), matches(password), tokenCallBackCaptor.capture());
         tokenCallBackCaptor.getValue().onFailure(new RuntimeException());
     }
 }

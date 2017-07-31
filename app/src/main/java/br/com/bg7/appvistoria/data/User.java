@@ -15,7 +15,7 @@ import com.orm.SugarRecord;
  */
 public class User extends SugarRecord<User> {
 
-    private String userName;
+    private String username;
 
     private String passwordHash;
 
@@ -28,7 +28,7 @@ public class User extends SugarRecord<User> {
     public User() {}
 
     public User(String username, String token, String passwordHash) {
-        this.userName = username;
+        this.username = username;
         this.token = token;
         this.passwordHash = passwordHash;
     }
@@ -52,7 +52,7 @@ public class User extends SugarRecord<User> {
         User user = new User();
 
         user.id = this.id;
-        user.userName = this.userName;
+        user.username = this.username;
         user.passwordHash = this.passwordHash;
         user.token = this.token;
         return user;
@@ -62,4 +62,11 @@ public class User extends SugarRecord<User> {
         return passwordHash;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public String getToken() {
+        return token;
+    }
 }
