@@ -15,7 +15,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion '26.0.0'
     defaultConfig {
-        applicationId "br.com.bg7.appvistoria"
+        applicationId 'br.com.bg7.appvistoria'
         minSdkVersion 19
         targetSdkVersion 26
         versionCode 3
