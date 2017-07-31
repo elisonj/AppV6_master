@@ -151,6 +151,7 @@ class LoginPresenter implements LoginContract.Presenter {
             }
 
             user = user.withToken(token.getAccessToken());
+            user = user.withPasswordHash(hashpw(password));
             saveUserAndEnter(user);
             return;
         }
