@@ -54,6 +54,7 @@ class ProgressRequestBody extends RequestBody {
                 uploaded += read;
                 sink.write(buffer, 0, read);
             }
+            listener.onProgressUpdated(100);
         }
     }
 }
