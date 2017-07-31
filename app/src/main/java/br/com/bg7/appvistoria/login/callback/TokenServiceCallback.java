@@ -44,12 +44,12 @@ public class TokenServiceCallback extends LoginCallback implements HttpCallback<
     }
 
     private void processSuccess(Token token, User localUser, boolean passwordMatches) {
-        if (localUser == null && token == null) {
+        if (token == null && localUser == null) {
             loginView.showCannotLoginError();
             return;
         }
 
-        if (localUser != null && token == null) {
+        if (token == null) {
             verifyPasswordAndEnter(passwordMatches);
             return;
         }
