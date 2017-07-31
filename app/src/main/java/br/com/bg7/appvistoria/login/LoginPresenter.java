@@ -6,29 +6,22 @@ import com.google.common.base.Strings;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.net.ConnectException;
-import java.util.concurrent.TimeoutException;
-
 import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.TokenService;
 import br.com.bg7.appvistoria.data.source.UserService;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
-import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
-import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
-import br.com.bg7.appvistoria.data.source.remote.dto.Token;
-import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
+import br.com.bg7.appvistoria.login.callback.TokenServiceCallback;
+import br.com.bg7.appvistoria.login.vo.LoginData;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by: luciolucio
  * Date: 2017-07-14
- *
- * TODO: Refactoring final do LoginPresenter
  */
 
-class LoginPresenter implements LoginContract.Presenter {
-    static final int UNAUTHORIZED_CODE = 401;
+public class LoginPresenter implements LoginContract.Presenter {
+    public static final int UNAUTHORIZED_CODE = 401;
 
     private final TokenService tokenService;
     private final UserService userService;
@@ -61,7 +54,7 @@ class LoginPresenter implements LoginContract.Presenter {
         boolean passwordMatches = user != null && BCrypt.checkpw(password, user.getPasswordHash());
 
         if (loginView.isConnected()) {
-            attemptTokenLogin(username, password, user, passwordMatches);
+            attemptTokenLogin(new LoginData(username, password, user, passwordMatches));
             return;
         }
 
@@ -99,141 +92,8 @@ class LoginPresenter implements LoginContract.Presenter {
         return true;
     }
 
-    private void attemptTokenLogin(final String username, final String password, final User user, final boolean passwordMatches) {
-        tokenService.getToken(username, password, new HttpCallback<Token>() {
-            @Override
-            public void onResponse(HttpResponse<Token> httpResponse) {
-                onGetTokenResponse(username, password, httpResponse, user, passwordMatches);
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                onGetTokenFailure(user, passwordMatches, t);
-            }
-        });
-    }
-
-    private void onGetTokenResponse(String username, String password, HttpResponse<Token> httpResponse, User user, boolean passwordMatches) {
-        if (httpResponse.isSuccessful()) {
-            Token token = httpResponse.body();
-            if (user == null && token == null) {
-                loginView.showCannotLoginError();
-                return;
-            }
-            if (user != null && token == null) {
-                verifyPasswordAndEnter(passwordMatches);
-                return;
-            }
-
-            if (loginView.isConnected()) {
-                callUserService(username, password, token, user, passwordMatches);
-                return;
-            }
-            if(user == null) {
-                loginView.showCannotLoginError();
-                return;
-            }
-
-            user = user.withToken(token.getAccessToken());
-            user = user.withPasswordHash(hashpw(password));
-            saveUserAndEnter(user);
-            return;
-        }
-
-        if(httpResponse.code() == UNAUTHORIZED_CODE) {
-            loginView.showBadCredentialsError();
-            return;
-        }
-
-        if (user != null) {
-            verifyPasswordAndEnter(passwordMatches);
-        }
-        loginView.showCannotLoginError();
-    }
-
-    private void verifyPasswordAndEnter(boolean passwordMatches) {
-        if (!passwordMatches) {
-            loginView.showBadCredentialsError();
-            return;
-        }
-        loginView.showMainScreen();
-    }
-
-    private void onGetTokenFailure(User user, boolean passwordMatches, Throwable t) {
-        if(user != null) {
-            verifyPasswordAndEnter(passwordMatches);
-            return;
-        }
-
-        loginView.showCannotLoginError();
-    }
-
-    private void callUserService(final String username, final String password, @NonNull final Token token, final User user, final boolean passwordMatches) {
-        userService.getUser(token.getAccessToken(), token.getUserId(), new HttpCallback<UserResponse>() {
-            @Override
-            public void onResponse(HttpResponse<UserResponse> httpResponse) {
-                onGetUserResponse(httpResponse, username, token, password, user, passwordMatches);
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                onGetUserFailure(password, token, user, passwordMatches);
-            }
-        });
-    }
-
-    private void onGetUserResponse(HttpResponse<UserResponse> httpResponse, String username, Token token, String password, User user, boolean passwordMatches) {
-        if(httpResponse.isSuccessful()) {
-            UserResponse userResponse = httpResponse.body();
-
-            if(userResponse != null) {
-                if (userRepository.first(User.class) == null) {
-                    userRepository.deleteAll(User.class);
-                }
-
-                user = new User(username, token.getAccessToken(), hashpw(password));
-                saveUserAndEnter(user);
-                return;
-            }
-        }
-
-        if(httpResponse.code() == UNAUTHORIZED_CODE) {
-            loginView.showBadCredentialsError();
-            return;
-        }
-
-        if(user != null) {
-            user = user.withToken(token.getAccessToken());
-            if (!passwordMatches) {
-                user = user.withPasswordHash(hashpw(password));
-            }
-            saveUserAndEnter(user);
-            return;
-        }
-
-        loginView.showCannotLoginError();
-
-    }
-
-    private void saveUserAndEnter(User user) {
-        userRepository.save(user);
-        loginView.showMainScreen();
-    }
-
-    private void onGetUserFailure(String password, @NonNull Token token, User user, boolean passwordMatches) {
-        if(user != null) {
-            user = user.withToken(token.getAccessToken());
-            if (!passwordMatches) {
-                user = user.withPasswordHash(hashpw(password));
-            }
-            saveUserAndEnter(user);
-            return;
-        }
-
-        loginView.showCannotLoginError();
-    }
-
-    private String hashpw(String password) {
-        return BCrypt.hashpw(password, BCrypt.gensalt());
+    private void attemptTokenLogin(final LoginData loginData) {
+        TokenServiceCallback callback = new TokenServiceCallback(loginData, userService, userRepository, loginView);
+        tokenService.getToken(loginData.getUsername(), loginData.getPassword(), callback);
     }
 }
