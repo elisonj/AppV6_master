@@ -64,7 +64,7 @@ class LoginPresenter implements LoginContract.Presenter {
 
         if (user != null) {
             userExists = true;
-            if (checkpw(password, user.getPasswordHash())) passwordMatches = true;
+            if (BCrypt.checkpw(password, user.getPasswordHash())) passwordMatches = true;
         }
 
         if (!userExists) {
@@ -262,11 +262,7 @@ class LoginPresenter implements LoginContract.Presenter {
         loginView.showCannotLoginError();
     }
 
-    boolean checkpw(String password, String passwordHash) {
-        return BCrypt.checkpw(password, passwordHash);
-    }
-
-    String hashpw(String password) {
+    private String hashpw(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 }

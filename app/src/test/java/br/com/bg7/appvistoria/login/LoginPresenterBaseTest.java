@@ -1,6 +1,8 @@
 package br.com.bg7.appvistoria.login;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
+import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
@@ -49,12 +51,20 @@ public class LoginPresenterBaseTest {
     @Captor
     ArgumentCaptor<HttpCallback<UserResponse>> userCallBackCaptor;
 
-    TestableLoginPresenter loginPresenter;
+    LoginPresenter loginPresenter;
 
     static final String USERNAME = "user";
     static final String PASSWORD = "password";
+    static final String HASHED_PASSWORD;
+    static final String WRONG_PASSWORD = "not-the-password";
     static final String TOKEN = "token";
     static final String USER_ID = "user_id";
+
+    String password = PASSWORD;
+
+    static {
+        HASHED_PASSWORD = BCrypt.hashpw(PASSWORD, BCrypt.gensalt());
+    }
 
     @Before
     public void setUp() {
@@ -70,21 +80,22 @@ public class LoginPresenterBaseTest {
 
         userRepository = new FakeUserRepository();
         userRepository.deleteAll(User.class);
-        userRepository.save(new User(USERNAME, TOKEN, PASSWORD));
 
-        loginPresenter = new TestableLoginPresenter(tokenService, userService, userRepository, loginView);
+        loginPresenter = new LoginPresenter(tokenService, userService, userRepository, loginView);
+
+        userRepository.save(new User(USERNAME, TOKEN, HASHED_PASSWORD));
     }
 
     void callLogin() {
-        loginPresenter.login(USERNAME, PASSWORD);
+        loginPresenter.login(USERNAME, password);
     }
 
     void setUpBadPassword() {
-        loginPresenter.checkpw = false;
+        password = WRONG_PASSWORD;
     }
 
     void setUpGoodPassword() {
-        loginPresenter.checkpw = true;
+        password = PASSWORD;
     }
 
     void setUpNoConnection() {
@@ -116,7 +127,7 @@ public class LoginPresenterBaseTest {
     }
 
     void invokeTokenService() {
-        verify(tokenService).getToken(matches(USERNAME), matches(PASSWORD), tokenCallBackCaptor.capture());
+        verify(tokenService).getToken(matches(USERNAME), matches(password), tokenCallBackCaptor.capture());
         tokenCallBackCaptor.getValue().onResponse(tokenHttpResponse);
     }
 
