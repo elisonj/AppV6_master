@@ -64,30 +64,21 @@ class LoginPresenter implements LoginContract.Presenter {
 
         if (user != null) {
             userExists = true;
-            if (BCrypt.checkpw(password, user.getPasswordHash())) passwordMatches = true;
+            passwordMatches = BCrypt.checkpw(password, user.getPasswordHash());
+        }
+
+        if (loginView.isConnected()) {
+            attemptTokenLogin(username, password);
+            return;
         }
 
         if (!userExists) {
-            if (loginView.isConnected()) {
-                attemptTokenLogin(username, password);
-                return;
-            }
-
             loginView.showCannotLoginError();
             return;
         }
 
         if (!passwordMatches) {
-            if (loginView.isConnected()) {
-                attemptTokenLogin(username, password);
-                return;
-            }
             loginView.showBadCredentialsError();
-            return;
-        }
-
-        if (loginView.isConnected()) {
-            attemptTokenLogin(username, password);
             return;
         }
 
