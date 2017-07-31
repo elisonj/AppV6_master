@@ -23,7 +23,7 @@ public class TokenServiceCallback extends LoginCallback implements HttpCallback<
     private UserService userService;
 
     public TokenServiceCallback(LoginData loginData, UserService userService, UserRepository userRepository, LoginContract.View loginView) {
-        super(loginView, userRepository, loginData);
+        super(loginData, userRepository, loginView);
 
         this.userService = userService;
     }

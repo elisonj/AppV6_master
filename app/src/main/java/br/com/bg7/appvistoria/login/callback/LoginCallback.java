@@ -17,7 +17,7 @@ class LoginCallback {
     UserRepository userRepository;
     LoginContract.View loginView;
 
-    LoginCallback(LoginContract.View loginView, UserRepository userRepository, LoginData loginData) {
+    LoginCallback(LoginData loginData, UserRepository userRepository, LoginContract.View loginView) {
         this.loginView = loginView;
         this.userRepository = userRepository;
         this.loginData = loginData;
