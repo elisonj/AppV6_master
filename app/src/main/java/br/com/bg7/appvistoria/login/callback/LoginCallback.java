@@ -2,7 +2,10 @@ package br.com.bg7.appvistoria.login.callback;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import br.com.bg7.appvistoria.data.source.UserService;
+import br.com.bg7.appvistoria.data.source.local.UserRepository;
 import br.com.bg7.appvistoria.login.LoginContract;
+import br.com.bg7.appvistoria.login.vo.LoginData;
 
 /**
  * Created by: luciolucio
@@ -10,10 +13,14 @@ import br.com.bg7.appvistoria.login.LoginContract;
  */
 
 class LoginCallback {
-    private LoginContract.View loginView;
+    LoginData loginData;
+    UserRepository userRepository;
+    LoginContract.View loginView;
 
-    public LoginCallback(LoginContract.View loginView) {
+    LoginCallback(LoginContract.View loginView, UserRepository userRepository, LoginData loginData) {
         this.loginView = loginView;
+        this.userRepository = userRepository;
+        this.loginData = loginData;
     }
 
     void verifyPasswordAndEnter(boolean passwordMatches) {

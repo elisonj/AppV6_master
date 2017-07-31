@@ -10,13 +10,13 @@ import br.com.bg7.appvistoria.data.User;
 public class LoginData {
     private String username;
     private String password;
-    private User user;
+    private User localUser;
     private boolean passwordMatches;
 
-    public LoginData(String username, String password, User user, boolean passwordMatches) {
+    public LoginData(String username, String password, User localUser, boolean passwordMatches) {
         this.username = username;
         this.password = password;
-        this.user = user;
+        this.localUser = localUser;
         this.passwordMatches = passwordMatches;
     }
 
@@ -28,8 +28,8 @@ public class LoginData {
         return password;
     }
 
-    public User getUser() {
-        return user;
+    public User getLocalUser() {
+        return localUser;
     }
 
     public boolean passwordMatches() {

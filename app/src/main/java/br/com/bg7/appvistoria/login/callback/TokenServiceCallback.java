@@ -19,50 +19,19 @@ import br.com.bg7.appvistoria.login.vo.LoginData;
  */
 
 public class TokenServiceCallback extends LoginCallback implements HttpCallback<Token> {
-    private LoginData loginData;
+
     private UserService userService;
-    private UserRepository userRepository;
-    private LoginContract.View loginView;
 
     public TokenServiceCallback(LoginData loginData, UserService userService, UserRepository userRepository, LoginContract.View loginView) {
-        super(loginView);
+        super(loginView, userRepository, loginData);
 
-        this.loginData = loginData;
         this.userService = userService;
-        this.userRepository = userRepository;
-        this.loginView = loginView;
     }
 
     @Override
     public void onResponse(HttpResponse<Token> httpResponse) {
-        String password = loginData.getPassword();
-        User user = loginData.getUser();
-        boolean passwordMatches = loginData.passwordMatches();
-
         if (httpResponse.isSuccessful()) {
-            Token token = httpResponse.body();
-            if (user == null && token == null) {
-                loginView.showCannotLoginError();
-                return;
-            }
-            if (user != null && token == null) {
-                verifyPasswordAndEnter(passwordMatches);
-                return;
-            }
-
-            if (loginView.isConnected()) {
-                callUserService(loginData, token);
-                return;
-            }
-            if(user == null) {
-                loginView.showCannotLoginError();
-                return;
-            }
-
-            user = user.withToken(token.getAccessToken());
-            user = user.withPasswordHash(hashpw(password));
-            userRepository.save(user);
-            loginView.showMainScreen();
+            processSuccess(httpResponse.body(), loginData.getLocalUser(), loginData.passwordMatches());
             return;
         }
 
@@ -71,19 +40,40 @@ public class TokenServiceCallback extends LoginCallback implements HttpCallback<
             return;
         }
 
-        if (user != null) {
-            verifyPasswordAndEnter(passwordMatches);
+        onFailure(null);
+    }
+
+    private void processSuccess(Token token, User localUser, boolean passwordMatches) {
+        if (localUser == null && token == null) {
+            loginView.showCannotLoginError();
+            return;
         }
-        loginView.showCannotLoginError();
+
+        if (localUser != null && token == null) {
+            verifyPasswordAndEnter(passwordMatches);
+            return;
+        }
+
+        if (loginView.isConnected()) {
+            callUserService(loginData, token);
+            return;
+        }
+
+        if(localUser == null) {
+            loginView.showCannotLoginError();
+            return;
+        }
+
+        User user = localUser.withToken(token.getAccessToken());
+        user = user.withPasswordHash(hashpw(loginData.getPassword()));
+        userRepository.save(user);
+        loginView.showMainScreen();
     }
 
     @Override
     public void onFailure(Throwable t) {
-        User user = loginData.getUser();
-        boolean passwordMatches = loginData.passwordMatches();
-
-        if(user != null) {
-            verifyPasswordAndEnter(passwordMatches);
+        if(loginData.getLocalUser() != null) {
+            verifyPasswordAndEnter(loginData.passwordMatches());
             return;
         }
 

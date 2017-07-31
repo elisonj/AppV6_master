@@ -50,15 +50,15 @@ public class LoginPresenter implements LoginContract.Presenter {
     public void login(String username, String password) {
         if (!checkInput(username, password)) return;
 
-        User user = userRepository.findByUsername(username);
-        boolean passwordMatches = user != null && BCrypt.checkpw(password, user.getPasswordHash());
+        User localUser = userRepository.findByUsername(username);
+        boolean passwordMatches = localUser != null && BCrypt.checkpw(password, localUser.getPasswordHash());
 
         if (loginView.isConnected()) {
-            attemptTokenLogin(new LoginData(username, password, user, passwordMatches));
+            attemptTokenLogin(new LoginData(username, password, localUser, passwordMatches));
             return;
         }
 
-        if (user == null) {
+        if (localUser == null) {
             loginView.showCannotLoginError();
             return;
         }

@@ -1,6 +1,7 @@
 package br.com.bg7.appvistoria.login.callback;
 
 import br.com.bg7.appvistoria.data.User;
+import br.com.bg7.appvistoria.data.source.UserService;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
 import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
@@ -16,17 +17,11 @@ import br.com.bg7.appvistoria.login.vo.LoginData;
  */
 
 class UserServiceCallback extends LoginCallback implements HttpCallback<UserResponse> {
-    private LoginData loginData;
-    private UserRepository userRepository;
-    private LoginContract.View loginView;
     private Token token;
 
     UserServiceCallback(LoginData loginData, Token token, UserRepository userRepository, LoginContract.View loginView) {
-        super(loginView);
+        super(loginView, userRepository, loginData);
 
-        this.loginData = loginData;
-        this.userRepository = userRepository;
-        this.loginView = loginView;
         this.token = token;
     }
 
@@ -56,8 +51,8 @@ class UserServiceCallback extends LoginCallback implements HttpCallback<UserResp
 
     @Override
     public void onFailure(Throwable t) {
-        if(loginData.getUser() != null) {
-            User user = loginData.getUser().withToken(token.getAccessToken());
+        if(loginData.getLocalUser() != null) {
+            User user = loginData.getLocalUser().withToken(token.getAccessToken());
             if (!loginData.passwordMatches()) {
                 user = user.withPasswordHash(hashpw(loginData.getPassword()));
             }
