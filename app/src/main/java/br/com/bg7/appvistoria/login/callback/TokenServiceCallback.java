@@ -35,12 +35,17 @@ public class TokenServiceCallback extends LoginCallback implements HttpCallback<
             return;
         }
 
-        if(httpResponse.code() == LoginPresenter.UNAUTHORIZED_CODE) {
-            loginView.showBadCredentialsError();
+        processNonSuccess(httpResponse.code());
+    }
+
+    @Override
+    public void onFailure(Throwable t) {
+        if(loginData.getLocalUser() != null) {
+            verifyPasswordAndEnter(loginData.passwordMatches());
             return;
         }
 
-        onFailure(null);
+        loginView.showCannotLoginError();
     }
 
     private void processSuccess(Token token, User localUser, boolean passwordMatches) {
@@ -68,16 +73,6 @@ public class TokenServiceCallback extends LoginCallback implements HttpCallback<
         user = user.withPasswordHash(hashpw(loginData.getPassword()));
         userRepository.save(user);
         loginView.showMainScreen();
-    }
-
-    @Override
-    public void onFailure(Throwable t) {
-        if(loginData.getLocalUser() != null) {
-            verifyPasswordAndEnter(loginData.passwordMatches());
-            return;
-        }
-
-        loginView.showCannotLoginError();
     }
 
     private void callUserService(LoginData loginData, @NonNull final Token token) {

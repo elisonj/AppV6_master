@@ -2,9 +2,9 @@ package br.com.bg7.appvistoria.login.callback;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import br.com.bg7.appvistoria.data.source.UserService;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
 import br.com.bg7.appvistoria.login.LoginContract;
+import br.com.bg7.appvistoria.login.LoginPresenter;
 import br.com.bg7.appvistoria.login.vo.LoginData;
 
 /**
@@ -12,7 +12,7 @@ import br.com.bg7.appvistoria.login.vo.LoginData;
  * Date: 2017-07-31
  */
 
-class LoginCallback {
+abstract class LoginCallback {
     LoginData loginData;
     UserRepository userRepository;
     LoginContract.View loginView;
@@ -34,4 +34,15 @@ class LoginCallback {
     String hashpw(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
+
+    void processNonSuccess(int responseCode) {
+        if(responseCode == LoginPresenter.UNAUTHORIZED_CODE) {
+            loginView.showBadCredentialsError();
+            return;
+        }
+
+        onFailure(null);
+    }
+
+    abstract void onFailure(Throwable t);
 }
