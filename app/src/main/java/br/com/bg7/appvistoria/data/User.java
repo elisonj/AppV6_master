@@ -65,4 +65,8 @@ public class User extends SugarRecord<User> {
     public String getUsername() {
         return username;
     }
+
+    public String getToken() {
+        return token;
+    }
 }

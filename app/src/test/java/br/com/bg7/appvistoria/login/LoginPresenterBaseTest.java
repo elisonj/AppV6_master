@@ -1,5 +1,7 @@
 package br.com.bg7.appvistoria.login;
 
+import junit.framework.Assert;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.mindrot.jbcrypt.BCrypt;
@@ -57,13 +59,16 @@ public class LoginPresenterBaseTest {
     static final String PASSWORD = "password";
     static final String HASHED_PASSWORD;
     static final String WRONG_PASSWORD = "not-the-password";
+    static final String HASHED_WRONG_PASSWORD;
     static final String TOKEN = "token";
+    static final String TOKEN_FROM_SERVICE = "token-from-service";
     static final String USER_ID = "user_id";
 
     String password = PASSWORD;
 
     static {
         HASHED_PASSWORD = BCrypt.hashpw(PASSWORD, BCrypt.gensalt());
+        HASHED_WRONG_PASSWORD = BCrypt.hashpw(WRONG_PASSWORD, BCrypt.gensalt());
     }
 
     @Before
@@ -73,7 +78,7 @@ public class LoginPresenterBaseTest {
         when(loginView.isConnected()).thenReturn(true);
 
         when(tokenHttpResponse.isSuccessful()).thenReturn(true);
-        when(tokenHttpResponse.body()).thenReturn(new Token(TOKEN, USER_ID));
+        when(tokenHttpResponse.body()).thenReturn(new Token(TOKEN_FROM_SERVICE, USER_ID));
 
         when(userHttpResponse.isSuccessful()).thenReturn(true);
         when(userHttpResponse.body()).thenReturn(new UserResponse());
@@ -107,7 +112,11 @@ public class LoginPresenterBaseTest {
     }
 
     void verifySaveTokenAndPasswordAndShowMainScreen() {
-        // TODO: Realmente verificar o salvamento de token e password
+        User user = userRepository.findByUsername(USERNAME);
+        Assert.assertNotNull(user);
+        Assert.assertEquals(TOKEN_FROM_SERVICE, user.getToken());
+        Assert.assertTrue(BCrypt.checkpw(WRONG_PASSWORD, user.getPasswordHash()));
+
         verifySaveUserAndShowMainScreen();
     }
 
@@ -138,7 +147,7 @@ public class LoginPresenterBaseTest {
     void invokeUserService() {
         invokeTokenService();
 
-        verify(userService).getUser(matches(TOKEN), matches(USER_ID), userCallBackCaptor.capture());
+        verify(userService).getUser(matches(TOKEN_FROM_SERVICE), matches(USER_ID), userCallBackCaptor.capture());
         userCallBackCaptor.getValue().onResponse(userHttpResponse);
     }
 }
