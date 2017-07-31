@@ -34,9 +34,6 @@ class LoginPresenter implements LoginContract.Presenter {
     private final UserService userService;
     private final LoginContract.View loginView;
     private final UserRepository userRepository;
-    private User user = null;
-    private boolean userExists = false;
-    private boolean passwordMatches = false;
 
     LoginPresenter(
             @NonNull TokenService tokenService,
@@ -57,15 +54,15 @@ class LoginPresenter implements LoginContract.Presenter {
     }
 
     @Override
-    public void login(final String username, final String password) {
+    public void login(String username, String password) {
         if (!checkInput(username, password)) return;
 
-        user = userRepository.findByUsername(username);
-        userExists = user != null;
-        passwordMatches = userExists && BCrypt.checkpw(password, user.getPasswordHash());
+        User user = userRepository.findByUsername(username);
+        boolean userExists = user != null;
+        boolean passwordMatches = userExists && BCrypt.checkpw(password, user.getPasswordHash());
 
         if (loginView.isConnected()) {
-            attemptTokenLogin(username, password);
+            attemptTokenLogin(username, password, user, userExists, passwordMatches);
             return;
         }
 
@@ -103,21 +100,21 @@ class LoginPresenter implements LoginContract.Presenter {
         return true;
     }
 
-    private void attemptTokenLogin(final String username, final String password) {
+    private void attemptTokenLogin(final String username, final String password, final User user, final boolean userExists, final boolean passwordMatches) {
         tokenService.getToken(username, password, new HttpCallback<Token>() {
             @Override
             public void onResponse(HttpResponse<Token> httpResponse) {
-                onGetTokenResponse(username, password, httpResponse);
+                onGetTokenResponse(username, password, httpResponse, user, userExists, passwordMatches);
             }
 
             @Override
             public void onFailure(Throwable t) {
-                onGetTokenFailure(t);
+                onGetTokenFailure(userExists, passwordMatches, t);
             }
         });
     }
 
-    private void onGetTokenResponse(String username, String password, HttpResponse<Token> httpResponse) {
+    private void onGetTokenResponse(String username, String password, HttpResponse<Token> httpResponse, User user, boolean userExists, boolean passwordMatches) {
         if (httpResponse.isSuccessful()) {
             Token token = httpResponse.body();
             if (!userExists && token == null) {
@@ -125,12 +122,12 @@ class LoginPresenter implements LoginContract.Presenter {
                 return;
             }
             if (userExists && token == null) {
-                verifyPasswordAndEnter();
+                verifyPasswordAndEnter(passwordMatches);
                 return;
             }
 
             if (loginView.isConnected()) {
-                callUserService(username, password, token);
+                callUserService(username, password, token, user, userExists, passwordMatches);
                 return;
             }
             if(user == null) {
@@ -150,12 +147,12 @@ class LoginPresenter implements LoginContract.Presenter {
         }
 
         if (userExists) {
-            verifyPasswordAndEnter();
+            verifyPasswordAndEnter(passwordMatches);
         }
         loginView.showCannotLoginError();
     }
 
-    private void verifyPasswordAndEnter() {
+    private void verifyPasswordAndEnter(boolean passwordMatches) {
         if (!passwordMatches) {
             loginView.showBadCredentialsError();
             return;
@@ -163,13 +160,13 @@ class LoginPresenter implements LoginContract.Presenter {
         loginView.showMainScreen();
     }
 
-    private void onGetTokenFailure(Throwable t) {
+    private void onGetTokenFailure(boolean userExists, boolean passwordMatches, Throwable t) {
         if (t instanceof TimeoutException) {
             if(!userExists) {
                 loginView.showCannotLoginError();
                 return;
             }
-            verifyPasswordAndEnter();
+            verifyPasswordAndEnter(passwordMatches);
             return;
         }
 
@@ -179,28 +176,28 @@ class LoginPresenter implements LoginContract.Presenter {
         }
 
         if(userExists) {
-            verifyPasswordAndEnter();
+            verifyPasswordAndEnter(passwordMatches);
             return;
         }
 
         loginView.showCannotLoginError();
     }
 
-    private void callUserService(final String username, final String password, @NonNull final Token token) {
+    private void callUserService(final String username, final String password, @NonNull final Token token, final User user, final boolean userExists, final boolean passwordMatches) {
         userService.getUser(token.getAccessToken(), token.getUserId(), new HttpCallback<UserResponse>() {
             @Override
             public void onResponse(HttpResponse<UserResponse> httpResponse) {
-                onGetUserResponse(httpResponse, username, token, password);
+                onGetUserResponse(httpResponse, username, token, password, user, userExists, passwordMatches);
             }
 
             @Override
             public void onFailure(Throwable t) {
-                onGetUserFailure(password, token);
+                onGetUserFailure(password, token, user, userExists, passwordMatches);
             }
         });
     }
 
-    private void onGetUserResponse(HttpResponse<UserResponse> httpResponse, String username, Token token, String password) {
+    private void onGetUserResponse(HttpResponse<UserResponse> httpResponse, String username, Token token, String password, User user, boolean userExists, boolean passwordMatches) {
         if(httpResponse.isSuccessful()) {
             UserResponse userResponse = httpResponse.body();
 
@@ -209,7 +206,7 @@ class LoginPresenter implements LoginContract.Presenter {
                     userRepository.deleteAll(User.class);
                 }
 
-                User user = new User(username, token.getAccessToken(), hashpw(password));
+                user = new User(username, token.getAccessToken(), hashpw(password));
                 saveUserAndEnter(user);
                 return;
             }
@@ -238,7 +235,7 @@ class LoginPresenter implements LoginContract.Presenter {
         loginView.showMainScreen();
     }
 
-    private void onGetUserFailure(final String password, @NonNull final Token token) {
+    private void onGetUserFailure(String password, @NonNull Token token, User user, boolean userExists, boolean passwordMatches) {
         if(userExists) {
             user = user.withToken(token.getAccessToken());
             if (!passwordMatches) {
