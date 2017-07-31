@@ -8,5 +8,5 @@ package br.com.bg7.appvistoria.sync;
 interface SyncExecutor {
     void scheduleQueueUpdates(Runnable runnable);
 
-    void scheduleSync(Runnable runnable);
+    void scheduleSyncLoop(Runnable runnable);
 }

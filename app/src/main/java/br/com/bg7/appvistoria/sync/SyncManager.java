@@ -27,17 +27,18 @@ class SyncManager {
     private ArrayBlockingQueue<ProductInspection> inspectionQueue = new ArrayBlockingQueue<>(LOCAL_QUEUE_SIZE);
 
     private ProductInspectionRepository productInspectionRepository;
+    private SyncExecutor syncExecutor;
 
     SyncManager(ProductInspectionRepository productInspectionRepository, SyncExecutor syncExecutor) {
         this.productInspectionRepository = checkNotNull(productInspectionRepository);
-        syncExecutor = checkNotNull(syncExecutor);
+        this.syncExecutor = checkNotNull(syncExecutor);
 
-        initQueue(syncExecutor);
-        startSync(syncExecutor);
+        initQueue();
+        startSync();
     }
 
-    private void startSync(SyncExecutor syncExecutor) {
-        syncExecutor.scheduleSync(new Runnable() {
+    private void startSync() {
+        syncExecutor.scheduleSyncLoop(new Runnable() {
             @Override
             public void run() {
                 sync();
@@ -46,10 +47,12 @@ class SyncManager {
     }
 
     private void sync() {
-        throw new UnsupportedOperationException();
+        ProductInspection inspection;
+        while ((inspection = inspectionQueue.poll()) != null) {
+        }
     }
 
-    private void initQueue(SyncExecutor syncExecutor) {
+    private void initQueue() {
         checkForInspections();
 
         syncExecutor.scheduleQueueUpdates(new Runnable() {
