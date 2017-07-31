@@ -24,8 +24,8 @@ class ProgressRequestBody extends RequestBody {
     private File file;
     private HttpProgressCallback listener;
 
-    ProgressRequestBody(final File file,
-                               final HttpProgressCallback listener, int bufferSize) {
+    ProgressRequestBody(final File file, int bufferSize,
+                               final HttpProgressCallback listener) {
         this.file = file;
         this.listener = listener;
         this.bufferSize = bufferSize;

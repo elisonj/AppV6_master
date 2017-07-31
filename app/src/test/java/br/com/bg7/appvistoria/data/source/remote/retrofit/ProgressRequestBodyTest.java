@@ -2,6 +2,7 @@ package br.com.bg7.appvistoria.data.source.remote.retrofit;
 
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -10,6 +11,7 @@ import java.net.URL;
 
 import br.com.bg7.appvistoria.data.source.remote.HttpProgressCallback;
 import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
+import okhttp3.MediaType;
 import okio.Buffer;
 
 
@@ -19,24 +21,45 @@ import okio.Buffer;
  */
 public class ProgressRequestBodyTest {
 
-    private static final String FILE_URI = "android.jpg";
-    private static final int BUFFER_SIZE = 2048;
+    private static final String FILE_URI = "file.txt";
+    private static final MediaType MEDIA_TYPE = MediaType.parse("image/*");
+    private static final int BUFFER_SIZE = 16224;
     private File file = getFileFromPath(this, FILE_URI);
-    private ProgressRequestBody body = new ProgressRequestBody(file, listener, BUFFER_SIZE);
     private Buffer buffer = new Buffer();
+    private ProgressRequestBody body;
+    private boolean showProgress = false;
+
+    @Before
+    public void setUp() {
+        body = new ProgressRequestBody(file, BUFFER_SIZE, listener);
+    }
 
     @Test
-    public void shouldBufferHasContentWhenCallWriteTo() {
-        try {
-            Assert.assertTrue(body.contentLength() > 0);
-            Assert.assertNotNull(body.contentType());
+    public void shouldSaveDataToBuffer() throws IOException {
+        write();
+        Assert.assertTrue(buffer.size() > 0);
+    }
 
-            body.writeTo(buffer);
+    @Test
+    public void shouldFileSizeEqualsBuffer() throws IOException {
+        write();
+        Assert.assertTrue(buffer.size() == file.length());
+    }
 
-            Assert.assertTrue(buffer.size() > 0);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @Test
+    public void shouldFileTypeEquals() throws IOException {
+        write();
+        Assert.assertTrue(MEDIA_TYPE.type().equals(body.contentType().type()));
+    }
+
+    @Test
+    public void shouldShowOnProgressUpdate() throws IOException {
+        showProgress = true;
+        write();
+    }
+
+    private void write() throws IOException {
+        body.writeTo(buffer);
     }
 
     private static File getFileFromPath(Object obj, String fileName) {
@@ -45,9 +68,11 @@ public class ProgressRequestBodyTest {
         return new File(resource.getPath());
     }
 
-    static HttpProgressCallback listener = new HttpProgressCallback() {
+    private HttpProgressCallback listener = new HttpProgressCallback() {
         @Override
-        public void onProgressUpdated(double percentage) {  }
+        public void onProgressUpdated(double percentage) {
+                if(showProgress) System.out.println("onProgressUpdated: "+percentage);
+        }
 
         @Override
         public void onResponse(HttpResponse httpResponse) { }
@@ -55,4 +80,5 @@ public class ProgressRequestBodyTest {
         @Override
         public void onFailure(Throwable t) { }
     };
+
 }

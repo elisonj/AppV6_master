@@ -34,7 +34,7 @@ public class RetrofitPictureService implements br.com.bg7.appvistoria.data.sourc
     @Override
     public void send(File attachment, ProductInspection productInspection, HttpProgressCallback<PictureResponse> httpProgressCallback) {
 
-        ProgressRequestBody fileBody = new ProgressRequestBody(attachment, httpProgressCallback, bufferSize);
+        ProgressRequestBody fileBody = new ProgressRequestBody(attachment, bufferSize, httpProgressCallback);
         MultipartBody.Part filePart = MultipartBody.Part.createFormData(FORM_FIELD_NAME, attachment.getName(), fileBody);
 
         Call<PictureResponse> call = pictureService.send(attachment, filePart, productInspection, httpProgressCallback);
