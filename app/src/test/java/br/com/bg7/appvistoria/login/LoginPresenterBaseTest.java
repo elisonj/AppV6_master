@@ -9,14 +9,13 @@ import org.mockito.MockitoAnnotations;
 import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.TokenService;
 import br.com.bg7.appvistoria.data.source.UserService;
-import br.com.bg7.appvistoria.data.source.local.UserRepository;
+import br.com.bg7.appvistoria.data.source.local.fake.FakeUserRepository;
 import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -36,8 +35,7 @@ public class LoginPresenterBaseTest {
     @Mock
     UserService userService;
 
-    @Mock
-    UserRepository userRepository;
+    FakeUserRepository userRepository;
 
     @Mock
     HttpResponse<Token> tokenHttpResponse;
@@ -61,7 +59,6 @@ public class LoginPresenterBaseTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        loginPresenter = new TestableLoginPresenter(tokenService, userService, userRepository, loginView);
 
         when(loginView.isConnected()).thenReturn(true);
 
@@ -71,9 +68,11 @@ public class LoginPresenterBaseTest {
         when(userHttpResponse.isSuccessful()).thenReturn(true);
         when(userHttpResponse.body()).thenReturn(new UserResponse());
 
-        when(userRepository.findByUsername(anyString())).thenReturn(new User());
+        userRepository = new FakeUserRepository();
+        userRepository.deleteAll(User.class);
+        userRepository.save(new User(USERNAME, TOKEN, PASSWORD));
 
-        setUpGoodPassword();
+        loginPresenter = new TestableLoginPresenter(tokenService, userService, userRepository, loginView);
     }
 
     void callLogin() {
@@ -93,7 +92,7 @@ public class LoginPresenterBaseTest {
     }
 
     void setUpNoUser() {
-        when(userRepository.findByUsername(USERNAME)).thenReturn(null);
+        userRepository.deleteAll(User.class);
     }
 
     void verifySaveTokenAndPasswordAndShowMainScreen() {
@@ -113,7 +112,6 @@ public class LoginPresenterBaseTest {
 
     private void verifySaveUserAndShowMainScreen() {
         // TODO: Realmente verificar o usuário
-        verify(userRepository).save((User)any());
         verify(loginView).showMainScreen();
     }
 
