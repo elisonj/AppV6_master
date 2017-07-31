@@ -58,14 +58,11 @@ class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void login(final String username, final String password) {
-        if (checkInput(username, password)) return;
+        if (!checkInput(username, password)) return;
 
         user = userRepository.findByUsername(username);
-
-        if (user != null) {
-            userExists = true;
-            passwordMatches = BCrypt.checkpw(password, user.getPasswordHash());
-        }
+        userExists = user != null;
+        passwordMatches = userExists && BCrypt.checkpw(password, user.getPasswordHash());
 
         if (loginView.isConnected()) {
             attemptTokenLogin(username, password);
@@ -95,15 +92,15 @@ class LoginPresenter implements LoginContract.Presenter {
     private boolean checkInput(String username, String password) {
         if (Strings.isNullOrEmpty(username) || Strings.isNullOrEmpty(username.trim())) {
             loginView.showUsernameEmptyError();
-            return true;
+            return false;
         }
 
         if (Strings.isNullOrEmpty(password) || Strings.isNullOrEmpty(password.trim())) {
             loginView.showPasswordEmptyError();
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     private void attemptTokenLogin(final String username, final String password) {
