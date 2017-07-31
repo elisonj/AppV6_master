@@ -8,5 +8,17 @@ import org.junit.Test;
  */
 
 public class SyncManagerTest {
-    private SyncManager syncManager;
+    @Test(expected = NullPointerException.class)
+    public void shouldNotAcceptNullSubscriber()
+    {
+        SyncManager syncManager = new SyncManager();
+        syncManager.subscribe(null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldNotAcceptNullToUnsubscribe()
+    {
+        SyncManager syncManager = new SyncManager();
+        syncManager.unsubscribe(null);
+    }
 }
