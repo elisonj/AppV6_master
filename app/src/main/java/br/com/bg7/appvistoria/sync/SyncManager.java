@@ -18,16 +18,34 @@ class SyncManager {
     private HashSet<SyncCallback> subscribers = new HashSet<>();
     private ProductInspectionRepository productInspectionRepository;
     private ArrayBlockingQueue<ProductInspection> inspectionQueue;
+    private SyncStatus[] statusInitializationOrder = {
+            SyncStatus.PICTURES_BEING_SYNCED,
+            SyncStatus.PRODUCT_INSPECTION_SYNCED,
+            SyncStatus.PRODUCT_INSPECTION_BEING_SYNCED,
+            SyncStatus.READY
+    };
 
-    public SyncManager(int queueSize, ProductInspectionRepository productInspectionRepository) {
+    SyncManager(int queueSize, ProductInspectionRepository productInspectionRepository) {
         inspectionQueue = new ArrayBlockingQueue<>(queueSize);
         this.productInspectionRepository = checkNotNull(productInspectionRepository);
 
-        init();
+        initQueue();
     }
 
-    private void init() {
+    private void initQueue() {
+        for (SyncStatus status : statusInitializationOrder) {
+            queueInspectionsWithStatus(status);
+        }
+    }
 
+    private void queueInspectionsWithStatus(SyncStatus status) {
+        Iterable<ProductInspection> inspections = productInspectionRepository.findBySyncStatus(status);
+
+        for (ProductInspection inspection : inspections) {
+            if (!inspectionQueue.offer(inspection)) {
+                break;
+            }
+        }
     }
 
     void subscribe(SyncCallback syncCallback) {
