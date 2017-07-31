@@ -10,7 +10,6 @@ import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
 import br.com.bg7.appvistoria.login.LoginContract;
-import br.com.bg7.appvistoria.login.LoginPresenter;
 import br.com.bg7.appvistoria.login.vo.LoginData;
 
 /**
