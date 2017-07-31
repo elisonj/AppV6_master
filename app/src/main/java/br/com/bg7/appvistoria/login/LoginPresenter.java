@@ -160,20 +160,6 @@ class LoginPresenter implements LoginContract.Presenter {
     }
 
     private void onGetTokenFailure(User user, boolean passwordMatches, Throwable t) {
-        if (t instanceof TimeoutException) {
-            if(user == null) {
-                loginView.showCannotLoginError();
-                return;
-            }
-            verifyPasswordAndEnter(passwordMatches);
-            return;
-        }
-
-        if (t instanceof ConnectException) {
-            loginView.showCannotLoginError();
-            return;
-        }
-
         if(user != null) {
             verifyPasswordAndEnter(passwordMatches);
             return;
