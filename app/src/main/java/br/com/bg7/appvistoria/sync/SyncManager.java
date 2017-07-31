@@ -1,5 +1,7 @@
 package br.com.bg7.appvistoria.sync;
 
+import android.support.annotation.NonNull;
+
 import com.google.common.collect.Sets;
 
 import java.util.HashSet;
@@ -31,10 +33,25 @@ class SyncManager {
         syncExecutor = checkNotNull(syncExecutor);
 
         initQueue(syncExecutor);
+        startSync(syncExecutor);
+    }
+
+    private void startSync(SyncExecutor syncExecutor) {
+        syncExecutor.scheduleSync(new Runnable() {
+            @Override
+            public void run() {
+                sync();
+            }
+        });
+    }
+
+    private void sync() {
+        throw new UnsupportedOperationException();
     }
 
     private void initQueue(SyncExecutor syncExecutor) {
         checkForInspections();
+
         syncExecutor.scheduleQueueUpdates(new Runnable() {
             @Override
             public void run() {
@@ -55,18 +72,22 @@ class SyncManager {
     }
 
     private synchronized void queueNewInspectionsWithStatus(SyncStatus status) {
+        for (ProductInspection inspection : getNewInspections(status)) {
+            if (!inspectionQueue.offer(inspection)) {
+                break;
+            }
+        }
+    }
+
+    @NonNull
+    private Sets.SetView<ProductInspection> getNewInspections(SyncStatus status) {
         Iterable<ProductInspection> inspectionsFromDatabase = productInspectionRepository.findBySyncStatus(status);
         ProductInspection[] inspectionsFromQueue = (ProductInspection[]) inspectionQueue.toArray();
 
         HashSet<ProductInspection> inspectionSetFromDatabase = Sets.newHashSet(inspectionsFromDatabase);
         HashSet<ProductInspection> inspectionSetFromQueue = Sets.newHashSet(inspectionsFromQueue);
 
-        Sets.SetView<ProductInspection> newInspections = Sets.difference(inspectionSetFromDatabase, inspectionSetFromQueue);
-        for (ProductInspection inspection : newInspections) {
-            if (!inspectionQueue.offer(inspection)) {
-                break;
-            }
-        }
+        return Sets.difference(inspectionSetFromDatabase, inspectionSetFromQueue);
     }
 
     void subscribe(SyncCallback syncCallback) {
