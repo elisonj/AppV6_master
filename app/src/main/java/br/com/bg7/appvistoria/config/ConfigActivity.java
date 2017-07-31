@@ -15,8 +15,8 @@ import android.view.MenuItem;
 import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.MainFragment;
 import br.com.bg7.appvistoria.R;
-import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
-import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
+import br.com.bg7.appvistoria.data.source.local.AndroidContextLanguageRepository;
+import br.com.bg7.appvistoria.data.source.local.sugar.SugarConfigRepository;
 
 /**
  * Created by: luciolucio
@@ -30,8 +30,8 @@ public class ConfigActivity extends BaseActivity {
     private int selectedItem = DEFAULT_SCREEN_MENU_ITEM_INDEX;
     private Menu menu = null;
 
-    private final ConfigRepository configRepository = new ConfigRepository();
-    private final LanguageRepository languageRepository = new LanguageRepository(this);
+    private final SugarConfigRepository configRepository = new SugarConfigRepository();
+    private final AndroidContextLanguageRepository languageRepository = new AndroidContextLanguageRepository(this);
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,6 +74,7 @@ public class ConfigActivity extends BaseActivity {
         super.onBackPressed();
     }
 
+    // TODO: Separar telas em fragments próprios
     private void selectFragment(MenuItem item) {
         Fragment fragment = null;
         switch (item.getItemId()) {

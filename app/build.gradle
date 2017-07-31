@@ -1,32 +1,39 @@
 apply plugin: 'com.android.application'
 
-def keystorePropertiesFile = rootProject.file("keystore-upload.properties")
 def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+keystoreProperties.setProperty('storePassword', '')
+keystoreProperties.setProperty('keyPassword', '')
+keystoreProperties.setProperty('keyAlias', '')
+keystoreProperties.setProperty('storeFile', '.')
+
+if (rootProject.file('keystore.properties').exists()) {
+    def keystorePropertiesFile = rootProject.file('keystore.properties')
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    buildToolsVersion '26.0.0'
     defaultConfig {
         applicationId "br.com.bg7.appvistoria"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 2
-        versionName "0.2.1"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        versionCode 3
+        versionName '0.2.2'
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
 
         // Build config fields
         buildConfigField 'String', 'GRANT_TYPE', '"password"'
         buildConfigField 'String', 'CLIENT_ID', '"61922-5b5d19794c749cfbc5d20becc3826e08-s4b-cda-app"'
-        buildConfigField "String[]", "LANGUAGE_NAMES", '{ "pt", "en" }'
+        buildConfigField 'String[]', 'LANGUAGE_NAMES', '{ "pt", "en" }'
         buildConfigField 'String', 'BASE_URL', '"https://preapi.s4bdigital.net"'
     }
     signingConfigs {
         signing {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
             storePassword keystoreProperties['storePassword']
+            keyPassword keystoreProperties['keyPassword']
+            keyAlias keystoreProperties['keyAlias']
+            storeFile file(keystoreProperties['storeFile'])
         }
     }
     configurations.all {

@@ -67,11 +67,6 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
     }
 
     @Override
-    public void showCriticalError() {
-        showError(getContext().getString(R.string.application_error));
-    }
-
-    @Override
     public void showCannotLoginError() {
         showError(getContext().getString(R.string.login_error));
     }
