@@ -1,6 +1,10 @@
 package br.com.bg7.appvistoria.sync;
 
+import com.google.common.collect.Sets;
+
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import br.com.bg7.appvistoria.Constants;
@@ -43,10 +47,15 @@ class SyncManager {
         }
     }
 
-    private void queueNewInspectionsWithStatus(SyncStatus status) {
-        Iterable<ProductInspection> inspections = productInspectionRepository.findBySyncStatus(status);
+    private synchronized void queueNewInspectionsWithStatus(SyncStatus status) {
+        Iterable<ProductInspection> inspectionsFromDatabase = productInspectionRepository.findBySyncStatus(status);
+        ProductInspection[] inspectionsFromQueue = (ProductInspection[]) inspectionQueue.toArray();
 
-        for (ProductInspection inspection : inspections) {
+        HashSet<ProductInspection> inspectionSetFromDatabase = Sets.newHashSet(inspectionsFromDatabase);
+        HashSet<ProductInspection> inspectionSetFromQueue = Sets.newHashSet(inspectionsFromQueue);
+
+        Sets.SetView<ProductInspection> newInspections = Sets.difference(inspectionSetFromDatabase, inspectionSetFromQueue);
+        for (ProductInspection inspection : newInspections) {
             if (!inspectionQueue.offer(inspection)) {
                 break;
             }
