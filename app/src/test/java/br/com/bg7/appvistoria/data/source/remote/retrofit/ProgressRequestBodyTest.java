@@ -2,7 +2,6 @@ package br.com.bg7.appvistoria.data.source.remote.retrofit;
 
 import junit.framework.Assert;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -20,142 +19,95 @@ import okio.Buffer;
  */
 public class ProgressRequestBodyTest {
 
-    private static final String FILE_1000_URI = "file1000.txt";
-    private static final String FILE_2048_URI = "file2048.txt";
-    private static final String FILE_4096_URI = "file4096.txt";
-    private static final MediaType MEDIA_TYPE = MediaType.parse("image/*");
-    private static final int FILE_SIZE = 2048;
-    private static final int BUFFER_SIZE = 1024;
-    private static final int BUFFER_SIZE_EMPTY = 0;
-    private static final int BUFFER_SIZE_NEGATIVE = -1;
-    private File file = getFileFromPath(this, FILE_2048_URI);
-    private Buffer buffer = new Buffer();
-    private ProgressRequestBody body;
+    private static final int DEFAULT_BUFFER_SIZE = 1024;
+    private static final File DEFAULT_FILE = getFileFromPath("file2048.txt");
+
     private int index = 0;
-    private double[] arrayExpectedValues = {0, 50.0, 100.0};
-    private double[] arrayExpectedValuesBiggerFile = {0, 25.0, 50.0, 75.0, 100.0};
-    private double minMaxValue = 0.0;
-
-    @Before
-    public void setUp() {
-        createNewBody(file);
-    }
-
-    @Test
-    public void shouldSaveDataToBuffer() throws IOException {
-        write();
-        Assert.assertTrue(buffer.size() > 0);
-    }
-
-    @Test
-    public void shouldFileSizeEqualsBuffer() throws IOException {
-        write();
-        Assert.assertEquals(buffer.size(), FILE_SIZE);
-    }
-
-    @Test
-    public void shouldFileTypeEquals() throws IOException {
-        write();
-        Assert.assertEquals(MEDIA_TYPE, body.contentType());
-    }
-
-    @Test
-    public void shouldShowOnProgressUpdate() throws IOException {
-        index = 0;
-        createNewBody(new HttpProgressCallbackTest() {
-            @Override
-            public void onProgressUpdated(double percentage) {
-                Assert.assertEquals(arrayExpectedValues[index], percentage);
-                index++;
-            }
-        });
-        write();
-    }
-
-    @Test
-    public void shouldShowOnProgressSmallerThanBuffer() throws IOException {
-        file = getFileFromPath(this, FILE_1000_URI);
-        createNewBody(new HttpProgressCallbackTest() {
-            @Override
-            public void onProgressUpdated(double percentage) {
-                Assert.assertEquals(minMaxValue, percentage);
-                minMaxValue = 100;
-            }
-        });
-        write();
-    }
-    @Test
-    public void shouldShowOnProgressUpdateFileBigger() throws IOException {
-        file = getFileFromPath(this, FILE_4096_URI);
-        index = 0;
-        createNewBody(new HttpProgressCallbackTest() {
-            @Override
-            public void onProgressUpdated(double percentage) {
-                Assert.assertEquals(arrayExpectedValuesBiggerFile[index], percentage);
-                index++;
-            }
-        });
-        write();
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void shouldErrorWhenNullFile() throws IOException {
-        file = null;
-        setUpNewBodyAndWrite();
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void shouldErrorWhenNullListener() throws IOException {
-        listener = null;
-        setUpNewBodyAndWrite();
-    }
-
-    @SuppressWarnings("all")
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldErrorWhenNegativeBuffer() throws IOException {
-        body = new ProgressRequestBody(file, BUFFER_SIZE_NEGATIVE, listener);
-        write();
-    }
-
-    @SuppressWarnings("all")
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldErrorWhenEmptyBufferSize() throws IOException {
-        body = new ProgressRequestBody(file, BUFFER_SIZE_EMPTY, listener);
-        write();
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void shouldErrorWhenNullBuffer() throws IOException {
-        buffer = null;
-        setUpNewBodyAndWrite();
-    }
-
-    private void setUpNewBodyAndWrite() throws IOException {
-        createNewBody(file);
-        write();
-    }
-    private void createNewBody(File file) {
-        body = new ProgressRequestBody(file, BUFFER_SIZE, listener);
-    }
-
-    private void createNewBody(HttpProgressCallbackTest listener) {
-        body = new ProgressRequestBody(file, BUFFER_SIZE, listener);
-    }
-
-    private void write() throws IOException {
-        body.writeTo(buffer);
-    }
-
-    private static File getFileFromPath(Object obj, String fileName) {
-        ClassLoader classLoader = obj.getClass().getClassLoader();
-        URL resource = classLoader.getResource(fileName);
-        return new File(resource.getPath());
-    }
-
-    private HttpProgressCallbackTest listener = new HttpProgressCallbackTest() {
+    private static final HttpProgressCallbackTest EMPTY_LISTENER = new HttpProgressCallbackTest() {
         @Override
         public void onProgressUpdated(double percentage) {
         }
     };
 
+    @Test
+    public void shouldSaveDataToBuffer() throws IOException {
+        ProgressRequestBody body = new ProgressRequestBody(DEFAULT_FILE, DEFAULT_BUFFER_SIZE, EMPTY_LISTENER);
+        Buffer buffer = new Buffer();
+
+        body.writeTo(buffer);
+
+        Assert.assertTrue(buffer.size() > 0);
+        Assert.assertEquals(2048, buffer.size());
+    }
+
+    @Test
+    public void shouldAlwaysReturnCorrectMediaType() throws IOException {
+        ProgressRequestBody body = new ProgressRequestBody(DEFAULT_FILE, DEFAULT_BUFFER_SIZE, EMPTY_LISTENER);
+
+        Assert.assertEquals(MediaType.parse("image/*"), body.contentType());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldNotAcceptNullFile() throws IOException {
+        new ProgressRequestBody(null, DEFAULT_BUFFER_SIZE, EMPTY_LISTENER);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldNotAcceptNullListener() throws IOException {
+        new ProgressRequestBody(DEFAULT_FILE, DEFAULT_BUFFER_SIZE, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldNotAcceptNegativeBufferSize() throws IOException {
+        new ProgressRequestBody(DEFAULT_FILE, -1, EMPTY_LISTENER);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldNotAcceptZeroBufferSize() throws IOException {
+        new ProgressRequestBody(DEFAULT_FILE, 0, EMPTY_LISTENER);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldNotAcceptNullBuffer() throws IOException {
+        ProgressRequestBody body = new ProgressRequestBody(DEFAULT_FILE, DEFAULT_BUFFER_SIZE, EMPTY_LISTENER);
+        body.writeTo(null);
+    }
+
+    @Test
+    public void shouldCallbackOnProgressUpdates1000() throws IOException {
+        final double[] expected = {0, 100.0};
+        testFile("file1000.txt", expected);
+    }
+
+    @Test
+    public void shouldCallbackOnProgressUpdates2048() throws IOException {
+        final double[] expected = {0, 50.0, 100.0};
+        testFile("file2048.txt", expected);
+    }
+
+    @Test
+    public void shouldCallbackOnProgressUpdates4096() throws IOException {
+        final double[] expected = {0, 25.0, 50.0, 75.0, 100.0};
+        testFile("file4096.txt", expected);
+    }
+
+    private static File getFileFromPath(String fileName) {
+        ClassLoader classLoader = ProgressRequestBodyTest.class.getClassLoader();
+        URL resource = classLoader.getResource(fileName);
+        return new File(resource.getPath());
+    }
+
+    private void testFile(String fileName, final double[] expectedPercentages) throws IOException {
+        index = 0;
+
+        ProgressRequestBody body = new ProgressRequestBody(getFileFromPath(fileName), DEFAULT_BUFFER_SIZE, new HttpProgressCallbackTest() {
+            @Override
+            public void onProgressUpdated(double percentage) {
+                Assert.assertEquals(expectedPercentages[index], percentage);
+                index++;
+            }
+        });
+
+        body.writeTo(new Buffer());
+    }
 }
