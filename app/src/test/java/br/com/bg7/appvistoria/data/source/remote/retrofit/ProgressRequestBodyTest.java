@@ -20,21 +20,23 @@ import okio.Buffer;
  */
 public class ProgressRequestBodyTest {
 
-    private static final String FILE_URI = "file.txt";
+    private static final String FILE_1000_URI = "file1000.txt";
     private static final String FILE_2048_URI = "file2048.txt";
     private static final MediaType MEDIA_TYPE = MediaType.parse("image/*");
-    private static final int BUFFER_SIZE = 1024;
     private static final int FILE_SIZE = 2048;
+    private static final int BUFFER_SIZE = 1024;
+    private static final int BUFFER_SIZE_EMPTY = 0;
+    private static final int BUFFER_SIZE_NEGATIVE = -1;
     private File file = getFileFromPath(this, FILE_2048_URI);
     private Buffer buffer = new Buffer();
     private ProgressRequestBody body;
     private int index = 0;
     private double[] arrayExpectedValues = {0, 50.0, 100.0};
-
+    private double minMaxValue = 0.0;
 
     @Before
     public void setUp() {
-        body = new ProgressRequestBody(file, BUFFER_SIZE, listener);
+        createNewBody(file);
     }
 
     @Test
@@ -57,17 +59,72 @@ public class ProgressRequestBodyTest {
 
     @Test
     public void shouldShowOnProgressUpdate() throws IOException {
-
         index = 0;
-        body = new ProgressRequestBody(file, BUFFER_SIZE, new HttpProgressCallbackTest() {
+        createNewBody(new HttpProgressCallbackTest() {
             @Override
             public void onProgressUpdated(double percentage) {
                 Assert.assertEquals(arrayExpectedValues[index], percentage);
                 index++;
             }
         });
-
         write();
+    }
+
+    @Test
+    public void shouldShowOnProgressSmallerThanBuffer() throws IOException {
+        file = getFileFromPath(this, FILE_1000_URI);
+        createNewBody(new HttpProgressCallbackTest() {
+            @Override
+            public void onProgressUpdated(double percentage) {
+                Assert.assertEquals(minMaxValue, percentage);
+                minMaxValue = 100;
+            }
+        });
+        write();
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldErrorWhenNullFile() throws IOException {
+        file = null;
+        setUpNewBodyAndWrite();
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldErrorWhenNullListener() throws IOException {
+        listener = null;
+        setUpNewBodyAndWrite();
+    }
+
+    @SuppressWarnings("all")
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldErrorWhenNegativeBuffer() throws IOException {
+        body = new ProgressRequestBody(file, BUFFER_SIZE_NEGATIVE, listener);
+        write();
+    }
+
+    @SuppressWarnings("all")
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldErrorWhenEmptyBufferSize() throws IOException {
+        body = new ProgressRequestBody(file, BUFFER_SIZE_EMPTY, listener);
+        write();
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldErrorWhenNullBuffer() throws IOException {
+        buffer = null;
+        setUpNewBodyAndWrite();
+    }
+
+    private void setUpNewBodyAndWrite() throws IOException {
+        createNewBody(file);
+        write();
+    }
+    private void createNewBody(File file) {
+        body = new ProgressRequestBody(file, BUFFER_SIZE, listener);
+    }
+
+    private void createNewBody(HttpProgressCallbackTest listener) {
+        body = new ProgressRequestBody(file, BUFFER_SIZE, listener);
     }
 
     private void write() throws IOException {
