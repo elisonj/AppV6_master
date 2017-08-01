@@ -22,6 +22,7 @@ public class ProgressRequestBodyTest {
 
     private static final String FILE_1000_URI = "file1000.txt";
     private static final String FILE_2048_URI = "file2048.txt";
+    private static final String FILE_4096_URI = "file4096.txt";
     private static final MediaType MEDIA_TYPE = MediaType.parse("image/*");
     private static final int FILE_SIZE = 2048;
     private static final int BUFFER_SIZE = 1024;
@@ -32,6 +33,7 @@ public class ProgressRequestBodyTest {
     private ProgressRequestBody body;
     private int index = 0;
     private double[] arrayExpectedValues = {0, 50.0, 100.0};
+    private double[] arrayExpectedValuesBiggerFile = {0, 25.0, 50.0, 75.0, 100.0};
     private double minMaxValue = 0.0;
 
     @Before
@@ -78,6 +80,19 @@ public class ProgressRequestBodyTest {
             public void onProgressUpdated(double percentage) {
                 Assert.assertEquals(minMaxValue, percentage);
                 minMaxValue = 100;
+            }
+        });
+        write();
+    }
+    @Test
+    public void shouldShowOnProgressUpdateFileBigger() throws IOException {
+        file = getFileFromPath(this, FILE_4096_URI);
+        index = 0;
+        createNewBody(new HttpProgressCallbackTest() {
+            @Override
+            public void onProgressUpdated(double percentage) {
+                Assert.assertEquals(arrayExpectedValuesBiggerFile[index], percentage);
+                index++;
             }
         });
         write();
