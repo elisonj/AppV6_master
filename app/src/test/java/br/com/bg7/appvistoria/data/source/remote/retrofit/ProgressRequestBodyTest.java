@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import br.com.bg7.appvistoria.data.source.remote.HttpProgressCallbackTest;
+import br.com.bg7.appvistoria.data.source.remote.TestHttpProgressCallback;
 import okhttp3.MediaType;
 import okio.Buffer;
 
@@ -24,7 +24,7 @@ public class ProgressRequestBodyTest {
     private static final File DEFAULT_FILE = getFileFromPath("file2048.txt");
 
     private int index = 0;
-    private static final HttpProgressCallbackTest EMPTY_LISTENER = new HttpProgressCallbackTest() {
+    private static final TestHttpProgressCallback EMPTY_LISTENER = new TestHttpProgressCallback() {
         @Override
         public void onProgressUpdated(double percentage) {
         }
@@ -100,7 +100,7 @@ public class ProgressRequestBodyTest {
     private void testFile(String filename, final double[] expectedPercentages) throws IOException {
         index = 0;
 
-        ProgressRequestBody body = new ProgressRequestBody(getFileFromPath(filename), DEFAULT_BUFFER_SIZE, new HttpProgressCallbackTest() {
+        ProgressRequestBody body = new ProgressRequestBody(getFileFromPath(filename), DEFAULT_BUFFER_SIZE, new TestHttpProgressCallback() {
             @Override
             public void onProgressUpdated(double percentage) {
                 Assert.assertEquals(expectedPercentages[index], percentage);
