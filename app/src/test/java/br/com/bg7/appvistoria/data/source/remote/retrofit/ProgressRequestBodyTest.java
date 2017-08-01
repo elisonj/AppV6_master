@@ -51,6 +51,7 @@ public class ProgressRequestBodyTest {
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullFile() throws IOException {
         new ProgressRequestBody(null, DEFAULT_BUFFER_SIZE, EMPTY_LISTENER);
+
     }
 
     @Test(expected = NullPointerException.class)
@@ -78,6 +79,8 @@ public class ProgressRequestBodyTest {
     public void shouldCallbackOnProgressUpdates() throws IOException {
         ArrayList<ProgressTestCase> testCases = new ArrayList<>();
 
+        testCases.add(new ProgressTestCase("file0.txt", new double[]{100.0}));
+        testCases.add(new ProgressTestCase("file1.txt", new double[]{0,100.0}));
         testCases.add(new ProgressTestCase("file1000.txt", new double[]{0, 100.0}));
         testCases.add(new ProgressTestCase("file2048.txt", new double[]{0, 50.0, 100.0}));
         testCases.add(new ProgressTestCase("file4096.txt", new double[]{0, 25.0, 50.0, 75.0, 100.0}));
