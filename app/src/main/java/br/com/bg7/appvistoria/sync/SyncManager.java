@@ -45,7 +45,7 @@ class SyncManager {
         syncExecutor.scheduleQueueUpdates(new Runnable() {
             @Override
             public void run() {
-                checkForInspections();
+                updateQueue();
             }
         });
     }
@@ -59,7 +59,7 @@ class SyncManager {
         });
     }
 
-    private void checkForInspections() {
+    private void updateQueue() {
         updateQueue(SyncStatus.READY);
     }
 
@@ -75,7 +75,13 @@ class SyncManager {
 
     private synchronized void sync() {
         ProductInspection inspection;
-        while ((inspection = inspectionQueue.poll()) != null) {
+
+        while ((inspection = inspectionQueue.peek()) != null) {
+            if (!syncExecutor.executeSync(inspection)) {
+                break;
+            }
+
+            inspectionQueue.poll();
         }
     }
 
