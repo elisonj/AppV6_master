@@ -5,6 +5,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import br.com.bg7.appvistoria.Constants;
 import br.com.bg7.appvistoria.data.ProductInspection;
+import br.com.bg7.appvistoria.data.source.PictureService;
+import br.com.bg7.appvistoria.data.source.ProductInspectionService;
 import br.com.bg7.appvistoria.data.source.local.ProductInspectionRepository;
 import br.com.bg7.appvistoria.data.source.remote.SyncCallback;
 
@@ -20,11 +22,20 @@ class SyncManager {
     private HashSet<SyncCallback> subscribers = new HashSet<>();
     private LinkedBlockingQueue<ProductInspection> inspectionQueue = new LinkedBlockingQueue<>();
 
+    private ProductInspectionService productInspectionService;
+    private PictureService pictureService;
+
     private ProductInspectionRepository productInspectionRepository;
     private SyncExecutor syncExecutor;
 
-    SyncManager(ProductInspectionRepository productInspectionRepository, SyncExecutor syncExecutor) {
+    SyncManager(
+            ProductInspectionRepository productInspectionRepository,
+            ProductInspectionService productInspectionService,
+            PictureService pictureService,
+            SyncExecutor syncExecutor) {
         this.productInspectionRepository = checkNotNull(productInspectionRepository);
+        this.productInspectionService = checkNotNull(productInspectionService);
+        this.pictureService = checkNotNull(pictureService);
         this.syncExecutor = checkNotNull(syncExecutor);
 
         initQueue();
@@ -33,6 +44,9 @@ class SyncManager {
         startSync();
     }
 
+    /**
+     * Aqui é necessário resetar PRODUCT_INSPECTION_BEING_SYNCED para READY
+     */
     private void initQueue() {
         SyncStatus[] syncStatuses = Constants.PENDING_INSPECTIONS_STATUS_INITIALIZATION_ORDER;
 
@@ -77,7 +91,22 @@ class SyncManager {
         ProductInspection inspection;
 
         while ((inspection = inspectionQueue.peek()) != null) {
-            if (!syncExecutor.executeSync(inspection)) {
+            final ProductInspection inspectionToSync = inspection;
+
+            boolean canSync = syncExecutor.executeSync(inspectionToSync, new Runnable() {
+                @Override
+                public void run() {
+                    if (inspectionToSync.canSyncProduct()) {
+                        inspectionToSync.sync(productInspectionService, null);
+                        return;
+                    }
+
+                    if (inspectionToSync.canSyncPictures()) {
+                        inspectionToSync.sync(pictureService, null);
+                    }
+                }});
+
+            if (!canSync) {
                 break;
             }
 

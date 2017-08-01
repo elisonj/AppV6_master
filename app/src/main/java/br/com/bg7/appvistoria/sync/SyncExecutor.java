@@ -12,5 +12,5 @@ interface SyncExecutor {
 
     void scheduleSyncLoop(Runnable runnable);
 
-    boolean executeSync(ProductInspection inspection);
+    boolean executeSync(ProductInspection inspection, Runnable runnable);
 }

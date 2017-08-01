@@ -7,6 +7,8 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
+import br.com.bg7.appvistoria.data.source.PictureService;
+import br.com.bg7.appvistoria.data.source.ProductInspectionService;
 import br.com.bg7.appvistoria.data.source.local.ProductInspectionRepository;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeProductInspectionRepository;
 
@@ -26,22 +28,28 @@ public class SyncManagerTest {
     @Mock
     SyncExecutor syncExecutor;
 
+    @Mock
+    ProductInspectionService productInspectionService;
+
+    @Mock
+    PictureService pictureService;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         productInspectionRepository = new FakeProductInspectionRepository();
-        syncManager = new SyncManager(productInspectionRepository, syncExecutor);
+        syncManager = new SyncManager(productInspectionRepository, productInspectionService, pictureService, syncExecutor);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullRepository() {
-        syncManager = new SyncManager(null, syncExecutor);
+        syncManager = new SyncManager(null, productInspectionService, pictureService, syncExecutor);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullExecutor() {
-        syncManager = new SyncManager(productInspectionRepository, null);
+        syncManager = new SyncManager(productInspectionRepository, productInspectionService, pictureService, null);
     }
 
     @Test(expected = NullPointerException.class)

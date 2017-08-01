@@ -2,6 +2,9 @@ package br.com.bg7.appvistoria.data;
 
 import com.orm.SugarRecord;
 
+import br.com.bg7.appvistoria.data.source.PictureService;
+import br.com.bg7.appvistoria.data.source.ProductInspectionService;
+import br.com.bg7.appvistoria.data.source.remote.SyncCallback;
 import br.com.bg7.appvistoria.sync.SyncStatus;
 
 /**
@@ -20,5 +23,21 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
 
     public SyncStatus getSyncStatus() {
         return syncStatus;
+    }
+
+    public boolean canSyncProduct() {
+        return false;
+    }
+
+    public boolean canSyncPictures() {
+        return false;
+    }
+
+    public void sync(ProductInspectionService productInspectionService, SyncCallback callback) {
+
+    }
+
+    public void sync(PictureService pictureService, SyncCallback callback) {
+
     }
 }
