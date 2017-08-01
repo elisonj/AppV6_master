@@ -1,8 +1,6 @@
 package br.com.bg7.appvistoria.data.source.remote.retrofit;
 
 
-import android.support.annotation.NonNull;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -11,6 +9,8 @@ import br.com.bg7.appvistoria.data.source.remote.HttpProgressCallback;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okio.BufferedSink;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by: elison
@@ -25,11 +25,14 @@ class ProgressRequestBody extends RequestBody {
     private File file;
     private HttpProgressCallback listener;
 
-    ProgressRequestBody(@NonNull final File file, int bufferSize,
-                        @NonNull final HttpProgressCallback listener) {
-        this.file = file;
-        this.listener = listener;
-        this.bufferSize = bufferSize;
+    ProgressRequestBody(final File file, int bufferSize,
+                        final HttpProgressCallback listener) throws IllegalArgumentException {
+        this.file = checkNotNull(file, "file cannot be null");
+        this.listener = checkNotNull(listener, "listener cannot be null");
+        if(bufferSize <= 0) {
+            throw new IllegalArgumentException();
+        }
+        this.bufferSize = bufferSize ;
     }
 
     @Override
@@ -43,7 +46,7 @@ class ProgressRequestBody extends RequestBody {
     }
 
     @Override
-    public void writeTo(@NonNull BufferedSink sink) throws IOException {
+    public void writeTo(BufferedSink sink) throws IOException {
         long fileLength = file.length();
         byte[] buffer = new byte[bufferSize];
         long uploaded = 0;

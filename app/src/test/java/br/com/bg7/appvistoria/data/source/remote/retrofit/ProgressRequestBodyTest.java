@@ -84,6 +84,7 @@ public class ProgressRequestBodyTest {
         testCases.add(new ProgressTestCase("file1000.txt", new double[]{0, 100.0}));
         testCases.add(new ProgressTestCase("file2048.txt", new double[]{0, 50.0, 100.0}));
         testCases.add(new ProgressTestCase("file4096.txt", new double[]{0, 25.0, 50.0, 75.0, 100.0}));
+        testCases.add(new ProgressTestCase("file3800.txt", new double[]{0, 26.0, 53.0, 80.0, 100.0}));
 
         for (ProgressTestCase testCase : testCases) {
             testFile(testCase.filename, testCase.expected);
