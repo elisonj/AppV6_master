@@ -42,10 +42,6 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
         return false;
     }
 
-    public void sync(ProductInspectionService productInspectionService, SyncCallback callback) {
-
-    }
-
     public void sync(PictureService pictureService, SyncCallback callback) {
 
     }
