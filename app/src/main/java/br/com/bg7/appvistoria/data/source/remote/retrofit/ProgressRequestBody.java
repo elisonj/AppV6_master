@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 class ProgressRequestBody extends RequestBody {
 
-    private static final int MAX_PERCENTAGE = 100;
+    private static final double MAX_PERCENTAGE = 100.0;
     private static final MediaType MEDIA_TYPE = MediaType.parse("image/*");
     private int bufferSize;
 
@@ -50,7 +50,7 @@ class ProgressRequestBody extends RequestBody {
     @ParametersAreNonnullByDefault
     @Override
     public void writeTo(BufferedSink sink) throws IOException {
-        long fileLength = file.length();
+        long fileLength = contentLength();
         byte[] buffer = new byte[bufferSize];
         long uploaded = 0;
 
