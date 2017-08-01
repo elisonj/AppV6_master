@@ -44,12 +44,22 @@ public class SyncManagerTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullRepository() {
-        syncManager = new SyncManager(null, productInspectionService, pictureService, syncExecutor);
+        new SyncManager(null, productInspectionService, pictureService, syncExecutor);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullExecutor() {
-        syncManager = new SyncManager(productInspectionRepository, productInspectionService, pictureService, null);
+        new SyncManager(productInspectionRepository, productInspectionService, pictureService, null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldNotAcceptNullProductInspectionService() {
+        new SyncManager(productInspectionRepository, null, pictureService, syncExecutor);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldNotAcceptNullPictureService() {
+        new SyncManager(productInspectionRepository, productInspectionService, null, syncExecutor);
     }
 
     @Test(expected = NullPointerException.class)
@@ -67,5 +77,10 @@ public class SyncManagerTest {
     @Test
     public void shouldScheduleQueueUpdates() {
         verify(syncExecutor).scheduleQueueUpdates(any(Runnable.class));
+    }
+
+    @Test
+    public void shouldScheduleSyncLoop() {
+        verify(syncExecutor).scheduleSyncLoop(any(Runnable.class));
     }
 }
