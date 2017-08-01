@@ -5,12 +5,10 @@ import java.io.File;
 import br.com.bg7.appvistoria.data.ProductInspection;
 import br.com.bg7.appvistoria.data.source.remote.HttpProgressCallback;
 import br.com.bg7.appvistoria.data.source.remote.dto.PictureResponse;
-
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Part;
 
 /**
  * Created by: elison
@@ -34,9 +32,9 @@ public class RetrofitPictureService implements br.com.bg7.appvistoria.data.sourc
     }
 
     @Override
-    public void send(File attachment, @Part MultipartBody.Part file, ProductInspection productInspection, HttpProgressCallback<PictureResponse> httpProgressCallback) {
+    public void send(File attachment, ProductInspection productInspection, HttpProgressCallback<PictureResponse> httpProgressCallback) {
 
-        ProgressRequestBody fileBody = new ProgressRequestBody(attachment, httpProgressCallback, bufferSize);
+        ProgressRequestBody fileBody = new ProgressRequestBody(attachment, bufferSize, httpProgressCallback);
         MultipartBody.Part filePart = MultipartBody.Part.createFormData(FORM_FIELD_NAME, attachment.getName(), fileBody);
 
         Call<PictureResponse> call = pictureService.send(attachment, filePart, productInspection, httpProgressCallback);

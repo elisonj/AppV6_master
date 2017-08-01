@@ -1,7 +1,5 @@
 package br.com.bg7.appvistoria.login;
 
-import android.support.annotation.NonNull;
-
 import com.google.common.base.Strings;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -29,10 +27,11 @@ public class LoginPresenter implements LoginContract.Presenter {
     private final UserRepository userRepository;
 
     LoginPresenter(
-            @NonNull TokenService tokenService,
-            @NonNull UserService userService,
-            @NonNull UserRepository userRepository,
-            @NonNull LoginContract.View loginView) {
+            TokenService tokenService,
+            UserService userService,
+            UserRepository userRepository,
+            LoginContract.View loginView) {
+
         this.tokenService = checkNotNull(tokenService, "tokenService cannot be null");
         this.userService = checkNotNull(userService, "userService cannot be null");
         this.userRepository = checkNotNull(userRepository, "userRepository cannot be null");
