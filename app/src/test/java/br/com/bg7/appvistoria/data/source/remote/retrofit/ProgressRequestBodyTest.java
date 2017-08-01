@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import br.com.bg7.appvistoria.data.source.remote.HttpProgressCallbackTest;
+import br.com.bg7.appvistoria.data.source.remote.TestHttpProgressCallback;
 import okhttp3.MediaType;
 import okio.Buffer;
 
@@ -24,7 +24,7 @@ public class ProgressRequestBodyTest {
     private static final File DEFAULT_FILE = getFileFromPath("file2048.txt");
 
     private int index = 0;
-    private static final HttpProgressCallbackTest EMPTY_LISTENER = new HttpProgressCallbackTest() {
+    private static final TestHttpProgressCallback EMPTY_LISTENER = new TestHttpProgressCallback() {
         @Override
         public void onProgressUpdated(double percentage) {
         }
@@ -84,7 +84,7 @@ public class ProgressRequestBodyTest {
         testCases.add(new ProgressTestCase("file1000.txt", new double[]{0, 100.0}));
         testCases.add(new ProgressTestCase("file2048.txt", new double[]{0, 50.0, 100.0}));
         testCases.add(new ProgressTestCase("file4096.txt", new double[]{0, 25.0, 50.0, 75.0, 100.0}));
-        testCases.add(new ProgressTestCase("file3800.txt", new double[]{0, 26.0, 53.0, 80.0, 100.0}));
+        testCases.add(new ProgressTestCase("file3800.txt", new double[]{0, 26.95, 53.90, 80.84, 100.0}));
 
         for (ProgressTestCase testCase : testCases) {
             testFile(testCase.filename, testCase.expected);
@@ -100,10 +100,10 @@ public class ProgressRequestBodyTest {
     private void testFile(String filename, final double[] expectedPercentages) throws IOException {
         index = 0;
 
-        ProgressRequestBody body = new ProgressRequestBody(getFileFromPath(filename), DEFAULT_BUFFER_SIZE, new HttpProgressCallbackTest() {
+        ProgressRequestBody body = new ProgressRequestBody(getFileFromPath(filename), DEFAULT_BUFFER_SIZE, new TestHttpProgressCallback() {
             @Override
             public void onProgressUpdated(double percentage) {
-                Assert.assertEquals(expectedPercentages[index], percentage);
+                Assert.assertEquals(expectedPercentages[index], percentage, 1e-2);
                 index++;
             }
         });
