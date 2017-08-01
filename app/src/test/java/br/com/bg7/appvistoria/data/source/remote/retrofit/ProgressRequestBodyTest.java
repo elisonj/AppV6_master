@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import br.com.bg7.appvistoria.data.source.remote.HttpProgressCallbackTest;
 import okhttp3.MediaType;
@@ -74,33 +75,28 @@ public class ProgressRequestBodyTest {
     }
 
     @Test
-    public void shouldCallbackOnProgressUpdates1000() throws IOException {
-        final double[] expected = {0, 100.0};
-        testFile("file1000.txt", expected);
+    public void shouldCallbackOnProgressUpdates() throws IOException {
+        ArrayList<ProgressTestCase> testCases = new ArrayList<>();
+
+        testCases.add(new ProgressTestCase("file1000.txt", new double[]{0, 100.0}));
+        testCases.add(new ProgressTestCase("file2048.txt", new double[]{0, 50.0, 100.0}));
+        testCases.add(new ProgressTestCase("file4096.txt", new double[]{0, 25.0, 50.0, 75.0, 100.0}));
+
+        for (ProgressTestCase testCase : testCases) {
+            testFile(testCase.filename, testCase.expected);
+        }
     }
 
-    @Test
-    public void shouldCallbackOnProgressUpdates2048() throws IOException {
-        final double[] expected = {0, 50.0, 100.0};
-        testFile("file2048.txt", expected);
-    }
-
-    @Test
-    public void shouldCallbackOnProgressUpdates4096() throws IOException {
-        final double[] expected = {0, 25.0, 50.0, 75.0, 100.0};
-        testFile("file4096.txt", expected);
-    }
-
-    private static File getFileFromPath(String fileName) {
+    private static File getFileFromPath(String filename) {
         ClassLoader classLoader = ProgressRequestBodyTest.class.getClassLoader();
-        URL resource = classLoader.getResource(fileName);
+        URL resource = classLoader.getResource(filename);
         return new File(resource.getPath());
     }
 
-    private void testFile(String fileName, final double[] expectedPercentages) throws IOException {
+    private void testFile(String filename, final double[] expectedPercentages) throws IOException {
         index = 0;
 
-        ProgressRequestBody body = new ProgressRequestBody(getFileFromPath(fileName), DEFAULT_BUFFER_SIZE, new HttpProgressCallbackTest() {
+        ProgressRequestBody body = new ProgressRequestBody(getFileFromPath(filename), DEFAULT_BUFFER_SIZE, new HttpProgressCallbackTest() {
             @Override
             public void onProgressUpdated(double percentage) {
                 Assert.assertEquals(expectedPercentages[index], percentage);
@@ -109,5 +105,15 @@ public class ProgressRequestBodyTest {
         });
 
         body.writeTo(new Buffer());
+    }
+
+    private class ProgressTestCase {
+        double[] expected;
+        String filename;
+
+        ProgressTestCase(String filename, double[] expected) {
+            this.expected = expected;
+            this.filename = filename;
+        }
     }
 }
