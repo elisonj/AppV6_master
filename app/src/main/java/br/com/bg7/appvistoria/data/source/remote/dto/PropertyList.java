@@ -63,7 +63,6 @@ public class PropertyList extends SugarRecord<PropertyList> {
 
     /**
      * Return a JSON representation from Object
-     * @return
      */
     public JSONObject toJSON() {
 
@@ -84,11 +83,11 @@ public class PropertyList extends SugarRecord<PropertyList> {
         return propertiesList;
     }
 
-    public List<Property> getPropertyList() {
+    private List<Property> getPropertyList() {
         return propertyList;
     }
 
-    public void setPropertyList(List<Property> propertyList) {
+    private void setPropertyList(List<Property> propertyList) {
         this.propertyList = propertyList;
     }
 }

@@ -68,7 +68,6 @@ public class ProductResponse extends SugarRecord<ProductResponse> {
 
     /**
      * Return a JSON representation from Object
-     * @return
      */
     public JSONObject toJSON(){
 

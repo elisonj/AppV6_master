@@ -36,7 +36,6 @@ public class Property extends SugarRecord<Property> {
 
     /**
      * Return a JSON representation from Object
-     * @return
      */
     public JSONObject toJSON(){
         JSONObject jsonObject= new JSONObject();
