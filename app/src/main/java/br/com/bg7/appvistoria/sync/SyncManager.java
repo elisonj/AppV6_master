@@ -1,6 +1,5 @@
 package br.com.bg7.appvistoria.sync;
 
-import java.util.HashSet;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import br.com.bg7.appvistoria.Constants;
@@ -19,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 class SyncManager {
 
-    private HashSet<SyncCallback> subscribers = new HashSet<>();
+    private SyncManagerCallback callback = new SyncManagerCallback();
     private LinkedBlockingQueue<ProductInspection> inspectionQueue = new LinkedBlockingQueue<>();
 
     private ProductInspectionService productInspectionService;
@@ -97,12 +96,12 @@ class SyncManager {
                 @Override
                 public void run() {
                     if (inspectionToSync.canSyncProduct()) {
-                        inspectionToSync.sync(productInspectionService, null);
+                        inspectionToSync.sync(productInspectionService, callback);
                         return;
                     }
 
                     if (inspectionToSync.canSyncPictures()) {
-                        inspectionToSync.sync(pictureService, null);
+                        inspectionToSync.sync(pictureService, callback);
                     }
                 }});
 
@@ -115,10 +114,10 @@ class SyncManager {
     }
 
     void subscribe(SyncCallback syncCallback) {
-        subscribers.add(checkNotNull(syncCallback));
+        callback.subscribe(syncCallback);
     }
 
     void unsubscribe(SyncCallback syncCallback) {
-        subscribers.remove(checkNotNull(syncCallback));
+        callback.unsubscribe(syncCallback);
     }
 }
