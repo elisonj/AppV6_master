@@ -113,7 +113,8 @@ class SyncManager {
         ProductInspection inspection;
 
         while ((inspection = inspectionQueue.peek()) != null) {
-            if (!syncExecutor.executeSync(inspection, new SyncJob(inspection))) {
+            SyncJob job = new SyncJob(inspection, productInspectionService, pictureService, callback);
+            if (!syncExecutor.executeSync(inspection, job)) {
                 break;
             }
 
@@ -127,28 +128,5 @@ class SyncManager {
 
     void unsubscribe(SyncCallback syncCallback) {
         callback.unsubscribe(syncCallback);
-    }
-
-    private class SyncJob implements Runnable {
-        private final ProductInspection inspectionToSync;
-
-        SyncJob(ProductInspection inspectionToSync) {
-            this.inspectionToSync = inspectionToSync;
-        }
-
-        /**
-         * TODO: Tratar o caso do sync jogar exception
-         */
-        @Override
-        public void run() {
-            if (inspectionToSync.canSyncProduct()) {
-                inspectionToSync.sync(productInspectionService, callback);
-                return;
-            }
-
-            if (inspectionToSync.canSyncPictures()) {
-                inspectionToSync.sync(pictureService, callback);
-            }
-        }
     }
 }
