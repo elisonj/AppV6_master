@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
  * Linha 3 da tabela
  * https://bg7.easyredmine.com/projects/185/wiki/Pode_falar_mais_sobre_a_tela_de_login
  */
-public class LoginPresenterUserServiceFailureTest extends LoginPresenterBaseTest {
+public class LoginPresenterUserServiceFailureTest extends LoginPresenterTestBase {
 
     @Before
     public void setUp() {

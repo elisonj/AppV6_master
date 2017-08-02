@@ -9,7 +9,7 @@ import static org.mockito.Mockito.verify;
  * Date: 2017-07-18
  */
 
-public class LoginPresenterValidationTest extends LoginPresenterBaseTest {
+public class LoginPresenterValidationTest extends LoginPresenterTestBase {
     @Test
     public void shouldShowUserNameErrorWhenUserIsNull() {
         loginPresenter.login(null, "password");

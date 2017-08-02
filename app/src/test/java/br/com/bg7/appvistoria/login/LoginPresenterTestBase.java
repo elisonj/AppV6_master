@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
  * Date: 2017-07-19
  */
 
-public class LoginPresenterBaseTest {
+class LoginPresenterTestBase {
     @Mock
     LoginContract.View loginView;
 
