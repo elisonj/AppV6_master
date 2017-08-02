@@ -47,10 +47,11 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
     }
 
     public SyncStatus ready() throws SyncFailedException {
-        if(syncStatus == null) {
+        if(syncStatus == null || syncStatus == SyncStatus.READY) {
             syncStatus = SyncStatus.READY;
             return syncStatus;
         }
+
         throw new SyncFailedException("Cannot sync");
     }
 
@@ -80,6 +81,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
 
         if(syncStatus == SyncStatus.READY) {
             syncStatus = SyncStatus.PRODUCT_INSPECTION_BEING_SYNCED;
+
             productInspectionService.send(this, new HttpProgressCallback<ProductResponse>() {
                 @Override
                 public void onProgressUpdated(double percentage) {
