@@ -15,6 +15,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class SyncManagerCallback implements SyncCallback {
     private HashSet<SyncCallback> subscribers = new HashSet<>();
 
+    /**
+     * Method that gets called when a {@code ProductInspection} finishes syncing successfully
+     *
+     * TODO: Salvar o inspection no repository
+     *
+     * @param productInspection The inspection whose sync succeeded
+     */
     @Override
     public void onSuccess(ProductInspection productInspection) {
         for (SyncCallback callback : subscribers) {
@@ -37,6 +44,14 @@ public class SyncManagerCallback implements SyncCallback {
         }
     }
 
+    /**
+     * Method that gets called when a {@code ProductInspection} fails syncing
+     *
+     * TODO: Salvar o inspection no repository
+     *
+     * @param productInspection The inspection whose sync failed
+     * @param t The error that caused it to fail
+     */
     @Override
     public void onFailure(ProductInspection productInspection, Throwable t) {
         for (SyncCallback callback : subscribers) {
