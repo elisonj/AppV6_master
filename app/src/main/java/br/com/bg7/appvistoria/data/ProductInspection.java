@@ -9,8 +9,14 @@ import java.util.List;
 
 import br.com.bg7.appvistoria.data.source.PictureService;
 import br.com.bg7.appvistoria.data.source.ProductInspectionService;
+import br.com.bg7.appvistoria.data.source.remote.HttpProgressCallback;
+import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.SyncCallback;
+import br.com.bg7.appvistoria.data.source.remote.dto.PictureResponse;
+import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
 import br.com.bg7.appvistoria.sync.SyncStatus;
+
+import static br.com.bg7.appvistoria.sync.SyncStatus.PRODUCT_INSPECTION_SYNCED;
 
 /**
  * Created by: elison
@@ -19,8 +25,6 @@ import br.com.bg7.appvistoria.sync.SyncStatus;
 public class ProductInspection extends SugarRecord<ProductInspection> {
 
     private SyncStatus syncStatus = null;
-    private ProductInspectionCallback productInspectionCallback;
-    private ProductInspectionPictureCallback productInspectionPictureCallback;
 
     private long id;
     private Product product;
@@ -31,14 +35,6 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
      */
     @SuppressWarnings("unused")
     public ProductInspection() {}
-
-    public SyncStatus getSyncStatus() {
-        return syncStatus;
-    }
-
-    void setSyncStatus(SyncStatus syncStatus) {
-        this.syncStatus = syncStatus;
-    }
 
     public boolean canSyncProduct() {
         return false;
@@ -58,10 +54,26 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
     }
 
     public void sync(PictureService pictureService, final SyncCallback syncCallback) {
-        if(syncStatus != SyncStatus.PRODUCT_INSPECTION_BEING_SYNCED) {
+        if (syncStatus != SyncStatus.PRODUCT_INSPECTION_BEING_SYNCED) {
             File image = images.get(0);
-            productInspectionPictureCallback = new ProductInspectionPictureCallback(this, syncCallback);
-            pictureService.send(image, this, productInspectionPictureCallback);
+            pictureService.send(image, this, new HttpProgressCallback<PictureResponse>() {
+                @Override
+                public void onProgressUpdated(double percentage) {
+                    syncCallback.onProgressUpdated(ProductInspection.this, percentage);
+                }
+
+                @Override
+                public void onResponse(HttpResponse<PictureResponse> httpResponse) {
+                    syncStatus = SyncStatus.PRODUCT_INSPECTION_SYNCED;
+                    syncCallback.onSuccess(ProductInspection.this);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    syncStatus = SyncStatus.FAILED;
+                    syncCallback.onFailure(ProductInspection.this, t);
+                }
+            });
         }
     }
 
@@ -69,15 +81,31 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
         try {
             if (ready() == SyncStatus.READY) {
                 syncStatus = SyncStatus.PRODUCT_INSPECTION_BEING_SYNCED;
-                productInspectionCallback = new ProductInspectionCallback(this, syncCallback);
-                productInspectionService.send(this, productInspectionCallback);
+                productInspectionService.send(this, new HttpProgressCallback<ProductResponse>() {
+                    @Override
+                    public void onProgressUpdated(double percentage) {
+                        syncCallback.onProgressUpdated(ProductInspection.this, percentage);
+                    }
+
+                    @Override
+                    public void onResponse(HttpResponse<ProductResponse> httpResponse) {
+                        syncStatus = PRODUCT_INSPECTION_SYNCED;
+                        syncCallback.onSuccess(ProductInspection.this);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        syncStatus = SyncStatus.FAILED;
+                        syncCallback.onFailure(ProductInspection.this, t);
+                    }
+                });
             }
         } catch (SyncFailedException ex) {
             ex.printStackTrace();
         }
     }
 
-    public ProductInspectionCallback getProductInspectionCallback() {
-        return productInspectionCallback;
+    public SyncStatus getSyncStatus() {
+        return syncStatus;
     }
 }
