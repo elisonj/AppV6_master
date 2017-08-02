@@ -1,6 +1,10 @@
 package br.com.bg7.appvistoria.sync;
 
+import junit.framework.Assert;
+
 import org.junit.Test;
+
+import br.com.bg7.appvistoria.data.ProductInspection;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -11,6 +15,20 @@ import static org.mockito.Mockito.verify;
  */
 
 public class SyncManagerInitializationTest extends SyncManagerTestBase {
+
+    private SyncManager instantiateSyncManager() {
+        return new SyncManager(
+                productInspectionRepository,
+                productInspectionService,
+                pictureService,
+                syncExecutor);
+    }
+
+    private SyncManager instantiateSyncManagerWith(ProductInspection productInspection)
+    {
+        productInspectionRepository.save(productInspection);
+        return instantiateSyncManager();
+    }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullRepository() {
@@ -35,22 +53,35 @@ public class SyncManagerInitializationTest extends SyncManagerTestBase {
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullSubscriber()
     {
-        syncManager.subscribe(null);
+        instantiateSyncManager().subscribe(null);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullToUnsubscribe()
     {
-        syncManager.unsubscribe(null);
+        instantiateSyncManager().unsubscribe(null);
     }
 
     @Test
     public void shouldScheduleQueueUpdates() {
+        instantiateSyncManager();
         verify(syncExecutor).scheduleQueueUpdates(any(Runnable.class));
     }
 
     @Test
     public void shouldScheduleSyncLoop() {
+        instantiateSyncManager();
         verify(syncExecutor).scheduleSyncLoop(any(Runnable.class));
+    }
+
+    @Test
+    public void shouldNotResetReadyStatusOnInit() {
+        ProductInspection productInspection = new ProductInspection(SyncStatus.READY);
+
+        instantiateSyncManagerWith(productInspection);
+
+        ProductInspection productInspectionUpdated = productInspectionRepository.findById(ProductInspection.class, productInspection.getId());
+
+        Assert.assertEquals(SyncStatus.READY, productInspectionUpdated.getSyncStatus());
     }
 }

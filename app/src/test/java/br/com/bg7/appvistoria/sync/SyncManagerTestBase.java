@@ -20,10 +20,8 @@ import static org.mockito.Mockito.verify;
  * Date: 2017-07-31
  */
 
-public class SyncManagerTestBase {
-    SyncManager syncManager;
-
-    FakeProductInspectionRepository productInspectionRepository;
+class SyncManagerTestBase {
+    FakeProductInspectionRepository productInspectionRepository = new FakeProductInspectionRepository();
 
     @Mock
     SyncExecutor syncExecutor;
@@ -37,8 +35,5 @@ public class SyncManagerTestBase {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-
-        productInspectionRepository = new FakeProductInspectionRepository();
-        syncManager = new SyncManager(productInspectionRepository, productInspectionService, pictureService, syncExecutor);
     }
 }
