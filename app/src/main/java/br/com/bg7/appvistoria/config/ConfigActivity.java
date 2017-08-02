@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.MainFragment;
 import br.com.bg7.appvistoria.R;
-import br.com.bg7.appvistoria.data.source.local.AndroidContextLanguageRepository;
+import br.com.bg7.appvistoria.data.source.local.android.AndroidContextLanguageRepository;
 import br.com.bg7.appvistoria.data.source.local.sugar.SugarConfigRepository;
 
 /**
