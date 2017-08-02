@@ -44,7 +44,17 @@ class SyncManager {
     }
 
     /**
-     * Aqui é necessário resetar PRODUCT_INSPECTION_BEING_SYNCED para READY
+     * Initialization process
+     *
+     * 1. Reset PRODUCT_INSPECTION_BEING_SYNCED to READY
+     * 2. Queue {@link ProductInspection} items that are in the statuses
+     *    between READY and DONE/FAIL
+     *
+     * This logic assumes that no other {@link SyncManager} is currently monitoring
+     * the given {@link #productInspectionRepository}, and that we are free to change
+     * the status of the items of the {@link ProductInspectionRepository}.
+     *
+     * TODO: Aqui é necessário resetar PRODUCT_INSPECTION_BEING_SYNCED para READY
      */
     private void initQueue() {
         SyncStatus[] syncStatuses = Constants.PENDING_INSPECTIONS_STATUS_INITIALIZATION_ORDER;
