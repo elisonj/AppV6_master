@@ -44,4 +44,8 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
     public void sync(PictureService pictureService, SyncCallback callback) {
 
     }
+
+    public void reset() {
+        syncStatus = SyncStatus.READY;
+    }
 }

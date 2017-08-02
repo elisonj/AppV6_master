@@ -2,13 +2,13 @@ package br.com.bg7.appvistoria.sync;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
-import br.com.bg7.appvistoria.Constants;
 import br.com.bg7.appvistoria.data.ProductInspection;
 import br.com.bg7.appvistoria.data.source.PictureService;
 import br.com.bg7.appvistoria.data.source.ProductInspectionService;
 import br.com.bg7.appvistoria.data.source.local.ProductInspectionRepository;
 import br.com.bg7.appvistoria.data.source.remote.SyncCallback;
 
+import static br.com.bg7.appvistoria.Constants.PENDING_INSPECTIONS_STATUS_INITIALIZATION_ORDER;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -44,7 +44,7 @@ class SyncManager {
     }
 
     /**
-     * Initialization process
+     * Runs the initialization process
      *
      * 1. Reset PRODUCT_INSPECTION_BEING_SYNCED to READY
      * 2. Queue {@link ProductInspection} items that are in the statuses
@@ -53,15 +53,30 @@ class SyncManager {
      * This logic assumes that no other {@link SyncManager} is currently monitoring
      * the given {@link #productInspectionRepository}, and that we are free to change
      * the status of the items of the {@link ProductInspectionRepository}.
-     *
-     * TODO: Resetar PRODUCT_INSPECTION_BEING_SYNCED para READY
      */
     private void initQueue() {
-        SyncStatus[] syncStatuses = Constants.PENDING_INSPECTIONS_STATUS_INITIALIZATION_ORDER;
+        resetIncompleteInspections();
 
-        for (SyncStatus syncStatus : syncStatuses) {
+        for (SyncStatus syncStatus : PENDING_INSPECTIONS_STATUS_INITIALIZATION_ORDER) {
             updateQueue(syncStatus);
         }
+    }
+
+    private void resetIncompleteInspections() {
+        Iterable<ProductInspection> productInspections = productInspectionRepository.findBySyncStatus(SyncStatus.PRODUCT_INSPECTION_BEING_SYNCED);
+
+        for (ProductInspection productInspection : productInspections) {
+            resetInspection(productInspection);
+        }
+    }
+
+    private void resetInspection(ProductInspection productInspection) {
+        if (productInspection == null) {
+            return;
+        }
+
+        productInspection.reset();
+        productInspectionRepository.save(productInspection);
     }
 
     private void startQueueUpdates() {
@@ -90,9 +105,7 @@ class SyncManager {
         Iterable<ProductInspection> inspections = productInspectionRepository.findBySyncStatus(syncStatus);
 
         for (ProductInspection inspection : inspections) {
-            if (!inspectionQueue.offer(inspection)) {
-                break;
-            }
+            inspectionQueue.offer(inspection);
         }
     }
 
@@ -100,22 +113,7 @@ class SyncManager {
         ProductInspection inspection;
 
         while ((inspection = inspectionQueue.peek()) != null) {
-            final ProductInspection inspectionToSync = inspection;
-
-            boolean canSync = syncExecutor.executeSync(inspectionToSync, new Runnable() {
-                @Override
-                public void run() {
-                    if (inspectionToSync.canSyncProduct()) {
-                        inspectionToSync.sync(productInspectionService, callback);
-                        return;
-                    }
-
-                    if (inspectionToSync.canSyncPictures()) {
-                        inspectionToSync.sync(pictureService, callback);
-                    }
-                }});
-
-            if (!canSync) {
+            if (!syncExecutor.executeSync(inspection, new SyncJob(inspection))) {
                 break;
             }
 
@@ -129,5 +127,28 @@ class SyncManager {
 
     void unsubscribe(SyncCallback syncCallback) {
         callback.unsubscribe(syncCallback);
+    }
+
+    private class SyncJob implements Runnable {
+        private final ProductInspection inspectionToSync;
+
+        SyncJob(ProductInspection inspectionToSync) {
+            this.inspectionToSync = inspectionToSync;
+        }
+
+        /**
+         * TODO: Tratar o caso do sync jogar exception
+         */
+        @Override
+        public void run() {
+            if (inspectionToSync.canSyncProduct()) {
+                inspectionToSync.sync(productInspectionService, callback);
+                return;
+            }
+
+            if (inspectionToSync.canSyncPictures()) {
+                inspectionToSync.sync(pictureService, callback);
+            }
+        }
     }
 }
