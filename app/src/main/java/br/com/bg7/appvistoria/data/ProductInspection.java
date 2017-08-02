@@ -9,10 +9,7 @@ import java.util.List;
 
 import br.com.bg7.appvistoria.data.source.PictureService;
 import br.com.bg7.appvistoria.data.source.ProductInspectionService;
-import br.com.bg7.appvistoria.data.source.remote.HttpProgressCallback;
-import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.SyncCallback;
-import br.com.bg7.appvistoria.data.source.remote.dto.PictureResponse;
 import br.com.bg7.appvistoria.sync.SyncStatus;
 
 /**
@@ -23,6 +20,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
 
     private SyncStatus syncStatus = null;
     private ProductInspectionCallback productInspectionCallback;
+    private ProductInspectionPictureCallback productInspectionPictureCallback;
 
     private long id;
     private Product product;
@@ -38,7 +36,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
         return syncStatus;
     }
 
-    public void setSyncStatus(SyncStatus syncStatus) {
+    void setSyncStatus(SyncStatus syncStatus) {
         this.syncStatus = syncStatus;
     }
 
@@ -60,25 +58,11 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
     }
 
     public void sync(PictureService pictureService, final SyncCallback syncCallback) {
-
-        File image = images.get(0);
-
-        pictureService.send(image, this, new HttpProgressCallback<PictureResponse>() {
-            @Override
-            public void onProgressUpdated(double percentage) {
-                syncCallback.onProgressUpdated(ProductInspection.this, percentage);
-            }
-
-            @Override
-            public void onResponse(HttpResponse<PictureResponse> httpResponse) {
-                syncCallback.onSuccess(ProductInspection.this);
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                syncCallback.onFailure(ProductInspection.this, t);
-            }
-        });
+        if(syncStatus != SyncStatus.PRODUCT_INSPECTION_BEING_SYNCED) {
+            File image = images.get(0);
+            productInspectionPictureCallback = new ProductInspectionPictureCallback(this, syncCallback);
+            pictureService.send(image, this, productInspectionPictureCallback);
+        }
     }
 
     public void sync(ProductInspectionService productInspectionService, final SyncCallback syncCallback) {
@@ -89,7 +73,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
                 productInspectionService.send(this, productInspectionCallback);
             }
         } catch (SyncFailedException ex) {
-            ex.printStackTrace();;
+            ex.printStackTrace();
         }
     }
 
