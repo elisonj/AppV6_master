@@ -2,20 +2,6 @@ package br.com.bg7.appvistoria.data;
 
 import com.orm.SugarRecord;
 
-import java.io.File;
-import java.io.SyncFailedException;
-import java.util.Vector;
-
-import br.com.bg7.appvistoria.data.source.PictureService;
-import br.com.bg7.appvistoria.data.source.ProductInspectionService;
-import br.com.bg7.appvistoria.data.source.remote.HttpProgressCallback;
-import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
-import br.com.bg7.appvistoria.data.source.remote.SyncCallback;
-import br.com.bg7.appvistoria.data.source.remote.dto.PictureResponse;
-import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
-import br.com.bg7.appvistoria.sync.SyncStatus;
-
-
 /**
  * Created by: elison
  * Date: 2017-07-27
