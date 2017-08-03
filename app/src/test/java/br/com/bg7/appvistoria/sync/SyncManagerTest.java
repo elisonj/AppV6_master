@@ -63,11 +63,7 @@ public class SyncManagerTest extends SyncManagerTestBase {
         productInspectionRepository.save(inspection);
 
         updateQueue.run();
-
-        when(syncExecutor.executeSync(eq(inspection), executeSyncCaptor.capture())).thenReturn(true);
-
         sync.run();
-        Runnable syncJob = executeSyncCaptor.getValue();
 
         syncManager.subscribe(new FailureCheckSyncCallback() {
             @Override
@@ -78,7 +74,8 @@ public class SyncManagerTest extends SyncManagerTestBase {
             }
         });
 
-        syncJob.run();
+        verify(syncExecutor).executeSync(executeSyncCaptor.capture());
+        executeSyncCaptor.getValue().run();
 
         verify(productInspectionService).send(eq(inspection), serviceCallback.capture());
         serviceCallback.getValue().onFailure(null);

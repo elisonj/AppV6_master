@@ -114,7 +114,7 @@ class SyncManager {
     private synchronized void sync() {
         ProductInspection inspection;
 
-        while ((inspection = inspectionQueue.peek()) != null) {
+        while ((inspection = inspectionQueue.poll()) != null) {
             SyncJob job = new SyncJob(inspection, productInspectionService, pictureService, callback);
             syncExecutor.executeSync(job);
         }
