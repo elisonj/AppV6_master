@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.io.File;
@@ -33,6 +34,9 @@ import static org.mockito.Mockito.verify;
 public class ProductInspectionTest {
 
     private static final double PROGRESS = 50;
+    private static final int FILES_TO_SYNC = 3;
+    private static final int ONE_FILE = 1;
+    private static final File FILE = new File("");
 
     private ProductInspection productInspection;
 
@@ -57,21 +61,21 @@ public class ProductInspectionTest {
 
     @Test
     public void shouldErrorSyncPicture() {
-        addImageToSync(1);
+        addImageToSync(ONE_FILE);
         setUpSyncPictures();
         pictureCallback.getValue().onFailure(new SyncFailedException("Cannot sync"));
     }
 
     @Test
     public void shouldSyncPicture() {
-        addImageToSync(1);
+        addImageToSync(ONE_FILE);
         syncPictures();
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.PICTURES_SYNCED);
     }
 
     @Test
     public void shouldStatusPicureBeingSyncedWhenProgressUpdated() {
-        addImageToSync(1);
+        addImageToSync(ONE_FILE);
         setUpSyncPictures();
         pictureCallback.getValue().onProgressUpdated(PROGRESS);
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.PICTURES_BEING_SYNCED);
@@ -79,15 +83,15 @@ public class ProductInspectionTest {
 
     @Test
     public void shouldShowBeingSyncPictureWhenSendPartialList() {
-        addImageToSync(2);
+        addImageToSync(FILES_TO_SYNC);
         syncPictures();
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.PICTURES_BEING_SYNCED);
     }
 
     @Test
-    public void shouldShowBeingSyncPictureWhenSendAll() {
-        shouldShowBeingSyncPictureWhenSendPartialList();
-        syncPictures();
+    public void shouldShowPicturesSyncedWhenSendAll() {
+        addImageToSync(FILES_TO_SYNC);
+        numberOfTimesToSync(FILES_TO_SYNC);
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.PICTURES_SYNCED);
     }
 
@@ -112,9 +116,17 @@ public class ProductInspectionTest {
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.INSPECTION_BEING_SYNCED);
     }
 
+    private void numberOfTimesToSync(int cont) {
+        for(int i=0; i<cont; i++) {
+            productInspection.sync(pictureService, callback);
+        }
+        verify(pictureService, Mockito.times(cont)).send(eq(FILE), eq(productInspection), pictureCallback.capture());
+        pictureCallback.getValue().onResponse(pictureResponse);
+    }
+
     private void addImageToSync(int cont) {
         for(int i=0; i<cont; i++)
-            productInspection.addImageToSync(new File(""));
+            productInspection.addImageToSync(FILE);
     }
 
     private void syncPictures() {
@@ -124,7 +136,7 @@ public class ProductInspectionTest {
 
     private void setUpSyncPictures() {
         productInspection.sync(pictureService, callback);
-        verify(pictureService).send(eq(new File("")), eq(productInspection), pictureCallback.capture());
+        verify(pictureService).send(eq(FILE), eq(productInspection), pictureCallback.capture());
     }
 
     private void syncProduct() {
@@ -144,8 +156,6 @@ public class ProductInspectionTest {
         @Override
         public void onFailure(ProductInspection productInspection, Throwable t) { }
     };
-
-
 
     private HttpResponse<PictureResponse> pictureResponse = new HttpResponse<PictureResponse>() {
         @Override
