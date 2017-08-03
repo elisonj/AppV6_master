@@ -9,7 +9,7 @@ import static org.mockito.Mockito.verify;
  * Date: 2017-07-18
  */
 
-public class LoginPresenterInitializationTest extends LoginPresenterBaseTest {
+public class LoginPresenterInitializationTest extends LoginPresenterTestBase {
     @SuppressWarnings("ConstantConditions")
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullTokenServiceWhenCreated() {

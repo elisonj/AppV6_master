@@ -9,7 +9,7 @@ import org.junit.Test;
  * Linha 5 da tabela
  * https://bg7.easyredmine.com/projects/185/wiki/Pode_falar_mais_sobre_a_tela_de_login
  */
-public class LoginPresenterLoginSuccessTest extends LoginPresenterBaseTest {
+public class LoginPresenterLoginSuccessTest extends LoginPresenterTestBase {
 
     /**
      * 5.1 (a)

@@ -1,15 +1,14 @@
 package br.com.bg7.appvistoria.sync;
 
-import java.util.HashSet;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import br.com.bg7.appvistoria.Constants;
 import br.com.bg7.appvistoria.data.ProductInspection;
 import br.com.bg7.appvistoria.data.source.PictureService;
 import br.com.bg7.appvistoria.data.source.ProductInspectionService;
 import br.com.bg7.appvistoria.data.source.local.ProductInspectionRepository;
 import br.com.bg7.appvistoria.data.source.remote.SyncCallback;
 
+import static br.com.bg7.appvistoria.Constants.PENDING_INSPECTIONS_STATUS_INITIALIZATION_ORDER;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -19,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 class SyncManager {
 
-    private HashSet<SyncCallback> subscribers = new HashSet<>();
+    private SyncManagerCallback callback;
     private LinkedBlockingQueue<ProductInspection> inspectionQueue = new LinkedBlockingQueue<>();
 
     private ProductInspectionService productInspectionService;
@@ -38,6 +37,8 @@ class SyncManager {
         this.pictureService = checkNotNull(pictureService);
         this.syncExecutor = checkNotNull(syncExecutor);
 
+        this.callback = new SyncManagerCallback(productInspectionRepository);
+
         initQueue();
 
         startQueueUpdates();
@@ -45,14 +46,39 @@ class SyncManager {
     }
 
     /**
-     * Aqui é necessário resetar PRODUCT_INSPECTION_BEING_SYNCED para READY
+     * Runs the initialization process
+     *
+     * 1. Reset PRODUCT_INSPECTION_BEING_SYNCED to READY
+     * 2. Queue {@link ProductInspection} items that are in the statuses
+     *    between READY and DONE/FAIL
+     *
+     * This logic assumes that no other {@link SyncManager} is currently monitoring
+     * the given {@link #productInspectionRepository}, and that we are free to change
+     * the status of the items of the {@link ProductInspectionRepository}.
      */
     private void initQueue() {
-        SyncStatus[] syncStatuses = Constants.PENDING_INSPECTIONS_STATUS_INITIALIZATION_ORDER;
+        resetIncompleteInspections();
 
-        for (SyncStatus syncStatus : syncStatuses) {
+        for (SyncStatus syncStatus : PENDING_INSPECTIONS_STATUS_INITIALIZATION_ORDER) {
             updateQueue(syncStatus);
         }
+    }
+
+    private void resetIncompleteInspections() {
+        Iterable<ProductInspection> productInspections = productInspectionRepository.findBySyncStatus(SyncStatus.PRODUCT_INSPECTION_BEING_SYNCED);
+
+        for (ProductInspection productInspection : productInspections) {
+            resetInspection(productInspection);
+        }
+    }
+
+    private void resetInspection(ProductInspection productInspection) {
+        if (productInspection == null) {
+            return;
+        }
+
+        productInspection.reset();
+        productInspectionRepository.save(productInspection);
     }
 
     private void startQueueUpdates() {
@@ -81,44 +107,24 @@ class SyncManager {
         Iterable<ProductInspection> inspections = productInspectionRepository.findBySyncStatus(syncStatus);
 
         for (ProductInspection inspection : inspections) {
-            if (!inspectionQueue.offer(inspection)) {
-                break;
-            }
+            inspectionQueue.offer(inspection);
         }
     }
 
     private synchronized void sync() {
         ProductInspection inspection;
 
-        while ((inspection = inspectionQueue.peek()) != null) {
-            final ProductInspection inspectionToSync = inspection;
-
-            boolean canSync = syncExecutor.executeSync(inspectionToSync, new Runnable() {
-                @Override
-                public void run() {
-                    if (inspectionToSync.canSyncProduct()) {
-                        inspectionToSync.sync(productInspectionService, null);
-                        return;
-                    }
-
-                    if (inspectionToSync.canSyncPictures()) {
-                        inspectionToSync.sync(pictureService, null);
-                    }
-                }});
-
-            if (!canSync) {
-                break;
-            }
-
-            inspectionQueue.poll();
+        while ((inspection = inspectionQueue.poll()) != null) {
+            SyncJob job = new SyncJob(inspection, productInspectionService, pictureService, callback);
+            syncExecutor.executeSync(job);
         }
     }
 
     void subscribe(SyncCallback syncCallback) {
-        subscribers.add(checkNotNull(syncCallback));
+        callback.subscribe(syncCallback);
     }
 
     void unsubscribe(SyncCallback syncCallback) {
-        subscribers.remove(checkNotNull(syncCallback));
+        callback.unsubscribe(syncCallback);
     }
 }

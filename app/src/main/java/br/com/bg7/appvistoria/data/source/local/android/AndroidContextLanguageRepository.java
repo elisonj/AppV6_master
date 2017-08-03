@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.data.source.local;
+package br.com.bg7.appvistoria.data.source.local.android;
 
 import android.content.Context;
 
@@ -9,6 +9,7 @@ import java.util.ServiceConfigurationError;
 import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.config.vo.Language;
+import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
 
 /**
  * Created by: luciolucio

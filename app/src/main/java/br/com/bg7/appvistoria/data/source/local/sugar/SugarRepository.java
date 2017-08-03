@@ -20,6 +20,11 @@ import br.com.bg7.appvistoria.data.source.local.Repository;
 public abstract class SugarRepository<T extends SugarRecord<T>> implements Repository<T> {
     private static final Logger LOG = LoggerFactory.getLogger(SugarRepository.class);
 
+    @Override
+    public T findById(Class<T> type, Long id) {
+        return T.findById(type, id);
+    }
+
     public void save(T entity) {
         try {
             entity.save();

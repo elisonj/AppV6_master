@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
  * Date: 2017-07-19
  */
 
-public class LoginPresenterBaseTest {
+class LoginPresenterTestBase {
     @Mock
     LoginContract.View loginView;
 
@@ -140,8 +140,10 @@ public class LoginPresenterBaseTest {
         verifyShowMainScreen();
     }
 
+    /**
+     * TODO: Quando salvarmos o nome do usuario, adicionar aqui
+     */
     void verifySaveAllUserDataAndEnter() {
-        // Quando salvarmos o nome do usuario, adicionar aqui
         verifySaveTokenAndPasswordAndShowMainScreen();
     }
 

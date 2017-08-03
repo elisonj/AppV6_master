@@ -1,71 +1,83 @@
 package br.com.bg7.appvistoria.sync;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 
-import java.util.concurrent.ScheduledThreadPoolExecutor;
+import br.com.bg7.appvistoria.data.ProductInspection;
+import br.com.bg7.appvistoria.data.source.remote.HttpProgressCallback;
+import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
+import br.com.bg7.appvistoria.data.source.remote.fake.FakeProductInspection;
 
-import br.com.bg7.appvistoria.data.source.PictureService;
-import br.com.bg7.appvistoria.data.source.ProductInspectionService;
-import br.com.bg7.appvistoria.data.source.local.ProductInspectionRepository;
-import br.com.bg7.appvistoria.data.source.local.fake.FakeProductInspectionRepository;
-
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by: luciolucio
- * Date: 2017-07-31
+ * Date: 2017-08-02
  */
 
-public class SyncManagerTest {
+public class SyncManagerTest extends SyncManagerTestBase {
     private SyncManager syncManager;
 
-    private FakeProductInspectionRepository productInspectionRepository;
+    @Captor
+    private ArgumentCaptor<Runnable> scheduleQueueUpdatesCaptor;
 
-    @Mock
-    SyncExecutor syncExecutor;
+    @Captor
+    private ArgumentCaptor<Runnable> syncLoopCaptor;
 
-    @Mock
-    ProductInspectionService productInspectionService;
+    @Captor
+    private ArgumentCaptor<Runnable> executeSyncCaptor;
 
-    @Mock
-    PictureService pictureService;
+    @Captor
+    private ArgumentCaptor<HttpProgressCallback<ProductResponse>> serviceCallback;
+
+    private Runnable updateQueue;
+
+    private Runnable sync;
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        super.setUp();
 
-        productInspectionRepository = new FakeProductInspectionRepository();
-        syncManager = new SyncManager(productInspectionRepository, productInspectionService, pictureService, syncExecutor);
-    }
+        syncManager = new SyncManager(
+                productInspectionRepository,
+                productInspectionService,
+                pictureService,
+                syncExecutor
+        );
 
-    @Test(expected = NullPointerException.class)
-    public void shouldNotAcceptNullRepository() {
-        syncManager = new SyncManager(null, productInspectionService, pictureService, syncExecutor);
-    }
+        verify(syncExecutor).scheduleQueueUpdates(scheduleQueueUpdatesCaptor.capture());
+        updateQueue = scheduleQueueUpdatesCaptor.getValue();
 
-    @Test(expected = NullPointerException.class)
-    public void shouldNotAcceptNullExecutor() {
-        syncManager = new SyncManager(productInspectionRepository, productInspectionService, pictureService, null);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void shouldNotAcceptNullSubscriber()
-    {
-        syncManager.subscribe(null);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void shouldNotAcceptNullToUnsubscribe()
-    {
-        syncManager.unsubscribe(null);
+        verify(syncExecutor).scheduleSyncLoop(syncLoopCaptor.capture());
+        sync = syncLoopCaptor.getValue();
     }
 
     @Test
-    public void shouldScheduleQueueUpdates() {
-        verify(syncExecutor).scheduleQueueUpdates(any(Runnable.class));
+    public void shouldFailInspectionWhenServiceFails() {
+        final FakeProductInspection inspection = new FakeProductInspection(SyncStatus.READY);
+        productInspectionRepository.save(inspection);
+
+        updateQueue.run();
+        sync.run();
+
+        syncManager.subscribe(new FailureCheckSyncCallback() {
+            @Override
+            public void onFailure(ProductInspection productInspection, Throwable t) {
+                Assert.assertEquals(inspection, productInspection);
+                Assert.assertNull(t);
+                Assert.assertEquals(SyncStatus.FAILED, inspection.getSyncStatus());
+            }
+        });
+
+        verify(syncExecutor).executeSync(executeSyncCaptor.capture());
+        executeSyncCaptor.getValue().run();
+
+        verify(productInspectionService).send(eq(inspection), serviceCallback.capture());
+        serviceCallback.getValue().onFailure(null);
     }
 }
