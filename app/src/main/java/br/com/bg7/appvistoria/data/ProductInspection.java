@@ -36,11 +36,17 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
     public ProductInspection() {}
 
     public boolean canSyncProduct() {
-        return true;
+        if(syncStatus == SyncStatus.PICTURES_SYNCED) {
+            return true;
+        }
+        return false;
     }
 
     public boolean canSyncPictures() {
-        return true;
+        if(syncStatus == SyncStatus.READY || syncStatus == SyncStatus.PICTURES_BEING_SYNCED) {
+            return true;
+        }
+        return false;
     }
 
     public SyncStatus ready() throws SyncFailedException {
@@ -117,7 +123,6 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
         }
         return 0;
     }
-
 
     public synchronized void addImageToSync(File image) {
         imagesToSync.add(image);
