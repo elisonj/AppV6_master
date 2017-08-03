@@ -24,12 +24,12 @@ public class SyncManagerCallback implements SyncCallback {
     /**
      * Method that gets called when a {@code ProductInspection} finishes syncing successfully
      *
-     * TODO: Salvar o inspection no repository
-     *
      * @param productInspection The inspection whose sync succeeded
      */
     @Override
     public void onSuccess(ProductInspection productInspection) {
+        productInspectionRepository.save(productInspection);
+
         for (SyncCallback callback : subscribers) {
             callback.onSuccess(productInspection);
         }
@@ -52,8 +52,6 @@ public class SyncManagerCallback implements SyncCallback {
 
     /**
      * Method that gets called when a {@code ProductInspection} fails syncing
-     *
-     * TODO: Salvar o inspection no repository
      *
      * @param productInspection The inspection whose sync failed
      * @param t The error that caused it to fail
