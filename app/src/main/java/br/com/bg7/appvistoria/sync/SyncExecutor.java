@@ -9,31 +9,27 @@ import br.com.bg7.appvistoria.data.ProductInspection;
 
 interface SyncExecutor {
     /**
-     * Implementers must schedule the {@link Runnable} to run on a separate thread
+     * Implementers must schedule the {@link Runnable} to run on a single separate thread
      * and keep running it periodically
      *
-     * @param runnable
+     * @param runnable the sync loop to run
      */
     void scheduleQueueUpdates(Runnable runnable);
 
     /**
-     * Implementers must schedule the {@link Runnable} to run on a separate thread
+     * Implementers must schedule the {@link Runnable} to run on a single separate thread
      * and keep running it periodically
      *
-     * @param runnable
+     * @param runnable the sync loop to run
      */
     void scheduleSyncLoop(Runnable runnable);
 
     /**
-     * Implementers must check the {@link ProductInspection} and decide whether
-     * they are capable of syncing either a product or a picture. If they are,
-     * they must spawn a thread to run the {@link Runnable} and return true.
+     * Implementers must spawn a thread to run the provided {@code Runnable}. If they
+     * cannot run it right away, they must queue the request until they have resources
+     * to create a new thread that can run it
      *
-     * If not, ignore the {@code Runnable} and return false.
-     *
-     * @param inspection  the inspection that is going to get synced
      * @param syncJob  the sync code to run
-     * @return true if the job can be run, false if not
      */
-    boolean executeSync(ProductInspection inspection, Runnable syncJob);
+    void executeSync(Runnable syncJob);
 }

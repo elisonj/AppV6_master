@@ -116,11 +116,7 @@ class SyncManager {
 
         while ((inspection = inspectionQueue.peek()) != null) {
             SyncJob job = new SyncJob(inspection, productInspectionService, pictureService, callback);
-            if (!syncExecutor.executeSync(inspection, job)) {
-                break;
-            }
-
-            inspectionQueue.poll();
+            syncExecutor.executeSync(job);
         }
     }
 
