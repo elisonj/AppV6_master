@@ -9,6 +9,7 @@ import org.mockito.Captor;
 import br.com.bg7.appvistoria.data.ProductInspection;
 import br.com.bg7.appvistoria.data.source.remote.HttpProgressCallback;
 import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
+import br.com.bg7.appvistoria.data.source.remote.fake.FakeProductInspection;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -56,12 +57,9 @@ public class SyncManagerTest extends SyncManagerTestBase {
         sync = syncLoopCaptor.getValue();
     }
 
-    /**
-     * TODO: Obter a implementação do ProductInspection para esse teste poder passar
-     */
     @Test
     public void shouldFailInspectionWhenServiceFails() {
-        final SyncTestableProductInspection inspection = new SyncTestableProductInspection(SyncStatus.READY);
+        final FakeProductInspection inspection = new FakeProductInspection(SyncStatus.READY);
         productInspectionRepository.save(inspection);
 
         updateQueue.run();

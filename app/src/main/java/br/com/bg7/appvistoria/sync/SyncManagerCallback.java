@@ -3,6 +3,7 @@ package br.com.bg7.appvistoria.sync;
 import java.util.HashSet;
 
 import br.com.bg7.appvistoria.data.ProductInspection;
+import br.com.bg7.appvistoria.data.source.local.ProductInspectionRepository;
 import br.com.bg7.appvistoria.data.source.remote.SyncCallback;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -14,6 +15,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class SyncManagerCallback implements SyncCallback {
     private HashSet<SyncCallback> subscribers = new HashSet<>();
+    private ProductInspectionRepository productInspectionRepository;
+
+    public SyncManagerCallback(ProductInspectionRepository productInspectionRepository) {
+        this.productInspectionRepository = productInspectionRepository;
+    }
 
     /**
      * Method that gets called when a {@code ProductInspection} finishes syncing successfully
@@ -54,6 +60,8 @@ public class SyncManagerCallback implements SyncCallback {
      */
     @Override
     public void onFailure(ProductInspection productInspection, Throwable t) {
+        productInspectionRepository.save(productInspection);
+
         for (SyncCallback callback : subscribers) {
             callback.onFailure(productInspection, t);
         }

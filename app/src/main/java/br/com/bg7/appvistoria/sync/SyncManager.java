@@ -18,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 class SyncManager {
 
-    private SyncManagerCallback callback = new SyncManagerCallback();
+    private SyncManagerCallback callback;
     private LinkedBlockingQueue<ProductInspection> inspectionQueue = new LinkedBlockingQueue<>();
 
     private ProductInspectionService productInspectionService;
@@ -36,6 +36,8 @@ class SyncManager {
         this.productInspectionService = checkNotNull(productInspectionService);
         this.pictureService = checkNotNull(pictureService);
         this.syncExecutor = checkNotNull(syncExecutor);
+
+        this.callback = new SyncManagerCallback(productInspectionRepository);
 
         initQueue();
 

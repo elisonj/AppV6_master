@@ -13,7 +13,7 @@ import br.com.bg7.appvistoria.sync.SyncStatus;
  */
 public class ProductInspection extends SugarRecord<ProductInspection> {
 
-    private SyncStatus syncStatus;
+    protected SyncStatus syncStatus;
 
     /**
      * Default constructor used by Sugar
