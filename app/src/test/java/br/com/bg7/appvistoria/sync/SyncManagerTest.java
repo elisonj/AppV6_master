@@ -1,17 +1,16 @@
 package br.com.bg7.appvistoria.sync;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 
 import br.com.bg7.appvistoria.data.ProductInspection;
+import br.com.bg7.appvistoria.data.source.remote.HttpProgressCallback;
+import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -32,6 +31,9 @@ public class SyncManagerTest extends SyncManagerTestBase {
     @Captor
     private ArgumentCaptor<Runnable> executeSyncCaptor;
 
+    @Captor
+    private ArgumentCaptor<HttpProgressCallback<ProductResponse>> serviceCallback;
+
     private Runnable updateQueue;
 
     private Runnable sync;
@@ -40,7 +42,7 @@ public class SyncManagerTest extends SyncManagerTestBase {
     public void setUp() {
         super.setUp();
 
-        new SyncManager(
+        syncManager = new SyncManager(
                 productInspectionRepository,
                 productInspectionService,
                 pictureService,
@@ -54,9 +56,12 @@ public class SyncManagerTest extends SyncManagerTestBase {
         sync = syncLoopCaptor.getValue();
     }
 
+    /**
+     * TODO: Obter a implementação do ProductInspection para esse teste poder passar
+     */
     @Test
     public void shouldCallSyncOnInspectionFromQueueIfReady() {
-        SyncTestableProductInspection inspection = new SyncTestableProductInspection(SyncStatus.READY);
+        final SyncTestableProductInspection inspection = new SyncTestableProductInspection(SyncStatus.READY);
         productInspectionRepository.save(inspection);
 
         updateQueue.run();
@@ -65,9 +70,19 @@ public class SyncManagerTest extends SyncManagerTestBase {
 
         sync.run();
         Runnable syncJob = executeSyncCaptor.getValue();
+
+        syncManager.subscribe(new FailureCheckSyncCallback() {
+            @Override
+            public void onFailure(ProductInspection productInspection, Throwable t) {
+                Assert.assertEquals(inspection, productInspection);
+                Assert.assertNull(t);
+                Assert.assertEquals(SyncStatus.FAILED, inspection.getSyncStatus());
+            }
+        });
+
         syncJob.run();
 
-        // TODO: Terminar de fazer esse setup e ver o que verificar
-        Assert.assertTrue(true);
+        verify(productInspectionService).send(eq(inspection), serviceCallback.capture());
+        serviceCallback.getValue().onFailure(null);
     }
 }
