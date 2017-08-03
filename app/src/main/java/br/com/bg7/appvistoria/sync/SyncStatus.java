@@ -7,8 +7,9 @@ package br.com.bg7.appvistoria.sync;
 
 public enum SyncStatus {
     READY,
-    PRODUCT_INSPECTION_BEING_SYNCED,
-    PRODUCT_INSPECTION_SYNCED,
     PICTURES_BEING_SYNCED,
-    FAILED
+    PICTURES_SYNCED,
+    INSPECTION_BEING_SYNCED,
+    FAILED,
+    DONE
 }
