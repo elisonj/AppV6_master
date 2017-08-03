@@ -60,7 +60,7 @@ public class SyncManagerTest extends SyncManagerTestBase {
      * TODO: Obter a implementação do ProductInspection para esse teste poder passar
      */
     @Test
-    public void shouldCallSyncOnInspectionFromQueueIfReady() {
+    public void shouldFailSyncWhenServiceFails() {
         final SyncTestableProductInspection inspection = new SyncTestableProductInspection(SyncStatus.READY);
         productInspectionRepository.save(inspection);
 
