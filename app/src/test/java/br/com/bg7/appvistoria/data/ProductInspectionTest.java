@@ -9,6 +9,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.io.File;
 import java.io.SyncFailedException;
 
 import javax.annotation.Nullable;
@@ -18,6 +19,7 @@ import br.com.bg7.appvistoria.data.source.ProductInspectionService;
 import br.com.bg7.appvistoria.data.source.remote.HttpProgressCallback;
 import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.SyncCallback;
+import br.com.bg7.appvistoria.data.source.remote.dto.PictureResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
 import br.com.bg7.appvistoria.sync.SyncStatus;
 
@@ -30,7 +32,9 @@ import static org.mockito.Mockito.verify;
  */
 public class ProductInspectionTest {
 
-    ProductInspection productInspection;
+    private static final double PROGRESS = 50;
+
+    private ProductInspection productInspection;
 
     @Mock
     ProductInspectionService productInspectionService;
@@ -41,20 +45,93 @@ public class ProductInspectionTest {
     @Captor
     ArgumentCaptor<HttpProgressCallback<ProductResponse>> productInspectorCallback;
 
+    @Captor
+    ArgumentCaptor<HttpProgressCallback<PictureResponse>> pictureCallback;
+
     @Before
-    public void setUp() {
+    public void setUp() throws SyncFailedException {
         MockitoAnnotations.initMocks(this);
         productInspection = new ProductInspection();
+        Assert.assertEquals(productInspection.ready(), SyncStatus.READY);
     }
 
     @Test
-    public void shouldSyncProductInspection() throws SyncFailedException{
-        Assert.assertEquals(productInspection.ready(), SyncStatus.READY);
+    public void shouldErrorSyncPicture() {
+        addImageToSync(1);
+        setUpSyncPictures();
+        pictureCallback.getValue().onFailure(new SyncFailedException("Cannot sync"));
+    }
 
+    @Test
+    public void shouldSyncPicture() {
+        addImageToSync(1);
+        syncPictures();
+        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.PICTURES_SYNCED);
+    }
+
+    @Test
+    public void shouldStatusPicureBeingSyncedWhenProgressUpdated() {
+        addImageToSync(1);
+        setUpSyncPictures();
+        pictureCallback.getValue().onProgressUpdated(PROGRESS);
+        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.PICTURES_BEING_SYNCED);
+    }
+
+    @Test
+    public void shouldShowBeingSyncPictureWhenSendPartialList() {
+        addImageToSync(2);
+        syncPictures();
+        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.PICTURES_BEING_SYNCED);
+    }
+
+    @Test
+    public void shouldShowBeingSyncPictureWhenSendAll() {
+        shouldShowBeingSyncPictureWhenSendPartialList();
+        syncPictures();
+        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.PICTURES_SYNCED);
+    }
+
+    @Test
+    public void shouldSyncProductInspection() {
+        syncProduct();
+        productInspectorCallback.getValue().onResponse(productResponse);
+        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.DONE);
+    }
+
+    @Test
+    public void shouldErrorProductInspection() {
+        syncProduct();
+        productInspectorCallback.getValue().onFailure(new SyncFailedException("Cannot sync"));
+        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.FAILED);
+    }
+
+    @Test
+    public void shouldStatusProductBeingSyncedWhenProgressUpdated() {
+        syncProduct();
+        productInspectorCallback.getValue().onProgressUpdated(PROGRESS);
+        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.INSPECTION_BEING_SYNCED);
+    }
+
+    private void addImageToSync(int cont) {
+        for(int i=0; i<cont; i++)
+            productInspection.addImageToSync(new File(""));
+    }
+
+    private void syncPictures() {
+        setUpSyncPictures();
+        pictureCallback.getValue().onResponse(pictureResponse);
+    }
+
+    private void setUpSyncPictures() {
+        productInspection.sync(pictureService, callback);
+        verify(pictureService).send(eq(new File("")), eq(productInspection), pictureCallback.capture());
+    }
+
+    private void syncProduct() {
+        addImageToSync(1);
+        syncPictures();
         productInspection.sync(productInspectionService, callback);
         verify(productInspectionService).send(eq(productInspection), productInspectorCallback.capture());
-        productInspectorCallback.getValue().onResponse(productResponse);
-        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.PRODUCT_INSPECTION_SYNCED);
     }
 
     private SyncCallback callback = new SyncCallback() {
@@ -66,6 +143,26 @@ public class ProductInspectionTest {
 
         @Override
         public void onFailure(ProductInspection productInspection, Throwable t) { }
+    };
+
+
+
+    private HttpResponse<PictureResponse> pictureResponse = new HttpResponse<PictureResponse>() {
+        @Override
+        public boolean isSuccessful() {
+            return true;
+        }
+
+        @Nullable
+        @Override
+        public PictureResponse body() {
+            return null;
+        }
+
+        @Override
+        public int code() {
+            return 0;
+        }
     };
 
     private HttpResponse<ProductResponse> productResponse = new HttpResponse<ProductResponse>() {
