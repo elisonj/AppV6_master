@@ -25,13 +25,13 @@ class SyncJob implements Runnable {
     @Override
     public void run() {
         try {
-            if (inspectionToSync.canSyncProduct()) {
-                inspectionToSync.sync(productInspectionService, callback);
+            if (inspectionToSync.canSyncPictures()) {
+                inspectionToSync.sync(pictureService, callback);
                 return;
             }
 
-            if (inspectionToSync.canSyncPictures()) {
-                inspectionToSync.sync(pictureService, callback);
+            if (inspectionToSync.canSyncProduct()) {
+                inspectionToSync.sync(productInspectionService, callback);
             }
         } catch (IllegalStateException exception) {
 
