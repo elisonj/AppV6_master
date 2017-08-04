@@ -148,5 +148,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
         return syncStatus;
     }
 
-    public void reset() {}
+    public void reset() {
+        syncStatus = SyncStatus.READY;
+    }
 }
