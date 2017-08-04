@@ -57,21 +57,21 @@ public class ProductInspectionTest {
     }
 
     @Test
-    public void shouldErrorSyncPicture() {
+    public void shouldErrorSyncPicture() throws InterruptedException {
         addOneImageToSync();
         setUpSyncPictures();
         pictureCallback.getValue().onFailure(new IllegalStateException("Cannot sync"));
     }
 
     @Test
-    public void shouldSyncPicture() {
+    public void shouldSyncPicture() throws InterruptedException {
         addOneImageToSync();
         syncPictures();
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.PICTURES_SYNCED);
     }
 
     @Test
-    public void shouldStatusPicureBeingSyncedWhenProgressUpdated() {
+    public void shouldStatusPicureBeingSyncedWhenProgressUpdated() throws InterruptedException {
         addOneImageToSync();
         setUpSyncPictures();
         pictureCallback.getValue().onProgressUpdated(PROGRESS);
@@ -79,14 +79,14 @@ public class ProductInspectionTest {
     }
 
     @Test
-    public void shouldShowBeingSyncPictureWhenSendPartialList() {
+    public void shouldShowBeingSyncPictureWhenSendPartialList() throws InterruptedException {
         addImageToSync(FILES_TO_SYNC);
         syncPictures();
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.PICTURES_BEING_SYNCED);
     }
 
     @Test
-    public void shouldShowPicturesSyncedWhenSendAll() {
+    public void shouldShowPicturesSyncedWhenSendAll() throws InterruptedException {
         addImageToSync(FILES_TO_SYNC);
         shouldSyncStatusReady();
         numberOfTimesToSync(FILES_TO_SYNC);
@@ -94,21 +94,21 @@ public class ProductInspectionTest {
     }
 
     @Test
-    public void shouldSyncProductInspection() {
+    public void shouldSyncProductInspection() throws InterruptedException {
         syncProduct();
         productInspectorCallback.getValue().onResponse(productResponse);
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.DONE);
     }
 
     @Test
-    public void shouldErrorProductInspection() {
+    public void shouldErrorProductInspection() throws InterruptedException {
         syncProduct();
         productInspectorCallback.getValue().onFailure(new IllegalStateException("Cannot sync"));
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.FAILED);
     }
 
     @Test
-    public void shouldStatusProductBeingSyncedWhenProgressUpdated() {
+    public void shouldStatusProductBeingSyncedWhenProgressUpdated() throws InterruptedException {
         syncProduct();
         productInspectorCallback.getValue().onProgressUpdated(PROGRESS);
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.INSPECTION_BEING_SYNCED);
@@ -126,13 +126,14 @@ public class ProductInspectionTest {
         Assert.assertEquals(productInspection.ready(), SyncStatus.READY);
     }
 
-    private void addOneImageToSync() {
-        addImageToSync(1);
+    private void addOneImageToSync() throws InterruptedException {
+            addImageToSync(1);
     }
 
-    private void addImageToSync(int cont) {
-        for(int i=0; i<cont; i++)
+    private void addImageToSync(int cont) throws InterruptedException{
+        for(int i=0; i<cont; i++) {
             productInspection.addImageToSync(FILE);
+        }
     }
 
     private void syncPictures() {
@@ -146,7 +147,7 @@ public class ProductInspectionTest {
         verify(pictureService).send(eq(FILE), eq(productInspection), pictureCallback.capture());
     }
 
-    private void syncProduct() {
+    private void syncProduct() throws InterruptedException {
         addImageToSync(1);
         syncPictures();
         productInspection.sync(productInspectionService, callback);
