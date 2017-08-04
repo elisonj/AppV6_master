@@ -17,6 +17,7 @@ import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
 import br.com.bg7.appvistoria.data.source.remote.fake.FakeProductInspection;
 
 import static br.com.bg7.appvistoria.sync.MockInspection.mockInspection;
+import static br.com.bg7.appvistoria.sync.MockInspectionChecker.checkThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -103,7 +104,7 @@ public class SyncManagerTest extends SyncManagerTestBase {
 
         runSync();
 
-        verify(inspection, never()).sync(any(PictureService.class), any(SyncCallback.class));
+        checkThat(inspection).doesNotSyncPictures();
     }
 
     @Test
@@ -113,7 +114,21 @@ public class SyncManagerTest extends SyncManagerTestBase {
 
         runSync();
 
-        verify(inspection, never()).sync(any(ProductInspectionService.class), any(SyncCallback.class));
+        checkThat(inspection).doesNotSyncProducts();
+    }
+
+    @Test
+    public void shouldNotAttemptToSyncProductWhenCanSyncPictures() {
+        ProductInspection inspection = mockInspection()
+                .thatCanSyncPictures()
+                .thatCanSyncProduct()
+                .create();
+        save(inspection);
+
+        runSync();
+
+        checkThat(inspection).syncsPictures();
+        checkThat(inspection).doesNotSyncProducts();
     }
 
     @Test
