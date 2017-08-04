@@ -29,7 +29,6 @@ class ProductFile extends SugarRecord<ProductFile> {
         this.productInspectionId = productInspectionId;
         this.file = file;
         this.path = file.getAbsolutePath();
-        this.save();
     }
 
     public File getFile() {
@@ -42,6 +41,5 @@ class ProductFile extends SugarRecord<ProductFile> {
 
     void setSyncStatus(SyncStatus syncStatus) {
         this.syncStatus = syncStatus;
-        this.save();
     }
 }
