@@ -34,7 +34,6 @@ public class ProductInspectionTest {
 
     private static final double PROGRESS = 50;
     private static final int FILES_TO_SYNC = 3;
-    private static final int ONE_FILE = 1;
     private static final File FILE = new File("");
 
     private ProductInspection productInspection;
@@ -55,26 +54,25 @@ public class ProductInspectionTest {
     public void setUp() throws IllegalStateException {
         MockitoAnnotations.initMocks(this);
         productInspection = new ProductInspection();
-        Assert.assertEquals(productInspection.ready(), SyncStatus.READY);
     }
 
     @Test
     public void shouldErrorSyncPicture() {
-        addImageToSync(ONE_FILE);
+        addOneImageToSync();
         setUpSyncPictures();
         pictureCallback.getValue().onFailure(new IllegalStateException("Cannot sync"));
     }
 
     @Test
     public void shouldSyncPicture() {
-        addImageToSync(ONE_FILE);
+        addOneImageToSync();
         syncPictures();
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.PICTURES_SYNCED);
     }
 
     @Test
     public void shouldStatusPicureBeingSyncedWhenProgressUpdated() {
-        addImageToSync(ONE_FILE);
+        addOneImageToSync();
         setUpSyncPictures();
         pictureCallback.getValue().onProgressUpdated(PROGRESS);
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.PICTURES_BEING_SYNCED);
@@ -90,6 +88,7 @@ public class ProductInspectionTest {
     @Test
     public void shouldShowPicturesSyncedWhenSendAll() {
         addImageToSync(FILES_TO_SYNC);
+        shouldSyncStatusReady();
         numberOfTimesToSync(FILES_TO_SYNC);
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.PICTURES_SYNCED);
     }
@@ -123,6 +122,14 @@ public class ProductInspectionTest {
         pictureCallback.getValue().onResponse(pictureResponse);
     }
 
+    private void shouldSyncStatusReady(){
+        Assert.assertEquals(productInspection.ready(), SyncStatus.READY);
+    }
+
+    private void addOneImageToSync() {
+        addImageToSync(1);
+    }
+
     private void addImageToSync(int cont) {
         for(int i=0; i<cont; i++)
             productInspection.addImageToSync(FILE);
@@ -134,6 +141,7 @@ public class ProductInspectionTest {
     }
 
     private void setUpSyncPictures() {
+        shouldSyncStatusReady();
         productInspection.sync(pictureService, callback);
         verify(pictureService).send(eq(FILE), eq(productInspection), pictureCallback.capture());
     }
