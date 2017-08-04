@@ -1,5 +1,7 @@
 package br.com.bg7.appvistoria.sync;
 
+import android.graphics.Picture;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,20 +9,19 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import br.com.bg7.appvistoria.data.ProductInspection;
+import br.com.bg7.appvistoria.data.source.PictureService;
+import br.com.bg7.appvistoria.data.source.ProductInspectionService;
 import br.com.bg7.appvistoria.data.source.remote.HttpProgressCallback;
+import br.com.bg7.appvistoria.data.source.remote.SyncCallback;
 import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
 import br.com.bg7.appvistoria.data.source.remote.fake.FakeProductInspection;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -74,8 +75,8 @@ public class SyncManagerTest extends SyncManagerTestBase {
         final FakeProductInspection inspection = new FakeProductInspection(SyncStatus.READY);
         productInspectionRepository.save(inspection);
 
-        runSync(inspection);
-        fail(inspection);
+        runSync();
+        failProductInspectionService(inspection);
 
         ProductInspection inspectionFromDb = productInspectionRepository.findById(ProductInspection.class, inspection.getId());
         Assert.assertEquals(SyncStatus.FAILED, inspectionFromDb.getSyncStatus());
@@ -83,17 +84,44 @@ public class SyncManagerTest extends SyncManagerTestBase {
 
     @Test
     public void shouldCallSubscribedCallback() {
-        final FakeProductInspection inspection = new FakeProductInspection(SyncStatus.READY);
+        FakeProductInspection inspection = new FakeProductInspection(SyncStatus.READY);
         productInspectionRepository.save(inspection);
 
         syncManager.subscribe(new SyncCallbackCheck(inspection));
 
-        runSync(inspection);
-        fail(inspection);
+        runSync();
+        failProductInspectionService(inspection);
+        // TODO: fail the Picture service too
+        // TODO: onProgressUpdate each service
+        // TODO: succeed each service
 
         // Verification happens when the callback gets called
     }
 
+    @Test
+    public void shouldNotAttemptToSyncInspectionThatCannotSyncPictures() {
+        ProductInspection inspection = mock(ProductInspection.class);
+        when(inspection.canSyncPictures()).thenReturn(false);
+        when(inspection.getSyncStatus()).thenReturn(SyncStatus.READY);
+        productInspectionRepository.save(inspection);
+
+        runSync();
+
+        verify(inspection, never()).sync(any(PictureService.class), any(SyncCallback.class));
+    }
+
+    @Test
+    public void shouldNotAttemptToSyncInspectionThatCannotSyncProduct() {
+        ProductInspection inspection = mock(ProductInspection.class);
+        when(inspection.canSyncProduct()).thenReturn(false);
+        when(inspection.getSyncStatus()).thenReturn(SyncStatus.READY);
+        productInspectionRepository.save(inspection);
+
+        runSync();
+
+        verify(inspection, never()).sync(any(ProductInspectionService.class), any(SyncCallback.class));
+    }
+    
     @Test
     public void shouldResetIncompleteProductInspectionsWhenStarting() {
 
@@ -126,7 +154,7 @@ public class SyncManagerTest extends SyncManagerTestBase {
         return productInspection;
     }
 
-    private void runSync(FakeProductInspection inspection) {
+    private void runSync() {
         updateQueue.run();
         sync.run();
 
@@ -134,7 +162,7 @@ public class SyncManagerTest extends SyncManagerTestBase {
         executeSyncCaptor.getValue().run();
     }
 
-    private void fail(FakeProductInspection inspection) {
+    private void failProductInspectionService(ProductInspection inspection) {
         verify(productInspectionService).send(eq(inspection), serviceCallback.capture());
         serviceCallback.getValue().onFailure(null);
     }
