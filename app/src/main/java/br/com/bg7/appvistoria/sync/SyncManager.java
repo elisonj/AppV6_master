@@ -49,13 +49,13 @@ class SyncManager {
     /**
      * Runs the initialization process
      *
-     * 1. Reset PRODUCT_INSPECTION_BEING_SYNCED to READY
+     * 1. Reset inspections that failed midway through
      * 2. Queue {@link ProductInspection} items that are in the statuses
      *    between READY and DONE/FAIL
      *
      * This logic assumes that no other {@link SyncManager} is currently monitoring
-     * the given {@link #productInspectionRepository}, and that we are free to change
-     * the status of the items of the {@link ProductInspectionRepository}.
+     * the given {@link #productInspectionRepository}, and as such we are free to change
+     * the status of the items in the repository
      */
     private void initQueue() {
         for (SyncStatus syncStatus : PENDING_INSPECTIONS_RESETTABLE_STATUS_LIST) {
