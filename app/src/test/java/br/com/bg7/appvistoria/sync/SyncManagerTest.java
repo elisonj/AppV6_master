@@ -1,7 +1,5 @@
 package br.com.bg7.appvistoria.sync;
 
-import android.graphics.Picture;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,12 +16,12 @@ import br.com.bg7.appvistoria.data.source.remote.SyncCallback;
 import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
 import br.com.bg7.appvistoria.data.source.remote.fake.FakeProductInspection;
 
+import static br.com.bg7.appvistoria.sync.MockInspection.mockInspection;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by: luciolucio
@@ -73,7 +71,7 @@ public class SyncManagerTest extends SyncManagerTestBase {
     @Test
     public void shouldFailInspectionWhenServiceFails() {
         final FakeProductInspection inspection = new FakeProductInspection(SyncStatus.READY);
-        productInspectionRepository.save(inspection);
+        save(inspection);
 
         runSync();
         failProductInspectionService(inspection);
@@ -85,7 +83,7 @@ public class SyncManagerTest extends SyncManagerTestBase {
     @Test
     public void shouldCallSubscribedCallback() {
         FakeProductInspection inspection = new FakeProductInspection(SyncStatus.READY);
-        productInspectionRepository.save(inspection);
+        save(inspection);
 
         syncManager.subscribe(new SyncCallbackCheck(inspection));
 
@@ -99,11 +97,9 @@ public class SyncManagerTest extends SyncManagerTestBase {
     }
 
     @Test
-    public void shouldNotAttemptToSyncInspectionThatCannotSyncPictures() {
-        ProductInspection inspection = mock(ProductInspection.class);
-        when(inspection.canSyncPictures()).thenReturn(false);
-        when(inspection.getSyncStatus()).thenReturn(SyncStatus.READY);
-        productInspectionRepository.save(inspection);
+    public void shouldNotAttemptToSyncPictureWhenCannotSyncPictures() {
+        ProductInspection inspection = mockInspection().thatCannotSyncPictures().create();
+        save(inspection);
 
         runSync();
 
@@ -111,11 +107,9 @@ public class SyncManagerTest extends SyncManagerTestBase {
     }
 
     @Test
-    public void shouldNotAttemptToSyncInspectionThatCannotSyncProduct() {
-        ProductInspection inspection = mock(ProductInspection.class);
-        when(inspection.canSyncProduct()).thenReturn(false);
-        when(inspection.getSyncStatus()).thenReturn(SyncStatus.READY);
-        productInspectionRepository.save(inspection);
+    public void shouldNotAttemptToSyncProductWhenCannotSyncProduct() {
+        ProductInspection inspection = mockInspection().thatCannotSyncProduct().create();
+        save(inspection);
 
         runSync();
 
@@ -126,14 +120,14 @@ public class SyncManagerTest extends SyncManagerTestBase {
     public void shouldResetIncompleteProductInspectionsWhenStarting() {
 
         ArrayList<ProductInspection> inspectionsThatGetReset = new ArrayList<>();
-        inspectionsThatGetReset.add(saveNewProductInspectionWith(SyncStatus.PICTURES_BEING_SYNCED));
-        inspectionsThatGetReset.add(saveNewProductInspectionWith(SyncStatus.PRODUCT_INSPECTION_BEING_SYNCED));
+        inspectionsThatGetReset.add(saveWithStatus(SyncStatus.PICTURES_BEING_SYNCED));
+        inspectionsThatGetReset.add(saveWithStatus(SyncStatus.PRODUCT_INSPECTION_BEING_SYNCED));
 
         ArrayList<ProductInspection> inspectionsThatDoNotGetReset = new ArrayList<>();
-        inspectionsThatDoNotGetReset.add(saveNewProductInspectionWith(SyncStatus.DONE));
-        inspectionsThatDoNotGetReset.add(saveNewProductInspectionWith(SyncStatus.FAILED));
-        inspectionsThatDoNotGetReset.add(saveNewProductInspectionWith(SyncStatus.PICTURES_SYNCED));
-        inspectionsThatDoNotGetReset.add(saveNewProductInspectionWith(SyncStatus.READY));
+        inspectionsThatDoNotGetReset.add(saveWithStatus(SyncStatus.DONE));
+        inspectionsThatDoNotGetReset.add(saveWithStatus(SyncStatus.FAILED));
+        inspectionsThatDoNotGetReset.add(saveWithStatus(SyncStatus.PICTURES_SYNCED));
+        inspectionsThatDoNotGetReset.add(saveWithStatus(SyncStatus.READY));
 
         new SyncManager(productInspectionRepository, productInspectionService, pictureService, syncExecutor);
 
@@ -146,10 +140,13 @@ public class SyncManagerTest extends SyncManagerTestBase {
         }
     }
 
-    private ProductInspection saveNewProductInspectionWith(SyncStatus status) {
-        ProductInspection productInspection = mock(ProductInspection.class);
-        when(productInspection.getSyncStatus()).thenReturn(status);
-        productInspectionRepository.save(productInspection);
+    private void save(ProductInspection inspection) {
+        productInspectionRepository.save(inspection);
+    }
+
+    private ProductInspection saveWithStatus(SyncStatus status) {
+        ProductInspection productInspection = mockInspection().withStatus(status).create();
+        save(productInspection);
 
         return productInspection;
     }
