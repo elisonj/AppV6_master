@@ -9,18 +9,13 @@ import org.mockito.Captor;
 import java.util.ArrayList;
 
 import br.com.bg7.appvistoria.data.ProductInspection;
-import br.com.bg7.appvistoria.data.source.PictureService;
-import br.com.bg7.appvistoria.data.source.ProductInspectionService;
 import br.com.bg7.appvistoria.data.source.remote.HttpProgressCallback;
-import br.com.bg7.appvistoria.data.source.remote.SyncCallback;
 import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
 import br.com.bg7.appvistoria.data.source.remote.fake.FakeProductInspection;
 
 import static br.com.bg7.appvistoria.sync.MockInspection.mockInspection;
 import static br.com.bg7.appvistoria.sync.MockInspectionChecker.checkThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -71,7 +66,7 @@ public class SyncManagerTest extends SyncManagerTestBase {
 
     @Test
     public void shouldFailInspectionWhenServiceFails() {
-        final FakeProductInspection inspection = new FakeProductInspection(SyncStatus.READY);
+        FakeProductInspection inspection = new FakeProductInspection(SyncStatus.READY);
         save(inspection);
 
         runSync();
@@ -127,8 +122,28 @@ public class SyncManagerTest extends SyncManagerTestBase {
 
         runSync();
 
-        checkThat(inspection).syncsPictures();
         checkThat(inspection).doesNotSyncProducts();
+    }
+
+    @Test
+    public void shouldSyncPictures() {
+        ProductInspection inspection = mockInspection().thatCanSyncPictures().create();
+
+        runSync();
+
+        checkThat(inspection).syncsPictures();
+    }
+
+    @Test
+    public void shouldSyncProductWhenCannotSyncPictures() {
+        ProductInspection inspection = mockInspection()
+                .thatCannotSyncPictures()
+                .thatCanSyncProduct()
+                .create();
+
+        runSync();
+
+        checkThat(inspection).syncsProducts();
     }
 
     @Test
