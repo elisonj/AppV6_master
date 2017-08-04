@@ -25,6 +25,10 @@ import static org.mockito.Mockito.verify;
  *
  * Tests the SyncManager. One of its main rensponsibilities is to persist
  * the {@link ProductInspection} items in the {@link br.com.bg7.appvistoria.data.source.local.ProductInspectionRepository}
+ *
+ * TODO: Teste que quando IllegalStateException, não chama o callback.onFailure
+ * TODO: Reorganizar a classe, que está muito grande
+ * TODO: Todas as verificações de callback
  */
 
 public class SyncManagerTest extends SyncManagerTestBase {
