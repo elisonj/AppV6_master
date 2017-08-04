@@ -13,7 +13,6 @@ import br.com.bg7.appvistoria.data.source.remote.fake.FakeProductInspection;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by: luciolucio

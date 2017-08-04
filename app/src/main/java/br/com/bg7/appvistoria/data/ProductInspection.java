@@ -2,13 +2,25 @@ package br.com.bg7.appvistoria.data;
 
 import com.orm.SugarRecord;
 
+import java.io.File;
+import java.util.Vector;
+
+import br.com.bg7.appvistoria.data.source.PictureService;
+import br.com.bg7.appvistoria.data.source.ProductInspectionService;
+import br.com.bg7.appvistoria.data.source.remote.HttpProgressCallback;
+import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
+import br.com.bg7.appvistoria.data.source.remote.SyncCallback;
+import br.com.bg7.appvistoria.data.source.remote.dto.PictureResponse;
+import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
+import br.com.bg7.appvistoria.sync.SyncStatus;
+
 /**
  * Created by: elison
  * Date: 2017-07-27
  */
 public class ProductInspection extends SugarRecord<ProductInspection> {
 
-    private SyncStatus syncStatus = null;
+    public SyncStatus syncStatus = null;
 
     private long id;
     private Product product;
@@ -20,6 +32,10 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
      */
     @SuppressWarnings("unused")
     public ProductInspection() {}
+
+    public ProductInspection(SyncStatus syncStatus) {
+        this.syncStatus = syncStatus;
+    }
 
     public boolean canSyncProduct() {
         if(syncStatus == SyncStatus.PICTURES_SYNCED) {
@@ -35,13 +51,13 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
         return false;
     }
 
-    public SyncStatus ready() throws SyncFailedException {
+    public SyncStatus ready() throws IllegalStateException {
         if(syncStatus == null || syncStatus == SyncStatus.READY) {
             syncStatus = SyncStatus.READY;
             return syncStatus;
         }
 
-        throw new SyncFailedException("Cannot sync");
+        throw new IllegalStateException("Cannot sync when status is "+syncStatus);
     }
 
     public void sync(PictureService pictureService, final SyncCallback syncCallback) {
@@ -131,4 +147,6 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
     public SyncStatus getSyncStatus() {
         return syncStatus;
     }
+
+    public void reset() {}
 }

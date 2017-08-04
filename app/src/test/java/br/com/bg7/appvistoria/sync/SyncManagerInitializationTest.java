@@ -87,7 +87,7 @@ public class SyncManagerInitializationTest extends SyncManagerTestBase {
 
     @Test
     public void shouldResetReadyStatusOnInit() {
-        ProductInspection productInspection = new ProductInspection(SyncStatus.PRODUCT_INSPECTION_BEING_SYNCED);
+        ProductInspection productInspection = new ProductInspection(SyncStatus.INSPECTION_BEING_SYNCED);
 
         instantiateSyncManagerWith(productInspection);
 

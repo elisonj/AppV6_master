@@ -65,7 +65,7 @@ class SyncManager {
     }
 
     private void resetIncompleteInspections() {
-        Iterable<ProductInspection> productInspections = productInspectionRepository.findBySyncStatus(SyncStatus.PRODUCT_INSPECTION_BEING_SYNCED);
+        Iterable<ProductInspection> productInspections = productInspectionRepository.findBySyncStatus(SyncStatus.INSPECTION_BEING_SYNCED);
 
         for (ProductInspection productInspection : productInspections) {
             resetInspection(productInspection);

@@ -11,7 +11,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.io.File;
-import java.io.SyncFailedException;
 
 import javax.annotation.Nullable;
 
@@ -53,7 +52,7 @@ public class ProductInspectionTest {
     ArgumentCaptor<HttpProgressCallback<PictureResponse>> pictureCallback;
 
     @Before
-    public void setUp() throws SyncFailedException {
+    public void setUp() throws IllegalStateException {
         MockitoAnnotations.initMocks(this);
         productInspection = new ProductInspection();
         Assert.assertEquals(productInspection.ready(), SyncStatus.READY);
@@ -63,7 +62,7 @@ public class ProductInspectionTest {
     public void shouldErrorSyncPicture() {
         addImageToSync(ONE_FILE);
         setUpSyncPictures();
-        pictureCallback.getValue().onFailure(new SyncFailedException("Cannot sync"));
+        pictureCallback.getValue().onFailure(new IllegalStateException("Cannot sync"));
     }
 
     @Test
@@ -105,7 +104,7 @@ public class ProductInspectionTest {
     @Test
     public void shouldErrorProductInspection() {
         syncProduct();
-        productInspectorCallback.getValue().onFailure(new SyncFailedException("Cannot sync"));
+        productInspectorCallback.getValue().onFailure(new IllegalStateException("Cannot sync"));
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.FAILED);
     }
 
