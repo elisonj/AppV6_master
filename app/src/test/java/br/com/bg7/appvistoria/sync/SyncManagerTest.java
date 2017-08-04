@@ -121,7 +121,7 @@ public class SyncManagerTest extends SyncManagerTestBase {
 
         verify(inspection, never()).sync(any(ProductInspectionService.class), any(SyncCallback.class));
     }
-    
+
     @Test
     public void shouldResetIncompleteProductInspectionsWhenStarting() {
 
