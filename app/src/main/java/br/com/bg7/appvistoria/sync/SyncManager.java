@@ -8,6 +8,7 @@ import br.com.bg7.appvistoria.data.source.ProductInspectionService;
 import br.com.bg7.appvistoria.data.source.local.ProductInspectionRepository;
 import br.com.bg7.appvistoria.data.source.remote.SyncCallback;
 
+import static br.com.bg7.appvistoria.Constants.PENDING_INSPECTIONS_RESETTABLE_STATUS_LIST;
 import static br.com.bg7.appvistoria.Constants.PENDING_INSPECTIONS_STATUS_INITIALIZATION_ORDER;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -57,17 +58,19 @@ class SyncManager {
      * the status of the items of the {@link ProductInspectionRepository}.
      */
     private void initQueue() {
-        resetIncompleteInspections();
+        for (SyncStatus syncStatus : PENDING_INSPECTIONS_RESETTABLE_STATUS_LIST) {
+            resetIncompleteInspections(syncStatus);
+        }
 
         for (SyncStatus syncStatus : PENDING_INSPECTIONS_STATUS_INITIALIZATION_ORDER) {
             updateQueue(syncStatus);
         }
     }
 
-    private void resetIncompleteInspections() {
-        Iterable<ProductInspection> productInspections = productInspectionRepository.findBySyncStatus(SyncStatus.PRODUCT_INSPECTION_BEING_SYNCED);
+    private void resetIncompleteInspections(SyncStatus syncStatus) {
+        Iterable<ProductInspection> picturesSyncInpections = productInspectionRepository.findBySyncStatus(syncStatus);
 
-        for (ProductInspection productInspection : productInspections) {
+        for (ProductInspection productInspection : picturesSyncInpections) {
             resetInspection(productInspection);
         }
     }
