@@ -37,6 +37,7 @@ class ConfigPresenter implements ConfigContract.Presenter {
         List<Language> languageList = languageRepository.getLanguages();
         configView.setLanguages(languageList);
 
+        // TODO: Pegar por usuário
         Config config = configRepository.first(Config.class);
         if(config == null) {
             applyDefaultConfig(languageList);
