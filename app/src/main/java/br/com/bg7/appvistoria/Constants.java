@@ -13,11 +13,11 @@ public class Constants {
 
     public static final SyncStatus[] PENDING_INSPECTIONS_RESETTABLE_STATUS_LIST = {
             SyncStatus.PICTURES_BEING_SYNCED,
-            SyncStatus.PRODUCT_INSPECTION_BEING_SYNCED,
+            SyncStatus.INSPECTION_BEING_SYNCED,
     };
 
     public static final SyncStatus[] PENDING_INSPECTIONS_STATUS_INITIALIZATION_ORDER = {
-            SyncStatus.PRODUCT_INSPECTION_BEING_SYNCED,
+            SyncStatus.INSPECTION_BEING_SYNCED,
             SyncStatus.PICTURES_SYNCED,
             SyncStatus.PICTURES_BEING_SYNCED,
             SyncStatus.READY
