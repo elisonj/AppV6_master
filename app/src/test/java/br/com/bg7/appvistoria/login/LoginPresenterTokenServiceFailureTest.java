@@ -14,7 +14,7 @@ import static org.mockito.Mockito.verify;
  * Linha 1 da tabela
  * https://bg7.easyredmine.com/projects/185/wiki/Pode_falar_mais_sobre_a_tela_de_login
  */
-public class LoginPresenterTokenServiceFailureTest extends LoginPresenterBaseTest {
+public class LoginPresenterTokenServiceFailureTest extends LoginPresenterTestBase {
 
     /**
      * 1.1 (a)
