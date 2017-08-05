@@ -8,6 +8,7 @@ import br.com.bg7.appvistoria.data.source.ProductInspectionService;
 import br.com.bg7.appvistoria.data.source.local.ProductInspectionRepository;
 import br.com.bg7.appvistoria.data.source.remote.SyncCallback;
 
+import static br.com.bg7.appvistoria.Constants.PENDING_INSPECTIONS_RESETTABLE_STATUS_LIST;
 import static br.com.bg7.appvistoria.Constants.PENDING_INSPECTIONS_STATUS_INITIALIZATION_ORDER;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -48,26 +49,28 @@ class SyncManager {
     /**
      * Runs the initialization process
      *
-     * 1. Reset PRODUCT_INSPECTION_BEING_SYNCED to READY
+     * 1. Reset inspections that failed midway through
      * 2. Queue {@link ProductInspection} items that are in the statuses
      *    between READY and DONE/FAIL
      *
      * This logic assumes that no other {@link SyncManager} is currently monitoring
-     * the given {@link #productInspectionRepository}, and that we are free to change
-     * the status of the items of the {@link ProductInspectionRepository}.
+     * the given {@link #productInspectionRepository}, and as such we are free to change
+     * the status of the items in the repository
      */
     private void initQueue() {
-        resetIncompleteInspections();
+        for (SyncStatus syncStatus : PENDING_INSPECTIONS_RESETTABLE_STATUS_LIST) {
+            resetIncompleteInspections(syncStatus);
+        }
 
         for (SyncStatus syncStatus : PENDING_INSPECTIONS_STATUS_INITIALIZATION_ORDER) {
             updateQueue(syncStatus);
         }
     }
 
-    private void resetIncompleteInspections() {
-        Iterable<ProductInspection> productInspections = productInspectionRepository.findBySyncStatus(SyncStatus.INSPECTION_BEING_SYNCED);
+    private void resetIncompleteInspections(SyncStatus syncStatus) {
+        Iterable<ProductInspection> picturesSyncInpections = productInspectionRepository.findBySyncStatus(syncStatus);
 
-        for (ProductInspection productInspection : productInspections) {
+        for (ProductInspection productInspection : picturesSyncInpections) {
             resetInspection(productInspection);
         }
     }

@@ -11,10 +11,15 @@ public class Constants {
     public static final String PREFERENCE_LANGUAGE_KEY = "PREFERENCE_LANGUAGE_KEY";
     public static final String DEFAULT_LANGUAGE = "pt";
 
-    public static final SyncStatus[] PENDING_INSPECTIONS_STATUS_INITIALIZATION_ORDER = {
+    public static final SyncStatus[] PENDING_INSPECTIONS_RESETTABLE_STATUS_LIST = {
             SyncStatus.PICTURES_BEING_SYNCED,
-            SyncStatus.PICTURES_SYNCED,
             SyncStatus.INSPECTION_BEING_SYNCED,
+    };
+
+    public static final SyncStatus[] PENDING_INSPECTIONS_STATUS_INITIALIZATION_ORDER = {
+            SyncStatus.INSPECTION_BEING_SYNCED,
+            SyncStatus.PICTURES_SYNCED,
+            SyncStatus.PICTURES_BEING_SYNCED,
             SyncStatus.READY
     };
 }

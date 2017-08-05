@@ -2,7 +2,6 @@ package br.com.bg7.appvistoria.data.source.local.fake;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
 import java.util.Map;
 

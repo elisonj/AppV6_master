@@ -1,8 +1,5 @@
 package br.com.bg7.appvistoria.data.source.local.fake;
 
-import java.util.HashMap;
-import java.util.Iterator;
-
 import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
 

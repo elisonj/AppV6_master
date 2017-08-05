@@ -1,12 +1,13 @@
 package br.com.bg7.appvistoria.sync;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 import br.com.bg7.appvistoria.data.ProductInspection;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -15,20 +16,6 @@ import static org.mockito.Mockito.verify;
  */
 
 public class SyncManagerInitializationTest extends SyncManagerTestBase {
-
-    private SyncManager instantiateSyncManager() {
-        return new SyncManager(
-                productInspectionRepository,
-                productInspectionService,
-                pictureService,
-                syncExecutor);
-    }
-
-    private SyncManager instantiateSyncManagerWith(ProductInspection productInspection)
-    {
-        productInspectionRepository.save(productInspection);
-        return instantiateSyncManager();
-    }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullRepository() {
@@ -53,46 +40,46 @@ public class SyncManagerInitializationTest extends SyncManagerTestBase {
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullSubscriber()
     {
-        instantiateSyncManager().subscribe(null);
+        syncManager.subscribe(null);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullToUnsubscribe()
     {
-        instantiateSyncManager().unsubscribe(null);
+        syncManager.unsubscribe(null);
     }
 
     @Test
     public void shouldScheduleQueueUpdates() {
-        instantiateSyncManager();
         verify(syncExecutor).scheduleQueueUpdates(any(Runnable.class));
     }
 
     @Test
     public void shouldScheduleSyncLoop() {
-        instantiateSyncManager();
         verify(syncExecutor).scheduleSyncLoop(any(Runnable.class));
     }
 
     @Test
-    public void shouldNotResetReadyStatusOnInit() {
-        ProductInspection productInspection = new ProductInspection(SyncStatus.READY);
+    public void shouldResetIncompleteProductInspectionsWhenStarting() {
 
-        instantiateSyncManagerWith(productInspection);
+        ArrayList<ProductInspection> inspectionsThatGetReset = new ArrayList<>();
+        inspectionsThatGetReset.add(saveWithStatus(SyncStatus.PICTURES_BEING_SYNCED));
+        inspectionsThatGetReset.add(saveWithStatus(SyncStatus.INSPECTION_BEING_SYNCED));
 
-        ProductInspection productInspectionUpdated = productInspectionRepository.findById(ProductInspection.class, productInspection.getId());
+        ArrayList<ProductInspection> inspectionsThatDoNotGetReset = new ArrayList<>();
+        inspectionsThatDoNotGetReset.add(saveWithStatus(SyncStatus.DONE));
+        inspectionsThatDoNotGetReset.add(saveWithStatus(SyncStatus.FAILED));
+        inspectionsThatDoNotGetReset.add(saveWithStatus(SyncStatus.PICTURES_SYNCED));
+        inspectionsThatDoNotGetReset.add(saveWithStatus(SyncStatus.READY));
 
-        Assert.assertEquals(SyncStatus.READY, productInspectionUpdated.getSyncStatus());
-    }
+        new SyncManager(productInspectionRepository, productInspectionService, pictureService, syncExecutor);
 
-    @Test
-    public void shouldResetReadyStatusOnInit() {
-        ProductInspection productInspection = new ProductInspection(SyncStatus.INSPECTION_BEING_SYNCED);
+        for (ProductInspection mockThatGetsReset : inspectionsThatGetReset) {
+            verify(mockThatGetsReset).reset();
+        }
 
-        instantiateSyncManagerWith(productInspection);
-
-        ProductInspection productInspectionUpdated = productInspectionRepository.findById(ProductInspection.class, productInspection.getId());
-
-        Assert.assertEquals(SyncStatus.READY, productInspectionUpdated.getSyncStatus());
+        for (ProductInspection mockThatDoesNotGetsReset : inspectionsThatDoNotGetReset) {
+            verify(mockThatDoesNotGetsReset, never()).reset();
+        }
     }
 }

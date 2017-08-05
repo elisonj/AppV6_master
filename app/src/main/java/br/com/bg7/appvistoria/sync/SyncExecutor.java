@@ -1,7 +1,5 @@
 package br.com.bg7.appvistoria.sync;
 
-import br.com.bg7.appvistoria.data.ProductInspection;
-
 /**
  * Created by: luciolucio
  * Date: 2017-07-31
