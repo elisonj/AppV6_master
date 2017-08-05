@@ -1,7 +1,5 @@
 package br.com.bg7.appvistoria.sync;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -18,20 +16,6 @@ import static org.mockito.Mockito.verify;
  */
 
 public class SyncManagerInitializationTest extends SyncManagerTestBase {
-
-    private SyncManager instantiateSyncManager() {
-        return new SyncManager(
-                productInspectionRepository,
-                productInspectionService,
-                pictureService,
-                syncExecutor);
-    }
-
-    private SyncManager instantiateSyncManagerWith(ProductInspection productInspection)
-    {
-        productInspectionRepository.save(productInspection);
-        return instantiateSyncManager();
-    }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullRepository() {
@@ -56,24 +40,22 @@ public class SyncManagerInitializationTest extends SyncManagerTestBase {
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullSubscriber()
     {
-        instantiateSyncManager().subscribe(null);
+        syncManager.subscribe(null);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullToUnsubscribe()
     {
-        instantiateSyncManager().unsubscribe(null);
+        syncManager.unsubscribe(null);
     }
 
     @Test
     public void shouldScheduleQueueUpdates() {
-        instantiateSyncManager();
         verify(syncExecutor).scheduleQueueUpdates(any(Runnable.class));
     }
 
     @Test
     public void shouldScheduleSyncLoop() {
-        instantiateSyncManager();
         verify(syncExecutor).scheduleSyncLoop(any(Runnable.class));
     }
 
