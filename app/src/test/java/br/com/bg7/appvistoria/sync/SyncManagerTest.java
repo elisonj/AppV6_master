@@ -132,6 +132,7 @@ public class SyncManagerTest extends SyncManagerTestBase {
     @Test
     public void shouldSyncPictures() {
         ProductInspection inspection = mockInspection().thatCanSyncPictures().create();
+        save(inspection);
 
         runSync();
 
@@ -144,6 +145,7 @@ public class SyncManagerTest extends SyncManagerTestBase {
                 .thatCannotSyncPictures()
                 .thatCanSyncProduct()
                 .create();
+        save(inspection);
 
         runSync();
 

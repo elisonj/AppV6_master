@@ -38,6 +38,6 @@ class MockInspectionChecker {
     }
 
     void syncsProducts() {
-        verify(inspection).sync(any(PictureService.class), any(SyncCallback.class));
+        verify(inspection).sync(any(ProductInspectionService.class), any(SyncCallback.class));
     }
 }

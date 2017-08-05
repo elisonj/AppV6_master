@@ -21,7 +21,7 @@ class MockInspection {
     private MockInspection() { }
 
     static MockInspection mockInspection() {
-        return new MockInspection();
+        return new MockInspection().withStatus(SyncStatus.READY);
     }
 
     MockInspection withStatus(SyncStatus syncStatus) {
