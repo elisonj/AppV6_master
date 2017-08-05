@@ -21,7 +21,10 @@ class MockInspection {
     private MockInspection() { }
 
     static MockInspection mockInspection() {
-        return new MockInspection().withStatus(SyncStatus.READY);
+        return new MockInspection()
+                .withStatus(SyncStatus.READY)
+                .thatCanSyncPictures()
+                .thatCannotSyncProduct();
     }
 
     MockInspection withStatus(SyncStatus syncStatus) {

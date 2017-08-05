@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import br.com.bg7.appvistoria.data.ProductInspection;
 import br.com.bg7.appvistoria.data.source.remote.HttpProgressCallback;
 import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
-import br.com.bg7.appvistoria.data.source.remote.fake.FakeProductInspection;
 
 import static br.com.bg7.appvistoria.sync.MockInspection.mockInspection;
 import static br.com.bg7.appvistoria.sync.MockInspectionChecker.checkThat;
@@ -65,34 +64,6 @@ public class SyncManagerTest extends SyncManagerTestBase {
 
         verify(syncExecutor).scheduleSyncLoop(syncLoopCaptor.capture());
         sync = syncLoopCaptor.getValue();
-    }
-
-    @Test
-    public void shouldFailInspectionWhenServiceFails() {
-        FakeProductInspection inspection = new FakeProductInspection(SyncStatus.READY);
-        save(inspection);
-
-        runSync();
-        failProductInspectionService(inspection);
-
-        ProductInspection inspectionFromDb = productInspectionRepository.findById(ProductInspection.class, inspection.getId());
-        Assert.assertEquals(SyncStatus.FAILED, inspectionFromDb.getSyncStatus());
-    }
-
-    @Test
-    public void shouldCallSubscribedCallback() {
-        FakeProductInspection inspection = new FakeProductInspection(SyncStatus.READY);
-        save(inspection);
-
-        syncManager.subscribe(new SyncCallbackCheck(inspection));
-
-        runSync();
-        failProductInspectionService(inspection);
-        // TODO: fail the Picture service too
-        // TODO: onProgressUpdate each service
-        // TODO: succeed each service
-
-        // Verification happens when the callback gets called
     }
 
     @Test
@@ -176,10 +147,25 @@ public class SyncManagerTest extends SyncManagerTestBase {
     }
 
     @Test
-    public void shouldNotCallOnFailureForIllegalStateException() {
+    public void shouldNotCallOnFailureForIllegalStateExceptionPicture() {
         ProductInspection inspection = mockInspection()
                 .thatCanSyncPictures()
                 .thatThrowsOnPictureSync()
+                .create();
+        save(inspection);
+        syncManager.subscribe(new FailWhenOnFailureCalled());
+
+        runSync();
+
+        // Verification happens when the callback gets called
+    }
+
+    @Test
+    public void shouldNotCallOnFailureForIllegalStateExceptionProduct() {
+        ProductInspection inspection = mockInspection()
+                .thatCannotSyncPictures()
+                .thatCanSyncProduct()
+                .thatThrowsOnProductSync()
                 .create();
         save(inspection);
         syncManager.subscribe(new FailWhenOnFailureCalled());

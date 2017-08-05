@@ -21,10 +21,6 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
     @SuppressWarnings("unused")
     public ProductInspection() {}
 
-    public ProductInspection(SyncStatus syncStatus) {
-        this.syncStatus = syncStatus;
-    }
-
     public SyncStatus getSyncStatus() {
         return syncStatus;
     }

@@ -73,26 +73,4 @@ public class SyncManagerInitializationTest extends SyncManagerTestBase {
         instantiateSyncManager();
         verify(syncExecutor).scheduleSyncLoop(any(Runnable.class));
     }
-
-    @Test
-    public void shouldNotResetReadyStatusOnInit() {
-        ProductInspection productInspection = new ProductInspection(SyncStatus.READY);
-
-        instantiateSyncManagerWith(productInspection);
-
-        ProductInspection productInspectionUpdated = productInspectionRepository.findById(ProductInspection.class, productInspection.getId());
-
-        Assert.assertEquals(SyncStatus.READY, productInspectionUpdated.getSyncStatus());
-    }
-
-    @Test
-    public void shouldResetReadyStatusOnInit() {
-        ProductInspection productInspection = new ProductInspection(SyncStatus.PRODUCT_INSPECTION_BEING_SYNCED);
-
-        instantiateSyncManagerWith(productInspection);
-
-        ProductInspection productInspectionUpdated = productInspectionRepository.findById(ProductInspection.class, productInspection.getId());
-
-        Assert.assertEquals(SyncStatus.READY, productInspectionUpdated.getSyncStatus());
-    }
 }
