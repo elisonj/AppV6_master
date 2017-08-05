@@ -10,8 +10,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import br.com.bg7.appvistoria.data.User;
-import br.com.bg7.appvistoria.data.source.TokenService;
-import br.com.bg7.appvistoria.data.source.UserService;
+import br.com.bg7.appvistoria.data.source.remote.TokenService;
+import br.com.bg7.appvistoria.data.source.remote.UserService;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeUserRepository;
 import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.HttpResponse;

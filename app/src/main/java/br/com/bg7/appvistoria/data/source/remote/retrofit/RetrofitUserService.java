@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Date: 2017-07-19
  */
 
-public class RetrofitUserService implements br.com.bg7.appvistoria.data.source.UserService {
+public class RetrofitUserService implements br.com.bg7.appvistoria.data.source.remote.UserService {
     private final UserService userService;
 
     public RetrofitUserService(String baseUrl) {

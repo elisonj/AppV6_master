@@ -3,7 +3,7 @@ package br.com.bg7.appvistoria.login.callback;
 import android.support.annotation.NonNull;
 
 import br.com.bg7.appvistoria.data.User;
-import br.com.bg7.appvistoria.data.source.UserService;
+import br.com.bg7.appvistoria.data.source.remote.UserService;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
 import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.HttpResponse;

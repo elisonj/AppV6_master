@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by: elison
  * Date: 2017-07-28
  */
-public class RetrofitPictureService implements br.com.bg7.appvistoria.data.source.PictureService {
+public class RetrofitPictureService implements br.com.bg7.appvistoria.data.source.remote.PictureService {
 
     private static final String FORM_FIELD_NAME = "image";
     private final PictureService pictureService;
