@@ -4,9 +4,12 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import br.com.bg7.appvistoria.data.ProductInspection;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -72,5 +75,29 @@ public class SyncManagerInitializationTest extends SyncManagerTestBase {
     public void shouldScheduleSyncLoop() {
         instantiateSyncManager();
         verify(syncExecutor).scheduleSyncLoop(any(Runnable.class));
+    }
+
+    @Test
+    public void shouldResetIncompleteProductInspectionsWhenStarting() {
+
+        ArrayList<ProductInspection> inspectionsThatGetReset = new ArrayList<>();
+        inspectionsThatGetReset.add(saveWithStatus(SyncStatus.PICTURES_BEING_SYNCED));
+        inspectionsThatGetReset.add(saveWithStatus(SyncStatus.PRODUCT_INSPECTION_BEING_SYNCED));
+
+        ArrayList<ProductInspection> inspectionsThatDoNotGetReset = new ArrayList<>();
+        inspectionsThatDoNotGetReset.add(saveWithStatus(SyncStatus.DONE));
+        inspectionsThatDoNotGetReset.add(saveWithStatus(SyncStatus.FAILED));
+        inspectionsThatDoNotGetReset.add(saveWithStatus(SyncStatus.PICTURES_SYNCED));
+        inspectionsThatDoNotGetReset.add(saveWithStatus(SyncStatus.READY));
+
+        new SyncManager(productInspectionRepository, productInspectionService, pictureService, syncExecutor);
+
+        for (ProductInspection mockThatGetsReset : inspectionsThatGetReset) {
+            verify(mockThatGetsReset).reset();
+        }
+
+        for (ProductInspection mockThatDoesNotGetsReset : inspectionsThatDoNotGetReset) {
+            verify(mockThatDoesNotGetsReset, never()).reset();
+        }
     }
 }

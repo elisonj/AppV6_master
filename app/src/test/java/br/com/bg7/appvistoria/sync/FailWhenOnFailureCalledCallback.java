@@ -10,7 +10,7 @@ import br.com.bg7.appvistoria.data.source.remote.SyncCallback;
  * Date: 2017-08-05
  */
 
-class FailWhenOnFailureCalled implements SyncCallback {
+class FailWhenOnFailureCalledCallback implements SyncCallback {
     @Override
     public void onSuccess(ProductInspection productInspection) {
 
