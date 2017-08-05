@@ -1,22 +1,17 @@
 package br.com.bg7.appvistoria.sync;
 
 import org.junit.Before;
-import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-
 import br.com.bg7.appvistoria.data.ProductInspection;
 import br.com.bg7.appvistoria.data.source.PictureService;
 import br.com.bg7.appvistoria.data.source.ProductInspectionService;
-import br.com.bg7.appvistoria.data.source.local.ProductInspectionRepository;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeProductInspectionRepository;
 
 import static br.com.bg7.appvistoria.sync.MockInspection.mockInspection;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
 /**
