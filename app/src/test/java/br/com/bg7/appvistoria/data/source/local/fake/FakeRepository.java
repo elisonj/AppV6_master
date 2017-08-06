@@ -20,7 +20,7 @@ abstract class FakeRepository<K, T extends SugarRecord<T>> implements Repository
     HashMap<K, T> ENTITIES_BY_KEY = new HashMap<>();
 
     @Override
-    public T findById(Class<T> type, Long id) {
+    public T findById(Long id) {
         return ENTITIES_BY_ID.get(id);
     }
 
@@ -31,7 +31,7 @@ abstract class FakeRepository<K, T extends SugarRecord<T>> implements Repository
     }
 
     @Override
-    public T first(Class<T> type) {
+    public T first() {
         Iterator<K> iterator = ENTITIES_BY_KEY.keySet().iterator();
         if (!iterator.hasNext()) {
             return null;
@@ -47,7 +47,7 @@ abstract class FakeRepository<K, T extends SugarRecord<T>> implements Repository
     }
 
     @Override
-    public void deleteAll(Class<T> type) {
+    public void deleteAll() {
         ENTITIES_BY_KEY.clear();
     }
 

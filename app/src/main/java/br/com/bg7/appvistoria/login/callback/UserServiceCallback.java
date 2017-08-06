@@ -49,8 +49,8 @@ class UserServiceCallback extends LoginCallback implements HttpCallback<UserResp
      */
     @SuppressWarnings("UnusedParameters")
     private void processSuccess(UserResponse userResponse) {
-        if (userRepository.first(User.class) == null) {
-            userRepository.deleteAll(User.class);
+        if (userRepository.first() == null) {
+            userRepository.deleteAll();
         }
 
         User user = new User(loginData.getUsername(), token.getAccessToken(), hashpw(loginData.getPassword()));

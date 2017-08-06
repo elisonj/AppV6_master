@@ -9,4 +9,7 @@ import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
  */
 
 public class SugarConfigRepository extends SugarRepository<Config> implements ConfigRepository {
+    public SugarConfigRepository() {
+        super(Config.class);
+    }
 }

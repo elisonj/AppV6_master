@@ -17,7 +17,12 @@ import br.com.bg7.appvistoria.data.source.local.UserRepository;
  */
 
 public class SugarUserRepository extends SugarRepository<User> implements UserRepository {
+
     private static final Logger LOG = LoggerFactory.getLogger(SugarUserRepository.class);
+
+    public SugarUserRepository() {
+        super(User.class);
+    }
 
     @Override
     public User findByUsername(String username) {

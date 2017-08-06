@@ -82,7 +82,7 @@ class LoginPresenterTestBase {
         when(userHttpResponse.body()).thenReturn(new UserResponse());
 
         userRepository = new FakeUserRepository();
-        userRepository.deleteAll(User.class);
+        userRepository.deleteAll();
 
         loginPresenter = new LoginPresenter(tokenService, userService, userRepository, loginView);
 
@@ -106,7 +106,7 @@ class LoginPresenterTestBase {
     }
 
     void setUpNoUser() {
-        userRepository.deleteAll(User.class);
+        userRepository.deleteAll();
     }
 
     void invokeTokenService() {
