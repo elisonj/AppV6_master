@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import br.com.bg7.appvistoria.data.ProductInspection;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.ProductInspectionService;
-import br.com.bg7.appvistoria.data.source.remote.SyncCallback;
+import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
 
 /**
  * Created by: luciolucio

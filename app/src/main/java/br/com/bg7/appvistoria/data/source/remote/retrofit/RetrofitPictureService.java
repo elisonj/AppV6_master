@@ -3,8 +3,9 @@ package br.com.bg7.appvistoria.data.source.remote.retrofit;
 import java.io.File;
 
 import br.com.bg7.appvistoria.data.ProductInspection;
-import br.com.bg7.appvistoria.data.source.remote.HttpProgressCallback;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpProgressCallback;
 import br.com.bg7.appvistoria.data.source.remote.dto.PictureResponse;
+import br.com.bg7.appvistoria.data.source.remote.retrofit.http.RetrofitHttpCall;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
