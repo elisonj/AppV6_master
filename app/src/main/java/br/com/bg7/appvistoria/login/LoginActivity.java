@@ -4,9 +4,10 @@ import android.os.Bundle;
 
 import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.BuildConfig;
+import br.com.bg7.appvistoria.auth.Auth;
+import br.com.bg7.appvistoria.data.source.local.sugar.SugarUserRepository;
 import br.com.bg7.appvistoria.data.source.remote.TokenService;
 import br.com.bg7.appvistoria.data.source.remote.UserService;
-import br.com.bg7.appvistoria.data.source.local.sugar.SugarUserRepository;
 import br.com.bg7.appvistoria.data.source.remote.retrofit.RetrofitTokenService;
 import br.com.bg7.appvistoria.data.source.remote.retrofit.RetrofitUserService;
 
@@ -31,7 +32,8 @@ public class LoginActivity extends BaseActivity {
         TokenService tokenService = new RetrofitTokenService(BASE_URL, GRANT_TYPE, CLIENT_ID);
         SugarUserRepository userRepository = new SugarUserRepository();
 
-        loginPresenter = new LoginPresenter(tokenService, userService, userRepository, loginView);
+        Auth auth = new Auth(userService, tokenService, userRepository);
+        loginPresenter = new LoginPresenter(auth, loginView);
 
         setContentView(loginView);
     }

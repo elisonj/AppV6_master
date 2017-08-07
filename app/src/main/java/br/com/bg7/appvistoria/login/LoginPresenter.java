@@ -2,14 +2,8 @@ package br.com.bg7.appvistoria.login;
 
 import com.google.common.base.Strings;
 
-import org.mindrot.jbcrypt.BCrypt;
-
-import br.com.bg7.appvistoria.data.User;
-import br.com.bg7.appvistoria.data.source.remote.TokenService;
-import br.com.bg7.appvistoria.data.source.remote.UserService;
-import br.com.bg7.appvistoria.data.source.local.UserRepository;
-import br.com.bg7.appvistoria.login.callback.TokenServiceCallback;
-import br.com.bg7.appvistoria.login.vo.LoginData;
+import br.com.bg7.appvistoria.auth.Auth;
+import br.com.bg7.appvistoria.auth.callback.AuthCallback;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -21,20 +15,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class LoginPresenter implements LoginContract.Presenter {
     public static final int UNAUTHORIZED_CODE = 401;
 
-    private final TokenService tokenService;
-    private final UserService userService;
+    private final Auth auth;
     private final LoginContract.View loginView;
-    private final UserRepository userRepository;
 
-    LoginPresenter(
-            TokenService tokenService,
-            UserService userService,
-            UserRepository userRepository,
-            LoginContract.View loginView) {
+    LoginPresenter(Auth auth, LoginContract.View loginView) {
 
-        this.tokenService = checkNotNull(tokenService, "tokenService cannot be null");
-        this.userService = checkNotNull(userService, "userService cannot be null");
-        this.userRepository = checkNotNull(userRepository, "userRepository cannot be null");
+        this.auth = checkNotNull(auth, "auth cannot be null");
         this.loginView = checkNotNull(loginView, "loginView cannot be null");
 
         this.loginView.setPresenter(this);
@@ -49,25 +35,22 @@ public class LoginPresenter implements LoginContract.Presenter {
     public void login(String username, String password) {
         if (!checkInput(username, password)) return;
 
-        User localUser = userRepository.findByUsername(username);
-        boolean passwordMatches = localUser != null && BCrypt.checkpw(password, localUser.getPasswordHash());
+        auth.attempt(username, password, loginView.isConnected(), new AuthCallback() {
+            @Override
+            public void onCannotLogin() {
+                loginView.showCannotLoginError();
+            }
 
-        if (loginView.isConnected()) {
-            attemptTokenLogin(new LoginData(username, password, localUser, passwordMatches));
-            return;
-        }
+            @Override
+            public void onBadCredentials() {
+                loginView.showBadCredentialsError();
+            }
 
-        if (localUser == null) {
-            loginView.showCannotLoginError();
-            return;
-        }
-
-        if (!passwordMatches) {
-            loginView.showBadCredentialsError();
-            return;
-        }
-
-        loginView.showMainScreen();
+            @Override
+            public void onSuccess() {
+                loginView.showMainScreen();
+            }
+        });
     }
 
     /**
@@ -89,10 +72,5 @@ public class LoginPresenter implements LoginContract.Presenter {
         }
 
         return true;
-    }
-
-    private void attemptTokenLogin(final LoginData loginData) {
-        TokenServiceCallback callback = new TokenServiceCallback(loginData, userService, userRepository, loginView);
-        tokenService.getToken(loginData.getUsername(), loginData.getPassword(), callback);
     }
 }

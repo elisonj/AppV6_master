@@ -1,7 +1,7 @@
 package br.com.bg7.appvistoria.data.source.remote.retrofit;
 
-import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.retrofit.http.RetrofitHttpCall;
 import retrofit2.Call;
 import retrofit2.Retrofit;

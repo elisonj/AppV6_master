@@ -3,9 +3,9 @@ package br.com.bg7.appvistoria.sync;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import br.com.bg7.appvistoria.data.ProductInspection;
+import br.com.bg7.appvistoria.data.source.local.ProductInspectionRepository;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.ProductInspectionService;
-import br.com.bg7.appvistoria.data.source.local.ProductInspectionRepository;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
 
 import static br.com.bg7.appvistoria.Constants.PENDING_INSPECTIONS_RESETTABLE_STATUS_LIST;

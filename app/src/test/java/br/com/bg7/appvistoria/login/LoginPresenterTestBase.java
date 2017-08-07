@@ -9,14 +9,15 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import br.com.bg7.appvistoria.auth.Auth;
 import br.com.bg7.appvistoria.data.User;
+import br.com.bg7.appvistoria.data.source.local.fake.FakeUserRepository;
 import br.com.bg7.appvistoria.data.source.remote.TokenService;
 import br.com.bg7.appvistoria.data.source.remote.UserService;
-import br.com.bg7.appvistoria.data.source.local.fake.FakeUserRepository;
-import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
-import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
 
 import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.verify;
@@ -51,6 +52,7 @@ class LoginPresenterTestBase {
     @Captor
     ArgumentCaptor<HttpCallback<UserResponse>> userCallBackCaptor;
 
+    Auth auth;
     LoginPresenter loginPresenter;
 
     static final String USERNAME = "user";
@@ -84,7 +86,8 @@ class LoginPresenterTestBase {
         userRepository = new FakeUserRepository();
         userRepository.deleteAll();
 
-        loginPresenter = new LoginPresenter(tokenService, userService, userRepository, loginView);
+        auth = new Auth(userService, tokenService, userRepository);
+        loginPresenter = new LoginPresenter(auth, loginView);
 
         userRepository.save(new User(USERNAME, TOKEN, HASHED_PASSWORD));
     }
