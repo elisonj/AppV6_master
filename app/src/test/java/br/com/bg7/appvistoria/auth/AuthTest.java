@@ -101,4 +101,16 @@ public class AuthTest {
         Assert.assertTrue(auth.check());
         Assert.assertEquals("unb", auth.user());
     }
+
+    @Test
+    public void shouldLogout() {
+        User user = new User("unb", "token", BCrypt.hashpw("arrumamalae", BCrypt.gensalt()));
+        userRepository.save(user);
+
+        auth.attempt("unb", "arrumamalae", false, new EmptyAuthCallback());
+        auth.logout();
+
+        Assert.assertFalse(auth.check());
+        Assert.assertNull(auth.user());
+    }
 }

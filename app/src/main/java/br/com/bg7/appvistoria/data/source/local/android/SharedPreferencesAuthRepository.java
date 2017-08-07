@@ -34,4 +34,13 @@ public class SharedPreferencesAuthRepository implements AuthRepository {
         editor.putString(CURRENT_USER_NAME, username);
         editor.apply();
     }
+
+    @Override
+    public void clear() {
+        SharedPreferences settings = context.getSharedPreferences(AUTH_PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+
+        editor.remove(CURRENT_USER_NAME);
+        editor.apply();
+    }
 }

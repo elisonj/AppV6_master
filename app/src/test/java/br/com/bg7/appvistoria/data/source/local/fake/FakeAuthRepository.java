@@ -20,4 +20,9 @@ public class FakeAuthRepository implements AuthRepository {
     public void save(String username) {
         this.username = username;
     }
+
+    @Override
+    public void clear() {
+        this.username = null;
+    }
 }

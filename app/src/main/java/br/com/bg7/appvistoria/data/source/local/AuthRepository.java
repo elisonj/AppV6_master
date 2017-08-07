@@ -22,4 +22,9 @@ public interface AuthRepository {
      * @param username the username to log in
      */
     void save(String username);
+
+    /**
+     * Removes the currently logged in user
+     */
+    void clear();
 }

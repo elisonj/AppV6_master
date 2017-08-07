@@ -69,6 +69,10 @@ public class Auth {
         return authRepository.currentUsername();
     }
 
+    public void logout() {
+        authRepository.clear();
+    }
+
     /**
      * Intercepts callbacks in order to save auth info on success
      */
