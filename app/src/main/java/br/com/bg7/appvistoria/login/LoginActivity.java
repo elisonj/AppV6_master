@@ -4,7 +4,9 @@ import android.os.Bundle;
 
 import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.BuildConfig;
+import br.com.bg7.appvistoria.RemoteLocalAuth;
 import br.com.bg7.appvistoria.auth.Auth;
+import br.com.bg7.appvistoria.auth.AuthFacade;
 import br.com.bg7.appvistoria.data.source.local.android.SharedPreferencesAuthRepository;
 import br.com.bg7.appvistoria.data.source.local.sugar.SugarUserRepository;
 import br.com.bg7.appvistoria.data.source.remote.retrofit.RetrofitTokenService;
@@ -32,8 +34,10 @@ public class LoginActivity extends BaseActivity {
         SharedPreferencesAuthRepository authRepository = new SharedPreferencesAuthRepository(this);
         SugarUserRepository userRepository = new SugarUserRepository();
 
-        Auth auth = new Auth(userService, tokenService, userRepository, authRepository);
-        loginPresenter = new LoginPresenter(auth, loginView);
+        RemoteLocalAuth remoteLocalAuth = new RemoteLocalAuth(userService, tokenService, userRepository, authRepository);
+        Auth.configure(remoteLocalAuth);
+
+        loginPresenter = new LoginPresenter(loginView);
 
         setContentView(loginView);
     }

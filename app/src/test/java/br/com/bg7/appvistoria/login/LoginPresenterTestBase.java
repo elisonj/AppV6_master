@@ -9,6 +9,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import br.com.bg7.appvistoria.RemoteLocalAuth;
 import br.com.bg7.appvistoria.auth.Auth;
 import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeAuthRepository;
@@ -54,7 +55,6 @@ class LoginPresenterTestBase {
     @Captor
     ArgumentCaptor<HttpCallback<UserResponse>> userCallBackCaptor;
 
-    Auth auth;
     LoginPresenter loginPresenter;
 
     static final String USERNAME = "user";
@@ -86,13 +86,14 @@ class LoginPresenterTestBase {
         when(userHttpResponse.body()).thenReturn(new UserResponse());
 
         userRepository = new FakeUserRepository();
-        userRepository.deleteAll();
+        userRepository.clear();
 
         authRepository = new FakeAuthRepository();
         authRepository.clear();
 
-        auth = new Auth(userService, tokenService, userRepository, authRepository);
-        loginPresenter = new LoginPresenter(auth, loginView);
+        Auth.configure(new RemoteLocalAuth(userService, tokenService, userRepository, authRepository));
+
+        loginPresenter = new LoginPresenter(loginView);
 
         userRepository.save(new User(USERNAME, TOKEN, HASHED_PASSWORD));
     }
@@ -114,7 +115,7 @@ class LoginPresenterTestBase {
     }
 
     void setUpNoUser() {
-        userRepository.deleteAll();
+        userRepository.clear();
     }
 
     void invokeTokenService() {

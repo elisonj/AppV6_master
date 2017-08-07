@@ -8,4 +8,5 @@ import br.com.bg7.appvistoria.data.Config;
  */
 
 public interface ConfigRepository extends Repository<Config> {
+    Config findByUsername(String username);
 }

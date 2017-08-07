@@ -11,13 +11,8 @@ import static org.mockito.Mockito.verify;
 
 public class LoginPresenterInitializationTest extends LoginPresenterTestBase {
     @Test(expected = NullPointerException.class)
-    public void shouldNotAcceptNullAuthWhenCreated() {
-        new LoginPresenter(null, loginView);
-    }
-
-    @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullViewWhenCreated() {
-        new LoginPresenter(auth, null);
+        new LoginPresenter(null);
     }
 
     @Test

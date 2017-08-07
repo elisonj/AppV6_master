@@ -11,6 +11,7 @@ import com.orm.SugarRecord;
 public class Config extends SugarRecord<Config> {
     private boolean syncWithWifiOnly;
     private String languageName;
+    private String username;
 
     /**
      * Default constructor used by Sugar
@@ -18,9 +19,10 @@ public class Config extends SugarRecord<Config> {
     @SuppressWarnings("unused")
     public Config() {}
 
-    public Config(String languageName, boolean updateOnlyWifi) {
+    public Config(String languageName, boolean updateOnlyWifi, String username) {
         this.languageName = languageName;
         this.syncWithWifiOnly = updateOnlyWifi;
+        this.username = username;
     }
 
     public String getLanguageName() {
