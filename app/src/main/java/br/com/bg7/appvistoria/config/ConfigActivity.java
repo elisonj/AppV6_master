@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.MainFragment;
 import br.com.bg7.appvistoria.R;
-import br.com.bg7.appvistoria.data.source.local.android.AndroidContextLanguageRepository;
+import br.com.bg7.appvistoria.data.source.local.android.ResourcesLanguageRepository;
 import br.com.bg7.appvistoria.data.source.local.sugar.SugarConfigRepository;
 
 /**
@@ -31,7 +31,7 @@ public class ConfigActivity extends BaseActivity {
     private Menu menu = null;
 
     private final SugarConfigRepository configRepository = new SugarConfigRepository();
-    private final AndroidContextLanguageRepository languageRepository = new AndroidContextLanguageRepository(this);
+    private final ResourcesLanguageRepository languageRepository = new ResourcesLanguageRepository(this);
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

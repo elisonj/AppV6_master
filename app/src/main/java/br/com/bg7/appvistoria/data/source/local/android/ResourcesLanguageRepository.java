@@ -16,10 +16,10 @@ import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
  * Date: 2017-07-28
  */
 
-public class AndroidContextLanguageRepository implements LanguageRepository {
+public class ResourcesLanguageRepository implements LanguageRepository {
     private Context context;
 
-    public AndroidContextLanguageRepository(Context context) {
+    public ResourcesLanguageRepository(Context context) {
         this.context = context;
     }
 
