@@ -51,13 +51,17 @@ class UserServiceCallback extends ServiceCallbackBase implements HttpCallback<Us
      */
     @SuppressWarnings("UnusedParameters")
     private void processSuccess(UserResponse userResponse) {
+        String passwordHash = hashpw(loginData.getPassword());
+
+        User user = new User(loginData.getUsername(), token.getAccessToken(), passwordHash);
         User existingUser = userRepository.findByUsername(loginData.getUsername());
 
         if (existingUser != null) {
-            userRepository.delete(existingUser);
+            user = existingUser
+                    .withPasswordHash(passwordHash)
+                    .withToken(token.getAccessToken());
         }
 
-        User user = new User(loginData.getUsername(), token.getAccessToken(), hashpw(loginData.getPassword()));
         saveUserAndEnter(user);
     }
 

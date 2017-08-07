@@ -96,17 +96,19 @@ class ConfigPresenter implements ConfigContract.Presenter {
 
     @Override
     public void confirmClicked(String language, boolean syncWithWifiOnly) {
-        configView.hideButtons();
-        configView.hideLanguages();
+        Config config = new Config(language, syncWithWifiOnly, Auth.user());
+        Config existingConfig = configRepository.findByUsername(Auth.user());
 
-        Config config = configRepository.findByUsername(Auth.user());
-        if(config != null) {
-            configRepository.delete(config);
+        if(existingConfig != null) {
+            config = existingConfig
+                    .withLanguage(language)
+                    .withSyncWithWifiOnly(syncWithWifiOnly);
         }
 
-        config = new Config(language, syncWithWifiOnly, Auth.user());
         configRepository.save(config);
 
+        configView.hideButtons();
+        configView.hideLanguages();
         configView.changeLanguage(language);
     }
 
