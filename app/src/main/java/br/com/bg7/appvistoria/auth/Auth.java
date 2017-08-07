@@ -31,8 +31,11 @@ public class Auth {
         this.authRepository = checkNotNull(authRepository);
     }
 
-    // TODO: Testar casos de user/pwd/callback nulos
     public void attempt(String username, String password, boolean connected, AuthCallback callback) {
+        username = checkNotNull(username);
+        password = checkNotNull(password);
+        callback = checkNotNull(callback);
+
         User localUser = userRepository.findByUsername(username);
         boolean passwordMatches = localUser != null && BCrypt.checkpw(password, localUser.getPasswordHash());
 

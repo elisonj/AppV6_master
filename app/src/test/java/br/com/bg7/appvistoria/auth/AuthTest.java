@@ -8,7 +8,6 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import br.com.bg7.appvistoria.auth.callback.AuthCallback;
 import br.com.bg7.appvistoria.auth.callback.EmptyAuthCallback;
 import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeAuthRepository;
@@ -59,6 +58,21 @@ public class AuthTest {
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullAuthRepositoryWhenCreated() {
         new Auth(userService, tokenService, userRepository, null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldNotAcceptNullUsernameOnAttempt() {
+        auth.attempt(null, "", false, new EmptyAuthCallback());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldNotAcceptNullPasswordOnAttempt() {
+        auth.attempt("", null, false, new EmptyAuthCallback());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldNotAcceptNullCallbackOnAttempt() {
+        auth.attempt("", "", false, null);
     }
 
     @Test
