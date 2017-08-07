@@ -72,6 +72,21 @@ public class ProductInspectionTest {
     }
 
     @Test
+    public void shouldShowFailWhenSyncPicture() throws InterruptedException {
+        isSuccessful = false;
+        addOneImageToSync();
+        syncPictures();
+        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.FAILED);
+    }
+
+    @Test
+    public void shouldShowFailWhenSyncPictureResponseIsNull() throws InterruptedException {
+        addOneImageToSync();
+        syncPicturesWithResponseNull();
+        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.FAILED);
+    }
+
+    @Test
     public void shouldStatusPicureBeingSyncedWhenProgressUpdated() throws InterruptedException {
         addOneImageToSync();
         setUpSyncPictures();
@@ -102,14 +117,14 @@ public class ProductInspectionTest {
     }
 
     @Test
-    public void shouldShowFailedWhenResponseIsNull() throws InterruptedException {
+    public void shouldShowFailedProductInspectionWhenResponseIsNull() throws InterruptedException {
         syncProduct();
         productInspectorCallback.getValue().onResponse(null);
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.FAILED);
     }
 
     @Test
-    public void shouldSyncProductInspectionWhenIsNotSuccessful() throws InterruptedException {
+    public void shouldShowFailedProductInspectionWhenIsNotSuccessful() throws InterruptedException {
         isSuccessful = false;
         syncProduct();
         productInspectorCallback.getValue().onResponse(productResponse);
@@ -158,6 +173,11 @@ public class ProductInspectionTest {
         pictureCallback.getValue().onResponse(pictureResponse);
     }
 
+    private void syncPicturesWithResponseNull() {
+        setUpSyncPictures();
+        pictureCallback.getValue().onResponse(null);
+    }
+
     private void setUpSyncPictures() {
         shouldSyncStatusReady();
         productInspection.sync(pictureService, callback);
@@ -185,7 +205,7 @@ public class ProductInspectionTest {
     private HttpResponse<PictureResponse> pictureResponse = new HttpResponse<PictureResponse>() {
         @Override
         public boolean isSuccessful() {
-            return true;
+            return isSuccessful;
         }
 
         @Nullable

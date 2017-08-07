@@ -74,6 +74,15 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
 
             @Override
             public void onResponse(HttpResponse<PictureResponse> httpResponse) {
+                if(httpResponse == null) {
+                    onFailure(null);
+                    return;
+                }
+                if(!httpResponse.isSuccessful()) {
+                    onFailure(null);
+                    return;
+                }
+
                 productFile.setSyncStatus(SyncStatus.DONE);
                 imagesSynced.add(productFile);
 
