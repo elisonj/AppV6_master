@@ -88,6 +88,9 @@ class LoginPresenterTestBase {
         userRepository = new FakeUserRepository();
         userRepository.deleteAll();
 
+        authRepository = new FakeAuthRepository();
+        authRepository.clear();
+
         auth = new Auth(userService, tokenService, userRepository, authRepository);
         loginPresenter = new LoginPresenter(auth, loginView);
 
