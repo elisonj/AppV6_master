@@ -75,11 +75,11 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
             @Override
             public void onResponse(HttpResponse<PictureResponse> httpResponse) {
                 if(httpResponse == null) {
-                    onFailure(null);
+                    onFailure(new NullPointerException());
                     return;
                 }
                 if(!httpResponse.isSuccessful()) {
-                    onFailure(null);
+                    onFailure(new IllegalStateException("Response invalid"));
                     return;
                 }
 

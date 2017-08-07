@@ -38,6 +38,9 @@ public class ProductInspectionTest {
     private boolean isSuccessful = true;
 
     private ProductInspection productInspection;
+    private ProductInspection callBackProductInspection;
+    private ProductInspection callBackProductProgress;
+    private Throwable callBackThrowable;
 
     @Mock
     ProductInspectionService productInspectionService;
@@ -62,6 +65,7 @@ public class ProductInspectionTest {
         addOneImageToSync();
         setUpSyncPictures();
         pictureCallback.getValue().onFailure(new IllegalStateException("Cannot sync"));
+        verifyCallbackResponse(callBackThrowable != null);
     }
 
     @Test
@@ -87,10 +91,11 @@ public class ProductInspectionTest {
     }
 
     @Test
-    public void shouldStatusPicureBeingSyncedWhenProgressUpdated() throws InterruptedException {
+    public void shouldStatusPictureBeingSyncedWhenProgressUpdated() throws InterruptedException {
         addOneImageToSync();
         setUpSyncPictures();
         pictureCallback.getValue().onProgressUpdated(PROGRESS);
+        verifyCallbackResponse(callBackProductProgress != null);
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.PICTURES_BEING_SYNCED);
     }
 
@@ -168,6 +173,10 @@ public class ProductInspectionTest {
         pictureCallback.getValue().onResponse(pictureResponse);
     }
 
+    private void verifyCallbackResponse(boolean condition) {
+        Assert.assertTrue(condition);
+    }
+
     private void shouldSyncStatusReady(){
         canReady();
         canSyncPictures();
@@ -195,6 +204,7 @@ public class ProductInspectionTest {
     private void syncPicturesWithResponseNull() {
         setUpSyncPictures();
         pictureCallback.getValue().onResponse(null);
+        verifyCallbackResponse(callBackThrowable != null);
     }
 
     private void setUpSyncPictures() {
@@ -221,6 +231,7 @@ public class ProductInspectionTest {
     private void verifySyncProduct() {
         productInspection.sync(productInspectionService, callback);
         verify(productInspectionService).send(eq(productInspection), productInspectorCallback.capture());
+        verifyCallbackResponse(callBackProductInspection != null);
     }
 
     private void setUpSyncProduct() throws InterruptedException {
@@ -235,13 +246,19 @@ public class ProductInspectionTest {
 
     private SyncCallback callback = new SyncCallback() {
         @Override
-        public void onSuccess(ProductInspection productInspection) { }
+        public void onSuccess(ProductInspection productInspection) {
+            callBackProductInspection = productInspection;
+        }
 
         @Override
-        public void onProgressUpdated(ProductInspection productInspection, double progress) { }
+        public void onProgressUpdated(ProductInspection productInspection, double progress) {
+            callBackProductProgress = productInspection;
+        }
 
         @Override
-        public void onFailure(ProductInspection productInspection, Throwable t) { }
+        public void onFailure(ProductInspection productInspection, Throwable t) {
+            callBackThrowable = t;
+        }
     };
 
     private HttpResponse<PictureResponse> pictureResponse = new HttpResponse<PictureResponse>() {
