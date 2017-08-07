@@ -1,0 +1,18 @@
+package br.com.bg7.appvistoria.data.source.local.fake;
+
+import br.com.bg7.appvistoria.data.source.local.AuthRepository;
+
+/**
+ * Created by: luciolucio
+ * Date: 2017-08-07
+ */
+
+public class FakeAuthRepository implements AuthRepository {
+
+    private String username;
+
+    @Override
+    public String currentUsername() {
+        return username;
+    }
+}
