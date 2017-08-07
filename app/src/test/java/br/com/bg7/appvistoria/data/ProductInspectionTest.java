@@ -155,6 +155,10 @@ public class ProductInspectionTest {
         shouldSyncStatusReady();
     }
 
+    @Test
+    public void shouldCanReady() throws InterruptedException {
+        canReady();
+    }
 
     private void numberOfTimesToSync(int cont) {
         for(int i=0; i<cont; i++) {
@@ -165,8 +169,12 @@ public class ProductInspectionTest {
     }
 
     private void shouldSyncStatusReady(){
-        Assert.assertEquals(productInspection.ready(), SyncStatus.READY);
+        canReady();
         canSyncPictures();
+    }
+
+    private void canReady() {
+        Assert.assertEquals(productInspection.ready(), SyncStatus.READY);
     }
 
     private void addOneImageToSync() throws InterruptedException {
