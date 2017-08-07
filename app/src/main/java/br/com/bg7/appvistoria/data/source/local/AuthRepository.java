@@ -15,7 +15,9 @@ public interface AuthRepository {
 
     /**
      * Save the username. This will qualify the given username
-     * as the logged in user
+     * as the logged in user.
+     *
+     * Any existing username will get overwritten.
      *
      * @param username the username to log in
      */
