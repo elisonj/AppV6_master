@@ -16,7 +16,7 @@ public interface AuthRepository {
     /**
      * Get the authentication token of the logged in user
      *
-     * @return the authentication token of the logged in user
+     * @return the authentication token of the logged in user, or null if not logged in
      */
     String currentToken();
 
