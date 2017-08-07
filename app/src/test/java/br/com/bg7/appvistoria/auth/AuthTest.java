@@ -81,32 +81,44 @@ public class AuthTest {
     }
 
     @Test
+    public void shouldReturnNullUserIfNoUserInRepository() {
+        Assert.assertNull(auth.user());
+    }
+
+    @Test
+    public void shouldReturnNullTokenIfNoUserInRepository() {
+        Assert.assertNull(auth.token());
+    }
+
+    @Test
     public void shouldCheckIfUserInRepository() {
-        authRepository.save("Wesley");
+        authRepository.save("Wesley", "Tolkien");
         Assert.assertTrue(auth.check());
     }
 
     @Test
-    public void shouldReturnNullIfNoUserInRepository() {
-        Assert.assertNull(auth.user());
-    }
-
-    @Test
     public void shouldReturnUsernameIfUserInRepository() {
-        authRepository.save("tiberio");
+        authRepository.save("tiberio", "qqToken");
         Assert.assertEquals("tiberio", auth.user());
     }
 
     @Test
-    public void shouldNotCheckOrHaveUserIfAuthFails() {
+    public void shouldReturnTokenIfUserInRepository() {
+        authRepository.save("kirk", "mmToken");
+        Assert.assertEquals("mmToken", auth.token());
+    }
+
+    @Test
+    public void shouldNotCheckOrHaveUserOrTokenIfAuthFails() {
         auth.attempt("", "", false, new EmptyAuthCallback());
 
         Assert.assertFalse(auth.check());
         Assert.assertNull(auth.user());
+        Assert.assertNull(auth.token());
     }
 
     @Test
-    public void shouldCheckAndHaveUserIfAuthPasses() {
+    public void shouldCheckAndHaveUserAndTokenIfAuthPasses() {
         User user = new User("unb", "token", BCrypt.hashpw("arrumamalae", BCrypt.gensalt()));
         userRepository.save(user);
 
@@ -114,6 +126,7 @@ public class AuthTest {
 
         Assert.assertTrue(auth.check());
         Assert.assertEquals("unb", auth.user());
+        Assert.assertEquals("token", auth.token());
     }
 
     @Test
@@ -126,5 +139,6 @@ public class AuthTest {
 
         Assert.assertFalse(auth.check());
         Assert.assertNull(auth.user());
+        Assert.assertNull(auth.token());
     }
 }

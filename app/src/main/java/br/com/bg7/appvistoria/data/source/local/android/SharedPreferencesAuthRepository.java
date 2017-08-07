@@ -13,6 +13,7 @@ import br.com.bg7.appvistoria.data.source.local.AuthRepository;
 public class SharedPreferencesAuthRepository implements AuthRepository {
     private final static String AUTH_PREFS_NAME = "AuthPrefs";
     private final static String CURRENT_USER_NAME = "currentUsername";
+    private final static String CURRENT_TOKEN = "currentToken";
 
     private Context context;
 
@@ -22,25 +23,43 @@ public class SharedPreferencesAuthRepository implements AuthRepository {
 
     @Override
     public String currentUsername() {
-        SharedPreferences settings = context.getSharedPreferences(AUTH_PREFS_NAME, Context.MODE_PRIVATE);
-        return settings.getString(CURRENT_USER_NAME, null);
+        return getValue(CURRENT_USER_NAME);
     }
 
     @Override
-    public void save(String username) {
-        SharedPreferences settings = context.getSharedPreferences(AUTH_PREFS_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
+    public String currentToken() {
+        return getValue(CURRENT_TOKEN);
+    }
+
+    @Override
+    public void save(String username, String token) {
+        SharedPreferences.Editor editor = getEditor();
 
         editor.putString(CURRENT_USER_NAME, username);
+        editor.putString(CURRENT_TOKEN, token);
         editor.apply();
     }
 
     @Override
     public void clear() {
-        SharedPreferences settings = context.getSharedPreferences(AUTH_PREFS_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
+        SharedPreferences.Editor editor = getEditor();
 
         editor.remove(CURRENT_USER_NAME);
+        editor.remove(CURRENT_TOKEN);
         editor.apply();
+    }
+
+    private String getValue(String key) {
+        SharedPreferences settings = getSettings();
+        return settings.getString(key, null);
+    }
+
+    private SharedPreferences.Editor getEditor() {
+        SharedPreferences settings = getSettings();
+        return settings.edit();
+    }
+
+    private SharedPreferences getSettings() {
+        return context.getSharedPreferences(AUTH_PREFS_NAME, Context.MODE_PRIVATE);
     }
 }

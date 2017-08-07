@@ -60,8 +60,8 @@ public class Auth {
     }
 
     private void attemptTokenLogin(LoginData loginData, AuthCallback callback) {
-        TokenServiceCallback tokenServiceCallback = new TokenServiceCallback(loginData, userService, userRepository, callback);
-        tokenService.getToken(loginData.getUsername(), loginData.getPassword(), tokenServiceCallback);
+        TokenServiceCallback httpCallback = new TokenServiceCallback(loginData, userService, userRepository, callback);
+        tokenService.getToken(loginData.getUsername(), loginData.getPassword(), httpCallback);
     }
 
     public boolean check() {
@@ -74,6 +74,10 @@ public class Auth {
 
     public void logout() {
         authRepository.clear();
+    }
+
+    public String token() {
+        return authRepository.currentToken();
     }
 
     /**
@@ -101,7 +105,9 @@ public class Auth {
 
         @Override
         public void onSuccess() {
-            authRepository.save(username);
+            User user = userRepository.findByUsername(username);
+            authRepository.save(username, user.getToken());
+
             callback.onSuccess();
         }
     }

@@ -14,14 +14,23 @@ public interface AuthRepository {
     String currentUsername();
 
     /**
-     * Save the username. This will qualify the given username
-     * as the logged in user.
+     * Get the authentication token of the logged in user
      *
-     * Any existing username will get overwritten.
+     * @return the authentication token of the logged in user
+     */
+    String currentToken();
+
+    /**
+     * Save the user data. This will qualify the given username
+     * as the logged in user, and the given token is going to be used
+     * for authentication with remote services.
+     *
+     * Any existing username and token will get overwritten.
      *
      * @param username the username to log in
+     * @param token the authentication token
      */
-    void save(String username);
+    void save(String username, String token);
 
     /**
      * Removes the currently logged in user
