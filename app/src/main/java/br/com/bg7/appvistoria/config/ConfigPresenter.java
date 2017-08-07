@@ -38,7 +38,7 @@ class ConfigPresenter implements ConfigContract.Presenter {
         configView.setLanguages(languageList);
 
         // TODO: Pegar por usuário
-        Config config = configRepository.first(Config.class);
+        Config config = configRepository.first();
         if(config == null) {
             applyDefaultConfig(languageList);
             return;
@@ -99,9 +99,9 @@ class ConfigPresenter implements ConfigContract.Presenter {
         configView.hideButtons();
         configView.hideLanguages();
 
-        Config config = configRepository.first(Config.class);
+        Config config = configRepository.first();
         if(config != null) {
-            configRepository.deleteAll(Config.class);
+            configRepository.deleteAll();
         }
 
         config = new Config(language, syncWithWifiOnly);

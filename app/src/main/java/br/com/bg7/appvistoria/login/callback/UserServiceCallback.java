@@ -2,8 +2,8 @@ package br.com.bg7.appvistoria.login.callback;
 
 import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
-import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
-import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
 import br.com.bg7.appvistoria.login.LoginContract;
@@ -45,12 +45,17 @@ class UserServiceCallback extends LoginCallback implements HttpCallback<UserResp
 
     /**
      * SuppressWarnings enquanto nao salvamos o nome do usuario
+     *
+     * TODO: Quando salvarmos o nome do usuario, tirar o SuppressWarnings
+     *
      * @param userResponse Resposta do servico, com dados do usuario
      */
     @SuppressWarnings("UnusedParameters")
     private void processSuccess(UserResponse userResponse) {
-        if (userRepository.first(User.class) == null) {
-            userRepository.deleteAll(User.class);
+        User existingUser = userRepository.findByUsername(loginData.getUsername());
+
+        if (existingUser != null) {
+            userRepository.delete(existingUser);
         }
 
         User user = new User(loginData.getUsername(), token.getAccessToken(), hashpw(loginData.getPassword()));

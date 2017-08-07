@@ -17,12 +17,17 @@ import br.com.bg7.appvistoria.data.source.local.Repository;
  * Date: 2017-07-28
  */
 
-public abstract class SugarRepository<T extends SugarRecord<T>> implements Repository<T> {
+abstract class SugarRepository<T extends SugarRecord<T>> implements Repository<T> {
     private static final Logger LOG = LoggerFactory.getLogger(SugarRepository.class);
+    private Class<T> clazz;
+
+    SugarRepository(Class<T> clazz) {
+        this.clazz = clazz;
+    }
 
     @Override
-    public T findById(Class<T> type, Long id) {
-        return T.findById(type, id);
+    public T findById(Long id) {
+        return T.findById(clazz, id);
     }
 
     public void save(T entity) {
@@ -35,9 +40,9 @@ public abstract class SugarRepository<T extends SugarRecord<T>> implements Repos
         }
     }
 
-    public T first(Class<T> type) {
+    public T first() {
         try {
-            Iterator<T> iterator = T.findAll(type);
+            Iterator<T> iterator = T.findAll(clazz);
 
             if (!iterator.hasNext()) {
                 return null;
@@ -61,9 +66,9 @@ public abstract class SugarRepository<T extends SugarRecord<T>> implements Repos
         }
     }
 
-    public void deleteAll(Class<T> type) {
+    public void deleteAll() {
         try {
-            T.deleteAll(type);
+            T.deleteAll(clazz);
         }
         catch (SQLException sqlException) {
             LOG.error(ErrorConstants.SUGAR_SQL_EXCEPTION, sqlException);

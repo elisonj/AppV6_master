@@ -10,11 +10,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import br.com.bg7.appvistoria.data.User;
-import br.com.bg7.appvistoria.data.source.TokenService;
-import br.com.bg7.appvistoria.data.source.UserService;
+import br.com.bg7.appvistoria.data.source.remote.TokenService;
+import br.com.bg7.appvistoria.data.source.remote.UserService;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeUserRepository;
-import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
-import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
 
@@ -82,7 +82,7 @@ class LoginPresenterTestBase {
         when(userHttpResponse.body()).thenReturn(new UserResponse());
 
         userRepository = new FakeUserRepository();
-        userRepository.deleteAll(User.class);
+        userRepository.deleteAll();
 
         loginPresenter = new LoginPresenter(tokenService, userService, userRepository, loginView);
 
@@ -106,7 +106,7 @@ class LoginPresenterTestBase {
     }
 
     void setUpNoUser() {
-        userRepository.deleteAll(User.class);
+        userRepository.deleteAll();
     }
 
     void invokeTokenService() {
@@ -141,7 +141,7 @@ class LoginPresenterTestBase {
     }
 
     /**
-     * TODO: Quando salvarmos o nome do usuario, adicionar aqui
+     * TODO: Quando salvarmos o nome do usuario, verificar aqui
      */
     void verifySaveAllUserDataAndEnter() {
         verifySaveTokenAndPasswordAndShowMainScreen();

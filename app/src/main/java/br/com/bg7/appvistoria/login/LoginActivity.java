@@ -4,8 +4,8 @@ import android.os.Bundle;
 
 import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.BuildConfig;
-import br.com.bg7.appvistoria.data.source.TokenService;
-import br.com.bg7.appvistoria.data.source.UserService;
+import br.com.bg7.appvistoria.data.source.remote.TokenService;
+import br.com.bg7.appvistoria.data.source.remote.UserService;
 import br.com.bg7.appvistoria.data.source.local.sugar.SugarUserRepository;
 import br.com.bg7.appvistoria.data.source.remote.retrofit.RetrofitTokenService;
 import br.com.bg7.appvistoria.data.source.remote.retrofit.RetrofitUserService;

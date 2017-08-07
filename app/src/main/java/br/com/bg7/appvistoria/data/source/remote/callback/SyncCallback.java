@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.data.source.remote;
+package br.com.bg7.appvistoria.data.source.remote.callback;
 
 import br.com.bg7.appvistoria.data.ProductInspection;
 

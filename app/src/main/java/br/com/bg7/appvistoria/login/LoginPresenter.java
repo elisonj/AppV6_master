@@ -5,8 +5,8 @@ import com.google.common.base.Strings;
 import org.mindrot.jbcrypt.BCrypt;
 
 import br.com.bg7.appvistoria.data.User;
-import br.com.bg7.appvistoria.data.source.TokenService;
-import br.com.bg7.appvistoria.data.source.UserService;
+import br.com.bg7.appvistoria.data.source.remote.TokenService;
+import br.com.bg7.appvistoria.data.source.remote.UserService;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
 import br.com.bg7.appvistoria.login.callback.TokenServiceCallback;
 import br.com.bg7.appvistoria.login.vo.LoginData;

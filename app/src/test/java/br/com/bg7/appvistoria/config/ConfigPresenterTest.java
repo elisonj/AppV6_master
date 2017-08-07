@@ -55,7 +55,7 @@ public class ConfigPresenterTest {
 
     private void setUpConfig(String language, boolean isSyncWithWifiOnly) {
         Config config = new Config(language, isSyncWithWifiOnly);
-        when(configRepository.first(Config.class)).thenReturn(config);
+        when(configRepository.first()).thenReturn(config);
     }
 
     @Test
@@ -122,7 +122,7 @@ public class ConfigPresenterTest {
 
     @Test
     public void shouldSetDefaultsWhenNoConfig() {
-        when(configRepository.first(Config.class)).thenReturn(null);
+        when(configRepository.first()).thenReturn(null);
 
         configPresenter.start();
 

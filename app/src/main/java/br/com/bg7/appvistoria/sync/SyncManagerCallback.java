@@ -4,7 +4,7 @@ import java.util.HashSet;
 
 import br.com.bg7.appvistoria.data.ProductInspection;
 import br.com.bg7.appvistoria.data.source.local.ProductInspectionRepository;
-import br.com.bg7.appvistoria.data.source.remote.SyncCallback;
+import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

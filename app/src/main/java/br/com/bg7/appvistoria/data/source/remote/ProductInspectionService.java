@@ -1,7 +1,7 @@
-package br.com.bg7.appvistoria.data.source;
+package br.com.bg7.appvistoria.data.source.remote;
 
 import br.com.bg7.appvistoria.data.ProductInspection;
-import br.com.bg7.appvistoria.data.source.remote.HttpProgressCallback;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpProgressCallback;
 import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
 
 /**

@@ -64,7 +64,7 @@ public class SyncManagerInitializationTest extends SyncManagerTestBase {
 
         ArrayList<ProductInspection> inspectionsThatGetReset = new ArrayList<>();
         inspectionsThatGetReset.add(saveWithStatus(SyncStatus.PICTURES_BEING_SYNCED));
-        inspectionsThatGetReset.add(saveWithStatus(SyncStatus.PRODUCT_INSPECTION_BEING_SYNCED));
+        inspectionsThatGetReset.add(saveWithStatus(SyncStatus.INSPECTION_BEING_SYNCED));
 
         ArrayList<ProductInspection> inspectionsThatDoNotGetReset = new ArrayList<>();
         inspectionsThatDoNotGetReset.add(saveWithStatus(SyncStatus.DONE));

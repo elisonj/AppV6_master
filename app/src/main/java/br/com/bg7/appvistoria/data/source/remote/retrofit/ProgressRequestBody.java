@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import br.com.bg7.appvistoria.data.source.remote.HttpProgressCallback;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpProgressCallback;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okio.BufferedSink;

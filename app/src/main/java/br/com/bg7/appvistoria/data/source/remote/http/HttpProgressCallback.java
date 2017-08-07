@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.data.source.remote;
+package br.com.bg7.appvistoria.data.source.remote.http;
 
 /**
  * Created by: elison

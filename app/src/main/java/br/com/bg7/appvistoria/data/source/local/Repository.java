@@ -9,8 +9,10 @@ import com.orm.SugarRecord;
 
 public interface Repository<T extends SugarRecord<T>> {
     void save(T entity);
-    T findById(Class<T> type, Long id);
-    T first(Class<T> type);
+    T findById(Long id);
     void delete(T entity);
-    void deleteAll(Class<T> type);
+
+    // TODO: Remover esses métodos
+    T first();
+    void deleteAll();
 }
