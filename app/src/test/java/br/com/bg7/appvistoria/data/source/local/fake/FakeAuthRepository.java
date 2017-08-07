@@ -15,4 +15,9 @@ public class FakeAuthRepository implements AuthRepository {
     public String currentUsername() {
         return username;
     }
+
+    @Override
+    public void save(String username) {
+        this.username = username;
+    }
 }

@@ -25,4 +25,13 @@ public class SharedPreferencesAuthRepository implements AuthRepository {
         SharedPreferences settings = context.getSharedPreferences(AUTH_PREFS_NAME, Context.MODE_PRIVATE);
         return settings.getString(CURRENT_USER_NAME, null);
     }
+
+    @Override
+    public void save(String username) {
+        SharedPreferences settings = context.getSharedPreferences(AUTH_PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+
+        editor.putString(CURRENT_USER_NAME, username);
+        editor.apply();
+    }
 }

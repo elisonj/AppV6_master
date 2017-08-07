@@ -61,4 +61,10 @@ public class AuthTest {
     public void shouldNotCheckIfNoUserInRepository() {
         Assert.assertFalse(auth.check());
     }
+
+    @Test
+    public void shouldCheckIfUserInRepository() {
+        authRepository.save("Wesley");
+        Assert.assertTrue(auth.check());
+    }
 }

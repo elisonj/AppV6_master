@@ -12,4 +12,12 @@ public interface AuthRepository {
      * @return the logged in user's username, or null if not logged in
      */
     String currentUsername();
+
+    /**
+     * Save the username. This will qualify the given username
+     * as the logged in user
+     *
+     * @param username the username to log in
+     */
+    void save(String username);
 }
