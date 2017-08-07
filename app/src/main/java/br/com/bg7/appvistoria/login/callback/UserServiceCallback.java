@@ -45,6 +45,9 @@ class UserServiceCallback extends LoginCallback implements HttpCallback<UserResp
 
     /**
      * SuppressWarnings enquanto nao salvamos o nome do usuario
+     *
+     * TODO: Quando salvarmos o nome do usuario, tirar o SuppressWarnings
+     *
      * @param userResponse Resposta do servico, com dados do usuario
      */
     @SuppressWarnings("UnusedParameters")

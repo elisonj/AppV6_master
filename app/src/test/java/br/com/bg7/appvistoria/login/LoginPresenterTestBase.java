@@ -141,7 +141,7 @@ class LoginPresenterTestBase {
     }
 
     /**
-     * TODO: Quando salvarmos o nome do usuario, adicionar aqui
+     * TODO: Quando salvarmos o nome do usuario, verificar aqui
      */
     void verifySaveAllUserDataAndEnter() {
         verifySaveTokenAndPasswordAndShowMainScreen();
