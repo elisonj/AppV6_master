@@ -27,7 +27,7 @@ public class SugarUserRepository extends SugarRepository<User> implements UserRe
     @Override
     public User findByUsername(String username) {
         try {
-            List<User> userList = User.find(User.class, "user_name = ?", username);
+            List<User> userList = User.find(User.class, "username = ?", username);
 
             if (userList != null && userList.size() > 0) {
                 return userList.get(0);
