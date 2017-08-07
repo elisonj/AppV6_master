@@ -61,4 +61,8 @@ public class Auth {
     public boolean check() {
         return authRepository.currentUsername() != null;
     }
+
+    public String user() {
+        return authRepository.currentUsername();
+    }
 }

@@ -67,4 +67,15 @@ public class AuthTest {
         authRepository.save("Wesley");
         Assert.assertTrue(auth.check());
     }
+
+    @Test
+    public void shouldReturnNullIfNoUserInRepository() {
+        Assert.assertNull(auth.user());
+    }
+
+    @Test
+    public void shouldReturnUsernameIfUserInRepository() {
+        authRepository.save("tiberio");
+        Assert.assertEquals("tiberio", auth.user());
+    }
 }
