@@ -31,26 +31,29 @@ public class Auth {
         this.authRepository = checkNotNull(authRepository);
     }
 
+    // TODO: Testar casos de user/pwd/callback nulos
     public void attempt(String username, String password, boolean connected, AuthCallback callback) {
         User localUser = userRepository.findByUsername(username);
         boolean passwordMatches = localUser != null && BCrypt.checkpw(password, localUser.getPasswordHash());
 
+        Interceptor interceptor = new Interceptor(username, callback);
+
         if (connected) {
-            attemptTokenLogin(new LoginData(username, password, localUser, passwordMatches), callback);
+            attemptTokenLogin(new LoginData(username, password, localUser, passwordMatches), interceptor);
             return;
         }
 
         if (localUser == null) {
-            callback.onCannotLogin();
+            interceptor.onCannotLogin();
             return;
         }
 
         if (!passwordMatches) {
-            callback.onBadCredentials();
+            interceptor.onBadCredentials();
             return;
         }
 
-        callback.onSuccess();
+        interceptor.onSuccess();
     }
 
     private void attemptTokenLogin(LoginData loginData, AuthCallback callback) {
@@ -64,5 +67,35 @@ public class Auth {
 
     public String user() {
         return authRepository.currentUsername();
+    }
+
+    /**
+     * Intercepts callbacks in order to save auth info on success
+     */
+    private class Interceptor implements AuthCallback {
+
+        String username;
+        AuthCallback callback;
+
+        Interceptor(String username, AuthCallback callback) {
+            this.username = username;
+            this.callback = callback;
+        }
+
+        @Override
+        public void onCannotLogin() {
+            callback.onCannotLogin();
+        }
+
+        @Override
+        public void onBadCredentials() {
+            callback.onBadCredentials();
+        }
+
+        @Override
+        public void onSuccess() {
+            authRepository.save(username);
+            callback.onSuccess();
+        }
     }
 }

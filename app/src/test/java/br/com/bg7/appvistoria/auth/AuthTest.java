@@ -4,9 +4,13 @@ import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import br.com.bg7.appvistoria.auth.callback.AuthCallback;
+import br.com.bg7.appvistoria.auth.callback.EmptyAuthCallback;
+import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeAuthRepository;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeUserRepository;
 import br.com.bg7.appvistoria.data.source.remote.TokenService;
@@ -77,5 +81,24 @@ public class AuthTest {
     public void shouldReturnUsernameIfUserInRepository() {
         authRepository.save("tiberio");
         Assert.assertEquals("tiberio", auth.user());
+    }
+
+    @Test
+    public void shouldNotCheckOrHaveUserIfAuthFails() {
+        auth.attempt("", "", false, new EmptyAuthCallback());
+
+        Assert.assertFalse(auth.check());
+        Assert.assertNull(auth.user());
+    }
+
+    @Test
+    public void shouldCheckAndHaveUserIfAuthPasses() {
+        User user = new User("unb", "token", BCrypt.hashpw("arrumamalae", BCrypt.gensalt()));
+        userRepository.save(user);
+
+        auth.attempt("unb", "arrumamalae", false, new EmptyAuthCallback());
+
+        Assert.assertTrue(auth.check());
+        Assert.assertEquals("unb", auth.user());
     }
 }
