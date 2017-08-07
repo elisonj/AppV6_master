@@ -16,6 +16,7 @@ import br.com.bg7.appvistoria.config.vo.Language;
 import br.com.bg7.appvistoria.data.Config;
 import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
 import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
+import br.com.bg7.appvistoria.data.source.local.fake.FakeConfigRepository;
 
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
@@ -32,8 +33,7 @@ public class ConfigPresenterTest {
     @Mock
     private ConfigContract.View configView;
 
-    @Mock
-    private ConfigRepository configRepository;
+    private FakeConfigRepository configRepository = new FakeConfigRepository();
 
     @Mock
     private LanguageRepository languageRepository;
@@ -65,7 +65,7 @@ public class ConfigPresenterTest {
 
     private void setUpConfig(String language, boolean isSyncWithWifiOnly) {
         Config config = new Config(language, isSyncWithWifiOnly, USERNAME);
-        when(configRepository.findByUsername(USERNAME)).thenReturn(config);
+        configRepository.save(config);
     }
 
     @Test
@@ -132,7 +132,7 @@ public class ConfigPresenterTest {
 
     @Test
     public void shouldSetDefaultsWhenNoConfig() {
-        when(configRepository.findByUsername(USERNAME)).thenReturn(null);
+        configRepository.clear();
 
         configPresenter.start();
 
