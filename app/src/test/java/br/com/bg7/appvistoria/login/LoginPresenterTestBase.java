@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 
 import br.com.bg7.appvistoria.auth.Auth;
 import br.com.bg7.appvistoria.data.User;
+import br.com.bg7.appvistoria.data.source.local.fake.FakeAuthRepository;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeUserRepository;
 import br.com.bg7.appvistoria.data.source.remote.TokenService;
 import br.com.bg7.appvistoria.data.source.remote.UserService;
@@ -39,6 +40,7 @@ class LoginPresenterTestBase {
     UserService userService;
 
     FakeUserRepository userRepository;
+    FakeAuthRepository authRepository;
 
     @Mock
     HttpResponse<Token> tokenHttpResponse;
@@ -86,7 +88,10 @@ class LoginPresenterTestBase {
         userRepository = new FakeUserRepository();
         userRepository.deleteAll();
 
-        auth = new Auth(userService, tokenService, userRepository);
+        authRepository = new FakeAuthRepository();
+        authRepository.clear();
+
+        auth = new Auth(userService, tokenService, userRepository, authRepository);
         loginPresenter = new LoginPresenter(auth, loginView);
 
         userRepository.save(new User(USERNAME, TOKEN, HASHED_PASSWORD));

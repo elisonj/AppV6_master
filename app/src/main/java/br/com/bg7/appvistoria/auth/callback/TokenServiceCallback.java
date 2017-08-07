@@ -7,7 +7,6 @@ import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
 import br.com.bg7.appvistoria.data.source.remote.UserService;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
-import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
 
@@ -61,7 +60,7 @@ public class TokenServiceCallback extends ServiceCallbackBase implements HttpCal
     }
 
     private void callUserService(LoginData loginData, @NonNull final Token token) {
-        HttpCallback<UserResponse> userServiceCallback = new UserServiceCallback(loginData, token, userRepository, callback);
-        userService.getUser(token.getAccessToken(), token.getUserId(), userServiceCallback);
+        UserServiceCallback httpCallback = new UserServiceCallback(loginData, token, userRepository, callback);
+        userService.getUser(token.getAccessToken(), token.getUserId(), httpCallback);
     }
 }
