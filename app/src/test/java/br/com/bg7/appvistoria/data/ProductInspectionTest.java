@@ -146,6 +146,15 @@ public class ProductInspectionTest {
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.INSPECTION_BEING_SYNCED);
     }
 
+
+    @Test
+    public void shouldSyncProduct() throws InterruptedException {
+        syncProduct();
+        productInspectorCallback.getValue().onProgressUpdated(PROGRESS);
+        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.INSPECTION_BEING_SYNCED);
+    }
+
+
     private void numberOfTimesToSync(int cont) {
         for(int i=0; i<cont; i++) {
             productInspection.sync(pictureService, callback);
@@ -185,10 +194,7 @@ public class ProductInspectionTest {
     }
 
     private void syncProduct() throws InterruptedException {
-        addImageToSync(1);
-        syncPictures();
-        productInspection.sync(productInspectionService, callback);
-        verify(productInspectionService).send(eq(productInspection), productInspectorCallback.capture());
+        Assert.assertTrue(productInspection.canSyncProduct());
     }
 
     private SyncCallback callback = new SyncCallback() {
