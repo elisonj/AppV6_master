@@ -35,6 +35,7 @@ public class ProductInspectionTest {
     private static final double PROGRESS = 50;
     private static final int FILES_TO_SYNC = 3;
     private static final File FILE = new File("");
+    private boolean isSuccessful = true;
 
     private ProductInspection productInspection;
 
@@ -104,6 +105,15 @@ public class ProductInspectionTest {
     public void shouldShowFailedWhenResponseIsNull() throws InterruptedException {
         syncProduct();
         productInspectorCallback.getValue().onResponse(null);
+        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.FAILED);
+    }
+
+    @Test
+    public void shouldSyncProductInspectionWhenIsNotSuccessful() throws InterruptedException {
+        isSuccessful = false;
+        syncProduct();
+        productInspectorCallback.getValue().onResponse(productResponse);
+        Assert.assertFalse(productResponse.isSuccessful());
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.FAILED);
     }
 
@@ -193,7 +203,7 @@ public class ProductInspectionTest {
     private HttpResponse<ProductResponse> productResponse = new HttpResponse<ProductResponse>() {
         @Override
         public boolean isSuccessful() {
-            return true;
+            return isSuccessful;
         }
 
         @Nullable
