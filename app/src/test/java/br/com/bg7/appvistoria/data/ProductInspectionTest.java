@@ -125,8 +125,7 @@ public class ProductInspectionTest {
 
     @Test
     public void shouldShowFailedProductInspectionWhenIsNotSuccessful() throws InterruptedException {
-        isSuccessful = false;
-        syncProduct();
+        trySyncProductWhenCannotSync();
         productInspectorCallback.getValue().onResponse(productResponse);
         Assert.assertFalse(productResponse.isSuccessful());
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.FAILED);
@@ -146,13 +145,6 @@ public class ProductInspectionTest {
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.INSPECTION_BEING_SYNCED);
     }
 
-
-    @Test
-    public void shouldSyncProduct() throws InterruptedException {
-        syncProduct();
-        productInspectorCallback.getValue().onProgressUpdated(PROGRESS);
-        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.INSPECTION_BEING_SYNCED);
-    }
 
 
     private void numberOfTimesToSync(int cont) {
@@ -189,11 +181,38 @@ public class ProductInspectionTest {
 
     private void setUpSyncPictures() {
         shouldSyncStatusReady();
+        canSyncPictures();
         productInspection.sync(pictureService, callback);
         verify(pictureService).send(eq(FILE), eq(productInspection), pictureCallback.capture());
     }
 
+    private void canSyncPictures() {
+        Assert.assertTrue(productInspection.canSyncPictures());
+    }
+
     private void syncProduct() throws InterruptedException {
+        setUpSyncProduct();
+        verifySyncProduct();
+    }
+
+    private void trySyncProductWhenCannotSync() throws InterruptedException {
+        setUpSyncProduct();
+        isSuccessful = false;
+        verifySyncProduct();
+    }
+
+    private void verifySyncProduct() {
+        productInspection.sync(productInspectionService, callback);
+        verify(productInspectionService).send(eq(productInspection), productInspectorCallback.capture());
+    }
+
+    private void setUpSyncProduct() throws InterruptedException {
+        addImageToSync(1);
+        syncPictures();
+        canSyncProduct();
+    }
+
+    private void canSyncProduct() {
         Assert.assertTrue(productInspection.canSyncProduct());
     }
 
