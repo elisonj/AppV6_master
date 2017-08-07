@@ -105,8 +105,16 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
 
             @Override
             public void onResponse(HttpResponse<ProductResponse> httpResponse) {
-                syncStatus = SyncStatus.DONE;
-                syncCallback.onSuccess(ProductInspection.this);
+                if(httpResponse == null) {
+                    onFailure(null);
+                    return;
+                }
+                if(httpResponse.isSuccessful()) {
+                    syncStatus = SyncStatus.DONE;
+                    syncCallback.onSuccess(ProductInspection.this);
+                    return;
+                }
+                onFailure(null);
             }
 
             @Override
@@ -116,6 +124,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
             }
         });
     }
+
 
     /**
      * Possible exceptions from LinkedBlockingQueue

@@ -101,6 +101,13 @@ public class ProductInspectionTest {
     }
 
     @Test
+    public void shouldShowFailedWhenResponseIsNull() throws InterruptedException {
+        syncProduct();
+        productInspectorCallback.getValue().onResponse(null);
+        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.FAILED);
+    }
+
+    @Test
     public void shouldErrorProductInspection() throws InterruptedException {
         syncProduct();
         productInspectorCallback.getValue().onFailure(new IllegalStateException("Cannot sync"));
