@@ -1,34 +1,34 @@
-package br.com.bg7.appvistoria.login.callback;
+package br.com.bg7.appvistoria.auth.callback;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import br.com.bg7.appvistoria.auth.vo.LoginData;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
-import br.com.bg7.appvistoria.login.LoginContract;
 import br.com.bg7.appvistoria.login.LoginPresenter;
-import br.com.bg7.appvistoria.login.vo.LoginData;
 
 /**
  * Created by: luciolucio
  * Date: 2017-07-31
  */
 
-abstract class LoginCallback {
+abstract class ServiceCallbackBase {
     LoginData loginData;
     UserRepository userRepository;
-    LoginContract.View loginView;
+    AuthCallback callback;
 
-    LoginCallback(LoginData loginData, UserRepository userRepository, LoginContract.View loginView) {
-        this.loginView = loginView;
+    ServiceCallbackBase(LoginData loginData, UserRepository userRepository, AuthCallback callback) {
+        this.callback = callback;
         this.userRepository = userRepository;
         this.loginData = loginData;
     }
 
     void verifyPasswordAndEnter(boolean passwordMatches) {
         if (!passwordMatches) {
-            loginView.showBadCredentialsError();
+            callback.onBadCredentials();
             return;
         }
-        loginView.showMainScreen();
+
+        callback.onSuccess();
     }
 
     String hashpw(String password) {
@@ -37,7 +37,7 @@ abstract class LoginCallback {
 
     void processNonSuccess(int responseCode) {
         if(responseCode == LoginPresenter.UNAUTHORIZED_CODE) {
-            loginView.showBadCredentialsError();
+            callback.onBadCredentials();
             return;
         }
 

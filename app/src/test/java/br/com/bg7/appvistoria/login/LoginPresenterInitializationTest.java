@@ -10,28 +10,14 @@ import static org.mockito.Mockito.verify;
  */
 
 public class LoginPresenterInitializationTest extends LoginPresenterTestBase {
-    @SuppressWarnings("ConstantConditions")
     @Test(expected = NullPointerException.class)
-    public void shouldNotAcceptNullTokenServiceWhenCreated() {
-        new LoginPresenter(null, userService, userRepository, loginView);
+    public void shouldNotAcceptNullAuthWhenCreated() {
+        new LoginPresenter(null, loginView);
     }
 
-    @SuppressWarnings("ConstantConditions")
-    @Test(expected = NullPointerException.class)
-    public void shouldNotAcceptNullUserServiceWhenCreated() {
-        new LoginPresenter(tokenService, null, userRepository, loginView);
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    @Test(expected = NullPointerException.class)
-    public void shouldNotAcceptNullRepositoryWhenCreated() {
-        new LoginPresenter(tokenService, userService, null, loginView);
-    }
-
-    @SuppressWarnings("ConstantConditions")
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullViewWhenCreated() {
-        new LoginPresenter(tokenService, userService, userRepository, null);
+        new LoginPresenter(auth, null);
     }
 
     @Test

@@ -1,24 +1,23 @@
-package br.com.bg7.appvistoria.login.callback;
+package br.com.bg7.appvistoria.auth.callback;
 
+import br.com.bg7.appvistoria.auth.vo.LoginData;
 import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
-import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
-import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
-import br.com.bg7.appvistoria.login.LoginContract;
-import br.com.bg7.appvistoria.login.vo.LoginData;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
 
 /**
  * Created by: luciolucio
  * Date: 2017-07-31
  */
 
-class UserServiceCallback extends LoginCallback implements HttpCallback<UserResponse> {
+class UserServiceCallback extends ServiceCallbackBase implements HttpCallback<UserResponse> {
     private Token token;
 
-    UserServiceCallback(LoginData loginData, Token token, UserRepository userRepository, LoginContract.View loginView) {
-        super(loginData, userRepository, loginView);
+    UserServiceCallback(LoginData loginData, Token token, UserRepository userRepository, AuthCallback callback) {
+        super(loginData, userRepository, callback);
 
         this.token = token;
     }
@@ -40,7 +39,7 @@ class UserServiceCallback extends LoginCallback implements HttpCallback<UserResp
             return;
         }
 
-        loginView.showCannotLoginError();
+        callback.onCannotLogin();
     }
 
     /**
@@ -71,6 +70,6 @@ class UserServiceCallback extends LoginCallback implements HttpCallback<UserResp
 
     private void saveUserAndEnter(User user) {
         userRepository.save(user);
-        loginView.showMainScreen();
+        callback.onSuccess();
     }
 }
