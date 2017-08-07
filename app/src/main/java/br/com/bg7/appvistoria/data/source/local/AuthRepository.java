@@ -33,7 +33,7 @@ public interface AuthRepository {
     void save(String username, String token);
 
     /**
-     * Removes the currently logged in user
+     * Removes the currently logged in user and token
      */
     void clear();
 }
