@@ -15,12 +15,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class LoginPresenter implements LoginContract.Presenter {
     public static final int UNAUTHORIZED_CODE = 401;
 
-    private final Auth auth;
     private final LoginContract.View loginView;
 
-    LoginPresenter(Auth auth, LoginContract.View loginView) {
+    LoginPresenter(LoginContract.View loginView) {
 
-        this.auth = checkNotNull(auth, "auth cannot be null");
         this.loginView = checkNotNull(loginView, "loginView cannot be null");
 
         this.loginView.setPresenter(this);
@@ -35,7 +33,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     public void login(String username, String password) {
         if (!checkInput(username, password)) return;
 
-        auth.attempt(username, password, loginView.isConnected(), new AuthCallback() {
+        Auth.attempt(username, password, loginView.isConnected(), new AuthCallback() {
             @Override
             public void onCannotLogin() {
                 loginView.showCannotLoginError();

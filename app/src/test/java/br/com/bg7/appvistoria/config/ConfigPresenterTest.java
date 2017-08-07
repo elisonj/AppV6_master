@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.com.bg7.appvistoria.auth.Auth;
+import br.com.bg7.appvistoria.auth.FakeAuthFacade;
 import br.com.bg7.appvistoria.config.vo.Language;
 import br.com.bg7.appvistoria.data.Config;
 import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
@@ -25,6 +27,8 @@ import static org.mockito.Mockito.when;
  */
 
 public class ConfigPresenterTest {
+    private static final String USERNAME = "username";
+
     @Mock
     private ConfigContract.View configView;
 
@@ -34,11 +38,17 @@ public class ConfigPresenterTest {
     @Mock
     private LanguageRepository languageRepository;
 
+    private FakeAuthFacade authFacade = new FakeAuthFacade();
+
     private ConfigPresenter configPresenter;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+
+        Auth.configure(authFacade);
+        authFacade.fakeLogin(USERNAME);
+
         configPresenter = new ConfigPresenter(configRepository, languageRepository, configView);
 
         setUpLanguages();
@@ -54,8 +64,8 @@ public class ConfigPresenterTest {
     }
 
     private void setUpConfig(String language, boolean isSyncWithWifiOnly) {
-        Config config = new Config(language, isSyncWithWifiOnly);
-        when(configRepository.first()).thenReturn(config);
+        Config config = new Config(language, isSyncWithWifiOnly, USERNAME);
+        when(configRepository.findByUsername(USERNAME)).thenReturn(config);
     }
 
     @Test
@@ -122,7 +132,7 @@ public class ConfigPresenterTest {
 
     @Test
     public void shouldSetDefaultsWhenNoConfig() {
-        when(configRepository.first()).thenReturn(null);
+        when(configRepository.findByUsername(USERNAME)).thenReturn(null);
 
         configPresenter.start();
 

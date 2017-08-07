@@ -31,24 +31,14 @@ abstract class FakeRepository<K, T extends SugarRecord<T>> implements Repository
     }
 
     @Override
-    public T first() {
-        Iterator<K> iterator = ENTITIES_BY_KEY.keySet().iterator();
-        if (!iterator.hasNext()) {
-            return null;
-        }
-
-        return ENTITIES_BY_KEY.get(iterator.next());
-    }
-
-    @Override
     public void delete(T entity) {
         ENTITIES_BY_KEY.remove(getKey(entity));
         ENTITIES_BY_ID.remove(entity.getId());
     }
 
-    @Override
-    public void deleteAll() {
+    public void clear() {
         ENTITIES_BY_KEY.clear();
+        ENTITIES_BY_ID.clear();
     }
 
     abstract K getKey(T entity);

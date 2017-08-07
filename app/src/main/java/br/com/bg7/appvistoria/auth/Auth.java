@@ -2,6 +2,7 @@ package br.com.bg7.appvistoria.auth;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import br.com.bg7.appvistoria.RemoteLocalAuth;
 import br.com.bg7.appvistoria.auth.callback.AuthCallback;
 import br.com.bg7.appvistoria.auth.callback.TokenServiceCallback;
 import br.com.bg7.appvistoria.auth.vo.LoginData;
@@ -19,96 +20,32 @@ import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
  */
 
 public class Auth {
-    private final UserService userService;
-    private final TokenService tokenService;
-    private final UserRepository userRepository;
-    private final AuthRepository authRepository;
 
-    public Auth(UserService userService, TokenService tokenService, UserRepository userRepository, AuthRepository authRepository) {
-        this.userService = checkNotNull(userService);
-        this.tokenService = checkNotNull(tokenService);
-        this.userRepository = checkNotNull(userRepository);
-        this.authRepository = checkNotNull(authRepository);
+    private static AuthFacade authFacade;
+
+    private Auth() { }
+
+    public static synchronized void configure(AuthFacade authFacade) {
+        Auth.authFacade = authFacade;
     }
 
-    public void attempt(String username, String password, boolean connected, AuthCallback callback) {
-        username = checkNotNull(username);
-        password = checkNotNull(password);
-        callback = checkNotNull(callback);
-
-        User localUser = userRepository.findByUsername(username);
-        boolean passwordMatches = localUser != null && BCrypt.checkpw(password, localUser.getPasswordHash());
-
-        Interceptor interceptor = new Interceptor(username, callback);
-
-        if (connected) {
-            attemptTokenLogin(new LoginData(username, password, localUser, passwordMatches), interceptor);
-            return;
-        }
-
-        if (localUser == null) {
-            interceptor.onCannotLogin();
-            return;
-        }
-
-        if (!passwordMatches) {
-            interceptor.onBadCredentials();
-            return;
-        }
-
-        interceptor.onSuccess();
+    public static void attempt(String username, String password, boolean connected, AuthCallback callback) {
+        authFacade.attempt(username, password, connected, callback);
     }
 
-    private void attemptTokenLogin(LoginData loginData, AuthCallback callback) {
-        TokenServiceCallback httpCallback = new TokenServiceCallback(loginData, userService, userRepository, callback);
-        tokenService.getToken(loginData.getUsername(), loginData.getPassword(), httpCallback);
+    public static boolean check() {
+        return authFacade.check();
     }
 
-    public boolean check() {
-        return authRepository.currentUsername() != null;
+    public static String user() {
+        return authFacade.user();
     }
 
-    public String user() {
-        return authRepository.currentUsername();
+    public static String token() {
+        return authFacade.token();
     }
 
-    public void logout() {
-        authRepository.clear();
-    }
-
-    public String token() {
-        return authRepository.currentToken();
-    }
-
-    /**
-     * Intercepts callbacks in order to save auth info on success
-     */
-    private class Interceptor implements AuthCallback {
-
-        String username;
-        AuthCallback callback;
-
-        Interceptor(String username, AuthCallback callback) {
-            this.username = username;
-            this.callback = callback;
-        }
-
-        @Override
-        public void onCannotLogin() {
-            callback.onCannotLogin();
-        }
-
-        @Override
-        public void onBadCredentials() {
-            callback.onBadCredentials();
-        }
-
-        @Override
-        public void onSuccess() {
-            User user = userRepository.findByUsername(username);
-            authRepository.save(username, user.getToken());
-
-            callback.onSuccess();
-        }
+    public static void logout() {
+        authFacade.logout();
     }
 }

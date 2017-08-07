@@ -8,6 +8,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import br.com.bg7.appvistoria.RemoteLocalAuth;
 import br.com.bg7.appvistoria.auth.callback.EmptyAuthCallback;
 import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeAuthRepository;
@@ -20,8 +21,8 @@ import br.com.bg7.appvistoria.data.source.remote.UserService;
  * Date: 2017-08-07
  */
 
-public class AuthTest {
-    private Auth auth;
+public class RemoteLocalAuthTest {
+    private RemoteLocalAuth auth;
 
     @Mock
     private TokenService tokenService;
@@ -37,27 +38,27 @@ public class AuthTest {
     public void setUp () {
         MockitoAnnotations.initMocks(this);
 
-        auth = new Auth(userService, tokenService, userRepository, authRepository);
+        auth = new RemoteLocalAuth(userService, tokenService, userRepository, authRepository);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullUserServiceWhenCreated() {
-        new Auth(null, tokenService, userRepository, authRepository);
+        new RemoteLocalAuth(null, tokenService, userRepository, authRepository);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullTokenServiceWhenCreated() {
-        new Auth(userService, null, userRepository, authRepository);
+        new RemoteLocalAuth(userService, null, userRepository, authRepository);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullUserRepositoryWhenCreated() {
-        new Auth(userService, tokenService, null, authRepository);
+        new RemoteLocalAuth(userService, tokenService, null, authRepository);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullAuthRepositoryWhenCreated() {
-        new Auth(userService, tokenService, userRepository, null);
+        new RemoteLocalAuth(userService, tokenService, userRepository, null);
     }
 
     @Test(expected = NullPointerException.class)
