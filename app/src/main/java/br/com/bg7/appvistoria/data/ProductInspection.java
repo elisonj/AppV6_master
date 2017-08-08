@@ -163,6 +163,10 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
     }
 
     public void reset() {
+        if(syncStatus == SyncStatus.INSPECTION_BEING_SYNCED) {
+            syncStatus = SyncStatus.PICTURES_SYNCED;
+            return;
+        }
 
         syncStatus = SyncStatus.READY;
         Iterable<ProductFile> productFiles = productFileRepository.
