@@ -28,48 +28,6 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterTestBase
      * 3.1 (a)
      */
     @Test
-    public void shouldShowCannotLoginWhenNoConnectionAndNoUser() {
-        setUpNoConnection();
-        setUpNoUser();
-
-        callLogin();
-
-        invokeTokenService();
-        verify(loginView).showCannotLoginError();
-    }
-
-    /**
-     * 3.1 (b)
-     */
-    @Test
-    public void shouldSaveTokenAndPasswordAndEnterWhenNoConnectionAndBadPassword() {
-        setUpNoConnection();
-        setUpBadPassword();
-
-        callLogin();
-
-        invokeTokenService();
-        verifySaveTokenAndPasswordAndShowMainScreen();
-    }
-
-    /**
-     * 3.1 (c)
-     */
-    @Test
-    public void shouldSaveTokenAndEnterWhenNoConnectionAndGoodPassword() {
-        setUpNoConnection();
-        setUpGoodPassword();
-
-        callLogin();
-
-        invokeTokenService();
-        verifySaveTokenAndShowMainScreen();
-    }
-
-    /**
-     * 3.2 (a)
-     */
-    @Test
     public void shouldShowCannotLoginWhenConnectivityErrorAndNoUser() {
         setUpNoUser();
 
@@ -81,7 +39,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterTestBase
     }
 
     /**
-     * 3.2 (b)
+     * 3.1 (b)
      */
     @Test
     public void shouldSaveTokenAndPasswordAndEnterWhenConnectivityErrorAndBadPassword() {
@@ -95,7 +53,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterTestBase
     }
 
     /**
-     * 3.2 (c)
+     * 3.1 (c)
      */
     @Test
     public void shouldSaveTokenAndEnterWhenConnectivityErrorAndGoodPassword() {
@@ -109,7 +67,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterTestBase
     }
 
     /**
-     * 3.3 (a)
+     * 3.2 (a)
      */
     @Test
     public void shouldShowCannotLoginWhenOtherErrorAndNoUser() {
@@ -123,7 +81,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterTestBase
     }
 
     /**
-     * 3.3 (b)
+     * 3.2 (b)
      */
     @Test
     public void shouldSaveTokenAndPasswordAndEnterWhenOtherErrorAndBadPassword() {
@@ -137,7 +95,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterTestBase
     }
 
     /**
-     * 3.3 (c)
+     * 3.2 (c)
      */
     @Test
     public void shouldSaveTokenAndEnterWhenOtherErrorAndGoodPassword() {

@@ -9,14 +9,17 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import br.com.bg7.appvistoria.RemoteLocalAuth;
+import br.com.bg7.appvistoria.auth.Auth;
 import br.com.bg7.appvistoria.data.User;
-import br.com.bg7.appvistoria.data.source.TokenService;
-import br.com.bg7.appvistoria.data.source.UserService;
+import br.com.bg7.appvistoria.data.source.local.fake.FakeAuthRepository;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeUserRepository;
-import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
-import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
+import br.com.bg7.appvistoria.data.source.remote.TokenService;
+import br.com.bg7.appvistoria.data.source.remote.UserService;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
 
 import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.verify;
@@ -38,6 +41,7 @@ class LoginPresenterTestBase {
     UserService userService;
 
     FakeUserRepository userRepository;
+    FakeAuthRepository authRepository;
 
     @Mock
     HttpResponse<Token> tokenHttpResponse;
@@ -82,9 +86,14 @@ class LoginPresenterTestBase {
         when(userHttpResponse.body()).thenReturn(new UserResponse());
 
         userRepository = new FakeUserRepository();
-        userRepository.deleteAll(User.class);
+        userRepository.clear();
 
-        loginPresenter = new LoginPresenter(tokenService, userService, userRepository, loginView);
+        authRepository = new FakeAuthRepository();
+        authRepository.clear();
+
+        Auth.configure(new RemoteLocalAuth(userService, tokenService, userRepository, authRepository));
+
+        loginPresenter = new LoginPresenter(loginView);
 
         userRepository.save(new User(USERNAME, TOKEN, HASHED_PASSWORD));
     }
@@ -106,7 +115,7 @@ class LoginPresenterTestBase {
     }
 
     void setUpNoUser() {
-        userRepository.deleteAll(User.class);
+        userRepository.clear();
     }
 
     void invokeTokenService() {
@@ -141,7 +150,7 @@ class LoginPresenterTestBase {
     }
 
     /**
-     * TODO: Quando salvarmos o nome do usuario, adicionar aqui
+     * TODO: Quando salvarmos o nome do usuario, verificar aqui
      */
     void verifySaveAllUserDataAndEnter() {
         verifySaveTokenAndPasswordAndShowMainScreen();

@@ -3,7 +3,7 @@ package br.com.bg7.appvistoria.sync;
 import junit.framework.Assert;
 
 import br.com.bg7.appvistoria.data.ProductInspection;
-import br.com.bg7.appvistoria.data.source.remote.SyncCallback;
+import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
 
 /**
  * Created by: luciolucio

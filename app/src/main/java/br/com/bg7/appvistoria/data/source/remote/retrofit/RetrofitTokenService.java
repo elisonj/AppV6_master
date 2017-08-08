@@ -1,7 +1,8 @@
 package br.com.bg7.appvistoria.data.source.remote.retrofit;
 
-import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
+import br.com.bg7.appvistoria.data.source.remote.retrofit.http.RetrofitHttpCall;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -11,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Date: 2017-07-19
  */
 
-public class RetrofitTokenService implements br.com.bg7.appvistoria.data.source.TokenService {
+public class RetrofitTokenService implements br.com.bg7.appvistoria.data.source.remote.TokenService {
     private final TokenService tokenService;
     private final String grantType;
     private final String clientId;

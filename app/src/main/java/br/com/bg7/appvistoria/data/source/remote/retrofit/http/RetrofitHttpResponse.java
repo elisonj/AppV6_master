@@ -1,8 +1,8 @@
-package br.com.bg7.appvistoria.data.source.remote.retrofit;
+package br.com.bg7.appvistoria.data.source.remote.retrofit.http;
 
 import javax.annotation.Nullable;
 
-import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
 import retrofit2.Response;
 
 /**

@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.login.vo;
+package br.com.bg7.appvistoria.auth.vo;
 
 import br.com.bg7.appvistoria.data.User;
 

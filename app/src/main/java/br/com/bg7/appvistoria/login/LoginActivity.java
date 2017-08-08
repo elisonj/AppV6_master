@@ -4,8 +4,10 @@ import android.os.Bundle;
 
 import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.BuildConfig;
-import br.com.bg7.appvistoria.data.source.TokenService;
-import br.com.bg7.appvistoria.data.source.UserService;
+import br.com.bg7.appvistoria.RemoteLocalAuth;
+import br.com.bg7.appvistoria.auth.Auth;
+import br.com.bg7.appvistoria.auth.AuthFacade;
+import br.com.bg7.appvistoria.data.source.local.android.SharedPreferencesAuthRepository;
 import br.com.bg7.appvistoria.data.source.local.sugar.SugarUserRepository;
 import br.com.bg7.appvistoria.data.source.remote.retrofit.RetrofitTokenService;
 import br.com.bg7.appvistoria.data.source.remote.retrofit.RetrofitUserService;
@@ -27,11 +29,15 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         LoginView loginView = new LoginView(this);
-        UserService userService = new RetrofitUserService(BASE_URL);
-        TokenService tokenService = new RetrofitTokenService(BASE_URL, GRANT_TYPE, CLIENT_ID);
+        RetrofitUserService userService = new RetrofitUserService(BASE_URL);
+        RetrofitTokenService tokenService = new RetrofitTokenService(BASE_URL, GRANT_TYPE, CLIENT_ID);
+        SharedPreferencesAuthRepository authRepository = new SharedPreferencesAuthRepository(this);
         SugarUserRepository userRepository = new SugarUserRepository();
 
-        loginPresenter = new LoginPresenter(tokenService, userService, userRepository, loginView);
+        RemoteLocalAuth remoteLocalAuth = new RemoteLocalAuth(userService, tokenService, userRepository, authRepository);
+        Auth.configure(remoteLocalAuth);
+
+        loginPresenter = new LoginPresenter(loginView);
 
         setContentView(loginView);
     }

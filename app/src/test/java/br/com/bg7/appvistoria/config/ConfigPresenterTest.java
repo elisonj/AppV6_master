@@ -10,10 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.com.bg7.appvistoria.auth.Auth;
+import br.com.bg7.appvistoria.auth.FakeAuthFacade;
 import br.com.bg7.appvistoria.config.vo.Language;
 import br.com.bg7.appvistoria.data.Config;
 import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
 import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
+import br.com.bg7.appvistoria.data.source.local.fake.FakeConfigRepository;
 
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
@@ -25,20 +28,27 @@ import static org.mockito.Mockito.when;
  */
 
 public class ConfigPresenterTest {
+    private static final String USERNAME = "username";
+
     @Mock
     private ConfigContract.View configView;
 
-    @Mock
-    private ConfigRepository configRepository;
+    private FakeConfigRepository configRepository = new FakeConfigRepository();
 
     @Mock
     private LanguageRepository languageRepository;
+
+    private FakeAuthFacade authFacade = new FakeAuthFacade();
 
     private ConfigPresenter configPresenter;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+
+        Auth.configure(authFacade);
+        authFacade.fakeLogin(USERNAME);
+
         configPresenter = new ConfigPresenter(configRepository, languageRepository, configView);
 
         setUpLanguages();
@@ -54,8 +64,8 @@ public class ConfigPresenterTest {
     }
 
     private void setUpConfig(String language, boolean isSyncWithWifiOnly) {
-        Config config = new Config(language, isSyncWithWifiOnly);
-        when(configRepository.first(Config.class)).thenReturn(config);
+        Config config = new Config(language, isSyncWithWifiOnly, USERNAME);
+        configRepository.save(config);
     }
 
     @Test
@@ -122,7 +132,7 @@ public class ConfigPresenterTest {
 
     @Test
     public void shouldSetDefaultsWhenNoConfig() {
-        when(configRepository.first(Config.class)).thenReturn(null);
+        configRepository.clear();
 
         configPresenter.start();
 

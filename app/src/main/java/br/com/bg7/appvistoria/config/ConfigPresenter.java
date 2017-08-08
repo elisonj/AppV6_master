@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 
 import java.util.List;
 
+import br.com.bg7.appvistoria.auth.Auth;
 import br.com.bg7.appvistoria.config.vo.Language;
 import br.com.bg7.appvistoria.data.Config;
 import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
@@ -37,8 +38,7 @@ class ConfigPresenter implements ConfigContract.Presenter {
         List<Language> languageList = languageRepository.getLanguages();
         configView.setLanguages(languageList);
 
-        // TODO: Pegar por usuário
-        Config config = configRepository.first(Config.class);
+        Config config = configRepository.findByUsername(Auth.user());
         if(config == null) {
             applyDefaultConfig(languageList);
             return;
@@ -96,17 +96,19 @@ class ConfigPresenter implements ConfigContract.Presenter {
 
     @Override
     public void confirmClicked(String language, boolean syncWithWifiOnly) {
-        configView.hideButtons();
-        configView.hideLanguages();
+        Config config = new Config(language, syncWithWifiOnly, Auth.user());
+        Config existingConfig = configRepository.findByUsername(Auth.user());
 
-        Config config = configRepository.first(Config.class);
-        if(config != null) {
-            configRepository.deleteAll(Config.class);
+        if(existingConfig != null) {
+            config = existingConfig
+                    .withLanguage(language)
+                    .withSyncWithWifiOnly(syncWithWifiOnly);
         }
 
-        config = new Config(language, syncWithWifiOnly);
         configRepository.save(config);
 
+        configView.hideButtons();
+        configView.hideLanguages();
         configView.changeLanguage(language);
     }
 

@@ -1,8 +1,8 @@
-package br.com.bg7.appvistoria.data.source;
+package br.com.bg7.appvistoria.data.source.remote;
 
 
-import br.com.bg7.appvistoria.data.source.remote.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.dto.Token;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
 
 /**
  * Created by: elison
