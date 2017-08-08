@@ -6,13 +6,13 @@ import java.io.File;
 import java.util.Vector;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import br.com.bg7.appvistoria.data.source.PictureService;
-import br.com.bg7.appvistoria.data.source.ProductInspectionService;
-import br.com.bg7.appvistoria.data.source.remote.HttpProgressCallback;
-import br.com.bg7.appvistoria.data.source.remote.HttpResponse;
-import br.com.bg7.appvistoria.data.source.remote.SyncCallback;
+import br.com.bg7.appvistoria.data.source.remote.PictureService;
+import br.com.bg7.appvistoria.data.source.remote.ProductInspectionService;
+import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
 import br.com.bg7.appvistoria.data.source.remote.dto.PictureResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpProgressCallback;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
 import br.com.bg7.appvistoria.sync.SyncStatus;
 
 /**
