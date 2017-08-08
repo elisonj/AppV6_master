@@ -14,6 +14,7 @@ import java.io.File;
 
 import javax.annotation.Nullable;
 
+import br.com.bg7.appvistoria.data.source.local.fake.FakeProductInspectionFileRepository;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.ProductInspectionService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
@@ -41,6 +42,7 @@ public class ProductInspectionTest {
     private ProductInspection callBackProductInspection;
     private ProductInspection callBackProductProgress;
     private Throwable callBackThrowable;
+    private FakeProductInspectionFileRepository fakeProductInspectionFileRepository = new FakeProductInspectionFileRepository();
 
     @Mock
     ProductInspectionService productInspectionService;
@@ -57,7 +59,7 @@ public class ProductInspectionTest {
     @Before
     public void setUp() throws IllegalStateException {
         MockitoAnnotations.initMocks(this);
-        productInspection = new ProductInspection();
+        productInspection = new ProductInspection(fakeProductInspectionFileRepository);
     }
 
     @Test
@@ -80,14 +82,14 @@ public class ProductInspectionTest {
         isSuccessful = false;
         addOneImageToSync();
         syncPictures();
-        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.FAILED);
+        verifyStatusFailed();
     }
 
     @Test
     public void shouldShowFailWhenSyncPictureResponseIsNull() throws InterruptedException {
         addOneImageToSync();
         syncPicturesWithResponseNull();
-        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.FAILED);
+        verifyStatusFailed();
     }
 
     @Test
@@ -125,7 +127,7 @@ public class ProductInspectionTest {
     public void shouldShowFailedProductInspectionWhenResponseIsNull() throws InterruptedException {
         syncProduct();
         productInspectorCallback.getValue().onResponse(null);
-        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.FAILED);
+        verifyStatusFailed();
     }
 
     @Test
@@ -133,14 +135,14 @@ public class ProductInspectionTest {
         trySyncProductWhenCannotSync();
         productInspectorCallback.getValue().onResponse(productResponse);
         Assert.assertFalse(productResponse.isSuccessful());
-        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.FAILED);
+        verifyStatusFailed();
     }
 
     @Test
     public void shouldErrorProductInspection() throws InterruptedException {
         syncProduct();
         productInspectorCallback.getValue().onFailure(new IllegalStateException("Cannot sync"));
-        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.FAILED);
+        verifyStatusFailed();
     }
 
     @Test
@@ -171,6 +173,10 @@ public class ProductInspectionTest {
         }
         verify(pictureService, Mockito.times(cont)).send(eq(FILE), eq(productInspection), pictureCallback.capture());
         pictureCallback.getValue().onResponse(pictureResponse);
+    }
+
+    private void verifyStatusFailed() {
+        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.FAILED);
     }
 
     private void verifyCallbackResponse(boolean condition) {
