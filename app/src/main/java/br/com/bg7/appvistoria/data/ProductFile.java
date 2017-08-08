@@ -1,6 +1,7 @@
 package br.com.bg7.appvistoria.data;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
 
 import java.io.File;
 
@@ -12,12 +13,14 @@ import br.com.bg7.appvistoria.sync.SyncStatus;
  *
  * represents a product's file to persists
  */
-class ProductFile extends SugarRecord<ProductFile> {
+public class ProductFile extends SugarRecord<ProductFile> {
 
     private long productInspectionId;
-    private File file;
     private String path;
     private SyncStatus syncStatus;
+
+    @Ignore
+    private File file;
 
     /**
      * Default constructor used by Sugar
