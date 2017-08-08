@@ -9,7 +9,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import br.com.bg7.appvistoria.RemoteLocalAuth;
+import br.com.bg7.appvistoria.auth.RemoteLocalAuth;
 import br.com.bg7.appvistoria.auth.Auth;
 import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeAuthRepository;

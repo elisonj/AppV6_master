@@ -11,7 +11,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
 
-import br.com.bg7.appvistoria.RemoteLocalAuth;
 import br.com.bg7.appvistoria.auth.callback.CheckCannotLoginCallback;
 import br.com.bg7.appvistoria.auth.callback.EmptyAuthCallback;
 import br.com.bg7.appvistoria.data.User;

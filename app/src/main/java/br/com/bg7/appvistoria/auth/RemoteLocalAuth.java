@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria;
+package br.com.bg7.appvistoria.auth;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-import br.com.bg7.appvistoria.auth.AuthFacade;
 import br.com.bg7.appvistoria.auth.callback.AuthCallback;
 import br.com.bg7.appvistoria.auth.callback.TokenServiceCallback;
 import br.com.bg7.appvistoria.auth.vo.LoginData;
