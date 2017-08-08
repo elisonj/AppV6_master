@@ -98,14 +98,14 @@ public class ProductInspectionTest {
         setUpSyncPictures();
         pictureCallback.getValue().onProgressUpdated(PROGRESS);
         verifyCallbackResponse(callBackProductProgress != null);
-        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.PICTURES_BEING_SYNCED);
+        verifyStatusPictureBeingSynced();
     }
 
     @Test
     public void shouldShowBeingSyncPictureWhenSendPartialList() throws InterruptedException {
         addImageToSync(FILES_TO_SYNC);
         syncPictures();
-        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.PICTURES_BEING_SYNCED);
+        verifyStatusPictureBeingSynced();
     }
 
     @Test
@@ -163,8 +163,8 @@ public class ProductInspectionTest {
     }
 
     @Test
-    public void shouldCanReady() throws InterruptedException {
-        canReady();
+    public void shouldReady() throws InterruptedException {
+        verifyStatusCanReady();
     }
 
     private void numberOfTimesToSync(int cont) {
@@ -183,12 +183,16 @@ public class ProductInspectionTest {
         Assert.assertTrue(condition);
     }
 
+    private void verifyStatusPictureBeingSynced() {
+        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.PICTURES_BEING_SYNCED);
+    }
+
     private void shouldSyncStatusReady(){
-        canReady();
+        verifyStatusCanReady();
         canSyncPictures();
     }
 
-    private void canReady() {
+    private void verifyStatusCanReady() {
         Assert.assertEquals(productInspection.ready(), SyncStatus.READY);
     }
 

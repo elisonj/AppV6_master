@@ -167,15 +167,6 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
             syncStatus = SyncStatus.PICTURES_SYNCED;
             return;
         }
-
         syncStatus = SyncStatus.READY;
-        Iterable<ProductFile> productFiles = productFileRepository.
-                findByProductInspectionIdAndSyncStatus(id, SyncStatus.PICTURES_BEING_SYNCED);
-
-        for(ProductFile productFile: productFiles) {
-            productFile.setSyncStatus(null);
-            productFileRepository.save(productFile);
-            imagesToSync.add(productFile);
-        }
     }
 }
