@@ -38,7 +38,7 @@ class ConfigPresenter implements ConfigContract.Presenter {
         List<Language> languageList = languageRepository.getLanguages();
         configView.setLanguages(languageList);
 
-        Config config = configRepository.findByUsername(Auth.user());
+        Config config = configRepository.findByUser(Auth.user());
         if(config == null) {
             applyDefaultConfig(languageList);
             return;
@@ -97,7 +97,7 @@ class ConfigPresenter implements ConfigContract.Presenter {
     @Override
     public void confirmClicked(String language, boolean syncWithWifiOnly) {
         Config config = new Config(language, syncWithWifiOnly, Auth.user());
-        Config existingConfig = configRepository.findByUsername(Auth.user());
+        Config existingConfig = configRepository.findByUser(Auth.user());
 
         if(existingConfig != null) {
             config = existingConfig

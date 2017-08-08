@@ -1,6 +1,7 @@
 package br.com.bg7.appvistoria.data.source.local;
 
 import br.com.bg7.appvistoria.data.Config;
+import br.com.bg7.appvistoria.data.User;
 
 /**
  * Created by: luciolucio
@@ -8,5 +9,5 @@ import br.com.bg7.appvistoria.data.Config;
  */
 
 public interface ConfigRepository extends Repository<Config> {
-    Config findByUsername(String username);
+    Config findByUser(User user);
 }
