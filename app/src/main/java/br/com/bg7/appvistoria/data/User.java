@@ -19,7 +19,7 @@ import java.util.Locale;
  * Warnings of "FieldCanBeLocal" are ignored if the field is not used because
  * the field needs to be present for Sugar to create it in the database
  */
-public class User extends SugarRecord<User> implements Serializable {
+public class User extends SugarRecord<User> {
 
     private static final Logger LOG = LoggerFactory.getLogger(User.class);
 
