@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.Vector;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import br.com.bg7.appvistoria.data.source.local.ProductFileRepository;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.ProductInspectionService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
@@ -23,7 +24,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
 
     public SyncStatus syncStatus = null;
 
-
+    private ProductFileRepository productFileRepository;
     private LinkedBlockingQueue<ProductFile> imagesToSync = new LinkedBlockingQueue<>();
     private long id;
     private Product product;
@@ -34,6 +35,10 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
      */
     @SuppressWarnings("unused")
     public ProductInspection() {}
+
+    ProductInspection(ProductFileRepository productFileRepository) {
+        this.productFileRepository = productFileRepository;
+    }
 
     public boolean canSyncProduct() {
         return syncStatus == SyncStatus.PICTURES_SYNCED;
@@ -65,6 +70,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
         syncStatus = SyncStatus.PICTURES_BEING_SYNCED;
         final ProductFile productFile = imagesToSync.poll();
         productFile.setSyncStatus(syncStatus);
+        productFileRepository.save(productFile);
 
         pictureService.send(productFile.getFile(), this, new HttpProgressCallback<PictureResponse>() {
             @Override
@@ -83,6 +89,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
                     return;
                 }
 
+                productFileRepository.delete(productFile);
                 productFile.setSyncStatus(SyncStatus.DONE);
                 imagesSynced.add(productFile);
 
@@ -148,6 +155,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
 
         ProductFile productFile = new ProductFile(id, image);
         imagesToSync.add(productFile);
+        productFileRepository.save(productFile);
     }
 
     public SyncStatus getSyncStatus() {
@@ -155,6 +163,15 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
     }
 
     public void reset() {
+
         syncStatus = SyncStatus.READY;
+        Iterable<ProductFile> productFiles = productFileRepository.
+                findByProductInspectionIdAndSyncStatus(id, SyncStatus.PICTURES_BEING_SYNCED);
+
+        for(ProductFile productFile: productFiles) {
+            productFile.setSyncStatus(null);
+            productFileRepository.save(productFile);
+            imagesToSync.add(productFile);
+        }
     }
 }
