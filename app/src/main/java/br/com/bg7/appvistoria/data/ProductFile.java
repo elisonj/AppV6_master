@@ -5,7 +5,7 @@ import com.orm.dsl.Ignore;
 
 import java.io.File;
 
-import br.com.bg7.appvistoria.sync.SyncStatus;
+import br.com.bg7.appvistoria.sync.SyncPictureStatus;
 
 /**
  * Created by: elison
@@ -15,9 +15,9 @@ import br.com.bg7.appvistoria.sync.SyncStatus;
  */
 public class ProductFile extends SugarRecord<ProductFile> {
 
-    private long productInspectionId;
+    private ProductInspection productInspection;
     private String path;
-    private SyncStatus syncStatus;
+    private SyncPictureStatus syncStatus;
 
     @Ignore
     private File file;
@@ -28,10 +28,11 @@ public class ProductFile extends SugarRecord<ProductFile> {
     @SuppressWarnings("unused")
     public ProductFile() {}
 
-    ProductFile(long productInspectionId, File file) {
-        this.productInspectionId = productInspectionId;
+    ProductFile(ProductInspection productInspection, File file) {
+        this.productInspection = productInspection;
         this.file = file;
         this.path = file.getAbsolutePath();
+        this.syncStatus = SyncPictureStatus.READY;
     }
 
     public File getFile() {
@@ -42,11 +43,11 @@ public class ProductFile extends SugarRecord<ProductFile> {
         return file;
     }
 
-    public SyncStatus getSyncStatus() {
+    public SyncPictureStatus getSyncStatus() {
         return syncStatus;
     }
 
-    void setSyncStatus(SyncStatus syncStatus) {
+    void setSyncStatus(SyncPictureStatus syncStatus) {
         this.syncStatus = syncStatus;
     }
 }

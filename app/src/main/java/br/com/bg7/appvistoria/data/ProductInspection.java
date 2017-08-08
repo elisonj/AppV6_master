@@ -3,10 +3,9 @@ package br.com.bg7.appvistoria.data;
 import com.orm.SugarRecord;
 
 import java.io.File;
-import java.util.Vector;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.ArrayList;
+import java.util.List;
 
-import br.com.bg7.appvistoria.data.source.local.ProductFileRepository;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.ProductInspectionService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
@@ -14,6 +13,7 @@ import br.com.bg7.appvistoria.data.source.remote.dto.PictureResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpProgressCallback;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
+import br.com.bg7.appvistoria.sync.SyncPictureStatus;
 import br.com.bg7.appvistoria.sync.SyncStatus;
 
 /**
@@ -24,21 +24,15 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
 
     public SyncStatus syncStatus = null;
 
-    private ProductFileRepository productFileRepository;
-    private LinkedBlockingQueue<ProductFile> imagesToSync = new LinkedBlockingQueue<>();
+    private List<ProductFile> imagesToSync = new ArrayList<>();
     private long id;
     private Product product;
-    private Vector<ProductFile> imagesSynced = new Vector<>();
 
     /**
      * Default constructor used by Sugar
      */
     @SuppressWarnings("unused")
     public ProductInspection() {}
-
-    ProductInspection(ProductFileRepository productFileRepository) {
-        this.productFileRepository = productFileRepository;
-    }
 
     public boolean canSyncProduct() {
         return syncStatus == SyncStatus.PICTURES_SYNCED;
@@ -57,20 +51,22 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
         throw new IllegalStateException("Cannot sync when status is "+syncStatus);
     }
 
-    public void sync(PictureService pictureService, final SyncCallback syncCallback) {
+    public synchronized void sync(PictureService pictureService, final SyncCallback syncCallback) {
 
         if (!canSyncPictures()) {
             throw new IllegalStateException("Cannot sync Pictures when status is "+syncStatus);
         }
 
-        if(imagesToSync.size() <= 0) {
+        final ProductFile productFile = getNextImageReady();
+
+        if(productFile == null) {
             throw new IllegalStateException("No Pictures to send ");
         }
 
         syncStatus = SyncStatus.PICTURES_BEING_SYNCED;
-        final ProductFile productFile = imagesToSync.poll();
-        productFile.setSyncStatus(syncStatus);
-        productFileRepository.save(productFile);
+
+        productFile.setSyncStatus(SyncPictureStatus.PICTURES_BEING_SYNCED);
+
 
         pictureService.send(productFile.getFile(), this, new HttpProgressCallback<PictureResponse>() {
             @Override
@@ -89,11 +85,9 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
                     return;
                 }
 
-                productFileRepository.delete(productFile);
-                productFile.setSyncStatus(SyncStatus.DONE);
-                imagesSynced.add(productFile);
+                productFile.setSyncStatus(SyncPictureStatus.DONE);
 
-                if(imagesToSync.size() == 0) {
+                if(countImagesNotDone() == 0) {
                     syncStatus = SyncStatus.PICTURES_SYNCED;
                 }
                 syncCallback.onSuccess(ProductInspection.this);
@@ -107,7 +101,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
         });
     }
 
-    public void sync(ProductInspectionService productInspectionService, final SyncCallback syncCallback) {
+    public synchronized void sync(ProductInspectionService productInspectionService, final SyncCallback syncCallback) {
         if (!canSyncProduct()) {
             throw new IllegalStateException("Cannot sync when status is "+syncStatus);
         }
@@ -141,7 +135,6 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
         });
     }
 
-
     /**
      * Possible exceptions from LinkedBlockingQueue
      *
@@ -153,9 +146,8 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
     synchronized void addImageToSync(File image) throws IllegalArgumentException, NullPointerException,
             InterruptedException, UnsupportedOperationException  {
 
-        ProductFile productFile = new ProductFile(id, image);
+        ProductFile productFile = new ProductFile(this, image);
         imagesToSync.add(productFile);
-        productFileRepository.save(productFile);
     }
 
     public SyncStatus getSyncStatus() {
@@ -163,10 +155,31 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
     }
 
     public void reset() {
+        for(ProductFile productFile: imagesToSync) {
+            if(productFile.getSyncStatus() == SyncPictureStatus.PICTURES_BEING_SYNCED) {
+                productFile.setSyncStatus(SyncPictureStatus.READY);
+            }
+        }
         if(syncStatus == SyncStatus.INSPECTION_BEING_SYNCED) {
             syncStatus = SyncStatus.PICTURES_SYNCED;
-            return;
         }
-        syncStatus = SyncStatus.READY;
+    }
+
+    private int countImagesNotDone() {
+        int countImagesNotDone = 0;
+        for(ProductFile productFile: imagesToSync) {
+            if(productFile.getSyncStatus() != SyncPictureStatus.DONE) countImagesNotDone++;
+        }
+        return countImagesNotDone;
+    }
+
+    private ProductFile getNextImageReady() {
+        if(imagesToSync.size() <= 0) return null;
+
+        for(ProductFile productFile: imagesToSync) {
+            if(productFile.getSyncStatus() == SyncPictureStatus.READY)
+                return productFile;
+        }
+        return null;
     }
 }

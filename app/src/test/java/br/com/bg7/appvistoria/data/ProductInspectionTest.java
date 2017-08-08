@@ -14,7 +14,6 @@ import java.io.File;
 
 import javax.annotation.Nullable;
 
-import br.com.bg7.appvistoria.data.source.local.fake.FakeProductInspectionFileRepository;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.ProductInspectionService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
@@ -42,7 +41,6 @@ public class ProductInspectionTest {
     private ProductInspection callBackProductInspection;
     private ProductInspection callBackProductProgress;
     private Throwable callBackThrowable;
-    private FakeProductInspectionFileRepository fakeProductInspectionFileRepository = new FakeProductInspectionFileRepository();
 
     @Mock
     ProductInspectionService productInspectionService;
@@ -59,7 +57,7 @@ public class ProductInspectionTest {
     @Before
     public void setUp() throws IllegalStateException {
         MockitoAnnotations.initMocks(this);
-        productInspection = new ProductInspection(fakeProductInspectionFileRepository);
+        productInspection = new ProductInspection();
     }
 
     @Test
