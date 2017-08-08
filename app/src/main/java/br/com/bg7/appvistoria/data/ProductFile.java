@@ -42,6 +42,10 @@ public class ProductFile extends SugarRecord<ProductFile> {
         return file;
     }
 
+    public SyncStatus getSyncStatus() {
+        return syncStatus;
+    }
+
     void setSyncStatus(SyncStatus syncStatus) {
         this.syncStatus = syncStatus;
     }
