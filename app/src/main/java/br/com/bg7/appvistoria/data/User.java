@@ -111,7 +111,7 @@ public class User extends SugarRecord<User> implements Serializable {
 
             return user;
         }
-        catch (NumberFormatException exception) {
+        catch (NumberFormatException|IndexOutOfBoundsException exception) {
             LOG.warn("Não foi possível recuperar usuário", exception);
             LOG.warn("Usuário serializado: {}", serializedUser);
 
