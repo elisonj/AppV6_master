@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Locale;
 
 /**
  * Created by: elison
@@ -26,6 +27,12 @@ import java.io.Serializable;
 public class User extends SugarRecord<User> implements Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(User.class);
+
+    private static final String SEPARATOR = "###!!!###";
+    public static final int ID_INDEX = 0;
+    public static final int USERNAME_INDEX = 1;
+    public static final int PASSWORD_HASH_INDEX = 2;
+    public static final int TOKEN_INDEX = 3;
 
     private String username;
 
@@ -89,25 +96,29 @@ public class User extends SugarRecord<User> implements Serializable {
         return token;
     }
 
-    public String serialize() throws IOException {
-        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-        ObjectOutputStream objectStream = new ObjectOutputStream(byteStream);
-        objectStream.writeObject(this);
-        objectStream.flush();
-
-        return byteStream.toString();
+    public String serialize() {
+        return String.format(Locale.US, "%d%s%s%s%s%s%s",
+                this.id, SEPARATOR,
+                this.username, SEPARATOR,
+                this.passwordHash, SEPARATOR,
+                this.token);
     }
 
     public static User deserialize(String serializedUser) {
+        String[] parts = serializedUser.split(SEPARATOR);
+
         try {
-            byte b[] = serializedUser.getBytes();
-            ByteArrayInputStream bi = new ByteArrayInputStream(b);
-            ObjectInputStream si = new ObjectInputStream(bi);
-            return (User) si.readObject();
-        } catch (IOException|ClassNotFoundException exception) {
+            User user = new User();
+            user.id = Long.parseLong(parts[ID_INDEX]);
+            user.username = parts[USERNAME_INDEX];
+            user.passwordHash = parts[PASSWORD_HASH_INDEX];
+            user.token = parts[TOKEN_INDEX];
+
+            return user;
+        }
+        catch (NumberFormatException exception) {
             LOG.warn("Não foi possível recuperar usuário", exception);
-            LOG.warn("Usuário serializado", exception);
-            LOG.warn(serializedUser);
+            LOG.warn("Usuário serializado: {}", serializedUser);
 
             return null;
         }
