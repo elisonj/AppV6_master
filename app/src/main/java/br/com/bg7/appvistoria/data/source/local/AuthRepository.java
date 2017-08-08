@@ -1,5 +1,9 @@
 package br.com.bg7.appvistoria.data.source.local;
 
+import java.io.IOException;
+
+import br.com.bg7.appvistoria.data.User;
+
 /**
  * Created by: luciolucio
  * Date: 2017-08-07
@@ -7,11 +11,11 @@ package br.com.bg7.appvistoria.data.source.local;
 
 public interface AuthRepository {
     /**
-     * Get the username of the logged in user
+     * Get the current logged in user
      *
-     * @return the logged in user's username, or null if not logged in
+     * @return the logged in user, or null if not logged in
      */
-    String currentUsername();
+    User currentUser();
 
     /**
      * Get the authentication token of the logged in user
@@ -21,16 +25,17 @@ public interface AuthRepository {
     String currentToken();
 
     /**
-     * Save the user data. This will qualify the given username
+     * Save the user data. This will qualify the given user
      * as the logged in user, and the given token is going to be used
      * for authentication with remote services.
      *
-     * Any existing username and token will get overwritten.
+     * Any existing user and token will get overwritten.
      *
-     * @param username the username to log in
+     * @param user the user to log in
      * @param token the authentication token
+     * @throws IOException if the user cannet be saved
      */
-    void save(String username, String token);
+    void save(User user, String token) throws IOException;
 
     /**
      * Removes the currently logged in user and token

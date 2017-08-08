@@ -1,6 +1,10 @@
 package br.com.bg7.appvistoria;
 
 import org.mindrot.jbcrypt.BCrypt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 import br.com.bg7.appvistoria.auth.AuthFacade;
 import br.com.bg7.appvistoria.auth.callback.AuthCallback;
@@ -20,6 +24,9 @@ import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
  */
 
 public class RemoteLocalAuth implements AuthFacade {
+
+    private final static Logger LOG = LoggerFactory.getLogger(RemoteLocalAuth.class);
+
     private final UserService userService;
     private final TokenService tokenService;
     private final UserRepository userRepository;
@@ -68,12 +75,12 @@ public class RemoteLocalAuth implements AuthFacade {
 
     @Override
     public boolean check() {
-        return authRepository.currentUsername() != null;
+        return authRepository.currentUser() != null;
     }
 
     @Override
-    public String user() {
-        return authRepository.currentUsername();
+    public User user() {
+        return authRepository.currentUser();
     }
 
     @Override
@@ -112,9 +119,15 @@ public class RemoteLocalAuth implements AuthFacade {
         @Override
         public void onSuccess() {
             User user = userRepository.findByUsername(username);
-            authRepository.save(username, user.getToken());
 
-            callback.onSuccess();
+            try {
+                authRepository.save(user, user.getToken());
+
+                callback.onSuccess();
+            }
+            catch (IOException exception) {
+                callback.onCannotLogin();
+            }
         }
     }
 }

@@ -6,7 +6,6 @@ import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.RemoteLocalAuth;
 import br.com.bg7.appvistoria.auth.Auth;
-import br.com.bg7.appvistoria.auth.AuthFacade;
 import br.com.bg7.appvistoria.data.source.local.android.SharedPreferencesAuthRepository;
 import br.com.bg7.appvistoria.data.source.local.sugar.SugarUserRepository;
 import br.com.bg7.appvistoria.data.source.remote.retrofit.RetrofitTokenService;

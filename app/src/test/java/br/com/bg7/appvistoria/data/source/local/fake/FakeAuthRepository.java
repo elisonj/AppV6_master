@@ -1,5 +1,8 @@
 package br.com.bg7.appvistoria.data.source.local.fake;
 
+import java.io.IOException;
+
+import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.local.AuthRepository;
 
 /**
@@ -9,12 +12,12 @@ import br.com.bg7.appvistoria.data.source.local.AuthRepository;
 
 public class FakeAuthRepository implements AuthRepository {
 
-    private String username;
+    private User user;
     private String token;
 
     @Override
-    public String currentUsername() {
-        return username;
+    public User currentUser() {
+        return user;
     }
 
     @Override
@@ -23,14 +26,18 @@ public class FakeAuthRepository implements AuthRepository {
     }
 
     @Override
-    public void save(String username, String token) {
-        this.username = username;
+    public void save(User user, String token) throws IOException {
+        this.user = user;
         this.token = token;
+
+        if (token.equals("123PIM 456PIM")) {
+            throw new IOException("123PIM 567PIM 91011PIM");
+        }
     }
 
     @Override
     public void clear() {
-        this.username = null;
+        this.user = null;
         this.token = null;
     }
 }
