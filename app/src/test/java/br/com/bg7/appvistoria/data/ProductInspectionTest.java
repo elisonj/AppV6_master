@@ -61,7 +61,7 @@ public class ProductInspectionTest {
     }
 
     @Test
-    public void shouldErrorSyncPicture() throws InterruptedException {
+    public void shouldErrorSyncPicture() {
         addOneImageToSync();
         setUpSyncPictures();
         pictureCallback.getValue().onFailure(new IllegalStateException("Cannot sync"));
@@ -69,14 +69,14 @@ public class ProductInspectionTest {
     }
 
     @Test
-    public void shouldSyncPicture() throws InterruptedException {
+    public void shouldSyncPicture() {
         addOneImageToSync();
         syncPictures();
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.PICTURES_SYNCED);
     }
 
     @Test
-    public void shouldShowFailWhenSyncPicture() throws InterruptedException {
+    public void shouldShowFailWhenSyncPicture() {
         isSuccessful = false;
         addOneImageToSync();
         syncPictures();
@@ -84,14 +84,14 @@ public class ProductInspectionTest {
     }
 
     @Test
-    public void shouldShowFailWhenSyncPictureResponseIsNull() throws InterruptedException {
+    public void shouldShowFailWhenSyncPictureResponseIsNull() {
         addOneImageToSync();
         syncPicturesWithResponseNull();
         verifyStatusFailed();
     }
 
     @Test
-    public void shouldStatusPictureBeingSyncedWhenProgressUpdated() throws InterruptedException {
+    public void shouldStatusPictureBeingSyncedWhenProgressUpdated() {
         addOneImageToSync();
         setUpSyncPictures();
         pictureCallback.getValue().onProgressUpdated(PROGRESS);
@@ -100,14 +100,14 @@ public class ProductInspectionTest {
     }
 
     @Test
-    public void shouldShowBeingSyncPictureWhenSendPartialList() throws InterruptedException {
+    public void shouldShowBeingSyncPictureWhenSendPartialList() {
         addImageToSync(FILES_TO_SYNC);
         syncPictures();
         verifyStatusPictureBeingSynced();
     }
 
     @Test
-    public void shouldShowPicturesSyncedWhenSendAll() throws InterruptedException {
+    public void shouldShowPicturesSyncedWhenSendAll() {
         addImageToSync(FILES_TO_SYNC);
         shouldSyncStatusReady();
         numberOfTimesToSync(FILES_TO_SYNC);
@@ -115,21 +115,21 @@ public class ProductInspectionTest {
     }
 
     @Test
-    public void shouldSyncProductInspection() throws InterruptedException {
+    public void shouldSyncProductInspection() {
         syncProduct();
         productInspectorCallback.getValue().onResponse(productResponse);
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.DONE);
     }
 
     @Test
-    public void shouldShowFailedProductInspectionWhenResponseIsNull() throws InterruptedException {
+    public void shouldShowFailedProductInspectionWhenResponseIsNull() {
         syncProduct();
         productInspectorCallback.getValue().onResponse(null);
         verifyStatusFailed();
     }
 
     @Test
-    public void shouldShowFailedProductInspectionWhenIsNotSuccessful() throws InterruptedException {
+    public void shouldShowFailedProductInspectionWhenIsNotSuccessful() {
         trySyncProductWhenCannotSync();
         productInspectorCallback.getValue().onResponse(productResponse);
         Assert.assertFalse(productResponse.isSuccessful());
@@ -137,31 +137,31 @@ public class ProductInspectionTest {
     }
 
     @Test
-    public void shouldErrorProductInspection() throws InterruptedException {
+    public void shouldErrorProductInspection() {
         syncProduct();
         productInspectorCallback.getValue().onFailure(new IllegalStateException("Cannot sync"));
         verifyStatusFailed();
     }
 
     @Test
-    public void shouldStatusProductBeingSyncedWhenProgressUpdated() throws InterruptedException {
+    public void shouldStatusProductBeingSyncedWhenProgressUpdated() {
         syncProduct();
         productInspectorCallback.getValue().onProgressUpdated(PROGRESS);
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.INSPECTION_BEING_SYNCED);
     }
 
     @Test
-    public void shouldCanSyncProduct() throws InterruptedException {
+    public void shouldCanSyncProduct() {
         setUpSyncProduct();
     }
 
     @Test
-    public void shouldCanSyncPicture() throws InterruptedException {
+    public void shouldCanSyncPicture() {
         shouldSyncStatusReady();
     }
 
     @Test
-    public void shouldReady() throws InterruptedException {
+    public void shouldReady() {
         verifyStatusCanReady();
     }
 
@@ -195,11 +195,11 @@ public class ProductInspectionTest {
         Assert.assertEquals(productInspection.ready(), SyncStatus.READY);
     }
 
-    private void addOneImageToSync() throws InterruptedException {
+    private void addOneImageToSync() {
             addImageToSync(1);
     }
 
-    private void addImageToSync(int cont) throws InterruptedException{
+    private void addImageToSync(int cont) {
         for(int i=0; i<cont; i++) {
             productInspection.addImageToSync(FILE);
         }
@@ -226,12 +226,12 @@ public class ProductInspectionTest {
         Assert.assertTrue(productInspection.canSyncPictures());
     }
 
-    private void syncProduct() throws InterruptedException {
+    private void syncProduct() {
         setUpSyncProduct();
         verifySyncProduct();
     }
 
-    private void trySyncProductWhenCannotSync() throws InterruptedException {
+    private void trySyncProductWhenCannotSync() {
         setUpSyncProduct();
         isSuccessful = false;
         verifySyncProduct();
@@ -243,7 +243,7 @@ public class ProductInspectionTest {
         verifyCallbackResponse(callBackProductInspection != null);
     }
 
-    private void setUpSyncProduct() throws InterruptedException {
+    private void setUpSyncProduct() {
         addImageToSync(1);
         syncPictures();
         canSyncProduct();
