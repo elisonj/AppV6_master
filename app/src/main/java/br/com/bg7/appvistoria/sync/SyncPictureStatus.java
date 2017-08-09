@@ -7,6 +7,6 @@ package br.com.bg7.appvistoria.sync;
 
 public enum SyncPictureStatus {
     READY,
-    PICTURES_BEING_SYNCED,
+    BEING_SYNCED,
     DONE
 }
