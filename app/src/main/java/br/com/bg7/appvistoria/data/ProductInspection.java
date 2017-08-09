@@ -55,9 +55,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
         }
 
         syncStatus = SyncStatus.PICTURES_BEING_SYNCED;
-
-        productFile.setSyncStatus(SyncPictureStatus.PICTURES_BEING_SYNCED);
-
+        productFile.setSyncStatus(SyncPictureStatus.BEING_SYNCED);
 
         pictureService.send(productFile.getFile(), this, new HttpProgressCallback<PictureResponse>() {
             @Override
@@ -126,7 +124,6 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
         });
     }
 
-
     synchronized void addImageToSync(File image) {
         ProductFile productFile = new ProductFile(this, image);
         imagesToSync.add(productFile);
@@ -139,7 +136,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
 
     public void reset() {
         for(ProductFile productFile: imagesToSync) {
-            if(productFile.getSyncStatus() == SyncPictureStatus.PICTURES_BEING_SYNCED) {
+            if(productFile.getSyncStatus() == SyncPictureStatus.BEING_SYNCED) {
                 productFile.setSyncStatus(SyncPictureStatus.READY);
             }
         }
