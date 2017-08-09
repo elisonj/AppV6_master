@@ -22,7 +22,7 @@ import br.com.bg7.appvistoria.sync.SyncStatus;
  */
 public class ProductInspection extends SugarRecord<ProductInspection> {
 
-    public SyncStatus syncStatus = null;
+    private SyncStatus syncStatus = null;
 
     private List<ProductFile> imagesToSync = new ArrayList<>();
     private long id;
