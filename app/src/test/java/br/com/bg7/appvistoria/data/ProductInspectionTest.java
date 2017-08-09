@@ -192,7 +192,7 @@ public class ProductInspectionTest {
     }
 
     private void verifyStatusCanReady() {
-        Assert.assertEquals(productInspection.ready(), SyncStatus.READY);
+        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.READY);
     }
 
     private void addOneImageToSync() {

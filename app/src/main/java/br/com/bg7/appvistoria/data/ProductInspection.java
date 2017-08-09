@@ -42,15 +42,6 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
         return syncStatus == SyncStatus.READY || syncStatus == SyncStatus.PICTURES_BEING_SYNCED;
     }
 
-    SyncStatus ready() throws IllegalStateException {
-        if(syncStatus == null || syncStatus == SyncStatus.READY) {
-            syncStatus = SyncStatus.READY;
-            return syncStatus;
-        }
-
-        throw new IllegalStateException("Cannot sync when status is "+syncStatus);
-    }
-
     public synchronized void sync(PictureService pictureService, final SyncCallback syncCallback) {
 
         if (!canSyncPictures()) {
@@ -142,6 +133,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
     }
 
     public SyncStatus getSyncStatus() {
+        if(syncStatus == null) syncStatus = SyncStatus.READY;
         return syncStatus;
     }
 
