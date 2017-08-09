@@ -17,6 +17,9 @@ public class ProductFile extends SugarRecord<ProductFile> {
 
     private ProductInspection productInspection;
     private String path;
+    private String status;
+
+    @Ignore
     private SyncPictureStatus syncStatus;
 
     @Ignore
@@ -33,6 +36,7 @@ public class ProductFile extends SugarRecord<ProductFile> {
         this.file = file;
         this.path = file.getAbsolutePath();
         this.syncStatus = SyncPictureStatus.READY;
+        this.status = syncStatus.toString();
     }
 
     public File getFile() {
@@ -43,11 +47,12 @@ public class ProductFile extends SugarRecord<ProductFile> {
         return file;
     }
 
-    public SyncPictureStatus getSyncStatus() {
+     SyncPictureStatus getSyncStatus() {
         return syncStatus;
     }
 
     void setSyncStatus(SyncPictureStatus syncStatus) {
         this.syncStatus = syncStatus;
+        this.status = syncStatus.toString();
     }
 }
