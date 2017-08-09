@@ -174,7 +174,6 @@ public class ProductInspectionTest {
         }
     }
 
-
     private void verifyStatusFailed() {
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.FAILED);
     }
