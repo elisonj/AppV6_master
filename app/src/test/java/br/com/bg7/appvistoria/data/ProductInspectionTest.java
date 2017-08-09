@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.io.File;
@@ -24,6 +23,7 @@ import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
 import br.com.bg7.appvistoria.sync.SyncStatus;
 
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -167,11 +167,13 @@ public class ProductInspectionTest {
 
     private void numberOfTimesToSync(int cont) {
         for(int i=0; i<cont; i++) {
+            reset(pictureService);
             productInspection.sync(pictureService, callback);
+            verify(pictureService).send(eq(FILE), eq(productInspection), pictureCallback.capture());
+            pictureCallback.getValue().onResponse(pictureResponse);
         }
-        verify(pictureService, Mockito.times(cont)).send(eq(FILE), eq(productInspection), pictureCallback.capture());
-        pictureCallback.getValue().onResponse(pictureResponse);
     }
+
 
     private void verifyStatusFailed() {
         Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.FAILED);
