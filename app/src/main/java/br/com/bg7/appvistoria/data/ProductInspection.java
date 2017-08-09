@@ -135,17 +135,8 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
         });
     }
 
-    /**
-     * Possible exceptions from LinkedBlockingQueue
-     *
-     * IllegalArgumentException - if some property of the specified element prevents it from being added to this queue
-     * NullPointerException - if the specified element is null
-     * InterruptedException - if interrupted while waiting
-     * UnsupportedOperationException - if addition of elements is not supported by the specified collection
-     */
-    synchronized void addImageToSync(File image) throws IllegalArgumentException, NullPointerException,
-            InterruptedException, UnsupportedOperationException  {
 
+    synchronized void addImageToSync(File image) {
         ProductFile productFile = new ProductFile(this, image);
         imagesToSync.add(productFile);
     }
