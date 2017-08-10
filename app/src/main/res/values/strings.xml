@@ -20,6 +20,7 @@
     <string name="language_en">Inglês</string>
     <string name="config_saved">Configuração salva com sucesso.</string>
     <string name="change_language">ALTERAR IDIOMA</string>
+    <string name="language">Idioma</string>
     <string name="login_success">Login executado com sucesso.</string>
     <string name="login_error">Não foi possível realizar o login. Por favor, verifique seu usuário e senha e tente novamente.</string>
     <string name="login_offline_success">Login offline executado com sucesso.</string>
