@@ -27,5 +27,8 @@
     <string name="validation_password_field_not_empty">Preencha o campo Senha para continuar.</string>
     <string name="validation_password_dont_match">A senha inserida está incorreta. Por favor, tente novamente.</string>
     <string name="validation_user_not_found">Usuário não sincronizado. Por favor, faça a sincronização de dados antes de efetuar o login offline.</string>
+    <string name="logo_superbid">Logo Superbid</string>
+    <string name="ico_user">icon user</string>
+    <string name="ico_password">icon password</string>
 
 </resources>
