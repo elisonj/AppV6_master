@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#e4e8eb"
     tools:context="br.com.bg7.appvistoria.config.ConfigActivity">
 
         <FrameLayout
@@ -15,13 +16,16 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/navigation"
             android:background="#f1f1f1">
-
         </FrameLayout>
 
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            design:itemBackground="@drawable/bottom_nav_selector"
+            design:itemIconTint="#FFFFFF"
+            design:paddingStart="5dp"
+            design:itemTextColor="#FFFFFF"
             android:layout_gravity="end"
             android:layout_alignParentBottom="true"
             design:menu="@menu/bottom_nav_items" />
