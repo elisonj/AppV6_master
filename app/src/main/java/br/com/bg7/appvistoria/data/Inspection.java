@@ -24,7 +24,7 @@ public class Inspection extends SugarRecord<Inspection> {
 
     private SyncStatus syncStatus = null;
 
-    private List<Picture> imagesToSync = new ArrayList<>();
+    private List<Picture> pictures = new ArrayList<>();
 
     /**
      * Default constructor used by Sugar
@@ -124,7 +124,7 @@ public class Inspection extends SugarRecord<Inspection> {
 
     synchronized void addImageToSync(File image) {
         Picture picture = new Picture(this, image);
-        imagesToSync.add(picture);
+        pictures.add(picture);
     }
 
     public SyncStatus getSyncStatus() {
@@ -133,7 +133,7 @@ public class Inspection extends SugarRecord<Inspection> {
     }
 
     public void reset() {
-        for(Picture picture : imagesToSync) {
+        for(Picture picture : pictures) {
             if(picture.getSyncStatus() == PictureSyncStatus.BEING_SYNCED) {
                 picture.setSyncStatus(PictureSyncStatus.NOT_STARTED);
             }
@@ -145,16 +145,16 @@ public class Inspection extends SugarRecord<Inspection> {
 
     private int countImagesNotDone() {
         int countImagesNotDone = 0;
-        for(Picture picture : imagesToSync) {
+        for(Picture picture : pictures) {
             if(picture.getSyncStatus() != PictureSyncStatus.DONE) countImagesNotDone++;
         }
         return countImagesNotDone;
     }
 
     private Picture getNextImageReady() {
-        if(imagesToSync.size() <= 0) return null;
+        if(pictures.size() <= 0) return null;
 
-        for(Picture picture : imagesToSync) {
+        for(Picture picture : pictures) {
             if(picture.getSyncStatus() == PictureSyncStatus.NOT_STARTED)
                 return picture;
         }
