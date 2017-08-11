@@ -3,7 +3,7 @@ package br.com.bg7.appvistoria.sync;
 import java.util.HashSet;
 
 import br.com.bg7.appvistoria.data.Inspection;
-import br.com.bg7.appvistoria.data.source.local.ProductInspectionRepository;
+import br.com.bg7.appvistoria.data.source.local.InspectionRepository;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -15,10 +15,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class SyncManagerCallback implements SyncCallback {
     private HashSet<SyncCallback> subscribers = new HashSet<>();
-    private ProductInspectionRepository productInspectionRepository;
+    private InspectionRepository inspectionRepository;
 
-    public SyncManagerCallback(ProductInspectionRepository productInspectionRepository) {
-        this.productInspectionRepository = productInspectionRepository;
+    public SyncManagerCallback(InspectionRepository inspectionRepository) {
+        this.inspectionRepository = inspectionRepository;
     }
 
     /**
@@ -28,7 +28,7 @@ public class SyncManagerCallback implements SyncCallback {
      */
     @Override
     public void onSuccess(Inspection inspection) {
-        productInspectionRepository.save(inspection);
+        inspectionRepository.save(inspection);
 
         for (SyncCallback callback : subscribers) {
             callback.onSuccess(inspection);
@@ -58,7 +58,7 @@ public class SyncManagerCallback implements SyncCallback {
      */
     @Override
     public void onFailure(Inspection inspection, Throwable t) {
-        productInspectionRepository.save(inspection);
+        inspectionRepository.save(inspection);
 
         for (SyncCallback callback : subscribers) {
             callback.onFailure(inspection, t);

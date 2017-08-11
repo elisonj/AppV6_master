@@ -24,17 +24,17 @@ public class SyncManagerInitializationTest extends SyncManagerTestBase {
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullExecutor() {
-        new SyncManager(productInspectionRepository, inspectionService, pictureService, null);
+        new SyncManager(fakeInspectionRepository, inspectionService, pictureService, null);
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldNotAcceptNullProductInspectionService() {
-        new SyncManager(productInspectionRepository, null, pictureService, syncExecutor);
+    public void shouldNotAcceptNullInspectionService() {
+        new SyncManager(fakeInspectionRepository, null, pictureService, syncExecutor);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullPictureService() {
-        new SyncManager(productInspectionRepository, inspectionService, null, syncExecutor);
+        new SyncManager(fakeInspectionRepository, inspectionService, null, syncExecutor);
     }
 
     @Test(expected = NullPointerException.class)
@@ -60,7 +60,7 @@ public class SyncManagerInitializationTest extends SyncManagerTestBase {
     }
 
     @Test
-    public void shouldResetIncompleteProductInspectionsWhenStarting() {
+    public void shouldResetIncompleteInspectionsWhenStarting() {
 
         ArrayList<Inspection> inspectionsThatGetReset = new ArrayList<>();
         inspectionsThatGetReset.add(saveWithStatus(SyncStatus.PICTURES_BEING_SYNCED));
@@ -72,7 +72,7 @@ public class SyncManagerInitializationTest extends SyncManagerTestBase {
         inspectionsThatDoNotGetReset.add(saveWithStatus(SyncStatus.PICTURES_SYNCED));
         inspectionsThatDoNotGetReset.add(saveWithStatus(SyncStatus.READY));
 
-        new SyncManager(productInspectionRepository, inspectionService, pictureService, syncExecutor);
+        new SyncManager(fakeInspectionRepository, inspectionService, pictureService, syncExecutor);
 
         for (Inspection mockThatGetsReset : inspectionsThatGetReset) {
             verify(mockThatGetsReset).reset();

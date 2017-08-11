@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import br.com.bg7.appvistoria.data.Inspection;
-import br.com.bg7.appvistoria.data.source.local.ProductInspectionRepository;
+import br.com.bg7.appvistoria.data.source.local.InspectionRepository;
 import br.com.bg7.appvistoria.sync.SyncStatus;
 
 /**
@@ -16,7 +16,7 @@ import br.com.bg7.appvistoria.sync.SyncStatus;
  * Date: 2017-07-31
  */
 
-public class FakeProductInspectionRepository extends FakeRepository<SyncStatus, Inspection> implements ProductInspectionRepository {
+public class FakeInspectionRepository extends FakeRepository<SyncStatus, Inspection> implements InspectionRepository {
     @Override
     SyncStatus getKey(Inspection entity) {
         return entity.getSyncStatus();

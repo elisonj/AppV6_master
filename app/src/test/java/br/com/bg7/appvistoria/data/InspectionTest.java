@@ -49,7 +49,7 @@ public class InspectionTest {
     PictureService pictureService;
 
     @Captor
-    ArgumentCaptor<HttpProgressCallback<ProductResponse>> productInspectorCallback;
+    ArgumentCaptor<HttpProgressCallback<ProductResponse>> productServiceCallback;
 
     @Captor
     ArgumentCaptor<HttpProgressCallback<PictureResponse>> pictureCallback;
@@ -115,38 +115,38 @@ public class InspectionTest {
     }
 
     @Test
-    public void shouldSyncProductInspection() {
+    public void shouldSyncInspection() {
         syncProduct();
-        productInspectorCallback.getValue().onResponse(productResponse);
+        productServiceCallback.getValue().onResponse(productResponse);
         Assert.assertEquals(inspection.getSyncStatus(), SyncStatus.DONE);
     }
 
     @Test
-    public void shouldShowFailedProductInspectionWhenResponseIsNull() {
+    public void shouldShowFailedInspectionWhenResponseIsNull() {
         syncProduct();
-        productInspectorCallback.getValue().onResponse(null);
+        productServiceCallback.getValue().onResponse(null);
         verifyStatusFailed();
     }
 
     @Test
-    public void shouldShowFailedProductInspectionWhenIsNotSuccessful() {
+    public void shouldShowFailedInspectionWhenIsNotSuccessful() {
         trySyncProductWhenCannotSync();
-        productInspectorCallback.getValue().onResponse(productResponse);
+        productServiceCallback.getValue().onResponse(productResponse);
         Assert.assertFalse(productResponse.isSuccessful());
         verifyStatusFailed();
     }
 
     @Test
-    public void shouldErrorProductInspection() {
+    public void shouldErrorInspection() {
         syncProduct();
-        productInspectorCallback.getValue().onFailure(new IllegalStateException("Cannot sync"));
+        productServiceCallback.getValue().onFailure(new IllegalStateException("Cannot sync"));
         verifyStatusFailed();
     }
 
     @Test
     public void shouldStatusProductBeingSyncedWhenProgressUpdated() {
         syncProduct();
-        productInspectorCallback.getValue().onProgressUpdated(PROGRESS);
+        productServiceCallback.getValue().onProgressUpdated(PROGRESS);
         Assert.assertEquals(inspection.getSyncStatus(), SyncStatus.INSPECTION_BEING_SYNCED);
     }
 
@@ -239,7 +239,7 @@ public class InspectionTest {
 
     private void verifySyncProduct() {
         inspection.sync(inspectionService, callback);
-        verify(inspectionService).send(eq(inspection), productInspectorCallback.capture());
+        verify(inspectionService).send(eq(inspection), productServiceCallback.capture());
         verifyCallbackResponse(callBackInspection != null);
     }
 

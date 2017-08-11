@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import br.com.bg7.appvistoria.data.Inspection;
-import br.com.bg7.appvistoria.data.source.local.fake.FakeProductInspectionRepository;
+import br.com.bg7.appvistoria.data.source.local.fake.FakeInspectionRepository;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.InspectionService;
 
@@ -27,7 +27,7 @@ class SyncManagerTestBase {
 
     Runnable sync;
 
-    FakeProductInspectionRepository productInspectionRepository = new FakeProductInspectionRepository();
+    FakeInspectionRepository fakeInspectionRepository = new FakeInspectionRepository();
 
     @Mock
     SyncExecutor syncExecutor;
@@ -52,7 +52,7 @@ class SyncManagerTestBase {
         MockitoAnnotations.initMocks(this);
 
         syncManager = new SyncManager(
-                productInspectionRepository,
+                fakeInspectionRepository,
                 inspectionService,
                 pictureService,
                 syncExecutor
@@ -66,7 +66,7 @@ class SyncManagerTestBase {
     }
 
     void save(Inspection inspection) {
-        productInspectionRepository.save(inspection);
+        fakeInspectionRepository.save(inspection);
     }
 
     Inspection saveWithStatus(SyncStatus status) {

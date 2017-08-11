@@ -8,6 +8,6 @@ import br.com.bg7.appvistoria.sync.SyncStatus;
  * Date: 2017-07-31
  */
 
-public interface ProductInspectionRepository extends Repository<Inspection> {
+public interface InspectionRepository extends Repository<Inspection> {
     Iterable<Inspection> findBySyncStatus(SyncStatus status);
 }

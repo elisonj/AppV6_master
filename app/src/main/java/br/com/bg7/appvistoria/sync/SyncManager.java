@@ -3,7 +3,7 @@ package br.com.bg7.appvistoria.sync;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import br.com.bg7.appvistoria.data.Inspection;
-import br.com.bg7.appvistoria.data.source.local.ProductInspectionRepository;
+import br.com.bg7.appvistoria.data.source.local.InspectionRepository;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.InspectionService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
@@ -25,20 +25,20 @@ class SyncManager {
     private InspectionService inspectionService;
     private PictureService pictureService;
 
-    private ProductInspectionRepository productInspectionRepository;
+    private InspectionRepository inspectionRepository;
     private SyncExecutor syncExecutor;
 
     SyncManager(
-            ProductInspectionRepository productInspectionRepository,
+            InspectionRepository inspectionRepository,
             InspectionService inspectionService,
             PictureService pictureService,
             SyncExecutor syncExecutor) {
-        this.productInspectionRepository = checkNotNull(productInspectionRepository);
+        this.inspectionRepository = checkNotNull(inspectionRepository);
         this.inspectionService = checkNotNull(inspectionService);
         this.pictureService = checkNotNull(pictureService);
         this.syncExecutor = checkNotNull(syncExecutor);
 
-        this.callback = new SyncManagerCallback(productInspectionRepository);
+        this.callback = new SyncManagerCallback(inspectionRepository);
 
         initQueue();
 
@@ -54,7 +54,7 @@ class SyncManager {
      *    between READY and DONE/FAIL
      *
      * This logic assumes that no other {@link SyncManager} is currently monitoring
-     * the given {@link #productInspectionRepository}, and as such we are free to change
+     * the given {@link #inspectionRepository}, and as such we are free to change
      * the status of the items in the repository
      */
     private void initQueue() {
@@ -68,7 +68,7 @@ class SyncManager {
     }
 
     private void resetInspections(SyncStatus syncStatus) {
-        Iterable<Inspection> inspectionsToReset = productInspectionRepository.findBySyncStatus(syncStatus);
+        Iterable<Inspection> inspectionsToReset = inspectionRepository.findBySyncStatus(syncStatus);
 
         for (Inspection inspection : inspectionsToReset) {
             resetInspection(inspection);
@@ -81,7 +81,7 @@ class SyncManager {
         }
 
         inspection.reset();
-        productInspectionRepository.save(inspection);
+        inspectionRepository.save(inspection);
     }
 
     private void startQueueUpdates() {
@@ -107,7 +107,7 @@ class SyncManager {
     }
 
     private synchronized void updateQueue(SyncStatus syncStatus) {
-        Iterable<Inspection> inspections = productInspectionRepository.findBySyncStatus(syncStatus);
+        Iterable<Inspection> inspections = inspectionRepository.findBySyncStatus(syncStatus);
 
         for (Inspection inspection : inspections) {
             inspectionQueue.offer(inspection);
