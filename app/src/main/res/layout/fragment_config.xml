@@ -5,14 +5,12 @@
     android:background="#e4e8eb"
     android:layout_height="match_parent">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
     android:layout_alignParentStart="true">
-
-
 
     <LinearLayout
         android:id="@+id/linear_language_top"
@@ -43,8 +41,6 @@
             android:drawSelectorOnTop="true"
             android:prompt="@string/spin"/>
     </LinearLayout>
-
-
 
     <LinearLayout
         android:visibility="gone"
@@ -89,6 +85,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="#fafafa"
+        android:baselineAligned="false"
         android:gravity="center_vertical"
         android:orientation="horizontal">
         <LinearLayout
@@ -98,6 +95,7 @@
             android:layout_weight="0.8"
             android:orientation="vertical" >
             <ImageView
+                android:contentDescription="@string/logout"
                 android:layout_width="20dp"
                 android:layout_height="30dp"
                 android:src="@drawable/ico_logout"/>
@@ -130,6 +128,7 @@
             android:gravity="center"
             android:orientation="vertical" >
             <ImageView
+                android:contentDescription="@string/logout"
                 android:layout_width="8dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ico_arrow_right"/>
