@@ -25,7 +25,7 @@ import br.com.bg7.appvistoria.data.source.local.sugar.SugarConfigRepository;
 
 public class ConfigActivity extends BaseActivity {
     private static final String SELECTED_MENU_ITEM_KEY = "SELECTED_MENU_ITEM_KEY";
-    private static final int DEFAULT_SCREEN_MENU_ITEM_INDEX = 3;
+    private static final int DEFAULT_SCREEN_MENU_ITEM_INDEX = 2;
 
     private int selectedItem = DEFAULT_SCREEN_MENU_ITEM_INDEX;
     private Menu menu = null;
@@ -37,6 +37,12 @@ public class ConfigActivity extends BaseActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayUseLogoEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setIcon(R.drawable.actionbar_logo);
+        }
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -86,10 +92,7 @@ public class ConfigActivity extends BaseActivity {
                 fragment = MainFragment.newInstance(getString(R.string.menu_sync),
                         getColorFromResource(R.color.color_sync));
                 break;
-            case R.id.menu_historic:
-                fragment = MainFragment.newInstance(getString(R.string.menu_historic),
-                        getColorFromResource(R.color.color_historic));
-                break;
+
             case R.id.menu_config:
                 ConfigFragment configFrag = new ConfigFragment();
                 fragment = configFrag;
