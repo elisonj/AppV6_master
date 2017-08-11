@@ -5,8 +5,8 @@ package br.com.bg7.appvistoria.sync;
  * Date: 2017-08-08
  */
 
-public enum SyncPictureStatus {
-    READY,
+public enum PictureSyncStatus {
+    NOT_STARTED,
     BEING_SYNCED,
     DONE
 }

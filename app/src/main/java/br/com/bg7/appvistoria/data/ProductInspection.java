@@ -13,7 +13,7 @@ import br.com.bg7.appvistoria.data.source.remote.dto.PictureResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpProgressCallback;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
-import br.com.bg7.appvistoria.sync.SyncPictureStatus;
+import br.com.bg7.appvistoria.sync.PictureSyncStatus;
 import br.com.bg7.appvistoria.sync.SyncStatus;
 
 /**
@@ -53,7 +53,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
         }
 
         syncStatus = SyncStatus.PICTURES_BEING_SYNCED;
-        productFile.setSyncStatus(SyncPictureStatus.BEING_SYNCED);
+        productFile.setSyncStatus(PictureSyncStatus.BEING_SYNCED);
 
         pictureService.send(productFile.getFile(), this, new HttpProgressCallback<PictureResponse>() {
             @Override
@@ -72,7 +72,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
                     return;
                 }
 
-                productFile.setSyncStatus(SyncPictureStatus.DONE);
+                productFile.setSyncStatus(PictureSyncStatus.DONE);
 
                 if(countImagesNotDone() == 0) {
                     syncStatus = SyncStatus.PICTURES_SYNCED;
@@ -134,8 +134,8 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
 
     public void reset() {
         for(ProductFile productFile: imagesToSync) {
-            if(productFile.getSyncStatus() == SyncPictureStatus.BEING_SYNCED) {
-                productFile.setSyncStatus(SyncPictureStatus.READY);
+            if(productFile.getSyncStatus() == PictureSyncStatus.BEING_SYNCED) {
+                productFile.setSyncStatus(PictureSyncStatus.NOT_STARTED);
             }
         }
         if(syncStatus == SyncStatus.INSPECTION_BEING_SYNCED) {
@@ -146,7 +146,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
     private int countImagesNotDone() {
         int countImagesNotDone = 0;
         for(ProductFile productFile: imagesToSync) {
-            if(productFile.getSyncStatus() != SyncPictureStatus.DONE) countImagesNotDone++;
+            if(productFile.getSyncStatus() != PictureSyncStatus.DONE) countImagesNotDone++;
         }
         return countImagesNotDone;
     }
@@ -155,7 +155,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
         if(imagesToSync.size() <= 0) return null;
 
         for(ProductFile productFile: imagesToSync) {
-            if(productFile.getSyncStatus() == SyncPictureStatus.READY)
+            if(productFile.getSyncStatus() == PictureSyncStatus.NOT_STARTED)
                 return productFile;
         }
         return null;

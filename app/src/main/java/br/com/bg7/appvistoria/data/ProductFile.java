@@ -5,7 +5,7 @@ import com.orm.dsl.Ignore;
 
 import java.io.File;
 
-import br.com.bg7.appvistoria.sync.SyncPictureStatus;
+import br.com.bg7.appvistoria.sync.PictureSyncStatus;
 
 /**
  * Created by: elison
@@ -20,7 +20,7 @@ public class ProductFile extends SugarRecord<ProductFile> {
     private String status;
 
     @Ignore
-    private SyncPictureStatus syncStatus;
+    private PictureSyncStatus syncStatus;
 
     @Ignore
     private File file;
@@ -35,7 +35,7 @@ public class ProductFile extends SugarRecord<ProductFile> {
         this.productInspection = productInspection;
         this.file = file;
         this.path = file.getAbsolutePath();
-        this.syncStatus = SyncPictureStatus.READY;
+        this.syncStatus = PictureSyncStatus.NOT_STARTED;
         this.status = syncStatus.toString();
     }
 
@@ -47,11 +47,11 @@ public class ProductFile extends SugarRecord<ProductFile> {
         return file;
     }
 
-     SyncPictureStatus getSyncStatus() {
+     PictureSyncStatus getSyncStatus() {
         return syncStatus;
     }
 
-    void setSyncStatus(SyncPictureStatus syncStatus) {
+    void setSyncStatus(PictureSyncStatus syncStatus) {
         this.syncStatus = syncStatus;
         this.status = syncStatus.toString();
     }
