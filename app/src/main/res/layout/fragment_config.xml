@@ -140,6 +140,13 @@
         android:background="@drawable/bg_line_shadow_bottom"
         android:orientation="vertical" />
 
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/linear_language"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
 </LinearLayout>
 
 
