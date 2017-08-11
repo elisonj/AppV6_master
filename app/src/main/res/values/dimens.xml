@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Overriding Default Bottom Navigation sizes-->
+    <dimen name="design_bottom_navigation_text_size" tools:override="true">16sp</dimen>
+    <dimen name="design_bottom_navigation_active_text_size" tools:override="true">17sp</dimen>
+    <dimen name="design_bottom_navigation_height" tools:override="true">70dp</dimen>
+</resources>
