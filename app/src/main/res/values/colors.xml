@@ -3,7 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="color_action_bar">#00539b</color>
 
+    <color name="soft_gray">#e4e8eb</color>
     <color name="color_visita">#009688</color>
     <color name="color_sync">#2196F3</color>
     <color name="color_historic">#9C27B0</color>
