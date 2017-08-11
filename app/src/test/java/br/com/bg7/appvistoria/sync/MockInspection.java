@@ -2,7 +2,7 @@ package br.com.bg7.appvistoria.sync;
 
 import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
-import br.com.bg7.appvistoria.data.source.remote.ProductInspectionService;
+import br.com.bg7.appvistoria.data.source.remote.InspectionService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -58,7 +58,7 @@ class MockInspection {
                 .thatCanSyncProduct();
 
         doThrow(new IllegalStateException()).when(inspection.create())
-                .sync(any(ProductInspectionService.class), any(SyncCallback.class));
+                .sync(any(InspectionService.class), any(SyncCallback.class));
 
         return inspection;
     }

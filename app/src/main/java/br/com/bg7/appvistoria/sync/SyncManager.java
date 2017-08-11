@@ -5,7 +5,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.source.local.ProductInspectionRepository;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
-import br.com.bg7.appvistoria.data.source.remote.ProductInspectionService;
+import br.com.bg7.appvistoria.data.source.remote.InspectionService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
 
 import static br.com.bg7.appvistoria.Constants.PENDING_INSPECTIONS_RESETTABLE_STATUS_LIST;
@@ -22,7 +22,7 @@ class SyncManager {
     private SyncManagerCallback callback;
     private LinkedBlockingQueue<Inspection> inspectionQueue = new LinkedBlockingQueue<>();
 
-    private ProductInspectionService productInspectionService;
+    private InspectionService inspectionService;
     private PictureService pictureService;
 
     private ProductInspectionRepository productInspectionRepository;
@@ -30,11 +30,11 @@ class SyncManager {
 
     SyncManager(
             ProductInspectionRepository productInspectionRepository,
-            ProductInspectionService productInspectionService,
+            InspectionService inspectionService,
             PictureService pictureService,
             SyncExecutor syncExecutor) {
         this.productInspectionRepository = checkNotNull(productInspectionRepository);
-        this.productInspectionService = checkNotNull(productInspectionService);
+        this.inspectionService = checkNotNull(inspectionService);
         this.pictureService = checkNotNull(pictureService);
         this.syncExecutor = checkNotNull(syncExecutor);
 
@@ -118,7 +118,7 @@ class SyncManager {
         Inspection inspection;
 
         while ((inspection = inspectionQueue.poll()) != null) {
-            SyncJob job = new SyncJob(inspection, productInspectionService, pictureService, callback);
+            SyncJob job = new SyncJob(inspection, inspectionService, pictureService, callback);
             syncExecutor.executeSync(job);
         }
     }

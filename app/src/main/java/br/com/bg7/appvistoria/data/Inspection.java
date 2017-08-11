@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
-import br.com.bg7.appvistoria.data.source.remote.ProductInspectionService;
+import br.com.bg7.appvistoria.data.source.remote.InspectionService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
 import br.com.bg7.appvistoria.data.source.remote.dto.PictureResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
@@ -88,13 +88,13 @@ public class Inspection extends SugarRecord<Inspection> {
         });
     }
 
-    public synchronized void sync(ProductInspectionService productInspectionService, final SyncCallback syncCallback) {
+    public synchronized void sync(InspectionService inspectionService, final SyncCallback syncCallback) {
         if (!canSyncProduct()) {
             throw new IllegalStateException("Cannot sync when status is "+syncStatus);
         }
 
         syncStatus = SyncStatus.INSPECTION_BEING_SYNCED;
-        productInspectionService.send(this, new HttpProgressCallback<ProductResponse>() {
+        inspectionService.send(this, new HttpProgressCallback<ProductResponse>() {
             @Override
             public void onProgressUpdated(double percentage) {
                 syncCallback.onProgressUpdated(Inspection.this, percentage);

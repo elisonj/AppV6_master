@@ -14,7 +14,7 @@ import java.io.File;
 import javax.annotation.Nullable;
 
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
-import br.com.bg7.appvistoria.data.source.remote.ProductInspectionService;
+import br.com.bg7.appvistoria.data.source.remote.InspectionService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
 import br.com.bg7.appvistoria.data.source.remote.dto.PictureResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
@@ -43,7 +43,7 @@ public class InspectionTest {
     private Throwable callBackThrowable;
 
     @Mock
-    ProductInspectionService productInspectionService;
+    InspectionService inspectionService;
 
     @Mock
     PictureService pictureService;
@@ -238,8 +238,8 @@ public class InspectionTest {
     }
 
     private void verifySyncProduct() {
-        inspection.sync(productInspectionService, callback);
-        verify(productInspectionService).send(eq(inspection), productInspectorCallback.capture());
+        inspection.sync(inspectionService, callback);
+        verify(inspectionService).send(eq(inspection), productInspectorCallback.capture());
         verifyCallbackResponse(callBackInspection != null);
     }
 

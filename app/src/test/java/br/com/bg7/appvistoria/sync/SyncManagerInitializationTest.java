@@ -19,12 +19,12 @@ public class SyncManagerInitializationTest extends SyncManagerTestBase {
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullRepository() {
-        new SyncManager(null, productInspectionService, pictureService, syncExecutor);
+        new SyncManager(null, inspectionService, pictureService, syncExecutor);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullExecutor() {
-        new SyncManager(productInspectionRepository, productInspectionService, pictureService, null);
+        new SyncManager(productInspectionRepository, inspectionService, pictureService, null);
     }
 
     @Test(expected = NullPointerException.class)
@@ -34,7 +34,7 @@ public class SyncManagerInitializationTest extends SyncManagerTestBase {
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullPictureService() {
-        new SyncManager(productInspectionRepository, productInspectionService, null, syncExecutor);
+        new SyncManager(productInspectionRepository, inspectionService, null, syncExecutor);
     }
 
     @Test(expected = NullPointerException.class)
@@ -72,7 +72,7 @@ public class SyncManagerInitializationTest extends SyncManagerTestBase {
         inspectionsThatDoNotGetReset.add(saveWithStatus(SyncStatus.PICTURES_SYNCED));
         inspectionsThatDoNotGetReset.add(saveWithStatus(SyncStatus.READY));
 
-        new SyncManager(productInspectionRepository, productInspectionService, pictureService, syncExecutor);
+        new SyncManager(productInspectionRepository, inspectionService, pictureService, syncExecutor);
 
         for (Inspection mockThatGetsReset : inspectionsThatGetReset) {
             verify(mockThatGetsReset).reset();

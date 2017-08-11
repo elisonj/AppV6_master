@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
-import br.com.bg7.appvistoria.data.source.remote.ProductInspectionService;
+import br.com.bg7.appvistoria.data.source.remote.InspectionService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
 
 /**
@@ -14,15 +14,15 @@ import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
  */
 class SyncJob implements Runnable {
     private final Inspection inspectionToSync;
-    private ProductInspectionService productInspectionService;
+    private InspectionService inspectionService;
     private PictureService pictureService;
     private SyncCallback callback;
 
     private static final Logger LOG = LoggerFactory.getLogger(SyncJob.class);
 
-    SyncJob(Inspection inspectionToSync, ProductInspectionService productInspectionService, PictureService pictureService, SyncCallback callback) {
+    SyncJob(Inspection inspectionToSync, InspectionService inspectionService, PictureService pictureService, SyncCallback callback) {
         this.inspectionToSync = inspectionToSync;
-        this.productInspectionService = productInspectionService;
+        this.inspectionService = inspectionService;
         this.pictureService = pictureService;
         this.callback = callback;
     }
@@ -36,7 +36,7 @@ class SyncJob implements Runnable {
             }
 
             if (inspectionToSync.canSyncProduct()) {
-                inspectionToSync.sync(productInspectionService, callback);
+                inspectionToSync.sync(inspectionService, callback);
             }
         } catch (IllegalStateException exception) {
             // Concurrency problem that should not happen considering that

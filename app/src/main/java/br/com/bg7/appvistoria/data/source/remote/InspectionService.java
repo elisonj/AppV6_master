@@ -9,6 +9,6 @@ import br.com.bg7.appvistoria.data.source.remote.http.HttpProgressCallback;
  * Date: 2017-08-01
  */
 
-public interface ProductInspectionService {
+public interface InspectionService {
     void send(Inspection inspection, HttpProgressCallback<ProductResponse> callback);
 }
