@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import com.orm.SugarRecord;
 
 import java.util.HashMap;
-import java.util.Iterator;
 
 import br.com.bg7.appvistoria.data.source.local.Repository;
 

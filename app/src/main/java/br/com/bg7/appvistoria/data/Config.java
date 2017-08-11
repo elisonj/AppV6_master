@@ -11,8 +11,7 @@ import com.orm.SugarRecord;
 public class Config extends SugarRecord<Config> {
     private boolean syncWithWifiOnly;
     private String languageName;
-    // TODO: Ter um relacionamento de verdade
-    private String username;
+    private User user;
 
     /**
      * Default constructor used by Sugar
@@ -20,10 +19,10 @@ public class Config extends SugarRecord<Config> {
     @SuppressWarnings("unused")
     public Config() {}
 
-    public Config(String languageName, boolean updateOnlyWifi, String username) {
+    public Config(String languageName, boolean updateOnlyWifi, User user) {
         this.languageName = languageName;
         this.syncWithWifiOnly = updateOnlyWifi;
-        this.username = username;
+        this.user = user;
     }
 
     public Config withLanguage(String language) {
@@ -46,7 +45,7 @@ public class Config extends SugarRecord<Config> {
         config.id = this.id;
         config.languageName = this.languageName;
         config.syncWithWifiOnly = this.syncWithWifiOnly;
-        config.username = this.username;
+        config.user = this.user;
 
         return config;
     }
@@ -59,7 +58,7 @@ public class Config extends SugarRecord<Config> {
         return syncWithWifiOnly;
     }
 
-    public String getUsername() {
-        return username;
+    public User getUser() {
+        return user;
     }
 }

@@ -2,8 +2,8 @@ package br.com.bg7.appvistoria.sync;
 
 import java.util.HashSet;
 
-import br.com.bg7.appvistoria.data.ProductInspection;
-import br.com.bg7.appvistoria.data.source.local.ProductInspectionRepository;
+import br.com.bg7.appvistoria.data.Inspection;
+import br.com.bg7.appvistoria.data.source.local.InspectionRepository;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -15,23 +15,23 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class SyncManagerCallback implements SyncCallback {
     private HashSet<SyncCallback> subscribers = new HashSet<>();
-    private ProductInspectionRepository productInspectionRepository;
+    private InspectionRepository inspectionRepository;
 
-    public SyncManagerCallback(ProductInspectionRepository productInspectionRepository) {
-        this.productInspectionRepository = productInspectionRepository;
+    public SyncManagerCallback(InspectionRepository inspectionRepository) {
+        this.inspectionRepository = inspectionRepository;
     }
 
     /**
-     * Method that gets called when a {@code ProductInspection} finishes syncing successfully
+     * Method that gets called when an {@code Inspection} finishes syncing successfully
      *
-     * @param productInspection The inspection whose sync succeeded
+     * @param inspection The inspection whose sync succeeded
      */
     @Override
-    public void onSuccess(ProductInspection productInspection) {
-        productInspectionRepository.save(productInspection);
+    public void onSuccess(Inspection inspection) {
+        inspectionRepository.save(inspection);
 
         for (SyncCallback callback : subscribers) {
-            callback.onSuccess(productInspection);
+            callback.onSuccess(inspection);
         }
     }
 
@@ -40,28 +40,28 @@ public class SyncManagerCallback implements SyncCallback {
      *
      * TODO: Implementar o calculo de progresso geral da inspection
      *
-     * @param productInspection The inspection being synced
+     * @param inspection The inspection being synced
      * @param progress A 0-100 number indicating percentage completed
      */
     @Override
-    public void onProgressUpdated(ProductInspection productInspection, double progress) {
+    public void onProgressUpdated(Inspection inspection, double progress) {
         for (SyncCallback callback : subscribers) {
-            callback.onProgressUpdated(productInspection, progress);
+            callback.onProgressUpdated(inspection, progress);
         }
     }
 
     /**
-     * Method that gets called when a {@code ProductInspection} fails syncing
+     * Method that gets called when an {@code Inspection} fails syncing
      *
-     * @param productInspection The inspection whose sync failed
+     * @param inspection The inspection whose sync failed
      * @param t The error that caused it to fail
      */
     @Override
-    public void onFailure(ProductInspection productInspection, Throwable t) {
-        productInspectionRepository.save(productInspection);
+    public void onFailure(Inspection inspection, Throwable t) {
+        inspectionRepository.save(inspection);
 
         for (SyncCallback callback : subscribers) {
-            callback.onFailure(productInspection, t);
+            callback.onFailure(inspection, t);
         }
     }
 

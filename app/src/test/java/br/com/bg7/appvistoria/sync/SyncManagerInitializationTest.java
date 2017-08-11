@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import br.com.bg7.appvistoria.data.ProductInspection;
+import br.com.bg7.appvistoria.data.Inspection;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
@@ -19,22 +19,22 @@ public class SyncManagerInitializationTest extends SyncManagerTestBase {
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullRepository() {
-        new SyncManager(null, productInspectionService, pictureService, syncExecutor);
+        new SyncManager(null, inspectionService, pictureService, syncExecutor);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullExecutor() {
-        new SyncManager(productInspectionRepository, productInspectionService, pictureService, null);
+        new SyncManager(fakeInspectionRepository, inspectionService, pictureService, null);
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldNotAcceptNullProductInspectionService() {
-        new SyncManager(productInspectionRepository, null, pictureService, syncExecutor);
+    public void shouldNotAcceptNullInspectionService() {
+        new SyncManager(fakeInspectionRepository, null, pictureService, syncExecutor);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullPictureService() {
-        new SyncManager(productInspectionRepository, productInspectionService, null, syncExecutor);
+        new SyncManager(fakeInspectionRepository, inspectionService, null, syncExecutor);
     }
 
     @Test(expected = NullPointerException.class)
@@ -60,25 +60,25 @@ public class SyncManagerInitializationTest extends SyncManagerTestBase {
     }
 
     @Test
-    public void shouldResetIncompleteProductInspectionsWhenStarting() {
+    public void shouldResetIncompleteInspectionsWhenStarting() {
 
-        ArrayList<ProductInspection> inspectionsThatGetReset = new ArrayList<>();
+        ArrayList<Inspection> inspectionsThatGetReset = new ArrayList<>();
         inspectionsThatGetReset.add(saveWithStatus(SyncStatus.PICTURES_BEING_SYNCED));
         inspectionsThatGetReset.add(saveWithStatus(SyncStatus.INSPECTION_BEING_SYNCED));
 
-        ArrayList<ProductInspection> inspectionsThatDoNotGetReset = new ArrayList<>();
+        ArrayList<Inspection> inspectionsThatDoNotGetReset = new ArrayList<>();
         inspectionsThatDoNotGetReset.add(saveWithStatus(SyncStatus.DONE));
         inspectionsThatDoNotGetReset.add(saveWithStatus(SyncStatus.FAILED));
         inspectionsThatDoNotGetReset.add(saveWithStatus(SyncStatus.PICTURES_SYNCED));
         inspectionsThatDoNotGetReset.add(saveWithStatus(SyncStatus.READY));
 
-        new SyncManager(productInspectionRepository, productInspectionService, pictureService, syncExecutor);
+        new SyncManager(fakeInspectionRepository, inspectionService, pictureService, syncExecutor);
 
-        for (ProductInspection mockThatGetsReset : inspectionsThatGetReset) {
+        for (Inspection mockThatGetsReset : inspectionsThatGetReset) {
             verify(mockThatGetsReset).reset();
         }
 
-        for (ProductInspection mockThatDoesNotGetsReset : inspectionsThatDoNotGetReset) {
+        for (Inspection mockThatDoesNotGetsReset : inspectionsThatDoNotGetReset) {
             verify(mockThatDoesNotGetsReset, never()).reset();
         }
     }

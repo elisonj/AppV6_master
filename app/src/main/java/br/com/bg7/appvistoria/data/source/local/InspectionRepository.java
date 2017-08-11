@@ -1,0 +1,13 @@
+package br.com.bg7.appvistoria.data.source.local;
+
+import br.com.bg7.appvistoria.data.Inspection;
+import br.com.bg7.appvistoria.sync.SyncStatus;
+
+/**
+ * Created by: luciolucio
+ * Date: 2017-07-31
+ */
+
+public interface InspectionRepository extends Repository<Inspection> {
+    Iterable<Inspection> findBySyncStatus(SyncStatus status);
+}

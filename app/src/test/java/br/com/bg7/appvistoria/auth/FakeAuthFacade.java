@@ -1,6 +1,9 @@
 package br.com.bg7.appvistoria.auth;
 
+import java.io.IOException;
+
 import br.com.bg7.appvistoria.auth.callback.AuthCallback;
+import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeAuthRepository;
 
 /**
@@ -16,18 +19,18 @@ public class FakeAuthFacade implements AuthFacade {
 
     }
 
-    public void fakeLogin(String username) {
-        authRepository.save(username, "");
+    public void fakeLogin(User user) throws IOException {
+        authRepository.save(user, "");
     }
 
     @Override
     public boolean check() {
-        return authRepository.currentUsername() != null;
+        return authRepository.currentUser() != null;
     }
 
     @Override
-    public String user() {
-        return authRepository.currentUsername();
+    public User user() {
+        return authRepository.currentUser();
     }
 
     @Override

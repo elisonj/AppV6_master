@@ -7,32 +7,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
-import br.com.bg7.appvistoria.data.source.remote.ProductInspectionService;
+import br.com.bg7.appvistoria.data.source.remote.InspectionService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
 import br.com.bg7.appvistoria.data.source.remote.dto.PictureResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpProgressCallback;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
-import br.com.bg7.appvistoria.sync.SyncPictureStatus;
+import br.com.bg7.appvistoria.sync.PictureSyncStatus;
 import br.com.bg7.appvistoria.sync.SyncStatus;
 
 /**
  * Created by: elison
  * Date: 2017-07-27
  */
-public class ProductInspection extends SugarRecord<ProductInspection> {
+public class Inspection extends SugarRecord<Inspection> {
 
     private SyncStatus syncStatus = null;
 
-    private List<ProductFile> imagesToSync = new ArrayList<>();
-    private long id;
-    private Product product;
+    private List<Picture> pictures = new ArrayList<>();
 
     /**
      * Default constructor used by Sugar
      */
     @SuppressWarnings("unused")
-    public ProductInspection() {}
+    public Inspection() {}
 
     public boolean canSyncProduct() {
         return syncStatus == SyncStatus.PICTURES_SYNCED;
@@ -48,19 +46,19 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
             throw new IllegalStateException("Cannot sync Pictures when status is "+syncStatus);
         }
 
-        final ProductFile productFile = getNextImageReady();
+        final Picture picture = getNextImageReady();
 
-        if(productFile == null) {
+        if(picture == null) {
             throw new IllegalStateException("No Pictures to send ");
         }
 
         syncStatus = SyncStatus.PICTURES_BEING_SYNCED;
-        productFile.setSyncStatus(SyncPictureStatus.BEING_SYNCED);
+        picture.setSyncStatus(PictureSyncStatus.BEING_SYNCED);
 
-        pictureService.send(productFile.getFile(), this, new HttpProgressCallback<PictureResponse>() {
+        pictureService.send(picture.getFile(), this, new HttpProgressCallback<PictureResponse>() {
             @Override
             public void onProgressUpdated(double percentage) {
-                syncCallback.onProgressUpdated(ProductInspection.this, percentage);
+                syncCallback.onProgressUpdated(Inspection.this, percentage);
             }
 
             @Override
@@ -74,32 +72,32 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
                     return;
                 }
 
-                productFile.setSyncStatus(SyncPictureStatus.DONE);
+                picture.setSyncStatus(PictureSyncStatus.DONE);
 
                 if(countImagesNotDone() == 0) {
                     syncStatus = SyncStatus.PICTURES_SYNCED;
                 }
-                syncCallback.onSuccess(ProductInspection.this);
+                syncCallback.onSuccess(Inspection.this);
             }
 
             @Override
             public void onFailure(Throwable t) {
                 syncStatus = SyncStatus.FAILED;
-                syncCallback.onFailure(ProductInspection.this, t);
+                syncCallback.onFailure(Inspection.this, t);
             }
         });
     }
 
-    public synchronized void sync(ProductInspectionService productInspectionService, final SyncCallback syncCallback) {
+    public synchronized void sync(InspectionService inspectionService, final SyncCallback syncCallback) {
         if (!canSyncProduct()) {
             throw new IllegalStateException("Cannot sync when status is "+syncStatus);
         }
 
         syncStatus = SyncStatus.INSPECTION_BEING_SYNCED;
-        productInspectionService.send(this, new HttpProgressCallback<ProductResponse>() {
+        inspectionService.send(this, new HttpProgressCallback<ProductResponse>() {
             @Override
             public void onProgressUpdated(double percentage) {
-                syncCallback.onProgressUpdated(ProductInspection.this, percentage);
+                syncCallback.onProgressUpdated(Inspection.this, percentage);
             }
 
             @Override
@@ -110,7 +108,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
                 }
                 if(httpResponse.isSuccessful()) {
                     syncStatus = SyncStatus.DONE;
-                    syncCallback.onSuccess(ProductInspection.this);
+                    syncCallback.onSuccess(Inspection.this);
                     return;
                 }
                 onFailure(null);
@@ -119,14 +117,14 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
             @Override
             public void onFailure(Throwable t) {
                 syncStatus = SyncStatus.FAILED;
-                syncCallback.onFailure(ProductInspection.this, t);
+                syncCallback.onFailure(Inspection.this, t);
             }
         });
     }
 
     synchronized void addImageToSync(File image) {
-        ProductFile productFile = new ProductFile(this, image);
-        imagesToSync.add(productFile);
+        Picture picture = new Picture(this, image);
+        pictures.add(picture);
     }
 
     public SyncStatus getSyncStatus() {
@@ -135,9 +133,9 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
     }
 
     public void reset() {
-        for(ProductFile productFile: imagesToSync) {
-            if(productFile.getSyncStatus() == SyncPictureStatus.BEING_SYNCED) {
-                productFile.setSyncStatus(SyncPictureStatus.READY);
+        for(Picture picture : pictures) {
+            if(picture.getSyncStatus() == PictureSyncStatus.BEING_SYNCED) {
+                picture.setSyncStatus(PictureSyncStatus.NOT_STARTED);
             }
         }
         if(syncStatus == SyncStatus.INSPECTION_BEING_SYNCED) {
@@ -147,18 +145,18 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
 
     private int countImagesNotDone() {
         int countImagesNotDone = 0;
-        for(ProductFile productFile: imagesToSync) {
-            if(productFile.getSyncStatus() != SyncPictureStatus.DONE) countImagesNotDone++;
+        for(Picture picture : pictures) {
+            if(picture.getSyncStatus() != PictureSyncStatus.DONE) countImagesNotDone++;
         }
         return countImagesNotDone;
     }
 
-    private ProductFile getNextImageReady() {
-        if(imagesToSync.size() <= 0) return null;
+    private Picture getNextImageReady() {
+        if(pictures.size() <= 0) return null;
 
-        for(ProductFile productFile: imagesToSync) {
-            if(productFile.getSyncStatus() == SyncPictureStatus.READY)
-                return productFile;
+        for(Picture picture : pictures) {
+            if(picture.getSyncStatus() == PictureSyncStatus.NOT_STARTED)
+                return picture;
         }
         return null;
     }

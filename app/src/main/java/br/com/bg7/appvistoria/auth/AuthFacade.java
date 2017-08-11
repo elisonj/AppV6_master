@@ -1,6 +1,7 @@
 package br.com.bg7.appvistoria.auth;
 
 import br.com.bg7.appvistoria.auth.callback.AuthCallback;
+import br.com.bg7.appvistoria.data.User;
 
 /**
  * Created by: luciolucio
@@ -10,7 +11,7 @@ import br.com.bg7.appvistoria.auth.callback.AuthCallback;
 public interface AuthFacade {
     void attempt(String username, String password, boolean connected, AuthCallback callback);
     boolean check();
-    String user();
+    User user();
     String token();
     void logout();
 }

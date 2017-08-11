@@ -3,7 +3,6 @@ package br.com.bg7.appvistoria.data.source.local.fake;
 import br.com.bg7.appvistoria.data.Config;
 import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
-import br.com.bg7.appvistoria.data.source.local.UserRepository;
 
 /**
  * Created by: luciolucio
@@ -12,12 +11,12 @@ import br.com.bg7.appvistoria.data.source.local.UserRepository;
 
 public class FakeConfigRepository extends FakeRepository<String, Config> implements ConfigRepository {
     @Override
-    public Config findByUsername(String username) {
-        return ENTITIES_BY_KEY.get(username);
+    public Config findByUser(User user) {
+        return ENTITIES_BY_KEY.get(user.getUsername());
     }
 
     @Override
     String getKey(Config entity) {
-        return entity.getUsername();
+        return entity.getUser().getUsername();
     }
 }

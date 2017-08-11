@@ -5,22 +5,24 @@ import com.orm.dsl.Ignore;
 
 import java.io.File;
 
-import br.com.bg7.appvistoria.sync.SyncPictureStatus;
+import br.com.bg7.appvistoria.sync.PictureSyncStatus;
 
 /**
  * Created by: elison
  * Date: 2017-08-04
  *
- * represents a product's file to persists
+ * Represents a picture taken during an inspection
  */
-public class ProductFile extends SugarRecord<ProductFile> {
+public class Picture extends SugarRecord<Picture> {
 
-    private ProductInspection productInspection;
+    @SuppressWarnings({"FieldCanBeLocal", "unused"}) // Used by Sugar for persistence
+    private Inspection inspection;
     private String path;
+    @SuppressWarnings("unused") // Used by Sugar for persistence
     private String status;
 
     @Ignore
-    private SyncPictureStatus syncStatus;
+    private PictureSyncStatus syncStatus;
 
     @Ignore
     private File file;
@@ -29,13 +31,13 @@ public class ProductFile extends SugarRecord<ProductFile> {
      * Default constructor used by Sugar
      */
     @SuppressWarnings("unused")
-    public ProductFile() {}
+    public Picture() {}
 
-    ProductFile(ProductInspection productInspection, File file) {
-        this.productInspection = productInspection;
+    Picture(Inspection inspection, File file) {
+        this.inspection = inspection;
         this.file = file;
         this.path = file.getAbsolutePath();
-        this.syncStatus = SyncPictureStatus.READY;
+        this.syncStatus = PictureSyncStatus.NOT_STARTED;
         this.status = syncStatus.toString();
     }
 
@@ -47,11 +49,11 @@ public class ProductFile extends SugarRecord<ProductFile> {
         return file;
     }
 
-     SyncPictureStatus getSyncStatus() {
+     PictureSyncStatus getSyncStatus() {
         return syncStatus;
     }
 
-    void setSyncStatus(SyncPictureStatus syncStatus) {
+    void setSyncStatus(PictureSyncStatus syncStatus) {
         this.syncStatus = syncStatus;
         this.status = syncStatus.toString();
     }

@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +15,7 @@ import br.com.bg7.appvistoria.auth.Auth;
 import br.com.bg7.appvistoria.auth.FakeAuthFacade;
 import br.com.bg7.appvistoria.config.vo.Language;
 import br.com.bg7.appvistoria.data.Config;
-import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
+import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeConfigRepository;
 
@@ -28,7 +29,7 @@ import static org.mockito.Mockito.when;
  */
 
 public class ConfigPresenterTest {
-    private static final String USERNAME = "username";
+    private static final User USER = new User("username", "token", "pwd");
 
     @Mock
     private ConfigContract.View configView;
@@ -43,11 +44,11 @@ public class ConfigPresenterTest {
     private ConfigPresenter configPresenter;
 
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
         MockitoAnnotations.initMocks(this);
 
         Auth.configure(authFacade);
-        authFacade.fakeLogin(USERNAME);
+        authFacade.fakeLogin(USER);
 
         configPresenter = new ConfigPresenter(configRepository, languageRepository, configView);
 
@@ -64,7 +65,7 @@ public class ConfigPresenterTest {
     }
 
     private void setUpConfig(String language, boolean isSyncWithWifiOnly) {
-        Config config = new Config(language, isSyncWithWifiOnly, USERNAME);
+        Config config = new Config(language, isSyncWithWifiOnly, USER);
         configRepository.save(config);
     }
 
