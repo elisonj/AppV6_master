@@ -20,7 +20,7 @@ import br.com.bg7.appvistoria.sync.SyncStatus;
  * Created by: elison
  * Date: 2017-07-27
  */
-public class ProductInspection extends SugarRecord<ProductInspection> {
+public class Inspection extends SugarRecord<Inspection> {
 
     private SyncStatus syncStatus = null;
 
@@ -30,7 +30,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
      * Default constructor used by Sugar
      */
     @SuppressWarnings("unused")
-    public ProductInspection() {}
+    public Inspection() {}
 
     public boolean canSyncProduct() {
         return syncStatus == SyncStatus.PICTURES_SYNCED;
@@ -58,7 +58,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
         pictureService.send(picture.getFile(), this, new HttpProgressCallback<PictureResponse>() {
             @Override
             public void onProgressUpdated(double percentage) {
-                syncCallback.onProgressUpdated(ProductInspection.this, percentage);
+                syncCallback.onProgressUpdated(Inspection.this, percentage);
             }
 
             @Override
@@ -77,13 +77,13 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
                 if(countImagesNotDone() == 0) {
                     syncStatus = SyncStatus.PICTURES_SYNCED;
                 }
-                syncCallback.onSuccess(ProductInspection.this);
+                syncCallback.onSuccess(Inspection.this);
             }
 
             @Override
             public void onFailure(Throwable t) {
                 syncStatus = SyncStatus.FAILED;
-                syncCallback.onFailure(ProductInspection.this, t);
+                syncCallback.onFailure(Inspection.this, t);
             }
         });
     }
@@ -97,7 +97,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
         productInspectionService.send(this, new HttpProgressCallback<ProductResponse>() {
             @Override
             public void onProgressUpdated(double percentage) {
-                syncCallback.onProgressUpdated(ProductInspection.this, percentage);
+                syncCallback.onProgressUpdated(Inspection.this, percentage);
             }
 
             @Override
@@ -108,7 +108,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
                 }
                 if(httpResponse.isSuccessful()) {
                     syncStatus = SyncStatus.DONE;
-                    syncCallback.onSuccess(ProductInspection.this);
+                    syncCallback.onSuccess(Inspection.this);
                     return;
                 }
                 onFailure(null);
@@ -117,7 +117,7 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
             @Override
             public void onFailure(Throwable t) {
                 syncStatus = SyncStatus.FAILED;
-                syncCallback.onFailure(ProductInspection.this, t);
+                syncCallback.onFailure(Inspection.this, t);
             }
         });
     }

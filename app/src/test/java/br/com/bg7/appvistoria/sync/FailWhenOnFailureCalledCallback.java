@@ -2,7 +2,7 @@ package br.com.bg7.appvistoria.sync;
 
 import junit.framework.Assert;
 
-import br.com.bg7.appvistoria.data.ProductInspection;
+import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
 
 /**
@@ -12,17 +12,17 @@ import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
 
 class FailWhenOnFailureCalledCallback implements SyncCallback {
     @Override
-    public void onSuccess(ProductInspection productInspection) {
+    public void onSuccess(Inspection inspection) {
 
     }
 
     @Override
-    public void onProgressUpdated(ProductInspection productInspection, double progress) {
+    public void onProgressUpdated(Inspection inspection, double progress) {
 
     }
 
     @Override
-    public void onFailure(ProductInspection productInspection, Throwable t) {
+    public void onFailure(Inspection inspection, Throwable t) {
         Assert.fail("onFailure called");
     }
 }

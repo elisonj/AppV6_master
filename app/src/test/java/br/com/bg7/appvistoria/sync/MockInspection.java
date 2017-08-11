@@ -1,6 +1,6 @@
 package br.com.bg7.appvistoria.sync;
 
-import br.com.bg7.appvistoria.data.ProductInspection;
+import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.ProductInspectionService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
  */
 
 class MockInspection {
-    private ProductInspection productInspection = mock(ProductInspection.class);
+    private Inspection inspection = mock(Inspection.class);
 
     private MockInspection() { }
 
@@ -28,27 +28,27 @@ class MockInspection {
     }
 
     MockInspection withStatus(SyncStatus syncStatus) {
-        when(productInspection.getSyncStatus()).thenReturn(syncStatus);
+        when(inspection.getSyncStatus()).thenReturn(syncStatus);
         return this;
     }
 
     MockInspection thatCanSyncPictures() {
-        when(productInspection.canSyncPictures()).thenReturn(true);
+        when(inspection.canSyncPictures()).thenReturn(true);
         return this;
     }
 
     MockInspection thatCannotSyncPictures() {
-        when(productInspection.canSyncPictures()).thenReturn(false);
+        when(inspection.canSyncPictures()).thenReturn(false);
         return this;
     }
 
     MockInspection thatCanSyncProduct() {
-        when(productInspection.canSyncProduct()).thenReturn(true);
+        when(inspection.canSyncProduct()).thenReturn(true);
         return this;
     }
 
     MockInspection thatCannotSyncProduct() {
-        when(productInspection.canSyncProduct()).thenReturn(false);
+        when(inspection.canSyncProduct()).thenReturn(false);
         return this;
     }
 
@@ -73,7 +73,7 @@ class MockInspection {
         return inspection;
     }
 
-    ProductInspection create() {
-        return this.productInspection;
+    Inspection create() {
+        return this.inspection;
     }
 }

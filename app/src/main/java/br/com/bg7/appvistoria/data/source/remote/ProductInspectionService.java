@@ -1,6 +1,6 @@
 package br.com.bg7.appvistoria.data.source.remote;
 
-import br.com.bg7.appvistoria.data.ProductInspection;
+import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpProgressCallback;
 
@@ -10,5 +10,5 @@ import br.com.bg7.appvistoria.data.source.remote.http.HttpProgressCallback;
  */
 
 public interface ProductInspectionService {
-    void send(ProductInspection productInspection, HttpProgressCallback<ProductResponse> callback);
+    void send(Inspection inspection, HttpProgressCallback<ProductResponse> callback);
 }

@@ -2,7 +2,7 @@ package br.com.bg7.appvistoria.sync;
 
 import java.util.HashSet;
 
-import br.com.bg7.appvistoria.data.ProductInspection;
+import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.source.local.ProductInspectionRepository;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
 
@@ -22,16 +22,16 @@ public class SyncManagerCallback implements SyncCallback {
     }
 
     /**
-     * Method that gets called when a {@code ProductInspection} finishes syncing successfully
+     * Method that gets called when an {@code Inspection} finishes syncing successfully
      *
-     * @param productInspection The inspection whose sync succeeded
+     * @param inspection The inspection whose sync succeeded
      */
     @Override
-    public void onSuccess(ProductInspection productInspection) {
-        productInspectionRepository.save(productInspection);
+    public void onSuccess(Inspection inspection) {
+        productInspectionRepository.save(inspection);
 
         for (SyncCallback callback : subscribers) {
-            callback.onSuccess(productInspection);
+            callback.onSuccess(inspection);
         }
     }
 
@@ -40,28 +40,28 @@ public class SyncManagerCallback implements SyncCallback {
      *
      * TODO: Implementar o calculo de progresso geral da inspection
      *
-     * @param productInspection The inspection being synced
+     * @param inspection The inspection being synced
      * @param progress A 0-100 number indicating percentage completed
      */
     @Override
-    public void onProgressUpdated(ProductInspection productInspection, double progress) {
+    public void onProgressUpdated(Inspection inspection, double progress) {
         for (SyncCallback callback : subscribers) {
-            callback.onProgressUpdated(productInspection, progress);
+            callback.onProgressUpdated(inspection, progress);
         }
     }
 
     /**
-     * Method that gets called when a {@code ProductInspection} fails syncing
+     * Method that gets called when an {@code Inspection} fails syncing
      *
-     * @param productInspection The inspection whose sync failed
+     * @param inspection The inspection whose sync failed
      * @param t The error that caused it to fail
      */
     @Override
-    public void onFailure(ProductInspection productInspection, Throwable t) {
-        productInspectionRepository.save(productInspection);
+    public void onFailure(Inspection inspection, Throwable t) {
+        productInspectionRepository.save(inspection);
 
         for (SyncCallback callback : subscribers) {
-            callback.onFailure(productInspection, t);
+            callback.onFailure(inspection, t);
         }
     }
 

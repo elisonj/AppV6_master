@@ -2,7 +2,7 @@ package br.com.bg7.appvistoria.sync;
 
 import org.junit.Test;
 
-import br.com.bg7.appvistoria.data.ProductInspection;
+import br.com.bg7.appvistoria.data.Inspection;
 
 import static br.com.bg7.appvistoria.sync.MockInspection.mockInspection;
 import static br.com.bg7.appvistoria.sync.MockInspectionChecker.checkThat;
@@ -16,7 +16,7 @@ public class SyncManagerCanSyncTest extends SyncManagerTestBase {
 
     @Test
     public void shouldNotAttemptToSyncPictureWhenCannotSyncPictures() {
-        ProductInspection inspection = mockInspection()
+        Inspection inspection = mockInspection()
                 .thatCannotSyncPictures()
                 .create();
         save(inspection);
@@ -28,7 +28,7 @@ public class SyncManagerCanSyncTest extends SyncManagerTestBase {
 
     @Test
     public void shouldNotAttemptToSyncProductWhenCannotSyncProduct() {
-        ProductInspection inspection = mockInspection()
+        Inspection inspection = mockInspection()
                 .thatCannotSyncProduct()
                 .create();
         save(inspection);
@@ -40,7 +40,7 @@ public class SyncManagerCanSyncTest extends SyncManagerTestBase {
 
     @Test
     public void shouldNotAttemptToSyncProductWhenCanSyncPictures() {
-        ProductInspection inspection = mockInspection()
+        Inspection inspection = mockInspection()
                 .thatCanSyncPictures()
                 .thatCanSyncProduct()
                 .create();
@@ -53,7 +53,7 @@ public class SyncManagerCanSyncTest extends SyncManagerTestBase {
 
     @Test
     public void shouldSyncPictures() {
-        ProductInspection inspection = mockInspection()
+        Inspection inspection = mockInspection()
                 .thatCanSyncPictures()
                 .create();
         save(inspection);
@@ -65,7 +65,7 @@ public class SyncManagerCanSyncTest extends SyncManagerTestBase {
 
     @Test
     public void shouldSyncProductWhenCannotSyncPictures() {
-        ProductInspection inspection = mockInspection()
+        Inspection inspection = mockInspection()
                 .thatCannotSyncPictures()
                 .thatCanSyncProduct()
                 .create();

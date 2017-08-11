@@ -6,7 +6,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import br.com.bg7.appvistoria.data.ProductInspection;
+import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeProductInspectionRepository;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.ProductInspectionService;
@@ -65,15 +65,15 @@ class SyncManagerTestBase {
         sync = syncLoopCaptor.getValue();
     }
 
-    void save(ProductInspection inspection) {
+    void save(Inspection inspection) {
         productInspectionRepository.save(inspection);
     }
 
-    ProductInspection saveWithStatus(SyncStatus status) {
-        ProductInspection productInspection = mockInspection().withStatus(status).create();
-        save(productInspection);
+    Inspection saveWithStatus(SyncStatus status) {
+        Inspection inspection = mockInspection().withStatus(status).create();
+        save(inspection);
 
-        return productInspection;
+        return inspection;
     }
 
     void runSync() {

@@ -16,7 +16,7 @@ import br.com.bg7.appvistoria.sync.PictureSyncStatus;
 public class Picture extends SugarRecord<Picture> {
 
     @SuppressWarnings({"FieldCanBeLocal", "unused"}) // Used by Sugar for persistence
-    private ProductInspection productInspection;
+    private Inspection inspection;
     private String path;
     @SuppressWarnings("unused") // Used by Sugar for persistence
     private String status;
@@ -33,8 +33,8 @@ public class Picture extends SugarRecord<Picture> {
     @SuppressWarnings("unused")
     public Picture() {}
 
-    Picture(ProductInspection productInspection, File file) {
-        this.productInspection = productInspection;
+    Picture(Inspection inspection, File file) {
+        this.inspection = inspection;
         this.file = file;
         this.path = file.getAbsolutePath();
         this.syncStatus = PictureSyncStatus.NOT_STARTED;

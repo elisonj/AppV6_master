@@ -1,6 +1,6 @@
 package br.com.bg7.appvistoria.data.source.local;
 
-import br.com.bg7.appvistoria.data.ProductInspection;
+import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.sync.SyncStatus;
 
 /**
@@ -8,6 +8,6 @@ import br.com.bg7.appvistoria.sync.SyncStatus;
  * Date: 2017-07-31
  */
 
-public interface ProductInspectionRepository extends Repository<ProductInspection> {
-    Iterable<ProductInspection> findBySyncStatus(SyncStatus status);
+public interface ProductInspectionRepository extends Repository<Inspection> {
+    Iterable<Inspection> findBySyncStatus(SyncStatus status);
 }

@@ -30,16 +30,16 @@ import static org.mockito.Mockito.verify;
  * Created by: elison
  * Date: 2017-08-02
  */
-public class ProductInspectionTest {
+public class InspectionTest {
 
     private static final double PROGRESS = 50;
     private static final int FILES_TO_SYNC = 3;
     private static final File FILE = new File("");
     private boolean isSuccessful = true;
 
-    private ProductInspection productInspection;
-    private ProductInspection callBackProductInspection;
-    private ProductInspection callBackProductProgress;
+    private Inspection inspection;
+    private Inspection callBackInspection;
+    private Inspection callBackProductProgress;
     private Throwable callBackThrowable;
 
     @Mock
@@ -57,7 +57,7 @@ public class ProductInspectionTest {
     @Before
     public void setUp() throws IllegalStateException {
         MockitoAnnotations.initMocks(this);
-        productInspection = new ProductInspection();
+        inspection = new Inspection();
     }
 
     @Test
@@ -72,7 +72,7 @@ public class ProductInspectionTest {
     public void shouldSyncPicture() {
         addOneImageToSync();
         syncPictures();
-        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.PICTURES_SYNCED);
+        Assert.assertEquals(inspection.getSyncStatus(), SyncStatus.PICTURES_SYNCED);
     }
 
     @Test
@@ -111,14 +111,14 @@ public class ProductInspectionTest {
         addImageToSync(FILES_TO_SYNC);
         shouldSyncStatusReady();
         numberOfTimesToSync(FILES_TO_SYNC);
-        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.PICTURES_SYNCED);
+        Assert.assertEquals(inspection.getSyncStatus(), SyncStatus.PICTURES_SYNCED);
     }
 
     @Test
     public void shouldSyncProductInspection() {
         syncProduct();
         productInspectorCallback.getValue().onResponse(productResponse);
-        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.DONE);
+        Assert.assertEquals(inspection.getSyncStatus(), SyncStatus.DONE);
     }
 
     @Test
@@ -147,7 +147,7 @@ public class ProductInspectionTest {
     public void shouldStatusProductBeingSyncedWhenProgressUpdated() {
         syncProduct();
         productInspectorCallback.getValue().onProgressUpdated(PROGRESS);
-        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.INSPECTION_BEING_SYNCED);
+        Assert.assertEquals(inspection.getSyncStatus(), SyncStatus.INSPECTION_BEING_SYNCED);
     }
 
     @Test
@@ -168,14 +168,14 @@ public class ProductInspectionTest {
     private void numberOfTimesToSync(int cont) {
         for(int i=0; i<cont; i++) {
             reset(pictureService);
-            productInspection.sync(pictureService, callback);
-            verify(pictureService).send(eq(FILE), eq(productInspection), pictureCallback.capture());
+            inspection.sync(pictureService, callback);
+            verify(pictureService).send(eq(FILE), eq(inspection), pictureCallback.capture());
             pictureCallback.getValue().onResponse(pictureResponse);
         }
     }
 
     private void verifyStatusFailed() {
-        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.FAILED);
+        Assert.assertEquals(inspection.getSyncStatus(), SyncStatus.FAILED);
     }
 
     private void verifyCallbackResponse(boolean condition) {
@@ -183,7 +183,7 @@ public class ProductInspectionTest {
     }
 
     private void verifyStatusPictureBeingSynced() {
-        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.PICTURES_BEING_SYNCED);
+        Assert.assertEquals(inspection.getSyncStatus(), SyncStatus.PICTURES_BEING_SYNCED);
     }
 
     private void shouldSyncStatusReady(){
@@ -192,7 +192,7 @@ public class ProductInspectionTest {
     }
 
     private void verifyStatusCanReady() {
-        Assert.assertEquals(productInspection.getSyncStatus(), SyncStatus.READY);
+        Assert.assertEquals(inspection.getSyncStatus(), SyncStatus.READY);
     }
 
     private void addOneImageToSync() {
@@ -201,7 +201,7 @@ public class ProductInspectionTest {
 
     private void addImageToSync(int cont) {
         for(int i=0; i<cont; i++) {
-            productInspection.addImageToSync(FILE);
+            inspection.addImageToSync(FILE);
         }
     }
 
@@ -218,12 +218,12 @@ public class ProductInspectionTest {
 
     private void setUpSyncPictures() {
         shouldSyncStatusReady();
-        productInspection.sync(pictureService, callback);
-        verify(pictureService).send(eq(FILE), eq(productInspection), pictureCallback.capture());
+        inspection.sync(pictureService, callback);
+        verify(pictureService).send(eq(FILE), eq(inspection), pictureCallback.capture());
     }
 
     private void canSyncPictures() {
-        Assert.assertTrue(productInspection.canSyncPictures());
+        Assert.assertTrue(inspection.canSyncPictures());
     }
 
     private void syncProduct() {
@@ -238,9 +238,9 @@ public class ProductInspectionTest {
     }
 
     private void verifySyncProduct() {
-        productInspection.sync(productInspectionService, callback);
-        verify(productInspectionService).send(eq(productInspection), productInspectorCallback.capture());
-        verifyCallbackResponse(callBackProductInspection != null);
+        inspection.sync(productInspectionService, callback);
+        verify(productInspectionService).send(eq(inspection), productInspectorCallback.capture());
+        verifyCallbackResponse(callBackInspection != null);
     }
 
     private void setUpSyncProduct() {
@@ -250,22 +250,22 @@ public class ProductInspectionTest {
     }
 
     private void canSyncProduct() {
-        Assert.assertTrue(productInspection.canSyncProduct());
+        Assert.assertTrue(inspection.canSyncProduct());
     }
 
     private SyncCallback callback = new SyncCallback() {
         @Override
-        public void onSuccess(ProductInspection productInspection) {
-            callBackProductInspection = productInspection;
+        public void onSuccess(Inspection inspection) {
+            callBackInspection = inspection;
         }
 
         @Override
-        public void onProgressUpdated(ProductInspection productInspection, double progress) {
-            callBackProductProgress = productInspection;
+        public void onProgressUpdated(Inspection inspection, double progress) {
+            callBackProductProgress = inspection;
         }
 
         @Override
-        public void onFailure(ProductInspection productInspection, Throwable t) {
+        public void onFailure(Inspection inspection, Throwable t) {
             callBackThrowable = t;
         }
     };

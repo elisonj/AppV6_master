@@ -2,7 +2,7 @@ package br.com.bg7.appvistoria.sync;
 
 import org.junit.Test;
 
-import br.com.bg7.appvistoria.data.ProductInspection;
+import br.com.bg7.appvistoria.data.Inspection;
 
 import static br.com.bg7.appvistoria.sync.MockInspection.mockInspection;
 
@@ -14,7 +14,7 @@ import static br.com.bg7.appvistoria.sync.MockInspection.mockInspection;
 public class SyncManagerIllegalStateExceptionTest extends SyncManagerTestBase {
     @Test
     public void shouldNotCallOnFailureForIllegalStateExceptionPicture() {
-        ProductInspection inspection = mockInspection()
+        Inspection inspection = mockInspection()
                 .thatCanSyncPictures()
                 .thatThrowsOnPictureSync()
                 .create();
@@ -28,7 +28,7 @@ public class SyncManagerIllegalStateExceptionTest extends SyncManagerTestBase {
 
     @Test
     public void shouldNotCallOnFailureForIllegalStateExceptionProduct() {
-        ProductInspection inspection = mockInspection()
+        Inspection inspection = mockInspection()
                 .thatCannotSyncPictures()
                 .thatCanSyncProduct()
                 .thatThrowsOnProductSync()

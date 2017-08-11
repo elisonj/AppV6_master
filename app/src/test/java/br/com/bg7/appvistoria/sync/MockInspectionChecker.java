@@ -1,6 +1,6 @@
 package br.com.bg7.appvistoria.sync;
 
-import br.com.bg7.appvistoria.data.ProductInspection;
+import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.ProductInspectionService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
@@ -15,13 +15,13 @@ import static org.mockito.Mockito.verify;
  */
 
 class MockInspectionChecker {
-    private ProductInspection inspection;
+    private Inspection inspection;
 
-    private MockInspectionChecker(ProductInspection inspection) {
+    private MockInspectionChecker(Inspection inspection) {
         this.inspection = inspection;
     }
 
-    static MockInspectionChecker checkThat(ProductInspection inspection) {
+    static MockInspectionChecker checkThat(Inspection inspection) {
         return new MockInspectionChecker(inspection);
     }
 
