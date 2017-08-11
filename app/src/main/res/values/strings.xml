@@ -14,6 +14,8 @@
     <string name="success">Sucesso!</string>
     <string name="confirm">CONFIRMAR</string>
     <string name="cancel">CANCELAR</string>
+    <string name="logout">LOGOUT</string>
+    <string name="exit_app">Sair do aplicativo</string>
     <string name="spin">Selecione a linguagem</string>
     <string name="sync_with_wifi_only">SINCRONIZAR APENAS COM WI-FI</string>
     <string name="language_pt">Português (Brasil)</string>

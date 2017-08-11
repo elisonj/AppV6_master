@@ -14,6 +14,8 @@
     <string name="success">Success!</string>
     <string name="confirm">CONFIRM</string>
     <string name="cancel">CANCEL</string>
+    <string name="logout">LOGOUT</string>
+    <string name="exit_app">Exit application</string>
     <string name="spin">Choose a language</string>
     <string name="sync_with_wifi_only">SYNC ONLY WITH WI-FI</string>
     <string name="language_pt">Portuguese (Brazil)</string>
