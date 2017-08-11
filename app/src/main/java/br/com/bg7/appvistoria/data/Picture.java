@@ -11,12 +11,14 @@ import br.com.bg7.appvistoria.sync.PictureSyncStatus;
  * Created by: elison
  * Date: 2017-08-04
  *
- * represents a product's file to persists
+ * Represents a picture taken during an inspection
  */
-public class ProductFile extends SugarRecord<ProductFile> {
+public class Picture extends SugarRecord<Picture> {
 
+    @SuppressWarnings({"FieldCanBeLocal", "unused"}) // Used by Sugar for persistence
     private ProductInspection productInspection;
     private String path;
+    @SuppressWarnings("unused") // Used by Sugar for persistence
     private String status;
 
     @Ignore
@@ -29,9 +31,9 @@ public class ProductFile extends SugarRecord<ProductFile> {
      * Default constructor used by Sugar
      */
     @SuppressWarnings("unused")
-    public ProductFile() {}
+    public Picture() {}
 
-    ProductFile(ProductInspection productInspection, File file) {
+    Picture(ProductInspection productInspection, File file) {
         this.productInspection = productInspection;
         this.file = file;
         this.path = file.getAbsolutePath();
