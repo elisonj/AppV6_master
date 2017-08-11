@@ -6,10 +6,10 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import br.com.bg7.appvistoria.data.ProductInspection;
-import br.com.bg7.appvistoria.data.source.local.fake.FakeProductInspectionRepository;
+import br.com.bg7.appvistoria.data.Inspection;
+import br.com.bg7.appvistoria.data.source.local.fake.FakeInspectionRepository;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
-import br.com.bg7.appvistoria.data.source.remote.ProductInspectionService;
+import br.com.bg7.appvistoria.data.source.remote.InspectionService;
 
 import static br.com.bg7.appvistoria.sync.MockInspection.mockInspection;
 import static org.mockito.Mockito.verify;
@@ -27,13 +27,13 @@ class SyncManagerTestBase {
 
     Runnable sync;
 
-    FakeProductInspectionRepository productInspectionRepository = new FakeProductInspectionRepository();
+    FakeInspectionRepository fakeInspectionRepository = new FakeInspectionRepository();
 
     @Mock
     SyncExecutor syncExecutor;
 
     @Mock
-    ProductInspectionService productInspectionService;
+    InspectionService inspectionService;
 
     @Mock
     PictureService pictureService;
@@ -52,8 +52,8 @@ class SyncManagerTestBase {
         MockitoAnnotations.initMocks(this);
 
         syncManager = new SyncManager(
-                productInspectionRepository,
-                productInspectionService,
+                fakeInspectionRepository,
+                inspectionService,
                 pictureService,
                 syncExecutor
         );
@@ -65,15 +65,15 @@ class SyncManagerTestBase {
         sync = syncLoopCaptor.getValue();
     }
 
-    void save(ProductInspection inspection) {
-        productInspectionRepository.save(inspection);
+    void save(Inspection inspection) {
+        fakeInspectionRepository.save(inspection);
     }
 
-    ProductInspection saveWithStatus(SyncStatus status) {
-        ProductInspection productInspection = mockInspection().withStatus(status).create();
-        save(productInspection);
+    Inspection saveWithStatus(SyncStatus status) {
+        Inspection inspection = mockInspection().withStatus(status).create();
+        save(inspection);
 
-        return productInspection;
+        return inspection;
     }
 
     void runSync() {

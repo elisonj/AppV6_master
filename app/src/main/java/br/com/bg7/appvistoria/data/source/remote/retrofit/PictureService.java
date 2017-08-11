@@ -2,7 +2,7 @@ package br.com.bg7.appvistoria.data.source.remote.retrofit;
 
 import java.io.File;
 
-import br.com.bg7.appvistoria.data.ProductInspection;
+import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.source.remote.dto.PictureResponse;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpProgressCallback;
 import okhttp3.MultipartBody;
@@ -19,6 +19,6 @@ interface PictureService {
     @Multipart
     @POST("/upload")
     Call<PictureResponse> send(File attachment, @Part MultipartBody.Part file,
-                               ProductInspection productInspection,
+                               Inspection inspection,
                                HttpProgressCallback httpProgressCallback);
 }

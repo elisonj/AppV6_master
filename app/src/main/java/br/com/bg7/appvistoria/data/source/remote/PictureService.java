@@ -2,7 +2,7 @@ package br.com.bg7.appvistoria.data.source.remote;
 
 import java.io.File;
 
-import br.com.bg7.appvistoria.data.ProductInspection;
+import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.source.remote.dto.PictureResponse;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpProgressCallback;
 
@@ -12,6 +12,6 @@ import br.com.bg7.appvistoria.data.source.remote.http.HttpProgressCallback;
  */
 public interface PictureService {
     void send(File attachment,
-              ProductInspection productInspection,
+              Inspection inspection,
               HttpProgressCallback<PictureResponse> callback);
 }
