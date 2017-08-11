@@ -25,8 +25,6 @@ public class ProductInspection extends SugarRecord<ProductInspection> {
     private SyncStatus syncStatus = null;
 
     private List<ProductFile> imagesToSync = new ArrayList<>();
-    private long id;
-    private Product product;
 
     /**
      * Default constructor used by Sugar
