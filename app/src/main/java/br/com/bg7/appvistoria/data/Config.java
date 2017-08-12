@@ -1,23 +1,16 @@
 package br.com.bg7.appvistoria.data;
 
-import com.orm.SugarRecord;
-
 /**
  * Created by: elison
  * Date: 2017-07-17
  *
  * Represents a user's config settings
  */
-public class Config extends SugarRecord<Config> {
+public class Config {
+    private Long id;
     private boolean syncWithWifiOnly;
     private String languageName;
     private User user;
-
-    /**
-     * Default constructor used by Sugar
-     */
-    @SuppressWarnings("unused")
-    public Config() {}
 
     public Config(String languageName, boolean updateOnlyWifi, User user) {
         this.languageName = languageName;
@@ -40,12 +33,9 @@ public class Config extends SugarRecord<Config> {
     }
 
     private Config cloneConfig() {
-        Config config = new Config();
+        Config config = new Config(this.languageName, this.syncWithWifiOnly, this.user);
 
         config.id = this.id;
-        config.languageName = this.languageName;
-        config.syncWithWifiOnly = this.syncWithWifiOnly;
-        config.user = this.user;
 
         return config;
     }

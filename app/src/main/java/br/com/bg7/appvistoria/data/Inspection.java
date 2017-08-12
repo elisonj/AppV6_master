@@ -1,13 +1,11 @@
 package br.com.bg7.appvistoria.data;
 
-import com.orm.SugarRecord;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.InspectionService;
+import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
 import br.com.bg7.appvistoria.data.source.remote.dto.PictureResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
@@ -20,17 +18,13 @@ import br.com.bg7.appvistoria.sync.SyncStatus;
  * Created by: elison
  * Date: 2017-07-27
  */
-public class Inspection extends SugarRecord<Inspection> {
+public class Inspection {
+
+    private Long id;
 
     private SyncStatus syncStatus = null;
 
     private List<Picture> pictures = new ArrayList<>();
-
-    /**
-     * Default constructor used by Sugar
-     */
-    @SuppressWarnings("unused")
-    public Inspection() {}
 
     public boolean canSyncProduct() {
         return syncStatus == SyncStatus.PICTURES_SYNCED;

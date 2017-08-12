@@ -1,8 +1,8 @@
 package br.com.bg7.appvistoria.sync;
 
 import br.com.bg7.appvistoria.data.Inspection;
-import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.InspectionService;
+import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
 
 import static org.mockito.ArgumentMatchers.any;
