@@ -164,4 +164,12 @@ public class ConfigPresenterTest {
 
         verify(configView).changeLanguage("pt_BR");
     }
+
+    @Test
+    public void shouldLogout()
+    {
+        configPresenter.logoutClicked();
+
+        verify(configView).logoutApplication();
+    }
 }
