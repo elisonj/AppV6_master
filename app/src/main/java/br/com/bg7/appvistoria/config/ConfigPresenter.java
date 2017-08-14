@@ -18,7 +18,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 
 class ConfigPresenter implements ConfigContract.Presenter {
-    private static final boolean DEFAULT_WIFI_OPTION = true;
     private static final int DEFAULT_LANGUAGE_INDEX = 0;
 
     private final ConfigContract.View configView;
@@ -65,16 +64,15 @@ class ConfigPresenter implements ConfigContract.Presenter {
             languageName = languageList.get(DEFAULT_LANGUAGE_INDEX).getName();
         }
 
-        applyConfig(languageName, config.isSyncWithWifiOnly());
+        applyConfig(languageName);
     }
 
     private void applyDefaultConfig(List<Language> languageList) {
-        applyConfig(languageList.get(DEFAULT_LANGUAGE_INDEX).getName(), DEFAULT_WIFI_OPTION);
+        applyConfig(languageList.get(DEFAULT_LANGUAGE_INDEX).getName());
     }
 
-    private void applyConfig(String name, boolean syncWithWifiOnly) {
+    private void applyConfig(String name) {
         configView.setLanguage(name);
-        configView.setSyncWithWifiOnly(syncWithWifiOnly);
     }
 
     @Override
@@ -84,25 +82,13 @@ class ConfigPresenter implements ConfigContract.Presenter {
     }
 
     @Override
-    public void syncWithWifiOnlyClicked() {
-        configView.showButtons();
-    }
-
-    @Override
-    public void syncLabelClicked() {
-        configView.showButtons();
-        configView.toggleSyncWithWifiOnly();
-    }
-
-    @Override
-    public void confirmClicked(String language, boolean syncWithWifiOnly) {
-        Config config = new Config(language, syncWithWifiOnly, Auth.user());
+    public void confirmClicked(String language) {
+        Config config = new Config(language, Auth.user());
         Config existingConfig = configRepository.findByUser(Auth.user());
 
         if(existingConfig != null) {
             config = existingConfig
-                    .withLanguage(language)
-                    .withSyncWithWifiOnly(syncWithWifiOnly);
+                    .withLanguage(language);
         }
 
         configRepository.save(config);
@@ -117,5 +103,10 @@ class ConfigPresenter implements ConfigContract.Presenter {
         configView.hideButtons();
         configView.hideLanguages();
         start();
+    }
+
+    @Override
+    public void logoutClicked() {
+
     }
 }

@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
@@ -33,11 +32,9 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
 
     private LinearLayout languagesContainer;
     private LinearLayout languagesLabel;
+    private LinearLayout logout;
     private Spinner languageSpinner;
     private List<Language> languageList;
-
-    private LinearLayout syncLabel;
-    private CheckBox syncWithWifiOnly;
 
     private LinearLayout buttonsContainer;
     private Button cancelButton;
@@ -58,9 +55,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
         languagesContainer = root.findViewById(R.id.linear_language);
         languagesLabel = root.findViewById(R.id.linear_language_top);
         languageSpinner = root.findViewById(R.id.spinner_language);
-
-        syncLabel = root.findViewById(R.id.linear_wifi);
-        syncWithWifiOnly = root.findViewById(R.id.checkBox_wifi);
+        logout = root.findViewById(R.id.linear_logout);
 
         buttonsContainer = root.findViewById(R.id.linear_buttons);
         cancelButton = root.findViewById(R.id.button_cancel);
@@ -75,19 +70,13 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
             }
         });
 
-        syncLabel.setOnClickListener(new View.OnClickListener() {
+        logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                configPresenter.syncLabelClicked();
+                configPresenter.logoutClicked();
             }
         });
 
-        syncWithWifiOnly.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                configPresenter.syncWithWifiOnlyClicked();
-            }
-        });
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +90,6 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
             public void onClick(View view) {
                 Language selectedLanguage = (Language) languageSpinner.getSelectedItem();
 
-                configPresenter.confirmClicked(selectedLanguage.getName(), syncWithWifiOnly.isChecked());
             }
         });
     }
@@ -141,18 +129,8 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     }
 
     @Override
-    public void setSyncWithWifiOnly(boolean syncWithWifiOnly) {
-        this.syncWithWifiOnly.setChecked(syncWithWifiOnly);
-    }
-
-    @Override
     public void toggleLanguagesVisibility() {
         toggleVisibility(languagesContainer);
-    }
-
-    @Override
-    public void toggleSyncWithWifiOnly() {
-        syncWithWifiOnly.setChecked(!syncWithWifiOnly.isChecked());
     }
 
     @Override

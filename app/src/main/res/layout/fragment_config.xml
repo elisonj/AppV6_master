@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
+    android:layout_below="@+id/linear_buttons"
     android:layout_alignParentStart="true">
 
     <LinearLayout
@@ -40,31 +40,6 @@
             style="@style/Widget.AppCompat.Spinner.Underlined"
             android:drawSelectorOnTop="true"
             android:prompt="@string/spin"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:visibility="gone"
-        android:id="@+id/linear_wifi"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textStyle="bold"
-            android:layout_weight="0.13"
-            android:text="@string/sync_with_wifi_only" />
-
-        <CheckBox
-            android:id="@+id/checkBox_wifi"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:layout_weight="0.87"
-             />
     </LinearLayout>
 
     <LinearLayout

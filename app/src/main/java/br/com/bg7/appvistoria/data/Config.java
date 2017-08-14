@@ -9,7 +9,6 @@ import com.orm.SugarRecord;
  * Represents a user's config settings
  */
 public class Config extends SugarRecord<Config> {
-    private boolean syncWithWifiOnly;
     private String languageName;
     private User user;
 
@@ -19,9 +18,8 @@ public class Config extends SugarRecord<Config> {
     @SuppressWarnings("unused")
     public Config() {}
 
-    public Config(String languageName, boolean updateOnlyWifi, User user) {
+    public Config(String languageName, User user) {
         this.languageName = languageName;
-        this.syncWithWifiOnly = updateOnlyWifi;
         this.user = user;
     }
 
@@ -32,19 +30,11 @@ public class Config extends SugarRecord<Config> {
         return config;
     }
 
-    public Config withSyncWithWifiOnly(boolean syncWithWifiOnly) {
-        Config config = cloneConfig();
-        config.syncWithWifiOnly = syncWithWifiOnly;
-
-        return config;
-    }
-
     private Config cloneConfig() {
         Config config = new Config();
 
         config.id = this.id;
         config.languageName = this.languageName;
-        config.syncWithWifiOnly = this.syncWithWifiOnly;
         config.user = this.user;
 
         return config;
@@ -52,10 +42,6 @@ public class Config extends SugarRecord<Config> {
 
     public String getLanguageName() {
         return languageName;
-    }
-
-    public boolean isSyncWithWifiOnly() {
-        return syncWithWifiOnly;
     }
 
     public User getUser() {

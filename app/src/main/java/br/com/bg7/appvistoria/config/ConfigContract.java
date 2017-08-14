@@ -25,10 +25,6 @@ public interface ConfigContract {
 
         void setLanguage(String languageName);
 
-        void setSyncWithWifiOnly(boolean syncWithWifiOnly);
-
-        void toggleSyncWithWifiOnly();
-
         void hideLanguages();
 
         void changeLanguage(String language);
@@ -37,12 +33,10 @@ public interface ConfigContract {
     interface Presenter extends BasePresenter {
         void languagesLabelClicked();
 
-        void syncWithWifiOnlyClicked();
-
-        void syncLabelClicked();
-
-        void confirmClicked(String language, boolean syncWithWifiOnly);
+        void confirmClicked(String language);
 
         void cancelClicked();
+
+        void logoutClicked();
     }
 }
