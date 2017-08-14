@@ -150,13 +150,6 @@ public class ConfigPresenterTest {
     }
 
     @Test
-    public void shouldResetOptionsWhenCancelClicked()
-    {
-        configPresenter.cancelClicked();
-        verify(configView).hideButtons();
-    }
-
-    @Test
     public void shouldHideButtonsAndLanguagesWhenConfirmClicked()
     {
         configPresenter.confirmClicked(null);
