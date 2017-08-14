@@ -75,11 +75,6 @@ class ConfigPresenter implements ConfigContract.Presenter {
         configView.setLanguage(name);
     }
 
-    @Override
-    public void languagesLabelClicked() {
-        configView.showButtons();
-        configView.toggleLanguagesVisibility();
-    }
 
     @Override
     public void confirmClicked(String language) {
@@ -94,19 +89,23 @@ class ConfigPresenter implements ConfigContract.Presenter {
         configRepository.save(config);
 
         configView.hideButtons();
-        configView.hideLanguages();
         configView.changeLanguage(language);
+    }
+
+    @Override
+    public void languageSelected() {
+        configView.showButtons();
     }
 
     @Override
     public void cancelClicked() {
         configView.hideButtons();
-        configView.hideLanguages();
         start();
     }
 
     @Override
     public void logoutClicked() {
-
+        Auth.logout();
+        configView.logoutApplication();
     }
 }

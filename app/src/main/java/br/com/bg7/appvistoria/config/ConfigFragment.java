@@ -1,5 +1,6 @@
 package br.com.bg7.appvistoria.config;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -7,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -17,6 +19,7 @@ import java.util.List;
 import br.com.bg7.appvistoria.Constants;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.config.vo.Language;
+import br.com.bg7.appvistoria.login.LoginActivity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -30,8 +33,6 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
 
     private ConfigContract.Presenter configPresenter;
 
-    private LinearLayout languagesContainer;
-    private LinearLayout languagesLabel;
     private LinearLayout logout;
     private Spinner languageSpinner;
     private List<Language> languageList;
@@ -39,6 +40,8 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     private LinearLayout buttonsContainer;
     private Button cancelButton;
     private Button confirmButton;
+
+    private int lastSpinnerPosition = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,8 +55,6 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     }
 
     private void initializeViewElements(View root) {
-        languagesContainer = root.findViewById(R.id.linear_language);
-        languagesLabel = root.findViewById(R.id.linear_language_top);
         languageSpinner = root.findViewById(R.id.spinner_language);
         logout = root.findViewById(R.id.linear_logout);
 
@@ -63,12 +64,6 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     }
 
     private void initializeListeners() {
-        languagesLabel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                configPresenter.languagesLabelClicked();
-            }
-        });
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +85,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
             public void onClick(View view) {
                 Language selectedLanguage = (Language) languageSpinner.getSelectedItem();
 
+                configPresenter.confirmClicked(selectedLanguage.getName());
             }
         });
     }
@@ -124,24 +120,30 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
                 selected = i;
             }
         }
-
+        lastSpinnerPosition = selected;
         languageSpinner.setSelection(selected);
-    }
-
-    @Override
-    public void toggleLanguagesVisibility() {
-        toggleVisibility(languagesContainer);
-    }
-
-    @Override
-    public void hideLanguages() {
-        languagesContainer.setVisibility(View.GONE);
     }
 
     @Override
     public void setLanguages(List<Language> languageList) {
         ArrayAdapter<Language> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, languageList);
         this.languageSpinner.setAdapter(adapter);
+
+        languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(lastSpinnerPosition != i){
+                    lastSpinnerPosition = i;
+                    configPresenter.languageSelected();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         this.languageList = languageList;
     }
 
@@ -155,12 +157,11 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
         getActivity().recreate();
     }
 
-    private void toggleVisibility(View view) {
-        if (view.isShown()) {
-            view.setVisibility(View.GONE);
-            return;
-        }
-
-        view.setVisibility(View.VISIBLE);
+    @Override
+    public void logoutApplication() {
+        Intent intent = new Intent(this.getActivity(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        this.getActivity().finish();
     }
 }

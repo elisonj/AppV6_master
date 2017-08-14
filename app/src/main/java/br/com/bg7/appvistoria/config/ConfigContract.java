@@ -17,26 +17,24 @@ public interface ConfigContract {
     interface View extends BaseView<ConfigContract.Presenter> {
         void hideButtons();
 
-        void toggleLanguagesVisibility();
-
         void showButtons();
 
         void setLanguages(List<Language> languageList);
 
         void setLanguage(String languageName);
 
-        void hideLanguages();
-
         void changeLanguage(String language);
+
+        void logoutApplication();
     }
 
     interface Presenter extends BasePresenter {
-        void languagesLabelClicked();
-
         void confirmClicked(String language);
 
         void cancelClicked();
 
         void logoutClicked();
+
+        void languageSelected();
     }
 }
