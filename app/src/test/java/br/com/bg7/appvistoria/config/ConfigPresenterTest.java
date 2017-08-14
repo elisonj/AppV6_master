@@ -153,6 +153,7 @@ public class ConfigPresenterTest {
     public void shouldResetOptionsWhenCancelClicked()
     {
         configPresenter.cancelClicked();
+        verify(configView).hideButtons();
     }
 
     @Test
