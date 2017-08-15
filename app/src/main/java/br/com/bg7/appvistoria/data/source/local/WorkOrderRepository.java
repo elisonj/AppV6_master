@@ -9,5 +9,5 @@ import br.com.bg7.appvistoria.data.WorkOrder;
  * Date: 2017-08-15
  */
 public interface WorkOrderRepository extends Repository<WorkOrder> {
-    List<WorkOrder> findAllOrderByStatus();
+    List<WorkOrder> findAllOrderByStatus(String language);
 }
