@@ -5,7 +5,7 @@ package br.com.bg7.appvistoria.workorder;
  * Date: 2017-08-15
  */
 public enum WorkOrderStatus {
-    NOT_STARTED,
     IN_PROGRESS,
-    COMPLETED
+    COMPLETED,
+    NOT_STARTED
 }
