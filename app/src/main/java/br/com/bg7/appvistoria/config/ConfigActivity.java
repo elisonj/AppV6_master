@@ -17,6 +17,9 @@ import br.com.bg7.appvistoria.MainFragment;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.source.local.android.ResourcesLanguageRepository;
 import br.com.bg7.appvistoria.data.source.local.sugar.SugarConfigRepository;
+import br.com.bg7.appvistoria.data.source.local.sugar.SugarWorkOrderRepository;
+import br.com.bg7.appvistoria.workorder.WorkOrderFragment;
+import br.com.bg7.appvistoria.workorder.WorkOrderPresenter;
 
 /**
  * Created by: luciolucio
@@ -30,6 +33,7 @@ public class ConfigActivity extends BaseActivity {
     private int selectedItem = DEFAULT_SCREEN_MENU_ITEM_INDEX;
     private Menu menu = null;
 
+    private final SugarWorkOrderRepository workOrderRepository = new SugarWorkOrderRepository();
     private final SugarConfigRepository configRepository = new SugarConfigRepository();
     private final ResourcesLanguageRepository languageRepository = new ResourcesLanguageRepository(this);
 
@@ -85,8 +89,12 @@ public class ConfigActivity extends BaseActivity {
         Fragment fragment = null;
         switch (item.getItemId()) {
             case R.id.menu_visita:
-                fragment = MainFragment.newInstance(getString(R.string.menu_visita),
-                        getColorFromResource(R.color.color_visita));
+
+                WorkOrderFragment workOrderFragment = new WorkOrderFragment();
+                fragment = workOrderFragment;
+                fragment.setRetainInstance(true);
+                new WorkOrderPresenter(workOrderRepository, workOrderFragment, configRepository);
+
                 break;
             case R.id.menu_sync:
                 fragment = MainFragment.newInstance(getString(R.string.menu_sync),
