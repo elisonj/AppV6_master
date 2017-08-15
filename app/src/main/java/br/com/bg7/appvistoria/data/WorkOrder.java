@@ -28,4 +28,21 @@ public class WorkOrder extends SugarRecord<WorkOrder> {
     @SuppressWarnings("unused")
     public WorkOrder() {}
 
+    public WorkOrder(String name, String shortSumary, WorkOrderStatus status) {
+        this.name = name;
+        this.shortSumary = shortSumary;
+        this.status = status;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getShortSumary() {
+        return shortSumary;
+    }
+
+    public WorkOrderStatus getStatus() {
+        return status;
+    }
 }
