@@ -23,13 +23,14 @@ public class User {
     private Long id;
 
     @DatabaseField(canBeNull = false)
-    private String username;
-
-    @DatabaseField(canBeNull = false)
     private String passwordHash;
 
     @DatabaseField(canBeNull = false)
     private String token;
+
+    @DatabaseField(canBeNull = false, uniqueIndex = true, columnName = USERNAME_FIELD)
+    private String username;
+    public static final String USERNAME_FIELD = "username";
 
     private static final Logger LOG = LoggerFactory.getLogger(User.class);
 
@@ -80,16 +81,20 @@ public class User {
         return user;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getPasswordHash() {
         return passwordHash;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
     public String getToken() {
         return token;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public String serialize() {

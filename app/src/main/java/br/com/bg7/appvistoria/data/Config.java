@@ -21,8 +21,9 @@ public class Config {
     @DatabaseField(canBeNull = false)
     private String languageName;
 
-    @DatabaseField(canBeNull = false, foreign = true)
+    @DatabaseField(canBeNull = false, foreign = true, columnName = USER_ID_FIELD)
     private User user;
+    public static final String USER_ID_FIELD = "user_id";
 
     @SuppressWarnings("unused")
     Config() {
