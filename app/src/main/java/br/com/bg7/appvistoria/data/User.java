@@ -2,6 +2,8 @@ package br.com.bg7.appvistoria.data;
 
 import android.support.annotation.NonNull;
 
+import com.j256.ormlite.table.DatabaseTable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +15,7 @@ import java.util.Locale;
  *
  * Represents a user in the app
  */
+@DatabaseTable(tableName = "users")
 public class User {
 
     private static final Logger LOG = LoggerFactory.getLogger(User.class);

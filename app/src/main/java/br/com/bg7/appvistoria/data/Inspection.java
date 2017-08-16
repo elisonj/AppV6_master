@@ -1,5 +1,9 @@
 package br.com.bg7.appvistoria.data;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +22,21 @@ import br.com.bg7.appvistoria.sync.SyncStatus;
  * Created by: elison
  * Date: 2017-07-27
  */
+@DatabaseTable(tableName = "inspections")
 public class Inspection {
 
+    @DatabaseField(id = true)
     private Long id;
 
+    @DatabaseField(index = true)
     private SyncStatus syncStatus = null;
 
+    @ForeignCollectionField(foreignFieldName = "inspection_id")
     private List<Picture> pictures = new ArrayList<>();
+
+    public Inspection() {
+        // used by ormlite
+    }
 
     public boolean canSyncProduct() {
         return syncStatus == SyncStatus.PICTURES_SYNCED;

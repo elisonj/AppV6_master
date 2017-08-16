@@ -1,5 +1,7 @@
 package br.com.bg7.appvistoria.data;
 
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.io.File;
 
 import br.com.bg7.appvistoria.sync.PictureSyncStatus;
@@ -10,6 +12,7 @@ import br.com.bg7.appvistoria.sync.PictureSyncStatus;
  *
  * Represents a picture taken during an inspection
  */
+@DatabaseTable(tableName = "pictures")
 public class Picture {
 
     private Long id;

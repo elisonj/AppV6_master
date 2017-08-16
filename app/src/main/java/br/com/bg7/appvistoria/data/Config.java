@@ -1,11 +1,14 @@
 package br.com.bg7.appvistoria.data;
 
+import com.j256.ormlite.table.DatabaseTable;
+
 /**
  * Created by: elison
  * Date: 2017-07-17
  *
  * Represents a user's config settings
  */
+@DatabaseTable(tableName = "configs")
 public class Config {
     private Long id;
     private boolean syncWithWifiOnly;
