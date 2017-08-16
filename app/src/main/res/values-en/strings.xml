@@ -3,33 +3,23 @@
 
     <string name="menu_visita">VISIT</string>
     <string name="menu_sync">SYNC</string>
-    <string name="menu_historic">HISTORIC</string>
     <string name="menu_config">CONFIG</string>
 
     <string name="password">Password</string>
     <string name="user">User</string>
     <string name="login">LOGIN</string>
-    <string name="warning">Warning</string>
     <string name="error">Error</string>
-    <string name="success">Success!</string>
     <string name="confirm">CONFIRM</string>
     <string name="cancel">CANCEL</string>
     <string name="logout">LOGOUT</string>
     <string name="exit_app">Exit application</string>
-    <string name="spin">Choose a language</string>
-    <string name="sync_with_wifi_only">SYNC ONLY WITH WI-FI</string>
     <string name="language_pt">Portuguese (Brazil)</string>
     <string name="language_en">English</string>
-    <string name="config_saved">Configuration saved.</string>
-    <string name="change_language">CHANGE LANGUAGE</string>
     <string name="language">Language</string>
-    <string name="login_success">Login success.</string>
     <string name="login_error">Login failed. Please verify your user and password and try again.</string>
-    <string name="login_offline_success">Login offline success.</string>
     <string name="validation_user_field_not_empty">User field cannot be empty.</string>
     <string name="validation_password_field_not_empty">Password cannot be empty.</string>
     <string name="validation_password_dont_match">Wrong password. Please try again.</string>
-    <string name="validation_user_not_found">User not synchronized. Please, synchronize your device before trying login offline.</string>
     <string name="logo_superbid">Logo Superbid</string>
     <string name="ico_user">icon user</string>
     <string name="ico_password">icon password</string>
