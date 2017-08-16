@@ -4,7 +4,6 @@ package br.com.bg7.appvistoria.login;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,7 +19,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
-@LargeTest
+//TODO: Adicionar verificações a partir do documento de transições
 @RunWith(AndroidJUnit4.class)
 public class ShouldShowErrorWhenLoginAndPasswordIsEmpty {
 
