@@ -1,5 +1,6 @@
 package br.com.bg7.appvistoria.data;
 
+import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 /**
@@ -10,10 +11,23 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 @DatabaseTable(tableName = "configs")
 public class Config {
+
+    @DatabaseField(id = true, generatedId = true)
     private Long id;
+
+    @DatabaseField(canBeNull = false)
     private boolean syncWithWifiOnly;
+
+    @DatabaseField(canBeNull = false)
     private String languageName;
+
+    @DatabaseField(canBeNull = false, foreign = true)
     private User user;
+
+    @SuppressWarnings("unused")
+    Config() {
+        // used by ormlite
+    }
 
     public Config(String languageName, boolean updateOnlyWifi, User user) {
         this.languageName = languageName;

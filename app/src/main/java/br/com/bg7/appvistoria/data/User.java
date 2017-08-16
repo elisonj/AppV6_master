@@ -2,6 +2,7 @@ package br.com.bg7.appvistoria.data;
 
 import android.support.annotation.NonNull;
 
+import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import org.slf4j.Logger;
@@ -18,21 +19,30 @@ import java.util.Locale;
 @DatabaseTable(tableName = "users")
 public class User {
 
+    @DatabaseField(id = true, generatedId = true)
+    private Long id;
+
+    @DatabaseField(canBeNull = false)
+    private String username;
+
+    @DatabaseField(canBeNull = false)
+    private String passwordHash;
+
+    @DatabaseField(canBeNull = false)
+    private String token;
+
     private static final Logger LOG = LoggerFactory.getLogger(User.class);
 
     private static final String SEPARATOR = "###!!!###";
-    public static final int ID_INDEX = 0;
-    public static final int USERNAME_INDEX = 1;
-    public static final int PASSWORD_HASH_INDEX = 2;
-    public static final int TOKEN_INDEX = 3;
+    private static final int ID_INDEX = 0;
+    private static final int USERNAME_INDEX = 1;
+    private static final int PASSWORD_HASH_INDEX = 2;
+    private static final int TOKEN_INDEX = 3;
 
-    private Long id;
-
-    private String username;
-
-    private String passwordHash;
-
-    private String token;
+    @SuppressWarnings("unused")
+    User() {
+        // used by ormlite
+    }
 
     public User(String username, String token, String passwordHash) {
         this.username = username;

@@ -6,7 +6,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import br.com.bg7.appvistoria.data.source.remote.InspectionService;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
@@ -25,18 +25,20 @@ import br.com.bg7.appvistoria.sync.SyncStatus;
 @DatabaseTable(tableName = "inspections")
 public class Inspection {
 
-    @DatabaseField(id = true)
+    @DatabaseField(id = true, generatedId = true)
     private Long id;
 
-    @DatabaseField(index = true)
+    @DatabaseField(index = true, canBeNull = false)
     private SyncStatus syncStatus = null;
 
-    @ForeignCollectionField(foreignFieldName = "inspection_id")
-    private List<Picture> pictures = new ArrayList<>();
+    @ForeignCollectionField
+    private Collection<Picture> pictures = new ArrayList<>();
 
-    public Inspection() {
+    @SuppressWarnings("unused")
+    Inspection() {
         // used by ormlite
     }
+
 
     public boolean canSyncProduct() {
         return syncStatus == SyncStatus.PICTURES_SYNCED;
