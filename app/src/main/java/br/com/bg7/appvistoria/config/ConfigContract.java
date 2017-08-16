@@ -25,7 +25,7 @@ public interface ConfigContract {
 
         void changeLanguage(String language);
 
-        void logoutApplication();
+        void showLoginScreen();
     }
 
     interface Presenter extends BasePresenter {
