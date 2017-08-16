@@ -1,7 +1,6 @@
 package br.com.bg7.appvistoria.config;
 
 import android.os.Bundle;
-import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
@@ -86,11 +85,11 @@ public class ConfigActivity extends BaseActivity {
         switch (item.getItemId()) {
             case R.id.menu_visita:
                 fragment = MainFragment.newInstance(getString(R.string.menu_visita),
-                        getColorFromResource(R.color.color_visita));
+                        ContextCompat.getColor(this, R.color.color_sync));
                 break;
             case R.id.menu_sync:
                 fragment = MainFragment.newInstance(getString(R.string.menu_sync),
-                        getColorFromResource(R.color.color_sync));
+                        ContextCompat.getColor(this, R.color.color_sync));
                 break;
 
             case R.id.menu_config:
@@ -123,7 +122,4 @@ public class ConfigActivity extends BaseActivity {
         }
     }
 
-    private int getColorFromResource(@ColorRes int resourceId) {
-        return ContextCompat.getColor(this, resourceId);
-    }
 }
