@@ -12,7 +12,7 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "configs")
 public class Config {
 
-    @DatabaseField(id = true, generatedId = true)
+    @DatabaseField(generatedId = true)
     private Long id;
 
     @DatabaseField(canBeNull = false)

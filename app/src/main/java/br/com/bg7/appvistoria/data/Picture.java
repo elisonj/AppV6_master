@@ -16,7 +16,7 @@ import br.com.bg7.appvistoria.sync.PictureSyncStatus;
 @DatabaseTable(tableName = "pictures")
 public class Picture {
 
-    @DatabaseField(id = true, generatedId = true)
+    @DatabaseField(generatedId = true)
     private Long id;
 
     @DatabaseField(canBeNull = false)

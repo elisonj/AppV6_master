@@ -25,7 +25,7 @@ import br.com.bg7.appvistoria.sync.SyncStatus;
 @DatabaseTable(tableName = "inspections")
 public class Inspection {
 
-    @DatabaseField(id = true, generatedId = true)
+    @DatabaseField(generatedId = true)
     private Long id;
 
     @DatabaseField(index = true, canBeNull = false)
