@@ -17,6 +17,7 @@ import br.com.bg7.appvistoria.MainFragment;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
 import br.com.bg7.appvistoria.data.source.local.android.ResourcesLanguageRepository;
+import br.com.bg7.appvistoria.data.source.local.ormlite.OrmLiteConfigRepository;
 
 /**
  * Created by: luciolucio
@@ -30,8 +31,7 @@ public class ConfigActivity extends BaseActivity {
     private int selectedItem = DEFAULT_SCREEN_MENU_ITEM_INDEX;
     private Menu menu = null;
 
-    // TODO: Instanciar um ConfigRepository
-    private final ConfigRepository configRepository = null;
+    private final ConfigRepository configRepository = new OrmLiteConfigRepository(getConfigDao());
     private final ResourcesLanguageRepository languageRepository = new ResourcesLanguageRepository(this);
 
     @Override
