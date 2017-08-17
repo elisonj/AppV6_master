@@ -28,7 +28,7 @@ android {
         buildConfigField 'String[]', 'LANGUAGE_NAMES', '{ "pt", "en" }'
         buildConfigField 'String', 'BASE_URL', '"https://preapi.s4bdigital.net"'
 
-        buildConfigField 'String', 'DATABASE_NAME', '"appvistoria.db"'
+        buildConfigField 'String', 'DATABASE_NAME', '"mobileassetinspection.db"'
         buildConfigField 'Integer', 'DATABASE_VERSION', '1'
     }
     signingConfigs {
