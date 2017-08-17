@@ -99,6 +99,15 @@ public class InspectionNoPictureTest extends InspectionTestBase {
         checkStatusIs(SyncStatus.READY);
     }
 
+    @Test
+    public void shouldChangeToReadyWhenResetWithNoPictures() {
+        runProductSync();
+
+        inspection.reset();
+
+        checkStatusIs(SyncStatus.READY);
+    }
+
     private void runPictureSync() {
         inspection.sync(pictureService, new EmptySyncCallback());
     }
