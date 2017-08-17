@@ -30,23 +30,20 @@ import br.com.bg7.appvistoria.data.User;
  * 1. Declare a private member variable for it
  * 2. Create a getter for it. It should call {@code getDao} with the appropriate parameters
  * 3. Make sure it is set to {@code null} during {@link #close()}
- *
- * {@code SuppressWarnings("unused")} because ormlite finds this class
- * by reflection
+ * 4. Add a convenience method to {@link br.com.bg7.appvistoria.BaseActivity}
  */
 
-@SuppressWarnings("unused")
-class DatabaseHelper extends OrmLiteSqliteOpenHelper {
+public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatabaseHelper.class);
 
     private static final String DATABASE_NAME = BuildConfig.DATABASE_NAME;
     private static final int DATABASE_VERSION = BuildConfig.DATABASE_VERSION;
 
-    private RuntimeExceptionDao<User, Integer> userDao = null;
-    private RuntimeExceptionDao<Config, Integer> configDao = null;
-    private RuntimeExceptionDao<Inspection, Integer> inspectionDao = null;
-    private RuntimeExceptionDao<Picture, Integer> pictureDao = null;
+    private RuntimeExceptionDao<User, Long> userDao = null;
+    private RuntimeExceptionDao<Config, Long> configDao = null;
+    private RuntimeExceptionDao<Inspection, Long> inspectionDao = null;
+    private RuntimeExceptionDao<Picture, Long> pictureDao = null;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION, R.raw.ormlite_config);
@@ -82,24 +79,23 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
      * this part of the code and we really wanted to reuse the {@link #getDao(RuntimeExceptionDao, Class)}
      *
      * @return a DAO for User
-     * @throws SQLException if there is a problem creating the DAO
      */
-    public RuntimeExceptionDao<User, Integer> getUserDao() throws SQLException {
+    public RuntimeExceptionDao<User, Long> getUserDao() {
         //noinspection unchecked
         return getDao(userDao, User.class);
     }
 
-    public RuntimeExceptionDao<Config, Integer> getConfigDao() throws SQLException {
+    public RuntimeExceptionDao<Config, Long> getConfigDao() {
         //noinspection unchecked
         return getDao(configDao, Config.class);
     }
 
-    public RuntimeExceptionDao<Inspection, Integer> getInspectionDao() throws SQLException {
+    public RuntimeExceptionDao<Inspection, Long> getInspectionDao() {
         //noinspection unchecked
         return getDao(inspectionDao, Inspection.class);
     }
 
-    public RuntimeExceptionDao<Picture, Integer> getPictureDao() throws SQLException {
+    public RuntimeExceptionDao<Picture, Long> getPictureDao() {
         //noinspection unchecked
         return getDao(pictureDao, Picture.class);
     }
@@ -116,7 +112,7 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         pictureDao = null;
     }
 
-    private RuntimeExceptionDao getDao(RuntimeExceptionDao dao, Class clazz) throws SQLException {
+    private RuntimeExceptionDao getDao(RuntimeExceptionDao dao, Class clazz) {
         if (dao == null) {
             dao = getRuntimeExceptionDao(clazz);
         }
