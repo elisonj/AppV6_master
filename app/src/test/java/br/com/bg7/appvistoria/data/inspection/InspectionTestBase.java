@@ -1,6 +1,8 @@
 package br.com.bg7.appvistoria.data.inspection;
 
 import org.junit.Before;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -8,6 +10,8 @@ import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.source.remote.InspectionService;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
+import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpProgressCallback;
 
 /**
  * Created by: luciolucio
@@ -23,6 +27,9 @@ class InspectionTestBase {
 
     @Mock
     InspectionService inspectionService;
+
+    @Captor
+    ArgumentCaptor<HttpProgressCallback<ProductResponse>> productServiceCallback;
 
     @Before
     public void setUp() {
