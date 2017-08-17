@@ -170,6 +170,6 @@ public class ConfigPresenterTest {
     {
         configPresenter.logoutClicked();
 
-        verify(configView).logoutApplication();
+        verify(configView).showLoginScreen();
     }
 }
