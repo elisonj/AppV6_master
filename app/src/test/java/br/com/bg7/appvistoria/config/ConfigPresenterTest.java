@@ -1,5 +1,7 @@
 package br.com.bg7.appvistoria.config;
 
+import junit.framework.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -166,10 +168,11 @@ public class ConfigPresenterTest {
     }
 
     @Test
-    public void shouldLogout()
+    public void shouldLogoutAndShowLoginScreenWhenLoggingOut()
     {
         configPresenter.logoutClicked();
 
-        verify(configView).logoutApplication();
+        verify(configView).showLoginScreen();
+        Assert.assertNull(authFacade.user());
     }
 }

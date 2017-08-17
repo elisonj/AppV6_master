@@ -1,20 +1,15 @@
 package br.com.bg7.appvistoria.data.source.remote.dto;
 
-import com.orm.SugarRecord;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Property extends SugarRecord<Property> {
+public class Property {
 
     private String idProperty;
     private String value;
 
-    /**
-     * Default constructor used by Sugar
-     */
-    @SuppressWarnings("unused")
     public Property() {
+
     }
 
     public Property(String id, String value) {
