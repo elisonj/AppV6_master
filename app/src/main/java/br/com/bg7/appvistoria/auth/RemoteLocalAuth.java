@@ -15,7 +15,7 @@ import br.com.bg7.appvistoria.data.source.local.UserRepository;
 import br.com.bg7.appvistoria.data.source.remote.TokenService;
 import br.com.bg7.appvistoria.data.source.remote.UserService;
 
-import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by: luciolucio
