@@ -3,6 +3,7 @@ package br.com.bg7.appvistoria.data;
 import junit.framework.Assert;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -30,6 +31,7 @@ import static org.mockito.Mockito.verify;
  * Created by: elison
  * Date: 2017-08-02
  */
+@Ignore
 public class InspectionTest {
 
     private static final double PROGRESS = 50;
