@@ -26,6 +26,6 @@ abstract class OrmLiteRepository<T> implements Repository<T> {
 
     @Override
     public void save(T entity) {
-        dao.create(entity);
+        dao.createOrUpdate(entity);
     }
 }
