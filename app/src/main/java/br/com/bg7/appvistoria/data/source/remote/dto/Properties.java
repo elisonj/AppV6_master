@@ -1,7 +1,5 @@
 package br.com.bg7.appvistoria.data.source.remote.dto;
 
-import com.orm.SugarRecord;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,16 +7,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Properties extends SugarRecord<Properties> {
+public class Properties {
 
     private List<PropertyList> propertyGroupList;
     private long productId;
-
-    /**
-     * Default constructor used by Sugar
-     */
-    @SuppressWarnings("unused")
-    public Properties() {}
 
     public static Properties fromJson(JSONObject jsonObject) {
         Properties b = new Properties();

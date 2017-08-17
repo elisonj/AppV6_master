@@ -5,12 +5,47 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import com.akexorcist.localizationactivity.LocalizationActivity;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
+
+import java.sql.SQLException;
+
+import br.com.bg7.appvistoria.data.Config;
+import br.com.bg7.appvistoria.data.Inspection;
+import br.com.bg7.appvistoria.data.Picture;
+import br.com.bg7.appvistoria.data.User;
+import br.com.bg7.appvistoria.data.source.local.ormlite.DatabaseHelper;
 
 /**
  * Created by: elison
  * Date: 2017-07-17
  */
 public class BaseActivity extends LocalizationActivity {
+
+    private DatabaseHelper databaseHelper = null;
+
+    public RuntimeExceptionDao<User, Long> getUserDao() {
+        return getHelper().getUserDao();
+    }
+
+    public RuntimeExceptionDao<Config, Long> getConfigDao() {
+        return getHelper().getConfigDao();
+    }
+
+    public RuntimeExceptionDao<Inspection, Long> getInspectionDao() {
+        return getHelper().getInspectionDao();
+    }
+
+    public RuntimeExceptionDao<Picture, Long> getPictureDao() {
+        return getHelper().getPictureDao();
+    }
+
+    private DatabaseHelper getHelper() {
+        if (databaseHelper == null) {
+            databaseHelper = OpenHelperManager.getHelper(this, DatabaseHelper.class);
+        }
+        return databaseHelper;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -21,5 +56,15 @@ public class BaseActivity extends LocalizationActivity {
                 Constants.PREFERENCE_LANGUAGE_KEY,
                 Constants.DEFAULT_LANGUAGE);
         setLanguage(defaultLanguage);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (databaseHelper != null) {
+            OpenHelperManager.releaseHelper();
+            databaseHelper = null;
+        }
     }
 }

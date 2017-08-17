@@ -16,7 +16,7 @@ android {
     buildToolsVersion '26.0.0'
     defaultConfig {
         applicationId 'br.com.bg7.appvistoria'
-        minSdkVersion 19
+        minSdkVersion 25
         targetSdkVersion 26
         versionCode 3
         versionName '0.2.2'
@@ -27,6 +27,9 @@ android {
         buildConfigField 'String', 'CLIENT_ID', '"61922-5b5d19794c749cfbc5d20becc3826e08-s4b-cda-app"'
         buildConfigField 'String[]', 'LANGUAGE_NAMES', '{ "pt", "en" }'
         buildConfigField 'String', 'BASE_URL', '"https://preapi.s4bdigital.net"'
+
+        buildConfigField 'String', 'DATABASE_NAME', '"mobileassetinspection.db"'
+        buildConfigField 'Integer', 'DATABASE_VERSION', '1'
     }
     signingConfigs {
         signing {
@@ -39,7 +42,6 @@ android {
     configurations.all {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
     }
-    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/sugar_updates'] } }
     buildTypes {
         release {
             minifyEnabled false
@@ -67,7 +69,6 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.8.47'
-    compile 'com.github.satyan:sugar:1.3'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.squareup.retrofit2:converter-scalars:2.1.0'
@@ -75,6 +76,8 @@ dependencies {
     compile 'org.slf4j:slf4j-api:1.7.25'
     // TODO: Usar slf4j-simple apenas quando for teste. Senão, usar slf4j-android
     compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+    compile group: 'com.j256.ormlite', name: 'ormlite-core', version: '5.0'
+    compile group: 'com.j256.ormlite', name: 'ormlite-android', version: '5.0'
     compile group: 'joda-time', name: 'joda-time', version: '2.3'
     compile group: 'org.mindrot', name: 'jbcrypt', version: '0.3m'
     compile group: 'com.google.guava', name: 'guava', version: '22.0-android'

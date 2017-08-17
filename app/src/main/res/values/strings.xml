@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AppVistoria</string>
+    <string name="app_name">Mobile Asset Inspection</string>
 
     <string name="menu_visita">VISITAS</string>
     <string name="menu_sync">SYNC</string>

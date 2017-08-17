@@ -1,12 +1,10 @@
 package br.com.bg7.appvistoria.data.source.remote.dto;
 
-import com.orm.SugarRecord;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class ProductResponse extends SugarRecord<ProductResponse> {
+public class ProductResponse {
 
         private long productId;
         private int modelId;
@@ -25,13 +23,6 @@ public class ProductResponse extends SugarRecord<ProductResponse> {
         private int projectId;
         private String attach2URL;
         private Properties properties;
-
-    /**
-     * Default constructor used by Sugar
-     */
-    @SuppressWarnings("unused")
-    public ProductResponse() {
-    }
 
     public static ProductResponse fromJson(JSONObject jsonObject) {
         ProductResponse b = new ProductResponse();

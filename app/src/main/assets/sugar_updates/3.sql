@@ -1,1 +1,0 @@
-alter table CONFIG add user INTEGER
