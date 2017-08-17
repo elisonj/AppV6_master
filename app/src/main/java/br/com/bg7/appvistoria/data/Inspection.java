@@ -29,23 +29,23 @@ public class Inspection {
     private Long id;
 
     @DatabaseField(index = true, canBeNull = false)
-    private SyncStatus syncStatus = null;
+    private SyncStatus syncStatus = SyncStatus.READY;
 
     @ForeignCollectionField
     private Collection<Picture> pictures = new ArrayList<>();
 
     @SuppressWarnings("unused")
-    Inspection() {
+    public Inspection() {
         // used by ormlite
     }
 
-
     public boolean canSyncProduct() {
-        return syncStatus == SyncStatus.PICTURES_SYNCED;
+        // return syncStatus == SyncStatus.PICTURES_SYNCED;
+        return pictures.size() == 0;
     }
 
     public boolean canSyncPictures() {
-        return syncStatus == SyncStatus.READY || syncStatus == SyncStatus.PICTURES_BEING_SYNCED;
+        return pictures.size() > 0 && (syncStatus == SyncStatus.READY || syncStatus == SyncStatus.PICTURES_BEING_SYNCED);
     }
 
     public synchronized void sync(PictureService pictureService, final SyncCallback syncCallback) {
@@ -130,7 +130,7 @@ public class Inspection {
         });
     }
 
-    synchronized void addImageToSync(File image) {
+    public synchronized void addImageToSync(File image) {
         Picture picture = new Picture(this, image);
         pictures.add(picture);
     }
