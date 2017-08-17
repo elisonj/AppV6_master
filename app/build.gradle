@@ -27,6 +27,9 @@ android {
         buildConfigField 'String', 'CLIENT_ID', '"61922-5b5d19794c749cfbc5d20becc3826e08-s4b-cda-app"'
         buildConfigField 'String[]', 'LANGUAGE_NAMES', '{ "pt", "en" }'
         buildConfigField 'String', 'BASE_URL', '"https://preapi.s4bdigital.net"'
+
+        buildConfigField 'String', 'DATABASE_NAME', '"appvistoria.db"'
+        buildConfigField 'Integer', 'DATABASE_VERSION', '1'
     }
     signingConfigs {
         signing {
