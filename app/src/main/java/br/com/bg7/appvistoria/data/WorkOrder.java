@@ -14,8 +14,8 @@ import br.com.bg7.appvistoria.workorder.WorkOrderStatus;
  */
 public class WorkOrder extends SugarRecord<WorkOrder> {
     private String name;
-    private String sumary;
-    private String shortSumary;
+    private String summary;
+    private String shortSummary;
     private WorkOrderStatus status;
     private DateTime endAt;
     private String address;
@@ -28,9 +28,10 @@ public class WorkOrder extends SugarRecord<WorkOrder> {
     @SuppressWarnings("unused")
     public WorkOrder() {}
 
-    public WorkOrder(String name, String shortSumary, WorkOrderStatus status) {
+    public WorkOrder(String name,String summary, String shortSummary, WorkOrderStatus status) {
         this.name = name;
-        this.shortSumary = shortSumary;
+        this.summary = summary;
+        this.shortSummary = shortSummary;
         this.status = status;
     }
 
@@ -38,8 +39,12 @@ public class WorkOrder extends SugarRecord<WorkOrder> {
         return name;
     }
 
-    public String getShortSumary() {
-        return shortSumary;
+    public String getShortSummary() {
+        return shortSummary;
+    }
+
+    public String getSummary() {
+        return summary;
     }
 
     public WorkOrderStatus getStatus() {

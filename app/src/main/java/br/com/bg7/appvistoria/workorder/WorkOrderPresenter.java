@@ -48,4 +48,16 @@ public class WorkOrderPresenter implements WorkOrderContract.Presenter{
         List<WorkOrder> workOrderList =  workOrderRepository.findAllOrderByStatus(language);
         workOrderView.showList(workOrderList, true);
     }
+
+    @Override
+    public void moreInfoClicked(WorkOrder workOrder) {
+        workOrderView.highlightInfoButton(workOrder);
+        workOrderView.expandInfoPanel(workOrder);
+    }
+
+    @Override
+    public void hideInfoClicked(WorkOrder workOrder) {
+        workOrderView.removeInfoButtonHighlight(workOrder);
+        workOrderView.shrinkInfoPanel(workOrder);
+    }
 }

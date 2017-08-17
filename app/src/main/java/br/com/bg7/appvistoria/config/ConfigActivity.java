@@ -1,7 +1,6 @@
 package br.com.bg7.appvistoria.config;
 
 import android.os.Bundle;
-import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
@@ -17,6 +16,9 @@ import br.com.bg7.appvistoria.MainFragment;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.source.local.android.ResourcesLanguageRepository;
 import br.com.bg7.appvistoria.data.source.local.sugar.SugarConfigRepository;
+import br.com.bg7.appvistoria.data.source.local.sugar.SugarWorkOrderRepository;
+import br.com.bg7.appvistoria.workorder.WorkOrderFragment;
+import br.com.bg7.appvistoria.workorder.WorkOrderPresenter;
 
 /**
  * Created by: luciolucio
