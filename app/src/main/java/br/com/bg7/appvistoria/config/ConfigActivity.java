@@ -17,9 +17,6 @@ import br.com.bg7.appvistoria.MainFragment;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.source.local.android.ResourcesLanguageRepository;
 import br.com.bg7.appvistoria.data.source.local.sugar.SugarConfigRepository;
-import br.com.bg7.appvistoria.data.source.local.sugar.SugarWorkOrderRepository;
-import br.com.bg7.appvistoria.workorder.WorkOrderFragment;
-import br.com.bg7.appvistoria.workorder.WorkOrderPresenter;
 
 /**
  * Created by: luciolucio
@@ -98,7 +95,7 @@ public class ConfigActivity extends BaseActivity {
                 break;
             case R.id.menu_sync:
                 fragment = MainFragment.newInstance(getString(R.string.menu_sync),
-                        getColorFromResource(R.color.color_sync));
+                        ContextCompat.getColor(this, R.color.color_sync));
                 break;
 
             case R.id.menu_config:
@@ -131,7 +128,4 @@ public class ConfigActivity extends BaseActivity {
         }
     }
 
-    private int getColorFromResource(@ColorRes int resourceId) {
-        return ContextCompat.getColor(this, resourceId);
-    }
 }

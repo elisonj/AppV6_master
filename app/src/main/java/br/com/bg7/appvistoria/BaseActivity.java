@@ -10,7 +10,7 @@ import com.akexorcist.localizationactivity.LocalizationActivity;
  * Created by: elison
  * Date: 2017-07-17
  */
-public class BaseActivity extends LocalizationActivity {
+public abstract class BaseActivity extends LocalizationActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

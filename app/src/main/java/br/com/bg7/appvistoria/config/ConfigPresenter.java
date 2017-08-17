@@ -106,6 +106,6 @@ class ConfigPresenter implements ConfigContract.Presenter {
     @Override
     public void logoutClicked() {
         Auth.logout();
-        configView.logoutApplication();
+        configView.showLoginScreen();
     }
 }

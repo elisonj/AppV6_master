@@ -158,10 +158,10 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     }
 
     @Override
-    public void logoutApplication() {
-        Intent intent = new Intent(this.getActivity(), LoginActivity.class);
+    public void showLoginScreen() {
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-        this.getActivity().finish();
+        getActivity().finish();
     }
 }
