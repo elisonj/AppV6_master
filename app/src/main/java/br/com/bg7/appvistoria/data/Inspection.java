@@ -150,7 +150,6 @@ public class Inspection {
     }
 
     public SyncStatus getSyncStatus() {
-        if(syncStatus == null) syncStatus = SyncStatus.READY;
         return syncStatus;
     }
 

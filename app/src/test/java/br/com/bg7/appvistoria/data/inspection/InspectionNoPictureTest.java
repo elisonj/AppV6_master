@@ -22,13 +22,20 @@ public class InspectionNoPictureTest extends InspectionTestBase {
         Assert.assertFalse(inspection.canSyncPictures());
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void shouldNotAllowSyncPicturesWithNoPictures() {
+        inspection.sync(pictureService, new EmptySyncCallback());
+    }
+
     @Test
     public void shouldBeAbleToSyncProductWithNoPictures() {
         Assert.assertTrue(inspection.canSyncProduct());
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void shouldNotAllowSyncPicturesWithNoPictures() {
-        inspection.sync(pictureService, new EmptySyncCallback());
+    @Test
+    public void shouldNotChangeStatusFromReadyWhenResetWithNoPictures() {
+        inspection.reset();
+
+        Assert.assertEquals(SyncStatus.READY, inspection.getSyncStatus());
     }
 }
