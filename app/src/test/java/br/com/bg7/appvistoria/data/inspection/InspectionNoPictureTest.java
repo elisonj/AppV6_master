@@ -108,6 +108,16 @@ public class InspectionNoPictureTest extends InspectionTestBase {
         checkStatusIs(SyncStatus.READY);
     }
 
+    @Test
+    public void shouldNotResetWhenStatusIsDone() {
+        runProductSync();
+        makeInspectionServiceRespondWith(SUCCESS);
+
+        inspection.reset();
+
+        checkStatusIs(SyncStatus.DONE);
+    }
+
     private void runPictureSync() {
         inspection.sync(pictureService, new EmptySyncCallback());
     }
