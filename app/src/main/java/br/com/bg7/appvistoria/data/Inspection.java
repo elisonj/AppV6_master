@@ -18,6 +18,8 @@ import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
 import br.com.bg7.appvistoria.sync.PictureSyncStatus;
 import br.com.bg7.appvistoria.sync.SyncStatus;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by: elison
  * Date: 2017-07-27
@@ -40,15 +42,20 @@ public class Inspection {
     }
 
     public boolean canSyncProduct() {
-        // return syncStatus == SyncStatus.PICTURES_SYNCED;
+        // TODO: return syncStatus == SyncStatus.PICTURES_SYNCED;
         return pictures.size() == 0;
     }
 
     public boolean canSyncPictures() {
-        return pictures.size() > 0 && (syncStatus == SyncStatus.READY || syncStatus == SyncStatus.PICTURES_BEING_SYNCED);
+        return pictures.size() > 0;
+        // TODO: && (syncStatus == SyncStatus.READY || syncStatus == SyncStatus.PICTURES_BEING_SYNCED);
     }
 
     public synchronized void sync(PictureService pictureService, final SyncCallback syncCallback) {
+        pictureService = checkNotNull(pictureService, "pictureService cannot be null");
+        if (syncCallback == null) {
+            throw new NullPointerException("Callback cannot be null");
+        }
 
         if (!canSyncPictures()) {
             throw new IllegalStateException("Cannot sync Pictures when status is "+syncStatus);
@@ -97,6 +104,11 @@ public class Inspection {
     }
 
     public synchronized void sync(InspectionService inspectionService, final SyncCallback syncCallback) {
+        inspectionService = checkNotNull(inspectionService, "inspectionService cannot be null");
+        if (syncCallback == null) {
+            throw new NullPointerException("Callback cannot be null");
+        }
+
         if (!canSyncProduct()) {
             throw new IllegalStateException("Cannot sync when status is "+syncStatus);
         }
@@ -131,6 +143,8 @@ public class Inspection {
     }
 
     public synchronized void addImageToSync(File image) {
+        image = checkNotNull(image);
+
         Picture picture = new Picture(this, image);
         pictures.add(picture);
     }
