@@ -25,12 +25,6 @@ import br.com.bg7.appvistoria.data.User;
  * Date: 2017-08-17
  *
  * DatabaseHelper used for database initialization and updates.
- *
- * How to add a DAO:
- * 1. Declare a private member variable for it
- * 2. Create a getter for it. It should call {@code getDao} with the appropriate parameters
- * 3. Make sure it is set to {@code null} during {@link #close()}
- * 4. Add a convenience method to {@link br.com.bg7.appvistoria.BaseActivity}
  */
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
@@ -58,6 +52,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         try {
             LOG.info("onCreate");
             TableUtils.createTable(connectionSource, User.class);
+            TableUtils.createTable(connectionSource, Config.class);
+            TableUtils.createTable(connectionSource, Inspection.class);
+            TableUtils.createTable(connectionSource, Picture.class);
         } catch (SQLException exception) {
             LOG.error("Can't create database", exception);
             throw new RuntimeException(exception);
