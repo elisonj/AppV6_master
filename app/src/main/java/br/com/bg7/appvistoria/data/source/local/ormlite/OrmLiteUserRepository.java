@@ -18,7 +18,7 @@ import static br.com.bg7.appvistoria.data.User.USERNAME_FIELD;
  * Date: 2017-08-16
  */
 
-class OrmLiteUserRepository extends OrmLiteRepository<User> implements UserRepository {
+public class OrmLiteUserRepository extends OrmLiteRepository<User> implements UserRepository {
 
     private static final Logger LOG = LoggerFactory.getLogger(OrmLiteUserRepository.class);
 

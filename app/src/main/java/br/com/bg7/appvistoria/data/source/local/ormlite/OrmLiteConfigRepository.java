@@ -20,7 +20,7 @@ import static br.com.bg7.appvistoria.data.Config.USER_ID_FIELD;
  * Date: 2017-08-16
  */
 
-class OrmLiteConfigRepository extends OrmLiteRepository<Config> implements ConfigRepository {
+public class OrmLiteConfigRepository extends OrmLiteRepository<Config> implements ConfigRepository {
     private static final Logger LOG = LoggerFactory.getLogger(OrmLiteConfigRepository.class);
 
     public OrmLiteConfigRepository(RuntimeExceptionDao<Config, Long> dao) {
