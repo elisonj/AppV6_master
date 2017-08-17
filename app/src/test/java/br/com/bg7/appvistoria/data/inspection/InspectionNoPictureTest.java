@@ -22,7 +22,7 @@ public class InspectionNoPictureTest extends InspectionTestBase {
 
     @Test
     public void shouldInitializeWithStatusReady() {
-        checkStatusIs(SyncStatus.READY);
+        checkStatusIsReady();
     }
 
     @Test
@@ -37,93 +37,101 @@ public class InspectionNoPictureTest extends InspectionTestBase {
 
     @Test(expected = IllegalStateException.class)
     public void shouldNotAllowSyncPicturesWithNoPictures() {
-        runPictureSync();
+        startPictureSync();
     }
 
     @Test
     public void shouldChangeToBeingSyncedWhenProductStartsSyncing() {
-        runProductSync();
+        startProductSync();
 
-        checkStatusIs(SyncStatus.INSPECTION_BEING_SYNCED);
+        checkStatusIsInspectionBeingSynced();
     }
 
     @Test
     public void shouldRemainInBeingSyncedWhenProductReceivesProgressUpdate() {
-        runProductSync();
+        startProductSync();
 
         makeInspectionServiceUpdateProgressTo(10);
 
-        checkStatusIs(SyncStatus.INSPECTION_BEING_SYNCED);
+        checkStatusIsInspectionBeingSynced();
     }
 
     @Test
     public void shouldChangeToFailedWhenProductFailsSyncing() {
-        runProductSync();
+        startProductSync();
 
         makeInspectionServiceFail();
 
-        checkStatusIs(SyncStatus.FAILED);
+        checkStatusIsFailed();
     }
 
     @Test
     public void shouldChangeToFailedWhenNullResponse() {
-        runProductSync();
+        startProductSync();
 
         makeInspectionServiceRespondWith(null);
 
-        checkStatusIs(SyncStatus.FAILED);
+        checkStatusIsFailed();
     }
 
     @Test
     public void shouldChangeToFailedWhenBadHttpResponse() {
-        runProductSync();
+        startProductSync();
 
-        makeInspectionServiceRespondWith(ERROR_400);
+        makeInspectionServiceError();
 
-        checkStatusIs(SyncStatus.FAILED);
+        checkStatusIsFailed();
     }
 
     @Test
     public void shouldChangeToDoneWhenProductFinishesSyncing() {
-        runProductSync();
+        startProductSync();
 
-        makeInspectionServiceRespondWith(SUCCESS);
+        makeInspectionServiceSucceed();
 
-        checkStatusIs(SyncStatus.DONE);
+        checkStatusIsDone();
     }
 
     @Test
-    public void shouldNotChangeStatusFromReadyWhenResetWithNoPictures() {
+    public void shouldNotChangeStatusWhenResetWithNoPictures() {
         inspection.reset();
 
-        checkStatusIs(SyncStatus.READY);
+        checkStatusIsReady();
     }
 
     @Test
-    public void shouldChangeToReadyWhenResetWithNoPictures() {
-        runProductSync();
+    public void shouldChangeStatusToReadyWhenProductSyncStartedWithNoPictures() {
+        startProductSync();
 
         inspection.reset();
 
-        checkStatusIs(SyncStatus.READY);
+        checkStatusIsReady();
     }
 
     @Test
     public void shouldNotResetWhenStatusIsDone() {
-        runProductSync();
-        makeInspectionServiceRespondWith(SUCCESS);
+        startProductSync();
+        makeInspectionServiceSucceed();
 
         inspection.reset();
 
-        checkStatusIs(SyncStatus.DONE);
+        checkStatusIsDone();
     }
 
-    private void runPictureSync() {
+    private void startPictureSync() {
         inspection.sync(pictureService, new EmptySyncCallback());
     }
 
-    private void runProductSync() {
+    private void startProductSync() {
         inspection.sync(inspectionService, new EmptySyncCallback());
+    }
+
+    private void makeInspectionServiceSucceed() {
+        makeInspectionServiceRespondWith(SUCCESS);
+    }
+
+    private void makeInspectionServiceError() {
+        makeInspectionServiceRespondWith(ERROR_400);
     }
 
     private void makeInspectionServiceRespondWith(HttpResponse<ProductResponse> response) {
@@ -139,6 +147,22 @@ public class InspectionNoPictureTest extends InspectionTestBase {
     private void makeInspectionServiceFail() {
         verify(inspectionService).send(eq(inspection), productServiceCallback.capture());
         productServiceCallback.getValue().onFailure(new IOException());
+    }
+
+    private void checkStatusIsReady() {
+        checkStatusIs(SyncStatus.READY);
+    }
+
+    private void checkStatusIsFailed() {
+        checkStatusIs(SyncStatus.FAILED);
+    }
+
+    private void checkStatusIsInspectionBeingSynced() {
+        checkStatusIs(SyncStatus.INSPECTION_BEING_SYNCED);
+    }
+
+    private void checkStatusIsDone() {
+        checkStatusIs(SyncStatus.DONE);
     }
 
     private void checkStatusIs(SyncStatus status) {
