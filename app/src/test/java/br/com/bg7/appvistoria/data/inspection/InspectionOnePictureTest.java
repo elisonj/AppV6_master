@@ -30,7 +30,7 @@ public class InspectionOnePictureTest extends InspectionTestBase {
     }
 
     @Test
-    public void shouldNotBeAbleToSynAnythingWhenOneAndOnlyPictureIsSyncing() {
+    public void shouldNotBeAbleToSyncAnythingWhenOneAndOnlyPictureIsSyncing() {
         startPictureSync();
 
         Assert.assertFalse(inspection.canSyncPictures());
