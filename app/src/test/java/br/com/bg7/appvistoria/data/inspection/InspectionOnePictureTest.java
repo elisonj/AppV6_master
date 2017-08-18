@@ -23,4 +23,17 @@ public class InspectionOnePictureTest extends InspectionTestBase {
     public void shouldBeAbleToSyncPicturesWithOnePicture() {
         Assert.assertTrue(inspection.canSyncPictures());
     }
+
+    @Test
+    public void shouldNotBeAbleToSyncProductWithOnePictureNotSynced() {
+        Assert.assertFalse(inspection.canSyncProduct());
+    }
+
+    @Test
+    public void shouldNotBeAbleToSynAnythingWhenOneAndOnlyPictureIsSyncing() {
+        startPictureSync();
+
+        Assert.assertFalse(inspection.canSyncPictures());
+        Assert.assertFalse(inspection.canSyncProduct());
+    }
 }

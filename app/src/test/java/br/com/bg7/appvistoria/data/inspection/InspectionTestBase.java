@@ -38,6 +38,10 @@ class InspectionTestBase {
         inspection = new Inspection();
     }
 
+    void startPictureSync() {
+        inspection.sync(pictureService, new EmptySyncCallback());
+    }
+
     class EmptySyncCallback implements SyncCallback {
 
         @Override

@@ -118,10 +118,6 @@ public class InspectionNoPictureTest extends InspectionTestBase {
         checkStatusIsDone();
     }
 
-    private void startPictureSync() {
-        inspection.sync(pictureService, new EmptySyncCallback());
-    }
-
     private void startProductSync() {
         inspection.sync(inspectionService, new EmptySyncCallback());
     }

@@ -47,7 +47,7 @@ public class Inspection {
     }
 
     public boolean canSyncPictures() {
-        return pictures.size() > 0;
+        return pictures.size() > 0 && syncStatus != SyncStatus.PICTURES_BEING_SYNCED;
         // TODO: && (syncStatus == SyncStatus.READY || syncStatus == SyncStatus.PICTURES_BEING_SYNCED);
     }
 
