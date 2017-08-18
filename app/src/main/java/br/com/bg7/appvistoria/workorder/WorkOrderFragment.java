@@ -6,10 +6,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +49,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     public void onResume() {
         super.onResume();
         workOrderPresenter.start();
-        workOrderPresenter.search("");
+   //     workOrderPresenter.search("");
     }
 
     @Override
@@ -128,6 +131,38 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     }
 
 
+    public void doEllipse(final TextView tv) {
+
+        if (tv.getTag() == null) {
+            tv.setTag(tv.getText());
+        }
+        ViewTreeObserver vto = tv.getViewTreeObserver();
+
+        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+
+                ViewTreeObserver obs = tv.getViewTreeObserver();
+                obs.removeOnPreDrawListener(this);
+                String text = tv.getLayout().getText().toString();
+                int textIndex = text.indexOf("…");
+                if (textIndex > 0) {
+                    text = text.substring(0, textIndex);
+                    text = text.substring(0, text.lastIndexOf(" "));
+
+                    String numeric = text.substring(text.lastIndexOf(" "));
+                    if(StringUtils.isNumeric(numeric.trim())) {
+                        text = text.substring(0, text.lastIndexOf(" "));
+                    }
+                    text = text+"...";
+                    tv.setText(text);
+                }
+                return false;
+            }
+        });
+    }
+
+
     private class WorkOrderAdapter extends BaseAdapter {
 
          private WorkOrder highlightWorkOrder = null;
@@ -171,6 +206,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                  holder.shortSummary = convertView.findViewById(R.id.short_summary);
                  holder.summary = convertView.findViewById(R.id.summary);
                  holder.status = convertView.findViewById(R.id.status);
+                 holder.date = convertView.findViewById(R.id.date);
                  holder.inspections = convertView.findViewById(R.id.inspections);
                  holder.moreInfo = convertView.findViewById(R.id.more_info);
                  convertView.setTag(holder);
@@ -201,12 +237,10 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              }
              holder.name.setText(item.getName());
              holder.shortSummary.setText(item.getShortSummary());
-          //   doEllipse(holder.shortSummary);
+             doEllipse(holder.shortSummary);
 
              holder.status.setText(item.getStatus().toString());
-
              configureListeners(holder, position);
-
          }
 
          void configureListeners(Holder holder, final int position) {
@@ -236,6 +270,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              TextView shortSummary;
              TextView summary;
              TextView status;
+             TextView date;
              LinearLayout inspections;
              LinearLayout moreInfo;
          }

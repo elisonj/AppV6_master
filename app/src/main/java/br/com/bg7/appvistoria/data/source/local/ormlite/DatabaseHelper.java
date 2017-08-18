@@ -19,6 +19,7 @@ import br.com.bg7.appvistoria.data.Config;
 import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.Picture;
 import br.com.bg7.appvistoria.data.User;
+import br.com.bg7.appvistoria.data.WorkOrder;
 
 /**
  * Created by: luciolucio
@@ -36,6 +37,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     private RuntimeExceptionDao<User, Long> userDao = null;
     private RuntimeExceptionDao<Config, Long> configDao = null;
+    private RuntimeExceptionDao<WorkOrder, Long> workOrderDao = null;
     private RuntimeExceptionDao<Inspection, Long> inspectionDao = null;
     private RuntimeExceptionDao<Picture, Long> pictureDao = null;
 
@@ -53,6 +55,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             LOG.info("onCreate");
             TableUtils.createTable(connectionSource, User.class);
             TableUtils.createTable(connectionSource, Config.class);
+            TableUtils.createTable(connectionSource, WorkOrder.class);
             TableUtils.createTable(connectionSource, Inspection.class);
             TableUtils.createTable(connectionSource, Picture.class);
         } catch (SQLException exception) {
@@ -87,6 +90,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return getDao(configDao, Config.class);
     }
 
+    public RuntimeExceptionDao<WorkOrder, Long> getWorkOrderDao() {
+        //noinspection unchecked
+        return getDao(workOrderDao, WorkOrder.class);
+    }
+
     public RuntimeExceptionDao<Inspection, Long> getInspectionDao() {
         //noinspection unchecked
         return getDao(inspectionDao, Inspection.class);
@@ -107,6 +115,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         configDao = null;
         inspectionDao = null;
         pictureDao = null;
+        workOrderDao = null;
     }
 
     private RuntimeExceptionDao getDao(RuntimeExceptionDao dao, Class clazz) {

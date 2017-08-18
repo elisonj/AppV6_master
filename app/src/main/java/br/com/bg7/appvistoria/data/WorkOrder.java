@@ -1,10 +1,13 @@
 package br.com.bg7.appvistoria.data;
 
-import com.orm.SugarRecord;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
+import com.j256.ormlite.table.DatabaseTable;
 
 import org.joda.time.DateTime;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import br.com.bg7.appvistoria.workorder.WorkOrderStatus;
 
@@ -12,18 +15,38 @@ import br.com.bg7.appvistoria.workorder.WorkOrderStatus;
  * Created by: elison
  * Date: 2017-08-15
  */
-public class WorkOrder extends SugarRecord<WorkOrder> {
+@DatabaseTable(tableName = "workorders")
+public class WorkOrder {
+
+    @DatabaseField(generatedId = true)
+    private Long id;
+
+    @DatabaseField(canBeNull = false)
     private String name;
+
+    @DatabaseField(canBeNull = false)
     private String summary;
+
+    @DatabaseField(canBeNull = false)
     private String shortSummary;
+
+    @DatabaseField(index = true, canBeNull = false)
     private WorkOrderStatus status;
+
+    @DatabaseField(canBeNull = false)
     private DateTime endAt;
+
+    @DatabaseField(canBeNull = false)
     private String address;
+
+    @DatabaseField(canBeNull = false)
     private Long externalId;
-    private List<Inspection> inspections;
+
+    @ForeignCollectionField
+    private Collection<Inspection> inspections = new ArrayList<>();
 
     /**
-     * Default constructor used by Sugar
+     * Default constructor used by ormlite
      */
     @SuppressWarnings("unused")
     public WorkOrder() {}

@@ -34,6 +34,9 @@ public class Inspection {
     @ForeignCollectionField
     private Collection<Picture> pictures = new ArrayList<>();
 
+    @DatabaseField(canBeNull = false, foreign = true)
+    private WorkOrder workOrder;
+
     @SuppressWarnings("unused")
     Inspection() {
         // used by ormlite
