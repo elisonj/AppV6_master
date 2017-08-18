@@ -79,15 +79,4 @@ public class InspectionOnePictureTest extends InspectionTestBase {
         checkThatCanSyncPictures();
         checkThatCannotSyncProduct();
     }
-
-    @Test
-    public void shouldNotBeAbleToSyncPicturesOnceAllDone() {
-        startPictureSync();
-
-        makePictureServiceSucceed();
-
-        checkStatusIsPicturesSynced();
-        checkThatCannotSyncPictures();
-        checkThatCanSyncProduct();
-    }
 }
