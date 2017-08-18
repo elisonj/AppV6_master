@@ -4,16 +4,6 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import java.io.IOException;
-
-import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
-import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
-import br.com.bg7.appvistoria.sync.SyncStatus;
-
-import static br.com.bg7.appvistoria.data.inspection.InspectionTestConstants.*;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-
 /**
  * Created by: elison
  * Date: 2017-08-02
@@ -69,7 +59,7 @@ public class InspectionNoPictureTest extends InspectionTestBase {
     public void shouldChangeToFailedWhenNullResponse() {
         startProductSync();
 
-        makeInspectionServiceRespondWith(null);
+        makeInspectionServiceRespondNull();
 
         checkStatusIsFailed();
     }
@@ -116,52 +106,5 @@ public class InspectionNoPictureTest extends InspectionTestBase {
         inspection.reset();
 
         checkStatusIsDone();
-    }
-
-    private void startProductSync() {
-        inspection.sync(inspectionService, new EmptySyncCallback());
-    }
-
-    private void makeInspectionServiceSucceed() {
-        makeInspectionServiceRespondWith(PRODUCT_SUCCESS);
-    }
-
-    private void makeInspectionServiceError() {
-        makeInspectionServiceRespondWith(PRODUCT_ERROR_400);
-    }
-
-    private void makeInspectionServiceRespondWith(HttpResponse<ProductResponse> response) {
-        verify(inspectionService).send(eq(inspection), productServiceCallback.capture());
-        productServiceCallback.getValue().onResponse(response);
-    }
-
-    private void makeInspectionServiceUpdateProgressTo(int progress) {
-        verify(inspectionService).send(eq(inspection), productServiceCallback.capture());
-        productServiceCallback.getValue().onProgressUpdated(progress);
-    }
-
-    private void makeInspectionServiceFail() {
-        verify(inspectionService).send(eq(inspection), productServiceCallback.capture());
-        productServiceCallback.getValue().onFailure(new IOException());
-    }
-
-    private void checkStatusIsReady() {
-        checkStatusIs(SyncStatus.READY);
-    }
-
-    private void checkStatusIsFailed() {
-        checkStatusIs(SyncStatus.FAILED);
-    }
-
-    private void checkStatusIsInspectionBeingSynced() {
-        checkStatusIs(SyncStatus.INSPECTION_BEING_SYNCED);
-    }
-
-    private void checkStatusIsDone() {
-        checkStatusIs(SyncStatus.DONE);
-    }
-
-    private void checkStatusIs(SyncStatus status) {
-        Assert.assertEquals(status, inspection.getSyncStatus());
     }
 }
