@@ -13,7 +13,7 @@ import br.com.bg7.appvistoria.config.vo.Language;
  * {@link SuppressWarnings pois so as sub-classes sao implementadas, de proposito}
  */
 @SuppressWarnings("unused")
-public interface ConfigContract {
+interface ConfigContract {
     interface View extends BaseView<ConfigContract.Presenter> {
         void hideButtons();
 
@@ -35,6 +35,6 @@ public interface ConfigContract {
 
         void logoutClicked();
 
-        void languageSelected();
+        void languageSelected(String language);
     }
 }

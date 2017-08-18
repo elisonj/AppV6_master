@@ -139,7 +139,7 @@ public class ConfigPresenterTest {
     @Test
     public void shouldShowButtonsWhenLanguageSelectedIsDifferent()
     {
-        configPresenter.languageSelected();
+        configPresenter.languageSelected("pt_BR");
         verify(configView).showButtons();
     }
 

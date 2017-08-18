@@ -41,8 +41,6 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     private Button cancelButton;
     private Button confirmButton;
 
-    private int lastSpinnerPosition = 1;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -120,22 +118,18 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
                 selected = i;
             }
         }
-        lastSpinnerPosition = selected;
         languageSpinner.setSelection(selected);
     }
 
     @Override
-    public void setLanguages(List<Language> languageList) {
+    public void setLanguages(final List<Language> languageList) {
         ArrayAdapter<Language> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, languageList);
         languageSpinner.setAdapter(adapter);
 
         languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(lastSpinnerPosition != i){
-                    lastSpinnerPosition = i;
-                    configPresenter.languageSelected();
-                }
+                configPresenter.languageSelected(languageList.get(i).getName());
             }
 
             @Override
