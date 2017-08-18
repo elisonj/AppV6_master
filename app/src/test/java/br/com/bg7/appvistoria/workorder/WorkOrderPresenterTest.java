@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import br.com.bg7.appvistoria.auth.Auth;
 import br.com.bg7.appvistoria.auth.FakeAuthFacade;
@@ -40,6 +41,9 @@ public class WorkOrderPresenterTest {
     private WorkOrder ob1 = new WorkOrder("Projeto 1", "Resumo completo - 50 carros, 30 motos, 20 caminhões, 13 vans, 5 empilhadeiras, 1 trator", WorkOrderStatus.IN_PROGRESS);
     private WorkOrder ob2 = new WorkOrder("Projeto 2", "Resumo completo --- 50 carros, 30 motos, 20 caminhões, 13 vans, 5 empilhadeiras, 1 trator", WorkOrderStatus.COMPLETED);
     private WorkOrder ob3 = new WorkOrder("Projeto 3", "Resumo completo ------ 50 carros, 30 motos, 20 caminhões, 13 vans, 5 empilhadeiras, 1 trator", WorkOrderStatus.NOT_STARTED);
+
+    private Locale localePtBr = new Locale("pt", "BR");
+    private Locale localeEnglish = new Locale("en");
 
     @Mock
     WorkOrderContract.View workOrderView;
@@ -118,6 +122,18 @@ public class WorkOrderPresenterTest {
             String lastElement = workOrder.getShortSummary().substring(workOrder.getShortSummary().lastIndexOf(" "), workOrder.getShortSummary().length()-3);
             Assert.assertFalse(StringUtils.isNumeric(lastElement.trim()));
         }
+    }
+
+    @Test
+    public void shouldShowDateBr() {
+        String stringDate = ob1.getEndAt(localePtBr);
+        Assert.assertTrue(stringDate.contains("/"));
+    }
+
+    @Test
+    public void shouldShowDateUS() {
+        String stringDate = ob1.getEndAt(localeEnglish);
+        Assert.assertTrue(stringDate.contains("-"));
     }
 
     private void showInitialItems() {
