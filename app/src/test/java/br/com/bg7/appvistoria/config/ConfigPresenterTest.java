@@ -21,6 +21,7 @@ import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeConfigRepository;
 
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -139,8 +140,17 @@ public class ConfigPresenterTest {
     @Test
     public void shouldShowButtonsWhenLanguageSelectedIsDifferent()
     {
-        configPresenter.languageSelected("pt_BR");
+        configPresenter.start();
+        configPresenter.languageSelected("en_US");
         verify(configView).showButtons();
+    }
+
+    @Test
+    public void shouldNotShowButtonsWhenLanguageSelectedIsTheSame()
+    {
+        configPresenter.start();
+        configPresenter.languageSelected("pt_BR");
+        verify(configView, never()).showButtons();
     }
 
     @Test
