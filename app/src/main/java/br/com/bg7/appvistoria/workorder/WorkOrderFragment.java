@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.akexorcist.localizationactivity.LocalizationActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -201,6 +203,8 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              }
              holder.name.setText(item.getName());
              holder.shortSummary.setText(item.getShortSummary());
+
+             holder.date.setText(item.getEndAt(((LocalizationActivity)getActivity()).getLocale()));
 
              holder.status.setText(item.getStatus().toString());
              configureListeners(holder, position);

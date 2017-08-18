@@ -7,8 +7,10 @@ import com.j256.ormlite.table.DatabaseTable;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Locale;
 
 import br.com.bg7.appvistoria.workorder.WorkOrderStatus;
 
@@ -20,6 +22,9 @@ import br.com.bg7.appvistoria.workorder.WorkOrderStatus;
 public class WorkOrder {
 
     public static final int MAX_SIZE_SHORT_SUMMARY = 54;
+
+    private String dateFormatPtBr = "dd/MM/yyyy";
+    private String dateFormatEnUs = "yyyy-MM-dd";
 
     @DatabaseField(generatedId = true)
     private Long id;
@@ -75,6 +80,17 @@ public class WorkOrder {
 
     public WorkOrderStatus getStatus() {
         return status;
+    }
+
+    public String getEndAt(Locale locale) {
+        if(endAt == null) {
+            endAt = new DateTime();
+        }
+        SimpleDateFormat formatter = new SimpleDateFormat(dateFormatPtBr, locale);
+        if(locale.equals(Locale.ENGLISH)) {
+            formatter = new SimpleDateFormat(dateFormatEnUs, locale);
+        }
+        return formatter.format(endAt.toDate());
     }
 
     private String ellipsizeShortSummary(String summary) {
