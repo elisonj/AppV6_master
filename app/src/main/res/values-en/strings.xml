@@ -10,7 +10,7 @@
     <string name="login">LOGIN</string>
     <string name="error">Error</string>
     <string name="confirm">CONFIRM</string>
-    <string name="cancel">CANCEL</string>
+    <string name="cancel">Cancel</string>
     <string name="logout">LOGOUT</string>
     <string name="exit_app">Exit application</string>
     <string name="language_pt">Portuguese (Brazil)</string>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="br.com.bg7.appvistoria">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,7 +14,9 @@
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:allowBackup="false"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:supportsRtl="true"
+        tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name=".config.ConfigActivity"
             android:screenOrientation="portrait"
@@ -24,7 +27,7 @@
         <activity
             android:name=".login.LoginActivity"
             android:configChanges="orientation|locale"
-            android:theme="@style/NoActionBar"
+            android:theme="@style/Login"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
