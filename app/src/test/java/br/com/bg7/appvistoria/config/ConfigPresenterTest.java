@@ -1,5 +1,7 @@
 package br.com.bg7.appvistoria.config;
 
+import junit.framework.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -19,6 +21,7 @@ import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeConfigRepository;
 
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -53,7 +56,7 @@ public class ConfigPresenterTest {
         configPresenter = new ConfigPresenter(configRepository, languageRepository, configView);
 
         setUpLanguages();
-        setUpConfig("pt_BR", true);
+        setUpConfig("pt_BR");
     }
 
     private void setUpLanguages() {
@@ -64,8 +67,8 @@ public class ConfigPresenterTest {
         when(languageRepository.getLanguages()).thenReturn(languages);
     }
 
-    private void setUpConfig(String language, boolean isSyncWithWifiOnly) {
-        Config config = new Config(language, isSyncWithWifiOnly, USER);
+    private void setUpConfig(String language) {
+        Config config = new Config(language, USER);
         configRepository.save(config);
     }
 
@@ -95,19 +98,13 @@ public class ConfigPresenterTest {
 
     @Test
     public void shouldSelectLanguageOnStart() {
-        setUpConfig("en_US", true);
+        setUpConfig("en_US");
 
         configPresenter.start();
 
         verify(configView).setLanguage("en_US");
     }
 
-    @Test
-    public void shouldSelectSyncNetworkOptionOnStart() {
-        configPresenter.start();
-
-        verify(configView).setSyncWithWifiOnly(true);
-    }
 
     @Test
     public void shouldSelectFirstItemIfConfigLanguageNotValid() {
@@ -121,7 +118,7 @@ public class ConfigPresenterTest {
             String description = testCase.getKey();
             String configValueUnderTest = testCase.getValue();
 
-            setUpConfig(configValueUnderTest, true);
+            setUpConfig(configValueUnderTest);
             reset(configView);
 
             configPresenter.start();
@@ -138,33 +135,22 @@ public class ConfigPresenterTest {
         configPresenter.start();
 
         verify(configView).setLanguage("pt_BR");
-        verify(configView).setSyncWithWifiOnly(true);
     }
 
     @Test
-    public void shouldShowButtonsAndToggleLanguagesWhenLanguagesLabelClicked()
+    public void shouldShowButtonsWhenLanguageSelectedIsDifferent()
     {
-        configPresenter.languagesLabelClicked();
-
-        verify(configView).showButtons();
-        verify(configView).toggleLanguagesVisibility();
-    }
-
-    @Test
-    public void showShowButtonsWhenSyncClicked()
-    {
-        configPresenter.syncWithWifiOnlyClicked();
-
+        configPresenter.start();
+        configPresenter.languageSelected("en_US");
         verify(configView).showButtons();
     }
 
     @Test
-    public void showShowButtonsAndToggleSyncWhenSyncLabelClicked()
+    public void shouldNotShowButtonsWhenLanguageSelectedIsTheSame()
     {
-        configPresenter.syncLabelClicked();
-
-        verify(configView).showButtons();
-        verify(configView).toggleSyncWithWifiOnly();
+        configPresenter.start();
+        configPresenter.languageSelected("pt_BR");
+        verify(configView, never()).showButtons();
     }
 
     @Test
@@ -173,33 +159,30 @@ public class ConfigPresenterTest {
         configPresenter.cancelClicked();
 
         verify(configView).hideButtons();
-        verify(configView).hideLanguages();
-    }
-
-    @Test
-    public void shouldResetOptionsWhenCancelClicked()
-    {
-        configPresenter.syncWithWifiOnlyClicked();
-
-        configPresenter.cancelClicked();
-
-        verify(configView).setSyncWithWifiOnly(true);
     }
 
     @Test
     public void shouldHideButtonsAndLanguagesWhenConfirmClicked()
     {
-        configPresenter.confirmClicked(null, true);
+        configPresenter.confirmClicked(null);
 
         verify(configView).hideButtons();
-        verify(configView).hideLanguages();
     }
 
     @Test
     public void shouldChangeLanguageWhenConfirmClicked()
     {
-        configPresenter.confirmClicked("pt_BR", true);
+        configPresenter.confirmClicked("pt_BR");
 
         verify(configView).changeLanguage("pt_BR");
+    }
+
+    @Test
+    public void shouldLogoutAndShowLoginScreenWhenLoggingOut()
+    {
+        configPresenter.logoutClicked();
+
+        verify(configView).showLoginScreen();
+        Assert.assertNull(authFacade.user());
     }
 }

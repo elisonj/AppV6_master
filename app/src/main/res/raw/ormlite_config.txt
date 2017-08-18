@@ -1,5 +1,5 @@
 #
-# generated on 2017/08/17 12:26:04
+# generated on 2017/08/18 09:38:35
 #
 # --table-start--
 dataClass=br.com.bg7.appvistoria.data.Config
@@ -8,10 +8,6 @@ tableName=configs
 # --field-start--
 fieldName=id
 generatedId=true
-# --field-end--
-# --field-start--
-fieldName=syncWithWifiOnly
-canBeNull=false
 # --field-end--
 # --field-start--
 fieldName=languageName

@@ -13,11 +13,9 @@ import br.com.bg7.appvistoria.config.vo.Language;
  * {@link SuppressWarnings pois so as sub-classes sao implementadas, de proposito}
  */
 @SuppressWarnings("unused")
-public interface ConfigContract {
+interface ConfigContract {
     interface View extends BaseView<ConfigContract.Presenter> {
         void hideButtons();
-
-        void toggleLanguagesVisibility();
 
         void showButtons();
 
@@ -25,24 +23,18 @@ public interface ConfigContract {
 
         void setLanguage(String languageName);
 
-        void setSyncWithWifiOnly(boolean syncWithWifiOnly);
-
-        void toggleSyncWithWifiOnly();
-
-        void hideLanguages();
-
         void changeLanguage(String language);
+
+        void showLoginScreen();
     }
 
     interface Presenter extends BasePresenter {
-        void languagesLabelClicked();
-
-        void syncWithWifiOnlyClicked();
-
-        void syncLabelClicked();
-
-        void confirmClicked(String language, boolean syncWithWifiOnly);
+        void confirmClicked(String language);
 
         void cancelClicked();
+
+        void logoutClicked();
+
+        void languageSelected(String language);
     }
 }

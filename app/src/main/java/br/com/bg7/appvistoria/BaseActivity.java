@@ -20,7 +20,7 @@ import br.com.bg7.appvistoria.data.source.local.ormlite.DatabaseHelper;
  * Created by: elison
  * Date: 2017-07-17
  */
-public class BaseActivity extends LocalizationActivity {
+public abstract class BaseActivity extends LocalizationActivity {
 
     private DatabaseHelper databaseHelper = null;
 
