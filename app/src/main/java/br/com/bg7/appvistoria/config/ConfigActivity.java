@@ -1,7 +1,6 @@
 package br.com.bg7.appvistoria.config;
 
 import android.os.Bundle;
-import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
@@ -26,7 +25,7 @@ import br.com.bg7.appvistoria.data.source.local.ormlite.OrmLiteConfigRepository;
 
 public class ConfigActivity extends BaseActivity {
     private static final String SELECTED_MENU_ITEM_KEY = "SELECTED_MENU_ITEM_KEY";
-    private static final int DEFAULT_SCREEN_MENU_ITEM_INDEX = 3;
+    private static final int DEFAULT_SCREEN_MENU_ITEM_INDEX = 2;
 
     private int selectedItem = DEFAULT_SCREEN_MENU_ITEM_INDEX;
     private Menu menu = null;
@@ -38,6 +37,12 @@ public class ConfigActivity extends BaseActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayUseLogoEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setIcon(R.drawable.actionbar_logo);
+        }
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -81,16 +86,13 @@ public class ConfigActivity extends BaseActivity {
         switch (item.getItemId()) {
             case R.id.menu_visita:
                 fragment = MainFragment.newInstance(getString(R.string.menu_visita),
-                        getColorFromResource(R.color.color_visita));
+                        ContextCompat.getColor(this, R.color.color_sync));
                 break;
             case R.id.menu_sync:
                 fragment = MainFragment.newInstance(getString(R.string.menu_sync),
-                        getColorFromResource(R.color.color_sync));
+                        ContextCompat.getColor(this, R.color.color_sync));
                 break;
-            case R.id.menu_historic:
-                fragment = MainFragment.newInstance(getString(R.string.menu_historic),
-                        getColorFromResource(R.color.color_historic));
-                break;
+
             case R.id.menu_config:
                 ConfigFragment configFrag = new ConfigFragment();
                 fragment = configFrag;
@@ -121,7 +123,4 @@ public class ConfigActivity extends BaseActivity {
         }
     }
 
-    private int getColorFromResource(@ColorRes int resourceId) {
-        return ContextCompat.getColor(this, resourceId);
-    }
 }

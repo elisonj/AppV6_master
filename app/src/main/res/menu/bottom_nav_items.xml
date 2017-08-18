@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/menu_visita"
-        android:title="@string/menu_visita"
-        android:icon="@drawable/ic_visit"/>
 
     <item
         android:id="@+id/menu_sync"
@@ -11,9 +7,9 @@
         android:icon="@drawable/ic_sync" />
 
     <item
-        android:id="@+id/menu_historic"
-        android:title="@string/menu_historic"
-        android:icon="@drawable/ic_historic" />
+        android:id="@+id/menu_visita"
+        android:title="@string/menu_visita"
+        android:icon="@drawable/ic_visit"/>
 
     <item
         android:id="@+id/menu_config"

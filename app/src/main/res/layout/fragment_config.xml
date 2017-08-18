@@ -1,98 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:background="#FFFFFF"
     android:layout_height="match_parent">
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
 
 
     <LinearLayout
-        android:id="@+id/linear_language_top"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="match_parent"
+        android:background="@color/color_background"
+        android:layout_alignParentStart="true">
+    </LinearLayout>
+
+
+    <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/linear_buttons"
+    android:layout_alignParentStart="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="85dp"
+        android:background="#fafafa"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="0.2"
-            android:text="@string/change_language"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:textColor="#494e52"
+            android:text="@string/language"
             android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.8"
-            app:srcCompat="@android:drawable/arrow_down_float" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#ECDCEC"
-        android:orientation="vertical" />
-
-    <LinearLayout
-        android:id="@+id/linear_language"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="#ECDCEC"
-        android:orientation="vertical">
 
         <Spinner
             android:id="@+id/spinner_language"
             android:layout_width="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
             android:layout_height="wrap_content"
-            android:drawSelectorOnTop="true"
-            android:prompt="@string/spin"
-            android:layout_weight="0.2" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/linear_wifi"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textStyle="bold"
-            android:layout_weight="0.13"
-            android:text="@string/sync_with_wifi_only" />
-
-        <CheckBox
-            android:id="@+id/checkBox_wifi"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:layout_weight="0.87"
-             />
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:drawSelectorOnTop="true"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_line_shadow_bottom"
+        android:orientation="vertical" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
         android:background="#ECDCEC"
         android:orientation="vertical" />
 
 
+    <LinearLayout
+        android:id="@+id/linear_logout"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#fafafa"
+        android:baselineAligned="false"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="0.8"
+            android:orientation="vertical" >
+            <ImageView
+                android:contentDescription="@string/logout"
+                android:layout_width="20dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ico_logout"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:orientation="vertical" >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="@string/logout" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:textStyle="italic"
+                android:text="@string/exit_app" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:gravity="center"
+            android:orientation="vertical" >
+            <ImageView
+                android:contentDescription="@string/logout"
+                android:layout_width="8dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ico_arrow_right"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_line_shadow_bottom"
+        android:orientation="vertical" />
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/linear_language"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
 </LinearLayout>
+
+
 
     <LinearLayout
         android:id="@+id/linear_buttons"
@@ -109,6 +147,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_weight="1"
             android:text="@string/cancel" />
 
@@ -117,6 +156,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_weight="1"
             android:text="@string/confirm" />
 

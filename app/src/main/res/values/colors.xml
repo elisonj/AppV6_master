@@ -3,9 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-
-    <color name="color_visita">#009688</color>
+    <color name="color_action_bar">#00539b</color>
     <color name="color_sync">#2196F3</color>
-    <color name="color_historic">#9C27B0</color>
-    <color name="color_config">#FCFCFC</color>
+    <color name="color_background">#e4e8eb</color>
 </resources>

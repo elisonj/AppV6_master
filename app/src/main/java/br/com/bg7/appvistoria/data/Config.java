@@ -16,9 +16,6 @@ public class Config {
     private Long id;
 
     @DatabaseField(canBeNull = false)
-    private boolean syncWithWifiOnly;
-
-    @DatabaseField(canBeNull = false)
     private String languageName;
 
     @DatabaseField(canBeNull = false, foreign = true, columnName = USER_ID_FIELD)
@@ -30,9 +27,8 @@ public class Config {
         // used by ormlite
     }
 
-    public Config(String languageName, boolean updateOnlyWifi, User user) {
+    public Config(String languageName, User user) {
         this.languageName = languageName;
-        this.syncWithWifiOnly = updateOnlyWifi;
         this.user = user;
     }
 
@@ -43,15 +39,8 @@ public class Config {
         return config;
     }
 
-    public Config withSyncWithWifiOnly(boolean syncWithWifiOnly) {
-        Config config = cloneConfig();
-        config.syncWithWifiOnly = syncWithWifiOnly;
-
-        return config;
-    }
-
     private Config cloneConfig() {
-        Config config = new Config(this.languageName, this.syncWithWifiOnly, this.user);
+        Config config = new Config(this.languageName, this.user);
 
         config.id = this.id;
 
@@ -60,10 +49,6 @@ public class Config {
 
     public String getLanguageName() {
         return languageName;
-    }
-
-    public boolean isSyncWithWifiOnly() {
-        return syncWithWifiOnly;
     }
 
     public User getUser() {
