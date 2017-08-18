@@ -1,7 +1,7 @@
 package br.com.bg7.appvistoria.data;
 
-import com.orm.SugarRecord;
-import com.orm.dsl.Ignore;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
 import java.io.File;
 
@@ -13,38 +13,40 @@ import br.com.bg7.appvistoria.sync.PictureSyncStatus;
  *
  * Represents a picture taken during an inspection
  */
-public class Picture extends SugarRecord<Picture> {
+@DatabaseTable(tableName = "pictures")
+public class Picture {
 
-    @SuppressWarnings({"FieldCanBeLocal", "unused"}) // Used by Sugar for persistence
-    private Inspection inspection;
+    @DatabaseField(generatedId = true)
+    private Long id;
+
+    @DatabaseField(canBeNull = false)
     private String path;
-    @SuppressWarnings("unused") // Used by Sugar for persistence
-    private String status;
 
-    @Ignore
+    @DatabaseField(canBeNull = false)
     private PictureSyncStatus syncStatus;
 
-    @Ignore
+    @DatabaseField(canBeNull = false, foreign = true)
+    private Inspection inspection;
+
     private File file;
 
-    /**
-     * Default constructor used by Sugar
-     */
     @SuppressWarnings("unused")
-    public Picture() {}
+    Picture() {
+        // used by ormlite
+    }
 
     Picture(Inspection inspection, File file) {
         this.inspection = inspection;
         this.file = file;
         this.path = file.getAbsolutePath();
         this.syncStatus = PictureSyncStatus.NOT_STARTED;
-        this.status = syncStatus.toString();
     }
 
     public File getFile() {
         if(file != null) {
             return file;
         }
+
         file = new File(path);
         return file;
     }
@@ -55,6 +57,5 @@ public class Picture extends SugarRecord<Picture> {
 
     void setSyncStatus(PictureSyncStatus syncStatus) {
         this.syncStatus = syncStatus;
-        this.status = syncStatus.toString();
     }
 }

@@ -127,6 +127,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                 listView.getFirstVisiblePosition());
     }
 
+
     private class WorkOrderAdapter extends BaseAdapter {
 
          private WorkOrder highlightWorkOrder = null;
@@ -200,6 +201,8 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              }
              holder.name.setText(item.getName());
              holder.shortSummary.setText(item.getShortSummary());
+          //   doEllipse(holder.shortSummary);
+
              holder.status.setText(item.getStatus().toString());
 
              configureListeners(holder, position);
@@ -211,11 +214,19 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                  @Override
                  public void onClick(View view) {
 
+                     WorkOrder item = getItem(position);
+                     if(item.equals(highlightWorkOrder)) {
+                         workOrderPresenter.hideInfoClicked(highlightWorkOrder);
+                         return;
+                     }
+
                      if(highlightWorkOrder != null) {
                          workOrderPresenter.hideInfoClicked(highlightWorkOrder);
                      }
 
-                     workOrderPresenter.moreInfoClicked(list.get(position));
+                     if(!item.equals(highlightWorkOrder)) {
+                         workOrderPresenter.moreInfoClicked(list.get(position));
+                     }
                  }
              });
          }

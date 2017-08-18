@@ -2,12 +2,12 @@ package br.com.bg7.appvistoria.data;
 
 import android.support.annotation.NonNull;
 
-import com.orm.SugarRecord;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Serializable;
 import java.util.Locale;
 
 /**
@@ -15,31 +15,35 @@ import java.util.Locale;
  * Date: 2017-07-12
  *
  * Represents a user in the app
- *
- * Warnings of "FieldCanBeLocal" are ignored if the field is not used because
- * the field needs to be present for Sugar to create it in the database
  */
-public class User extends SugarRecord<User> {
+@DatabaseTable(tableName = "users")
+public class User {
+
+    @DatabaseField(generatedId = true)
+    private Long id;
+
+    @DatabaseField(canBeNull = false)
+    private String passwordHash;
+
+    @DatabaseField(canBeNull = false)
+    private String token;
+
+    @DatabaseField(canBeNull = false, uniqueIndex = true, columnName = USERNAME_FIELD)
+    private String username;
+    public static final String USERNAME_FIELD = "username";
 
     private static final Logger LOG = LoggerFactory.getLogger(User.class);
 
     private static final String SEPARATOR = "###!!!###";
-    public static final int ID_INDEX = 0;
-    public static final int USERNAME_INDEX = 1;
-    public static final int PASSWORD_HASH_INDEX = 2;
-    public static final int TOKEN_INDEX = 3;
+    private static final int ID_INDEX = 0;
+    private static final int USERNAME_INDEX = 1;
+    private static final int PASSWORD_HASH_INDEX = 2;
+    private static final int TOKEN_INDEX = 3;
 
-    private String username;
-
-    private String passwordHash;
-
-    private String token;
-
-    /**
-     * Default constructor used by Sugar
-     */
     @SuppressWarnings("unused")
-    public User() {}
+    User() {
+        // used by ormlite
+    }
 
     public User(String username, String token, String passwordHash) {
         this.username = username;
@@ -70,25 +74,27 @@ public class User extends SugarRecord<User> {
 
     @NonNull
     private User cloneUser() {
-        User user = new User();
+        User user = new User(this.username, this.token, this.passwordHash);
 
         user.id = this.id;
-        user.username = this.username;
-        user.passwordHash = this.passwordHash;
-        user.token = this.token;
+
         return user;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getPasswordHash() {
         return passwordHash;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
     public String getToken() {
         return token;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public String serialize() {
@@ -103,11 +109,13 @@ public class User extends SugarRecord<User> {
         String[] parts = serializedUser.split(SEPARATOR);
 
         try {
-            User user = new User();
+            String username = parts[USERNAME_INDEX];
+            String passwordHash = parts[PASSWORD_HASH_INDEX];
+            String token = parts[TOKEN_INDEX];
+
+            User user = new User(username, token, passwordHash);
+
             user.id = Long.parseLong(parts[ID_INDEX]);
-            user.username = parts[USERNAME_INDEX];
-            user.passwordHash = parts[PASSWORD_HASH_INDEX];
-            user.token = parts[TOKEN_INDEX];
 
             return user;
         }

@@ -1,6 +1,7 @@
 package br.com.bg7.appvistoria.data;
 
-import com.orm.SugarRecord;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
 /**
  * Created by: elison
@@ -8,15 +9,23 @@ import com.orm.SugarRecord;
  *
  * Represents a user's config settings
  */
-public class Config extends SugarRecord<Config> {
-    private String languageName;
-    private User user;
+@DatabaseTable(tableName = "configs")
+public class Config {
 
-    /**
-     * Default constructor used by Sugar
-     */
+    @DatabaseField(generatedId = true)
+    private Long id;
+
+    @DatabaseField(canBeNull = false)
+    private String languageName;
+
+    @DatabaseField(canBeNull = false, foreign = true, columnName = USER_ID_FIELD)
+    private User user;
+    public static final String USER_ID_FIELD = "user_id";
+
     @SuppressWarnings("unused")
-    public Config() {}
+    Config() {
+        // used by ormlite
+    }
 
     public Config(String languageName, User user) {
         this.languageName = languageName;
@@ -31,11 +40,9 @@ public class Config extends SugarRecord<Config> {
     }
 
     private Config cloneConfig() {
-        Config config = new Config();
+        Config config = new Config(this.languageName, this.user);
 
         config.id = this.id;
-        config.languageName = this.languageName;
-        config.user = this.user;
 
         return config;
     }

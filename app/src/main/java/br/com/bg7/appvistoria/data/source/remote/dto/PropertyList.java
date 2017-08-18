@@ -1,7 +1,5 @@
 package br.com.bg7.appvistoria.data.source.remote.dto;
 
-import com.orm.SugarRecord;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,17 +7,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PropertyList extends SugarRecord<PropertyList> {
+public class PropertyList {
 
     private String idList;
     private List<Property> propertyList;
     private long propertiesId;
 
-    /**
-     * Default constructor used by Sugar
-     */
-    @SuppressWarnings("unused")
-    public PropertyList() {}
+    public PropertyList() {
+
+    }
 
     public PropertyList(String id, List<Property> propertyList) {
         this.idList = id;

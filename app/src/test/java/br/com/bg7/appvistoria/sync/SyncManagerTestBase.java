@@ -8,8 +8,8 @@ import org.mockito.MockitoAnnotations;
 
 import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeInspectionRepository;
-import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.InspectionService;
+import br.com.bg7.appvistoria.data.source.remote.PictureService;
 
 import static br.com.bg7.appvistoria.sync.MockInspection.mockInspection;
 import static org.mockito.Mockito.verify;

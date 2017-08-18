@@ -23,6 +23,7 @@ class ConfigPresenter implements ConfigContract.Presenter {
     private final ConfigContract.View configView;
     private final ConfigRepository configRepository;
     private final LanguageRepository languageRepository;
+    private String currentLanguage;
 
     ConfigPresenter(ConfigRepository configRepository, LanguageRepository languageRepository, ConfigContract.View configView) {
         this.configRepository = checkNotNull(configRepository);
@@ -73,6 +74,7 @@ class ConfigPresenter implements ConfigContract.Presenter {
 
     private void applyConfig(String name) {
         configView.setLanguage(name);
+        currentLanguage = name;
     }
 
 
@@ -93,8 +95,9 @@ class ConfigPresenter implements ConfigContract.Presenter {
     }
 
     @Override
-    public void languageSelected() {
-        configView.showButtons();
+    public void languageSelected(String language) {
+        if(!language.equals(currentLanguage))
+            configView.showButtons();
     }
 
     @Override

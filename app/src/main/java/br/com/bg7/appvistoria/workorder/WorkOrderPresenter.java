@@ -20,8 +20,6 @@ public class WorkOrderPresenter implements WorkOrderContract.Presenter{
     private final WorkOrderContract.View workOrderView;
     private final ConfigRepository configRepository;
 
-    private String language;
-
     public WorkOrderPresenter(WorkOrderRepository workOrderRepository, WorkOrderContract.View workOrderView,
                        ConfigRepository configRepository) {
         this.workOrderRepository = checkNotNull(workOrderRepository);
@@ -31,7 +29,6 @@ public class WorkOrderPresenter implements WorkOrderContract.Presenter{
         this.workOrderView.setPresenter(this);
     }
 
-
     @Override
     public void start() {
 
@@ -40,13 +37,15 @@ public class WorkOrderPresenter implements WorkOrderContract.Presenter{
             return;
         }
 
-        language = config.getLanguageName();
+        String language = config.getLanguageName();
+
+        List<WorkOrder> workOrderList =  workOrderRepository.findAllOrderByStatus(language);
+        workOrderView.showList(workOrderList, true);
     }
 
     @Override
     public void search(String searchTerm) {
-        List<WorkOrder> workOrderList =  workOrderRepository.findAllOrderByStatus(language);
-        workOrderView.showList(workOrderList, true);
+
     }
 
     @Override

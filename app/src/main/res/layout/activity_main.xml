@@ -7,7 +7,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#e4e8eb"
     tools:context="br.com.bg7.appvistoria.config.ConfigActivity">
 
         <FrameLayout
@@ -23,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             design:itemBackground="@drawable/bottom_nav_selector"
+            android:background="@color/color_background"
             design:itemIconTint="#FFFFFF"
             design:paddingStart="5dp"
             design:itemTextColor="#FFFFFF"

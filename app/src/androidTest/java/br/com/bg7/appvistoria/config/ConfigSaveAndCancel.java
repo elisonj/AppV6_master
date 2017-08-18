@@ -2,6 +2,7 @@ package br.com.bg7.appvistoria.config;
 
 
 import android.support.test.espresso.ViewInteraction;
+import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -21,6 +22,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
 //TODO: Adicionar verificações a partir do documento de transições
+@LargeTest
 @RunWith(AndroidJUnit4.class)
 public class ConfigSaveAndCancel {
 

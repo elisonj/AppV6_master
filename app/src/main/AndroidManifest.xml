@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="br.com.bg7.appvistoria">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 
+    <!-- TODO: Usar o icone correto -->
+    <!-- TODO: Usar allowBackup=true e especificar dados de backup -->
     <application
-        android:allowBackup="true"
-        android:name="com.orm.SugarApp"
         android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:allowBackup="false"
+        android:theme="@style/AppTheme"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        tools:ignore="GoogleAppIndexingWarning">
+
         <activity android:name=".config.ConfigActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|locale">
 
         </activity>
+
         <activity
             android:name=".login.LoginActivity"
             android:configChanges="orientation|locale"
-            android:label="@string/app_name"
-            android:theme="@style/NoActionBar"
+            android:theme="@style/Login"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <meta-data android:name="DATABASE" android:value="appVistoria.db" />
-        <meta-data android:name="VERSION" android:value="3" />
-        <meta-data android:name="QUERY_LOG" android:value="true" />
-        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="br.com.bg7.appvistoria" />
     </application>
 
 </manifest>

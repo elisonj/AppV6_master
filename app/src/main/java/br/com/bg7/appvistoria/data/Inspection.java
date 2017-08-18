@@ -1,13 +1,15 @@
 package br.com.bg7.appvistoria.data;
 
-import com.orm.SugarRecord;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
+import com.j256.ormlite.table.DatabaseTable;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
-import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.InspectionService;
+import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
 import br.com.bg7.appvistoria.data.source.remote.dto.PictureResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
@@ -20,17 +22,23 @@ import br.com.bg7.appvistoria.sync.SyncStatus;
  * Created by: elison
  * Date: 2017-07-27
  */
-public class Inspection extends SugarRecord<Inspection> {
+@DatabaseTable(tableName = "inspections")
+public class Inspection {
 
+    @DatabaseField(generatedId = true)
+    private Long id;
+
+    @DatabaseField(index = true, canBeNull = false)
     private SyncStatus syncStatus = null;
 
-    private List<Picture> pictures = new ArrayList<>();
+    @ForeignCollectionField
+    private Collection<Picture> pictures = new ArrayList<>();
 
-    /**
-     * Default constructor used by Sugar
-     */
     @SuppressWarnings("unused")
-    public Inspection() {}
+    Inspection() {
+        // used by ormlite
+    }
+
 
     public boolean canSyncProduct() {
         return syncStatus == SyncStatus.PICTURES_SYNCED;

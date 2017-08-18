@@ -14,8 +14,9 @@ import android.view.MenuItem;
 import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.MainFragment;
 import br.com.bg7.appvistoria.R;
+import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
 import br.com.bg7.appvistoria.data.source.local.android.ResourcesLanguageRepository;
-import br.com.bg7.appvistoria.data.source.local.sugar.SugarConfigRepository;
+import br.com.bg7.appvistoria.data.source.local.ormlite.OrmLiteConfigRepository;
 import br.com.bg7.appvistoria.data.source.local.sugar.SugarWorkOrderRepository;
 import br.com.bg7.appvistoria.workorder.WorkOrderFragment;
 import br.com.bg7.appvistoria.workorder.WorkOrderPresenter;
@@ -33,7 +34,7 @@ public class ConfigActivity extends BaseActivity {
     private Menu menu = null;
 
     private final SugarWorkOrderRepository workOrderRepository = new SugarWorkOrderRepository();
-    private final SugarConfigRepository configRepository = new SugarConfigRepository();
+    private final ConfigRepository configRepository = new OrmLiteConfigRepository(getConfigDao());
     private final ResourcesLanguageRepository languageRepository = new ResourcesLanguageRepository(this);
 
     @Override

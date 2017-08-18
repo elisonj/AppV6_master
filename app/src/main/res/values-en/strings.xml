@@ -1,5 +1,5 @@
-<resources>
-    <string name="app_name">AppVistoria</string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Mobile Asset Inspection</string>
 
     <string name="menu_visita">VISIT</string>
     <string name="menu_sync">SYNC</string>
@@ -10,7 +10,7 @@
     <string name="login">LOGIN</string>
     <string name="error">Error</string>
     <string name="confirm">CONFIRM</string>
-    <string name="cancel">CANCEL</string>
+    <string name="cancel" tools:ignore="ButtonCase">CANCEL</string> <!-- No layout esta em maiusculas -->
     <string name="logout">LOGOUT</string>
     <string name="exit_app">Exit application</string>
     <string name="language_pt">Portuguese (Brazil)</string>
