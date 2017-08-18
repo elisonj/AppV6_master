@@ -127,7 +127,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     @Override
     public void setLanguages(List<Language> languageList) {
         ArrayAdapter<Language> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, languageList);
-        this.languageSpinner.setAdapter(adapter);
+        languageSpinner.setAdapter(adapter);
 
         languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
