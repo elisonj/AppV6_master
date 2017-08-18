@@ -4,6 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ import br.com.bg7.appvistoria.workorder.WorkOrderStatus;
  */
 @DatabaseTable(tableName = "workorders")
 public class WorkOrder {
+
+    private static final int MAX_SIZE_SHORT_SUMMARY = 54;
 
     @DatabaseField(generatedId = true)
     private Long id;
@@ -63,6 +66,11 @@ public class WorkOrder {
     }
 
     public String getShortSummary() {
+
+        if(shortSummary.length() > MAX_SIZE_SHORT_SUMMARY) {
+            shortSummary = ellipsizeShortSummary();
+        }
+
         return shortSummary;
     }
 
@@ -72,5 +80,23 @@ public class WorkOrder {
 
     public WorkOrderStatus getStatus() {
         return status;
+    }
+
+    private String ellipsizeShortSummary() {
+
+        String text = shortSummary.substring(0, MAX_SIZE_SHORT_SUMMARY);
+        text = text.substring(0, text.lastIndexOf(" "));
+
+        String numeric = text.substring(text.lastIndexOf(" "));
+        if(StringUtils.isNumeric(numeric.trim())) {
+            text = text.substring(0, text.lastIndexOf(" "));
+        }
+
+        if(text.endsWith(",")) {
+            text = text.substring(0, text.length()-1);
+        }
+
+        text = text+"...";
+        return text;
     }
 }

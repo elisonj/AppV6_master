@@ -6,13 +6,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,39 +127,6 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                 listView.getFirstVisiblePosition());
     }
 
-
-    public void doEllipse(final TextView tv) {
-
-        if (tv.getTag() == null) {
-            tv.setTag(tv.getText());
-        }
-        ViewTreeObserver vto = tv.getViewTreeObserver();
-
-        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-
-                ViewTreeObserver obs = tv.getViewTreeObserver();
-                obs.removeOnPreDrawListener(this);
-                String text = tv.getLayout().getText().toString();
-                int textIndex = text.indexOf("…");
-                if (textIndex > 0) {
-                    text = text.substring(0, textIndex);
-                    text = text.substring(0, text.lastIndexOf(" "));
-
-                    String numeric = text.substring(text.lastIndexOf(" "));
-                    if(StringUtils.isNumeric(numeric.trim())) {
-                        text = text.substring(0, text.lastIndexOf(" "));
-                    }
-                    text = text+"...";
-                    tv.setText(text);
-                }
-                return false;
-            }
-        });
-    }
-
-
     private class WorkOrderAdapter extends BaseAdapter {
 
          private WorkOrder highlightWorkOrder = null;
@@ -237,7 +201,6 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              }
              holder.name.setText(item.getName());
              holder.shortSummary.setText(item.getShortSummary());
-             doEllipse(holder.shortSummary);
 
              holder.status.setText(item.getStatus().toString());
              configureListeners(holder, position);
