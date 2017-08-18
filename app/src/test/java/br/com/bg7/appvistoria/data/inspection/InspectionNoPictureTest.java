@@ -123,11 +123,11 @@ public class InspectionNoPictureTest extends InspectionTestBase {
     }
 
     private void makeInspectionServiceSucceed() {
-        makeInspectionServiceRespondWith(SUCCESS);
+        makeInspectionServiceRespondWith(PRODUCT_SUCCESS);
     }
 
     private void makeInspectionServiceError() {
-        makeInspectionServiceRespondWith(ERROR_400);
+        makeInspectionServiceRespondWith(PRODUCT_ERROR_400);
     }
 
     private void makeInspectionServiceRespondWith(HttpResponse<ProductResponse> response) {

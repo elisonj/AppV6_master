@@ -10,6 +10,7 @@ import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.source.remote.InspectionService;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
+import br.com.bg7.appvistoria.data.source.remote.dto.PictureResponse;
 import br.com.bg7.appvistoria.data.source.remote.dto.ProductResponse;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpProgressCallback;
 
@@ -30,6 +31,9 @@ class InspectionTestBase {
 
     @Captor
     ArgumentCaptor<HttpProgressCallback<ProductResponse>> productServiceCallback;
+
+    @Captor
+    ArgumentCaptor<HttpProgressCallback<PictureResponse>> pictureServiceCallback;
 
     @Before
     public void setUp() {

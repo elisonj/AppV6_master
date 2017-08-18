@@ -42,12 +42,11 @@ public class Inspection {
     }
 
     public boolean canSyncProduct() {
-        // TODO: return syncStatus == SyncStatus.PICTURES_SYNCED;
-        return pictures.size() == 0;
+        return pictures.size() == 0 || syncStatus == SyncStatus.PICTURES_SYNCED;
     }
 
     public boolean canSyncPictures() {
-        return pictures.size() > 0 && syncStatus != SyncStatus.PICTURES_BEING_SYNCED;
+        return pictures.size() > 0 && syncStatus != SyncStatus.PICTURES_BEING_SYNCED && syncStatus != SyncStatus.PICTURES_SYNCED;
         // TODO: && (syncStatus == SyncStatus.READY || syncStatus == SyncStatus.PICTURES_BEING_SYNCED);
     }
 
