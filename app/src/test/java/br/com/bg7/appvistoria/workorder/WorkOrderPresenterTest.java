@@ -1,5 +1,8 @@
 package br.com.bg7.appvistoria.workorder;
 
+import junit.framework.Assert;
+
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
@@ -7,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,6 +36,11 @@ public class WorkOrderPresenterTest {
 
     private static final User USER = new User("username", "token", "pwd");
 
+    private List<WorkOrder> workOrderList = new ArrayList<>();
+    private WorkOrder ob1 = new WorkOrder("Projeto 1", "Resumo completo - 50 carros, 30 motos, 20 caminhões, 13 vans, 5 empilhadeiras, 1 trator", WorkOrderStatus.IN_PROGRESS);
+    private WorkOrder ob2 = new WorkOrder("Projeto 2", "Resumo completo --- 50 carros, 30 motos, 20 caminhões, 13 vans, 5 empilhadeiras, 1 trator", WorkOrderStatus.COMPLETED);
+    private WorkOrder ob3 = new WorkOrder("Projeto 3", "Resumo completo ------ 50 carros, 30 motos, 20 caminhões, 13 vans, 5 empilhadeiras, 1 trator", WorkOrderStatus.NOT_STARTED);
+
     @Mock
     WorkOrderContract.View workOrderView;
 
@@ -55,6 +64,10 @@ public class WorkOrderPresenterTest {
 
         Auth.configure(authFacade);
         authFacade.fakeLogin(USER);
+
+        workOrderList.add(ob1);
+        workOrderList.add(ob2);
+        workOrderList.add(ob3);
 
         workOrderPresenter =  new WorkOrderPresenter(fakeWorkOrderRepository, workOrderView, configRepository);
 
@@ -90,6 +103,21 @@ public class WorkOrderPresenterTest {
         workOrderPresenter.hideInfoClicked(workOrder);
         verify(workOrderView).shrinkInfoPanel(workOrder);
         verify(workOrderView).removeInfoButtonHighlight(workOrder);
+    }
+
+    @Test
+    public void shouldCropShortSummary() {
+        for (WorkOrder workOrder: workOrderList) {
+            Assert.assertTrue(workOrder.getShortSummary().length() <= WorkOrder.MAX_SIZE_SHORT_SUMMARY+3);
+        }
+    }
+
+    @Test
+    public void shouldShortSummaryNotEndWithNumeric() {
+        for (WorkOrder workOrder: workOrderList) {
+            String lastElement = workOrder.getShortSummary().substring(workOrder.getShortSummary().lastIndexOf(" "), workOrder.getShortSummary().length()-3);
+            Assert.assertFalse(StringUtils.isNumeric(lastElement.trim()));
+        }
     }
 
     private void showInitialItems() {

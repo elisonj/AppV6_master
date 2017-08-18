@@ -17,15 +17,15 @@ public class FakeWorkOrderRepository extends FakeRepository<String, WorkOrder> i
     public List<WorkOrder> findAllOrderByStatus(String language) {
 
         List<WorkOrder> workOrderList = new ArrayList<>();
-        WorkOrder ob1 = new WorkOrder("Projeto 1", "Resumo completo", "Resumo 1", WorkOrderStatus.IN_PROGRESS);
-        WorkOrder ob2 = new WorkOrder("Projeto 2", "Resumo completo", "Resumo 2", WorkOrderStatus.COMPLETED);
-        WorkOrder ob3 = new WorkOrder("Projeto 3", "Resumo completo", "Resumo 3", WorkOrderStatus.NOT_STARTED);
-        WorkOrder ob4 = new WorkOrder("Projeto 4", "Resumo completo", "Resumo 4", WorkOrderStatus.IN_PROGRESS);
-        WorkOrder ob5 = new WorkOrder("Projeto 5", "Resumo completo", "Resumo 5", WorkOrderStatus.COMPLETED);
-        WorkOrder ob6 = new WorkOrder("Projeto 6", "Resumo completo", "Resumo 6", WorkOrderStatus.NOT_STARTED);
-        WorkOrder ob7 = new WorkOrder("Projeto 7", "Resumo completo", "Resumo 7", WorkOrderStatus.IN_PROGRESS);
-        WorkOrder ob8 = new WorkOrder("Projeto 8", "Resumo completo", "Resumo 8", WorkOrderStatus.COMPLETED);
-        WorkOrder ob9 = new WorkOrder("Projeto 9", "Resumo completo", "Resumo 9", WorkOrderStatus.NOT_STARTED);
+        WorkOrder ob1 = new WorkOrder("Projeto 1", "Resumo completo",  WorkOrderStatus.IN_PROGRESS);
+        WorkOrder ob2 = new WorkOrder("Projeto 2", "Resumo completo",  WorkOrderStatus.COMPLETED);
+        WorkOrder ob3 = new WorkOrder("Projeto 3", "Resumo completo",  WorkOrderStatus.NOT_STARTED);
+        WorkOrder ob4 = new WorkOrder("Projeto 4", "Resumo completo",  WorkOrderStatus.IN_PROGRESS);
+        WorkOrder ob5 = new WorkOrder("Projeto 5", "Resumo completo",  WorkOrderStatus.COMPLETED);
+        WorkOrder ob6 = new WorkOrder("Projeto 6", "Resumo completo",  WorkOrderStatus.NOT_STARTED);
+        WorkOrder ob7 = new WorkOrder("Projeto 7", "Resumo completo",  WorkOrderStatus.IN_PROGRESS);
+        WorkOrder ob8 = new WorkOrder("Projeto 8", "Resumo completo",  WorkOrderStatus.COMPLETED);
+        WorkOrder ob9 = new WorkOrder("Projeto 9", "Resumo completo",  WorkOrderStatus.NOT_STARTED);
 
         workOrderList.add(ob1);
         workOrderList.add(ob2);

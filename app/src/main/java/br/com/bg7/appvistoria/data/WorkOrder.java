@@ -19,7 +19,7 @@ import br.com.bg7.appvistoria.workorder.WorkOrderStatus;
 @DatabaseTable(tableName = "workorders")
 public class WorkOrder {
 
-    private static final int MAX_SIZE_SHORT_SUMMARY = 54;
+    public static final int MAX_SIZE_SHORT_SUMMARY = 54;
 
     @DatabaseField(generatedId = true)
     private Long id;
@@ -54,10 +54,10 @@ public class WorkOrder {
     @SuppressWarnings("unused")
     public WorkOrder() {}
 
-    public WorkOrder(String name,String summary, String shortSummary, WorkOrderStatus status) {
+    public WorkOrder(String name,String summary, WorkOrderStatus status) {
         this.name = name;
         this.summary = summary;
-        this.shortSummary = shortSummary;
+        this.shortSummary = ellipsizeShortSummary(summary);
         this.status = status;
     }
 
@@ -66,11 +66,6 @@ public class WorkOrder {
     }
 
     public String getShortSummary() {
-
-        if(shortSummary.length() > MAX_SIZE_SHORT_SUMMARY) {
-            shortSummary = ellipsizeShortSummary();
-        }
-
         return shortSummary;
     }
 
@@ -82,9 +77,9 @@ public class WorkOrder {
         return status;
     }
 
-    private String ellipsizeShortSummary() {
+    private String ellipsizeShortSummary(String summary) {
 
-        String text = shortSummary.substring(0, MAX_SIZE_SHORT_SUMMARY);
+        String text = summary.substring(0, MAX_SIZE_SHORT_SUMMARY);
         text = text.substring(0, text.lastIndexOf(" "));
 
         String numeric = text.substring(text.lastIndexOf(" "));
