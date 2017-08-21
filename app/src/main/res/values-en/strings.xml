@@ -16,6 +16,7 @@
     <string name="language_pt">Portuguese (Brazil)</string>
     <string name="language_en">English</string>
     <string name="language">Language</string>
+    <string name="confirm_change_language">Do you want to change application\nlanguage to Portuguese (BR)?</string>
     <string name="login_error">Login failed. Please verify your user and password and try again.</string>
     <string name="validation_user_field_not_empty">User field cannot be empty.</string>
     <string name="validation_password_field_not_empty">Password cannot be empty.</string>
