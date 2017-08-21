@@ -93,6 +93,7 @@ public class Inspection {
             syncStatus = SyncStatus.PICTURES_BEING_SYNCED;
         }
 
+        // TODO: Testar callbies
         pictureService.send(picture.getFile(), this, new HttpProgressCallback<PictureResponse>() {
             @Override
             public void onProgressUpdated(double percentage) {
@@ -167,6 +168,7 @@ public class Inspection {
         });
     }
 
+    // TODO: Não permitir mais isso se a sincronização já tiver começado. Note que temos que impedir o retorno a READY.
     public synchronized void addImageToSync(File image) {
         if (syncStatus != SyncStatus.READY) {
             throw new IllegalStateException("Cannot add images to an inspection that started syncing");
