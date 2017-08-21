@@ -88,30 +88,50 @@ class InspectionTestBase {
     }
 
     void makePictureServiceSucceed() {
-        makePictureServiceRespondWith(PICTURE_SUCCESS);
+        makePictureServiceSucceed(pictureServiceCallback);
     }
 
     void makePictureServiceError() {
-        makePictureServiceRespondWith(PICTURE_ERROR_400);
+        makePictureServiceError(pictureServiceCallback);
     }
 
     void makePictureServiceRespondNull() {
-        makePictureServiceRespondWith(null);
+        makePictureServiceRespondNull(pictureServiceCallback);
     }
 
     void makePictureServiceUpdateProgressTo(int progress) {
-        verify(pictureService).send(eq(PICTURE), eq(inspection), pictureServiceCallback.capture());
-        pictureServiceCallback.getValue().onProgressUpdated(progress);
+        makePictureServiceUpdateProgressTo(progress, pictureServiceCallback);
     }
 
     void makePictureServiceFail() {
-        verify(pictureService).send(eq(PICTURE), eq(inspection), pictureServiceCallback.capture());
-        pictureServiceCallback.getValue().onFailure(new IOException());
+        makePictureServiceFail(pictureServiceCallback);
     }
 
-    private void makePictureServiceRespondWith(HttpResponse<PictureResponse> response) {
-        verify(pictureService).send(eq(PICTURE), eq(inspection), pictureServiceCallback.capture());
-        pictureServiceCallback.getValue().onResponse(response);
+    void makePictureServiceSucceed(ArgumentCaptor<HttpProgressCallback<PictureResponse>> captor) {
+        makePictureServiceRespondWith(PICTURE_SUCCESS, captor);
+    }
+
+    void makePictureServiceError(ArgumentCaptor<HttpProgressCallback<PictureResponse>> captor) {
+        makePictureServiceRespondWith(PICTURE_ERROR_400, captor);
+    }
+
+    private void makePictureServiceRespondNull(ArgumentCaptor<HttpProgressCallback<PictureResponse>> captor) {
+        makePictureServiceRespondWith(null, captor);
+    }
+
+    private void makePictureServiceUpdateProgressTo(int progress, ArgumentCaptor<HttpProgressCallback<PictureResponse>> captor) {
+        verify(pictureService).send(eq(PICTURE), eq(inspection), captor.capture());
+        captor.getValue().onProgressUpdated(progress);
+    }
+
+    private void makePictureServiceFail(ArgumentCaptor<HttpProgressCallback<PictureResponse>> captor) {
+        verify(pictureService).send(eq(PICTURE), eq(inspection), captor.capture());
+        captor.getValue().onFailure(new IOException());
+    }
+
+    private void makePictureServiceRespondWith(HttpResponse<PictureResponse> response, ArgumentCaptor<HttpProgressCallback<PictureResponse>> captor) {
+        verify(pictureService).send(eq(PICTURE), eq(inspection), captor.capture());
+        captor.getValue().onResponse(response);
     }
 
     void makeInspectionServiceSucceed() {
