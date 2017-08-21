@@ -24,4 +24,21 @@ public class InspectionOneSyncedPictureTest extends InspectionTestBase {
         checkThatCannotSyncPictures();
         checkThatCanSyncProduct();
     }
+
+    @Test(expected = IllegalStateException.class)
+    public void shouldNotAllowSyncPicturesAfterAllPicturesSynced() {
+        startPictureSync();
+    }
+
+    @Test
+    public void resetShouldNotChangeStatus() {
+        inspection.reset();
+
+        checkStatusIsPicturesSynced();
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void shouldNotAllowAddingPicturesAfterSyncStarts() {
+        inspection.addImageToSync(PICTURE);
+    }
 }

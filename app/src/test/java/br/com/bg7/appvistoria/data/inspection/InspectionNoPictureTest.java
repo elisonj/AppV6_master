@@ -91,11 +91,11 @@ public class InspectionNoPictureTest extends InspectionTestBase {
 
     @Test
     public void shouldChangeStatusToReadyWhenProductSyncStartedWithNoPictures() {
-        startProductSync();
+        startProductSync(); // Vai para INSPECTION_BEING_SYNCED
 
         inspection.reset();
 
-        checkStatusIsReady();
+        checkStatusIsReady(); // Verifica que volta para READY
     }
 
     @Test

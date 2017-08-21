@@ -142,6 +142,10 @@ public class Inspection {
     }
 
     public synchronized void addImageToSync(File image) {
+        if (syncStatus != SyncStatus.READY) {
+            throw new IllegalStateException("Cannot add images to an inspection that started syncing");
+        }
+
         image = checkNotNull(image);
 
         Picture picture = new Picture(this, image);
