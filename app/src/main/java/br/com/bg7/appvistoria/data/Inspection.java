@@ -8,6 +8,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.annotation.Nonnull;
+
 import br.com.bg7.appvistoria.data.source.remote.InspectionService;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
@@ -66,6 +68,14 @@ public class Inspection {
         return false;
     }
 
+    /**
+     * Send a single picture via a {@code PictureService}
+     *
+     * TODO: Pensar nos potenciais perigos de multithreading em setar status aqui e no onResponse/onFailure
+     *
+     * @param pictureService the picture service where the file should be sent to
+     * @param syncCallback a callback that will be invoked for progress, success or failure
+     */
     public synchronized void sync(PictureService pictureService, final SyncCallback syncCallback) {
         pictureService = checkNotNull(pictureService, "pictureService cannot be null");
         if (syncCallback == null) {
@@ -76,17 +86,12 @@ public class Inspection {
             throw new IllegalStateException("Cannot sync Pictures when status is " + syncStatus);
         }
 
-        final Picture picture = getNextImageReady();
+        final Picture picture = getNextPicture();
+        picture.setSyncStatus(PictureSyncStatus.BEING_SYNCED);
 
-        if (picture == null) {
-            throw new IllegalStateException("No Pictures to send ");
-        }
-
-        // TODO: Pensar nos potenciais perigos de multithreading em setar status aqui e no onResponse/onFailure
         if (syncStatus == SyncStatus.READY) {
             syncStatus = SyncStatus.PICTURES_BEING_SYNCED;
         }
-        picture.setSyncStatus(PictureSyncStatus.BEING_SYNCED);
 
         pictureService.send(picture.getFile(), this, new HttpProgressCallback<PictureResponse>() {
             @Override
@@ -179,7 +184,7 @@ public class Inspection {
 
     public void reset() {
         for (Picture picture : pictures) {
-            if(picture.getSyncStatus() == PictureSyncStatus.BEING_SYNCED) {
+            if (picture.getSyncStatus() == PictureSyncStatus.BEING_SYNCED) {
                 picture.setSyncStatus(PictureSyncStatus.NOT_STARTED);
             }
         }
@@ -196,19 +201,20 @@ public class Inspection {
 
     private int countImagesNotDone() {
         int countImagesNotDone = 0;
-        for(Picture picture : pictures) {
-            if(picture.getSyncStatus() != PictureSyncStatus.DONE) countImagesNotDone++;
+        for (Picture picture : pictures) {
+            if (picture.getSyncStatus() != PictureSyncStatus.DONE) countImagesNotDone++;
         }
         return countImagesNotDone;
     }
 
-    private Picture getNextImageReady() {
-        if(pictures.size() <= 0) return null;
-
-        for(Picture picture : pictures) {
-            if(picture.getSyncStatus() == PictureSyncStatus.NOT_STARTED)
+    @Nonnull
+    private Picture getNextPicture() {
+        for (Picture picture : pictures) {
+            if (picture.getSyncStatus() == PictureSyncStatus.NOT_STARTED)
                 return picture;
         }
-        return null;
+
+        // Should never reach this because we check for at least one NOT_STARTED before calling this
+        throw new IllegalStateException("Erro crítico: próxima imagem para sync não encontrada!");
     }
 }

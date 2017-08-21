@@ -1,7 +1,5 @@
 package br.com.bg7.appvistoria.data.inspection;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
 
 /**
