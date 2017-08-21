@@ -41,10 +41,22 @@ public class Inspection {
         // used by ormlite
     }
 
+    /**
+     * Checks if syncing the product is allowed
+     *
+     * @return true if all pictures are synced (or there are no pictures to sync) and
+     * false if any pictures are still syncing
+     */
     public boolean canSyncProduct() {
         return pictures.size() == 0 || syncStatus == SyncStatus.PICTURES_SYNCED;
     }
 
+    /**
+     * Checks if syncing pictures is allowed
+     *
+     * @return true if there are any pictures to sync, false if pictures are all whether
+     * currently in progress or completed
+     */
     public boolean canSyncPictures() {
         for (Picture picture : pictures) {
             if (picture.getSyncStatus() == PictureSyncStatus.NOT_STARTED)
