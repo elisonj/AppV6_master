@@ -56,4 +56,15 @@ public class InspectionOneSyncedPictureTest extends InspectionTestBase {
     public void shouldNotAllowSyncPicturesWithNoPicturesToSync() {
         startPictureSync();
     }
+
+    @Test
+    public void shouldResetToPicturesSyncedWhenProductFails() {
+        startProductSync();
+        makeInspectionServiceFail();
+        checkStatusIsFailed();
+
+        inspection.reset();
+
+        checkStatusIsPicturesSynced();
+    }
 }

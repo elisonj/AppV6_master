@@ -192,11 +192,20 @@ public class Inspection {
         }
 
         if (syncStatus == SyncStatus.INSPECTION_BEING_SYNCED) {
-            syncStatus = SyncStatus.READY;
-            // TODO: syncStatus = SyncStatus.PICTURES_SYNCED;
+            if (!canSyncPictures()) {
+                syncStatus = SyncStatus.READY;
+                return;
+            }
+
+            syncStatus = SyncStatus.PICTURES_SYNCED;
         }
 
         if (syncStatus == SyncStatus.FAILED) {
+            if (!canSyncPictures()) {
+                syncStatus = SyncStatus.PICTURES_SYNCED;
+                return;
+            }
+
             syncStatus = SyncStatus.READY;
         }
     }
