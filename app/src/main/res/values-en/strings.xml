@@ -24,6 +24,12 @@
     <string name="logo_superbid">Logo Superbid</string>
     <string name="ico_user">icon user</string>
     <string name="ico_password">icon password</string>
+    <string name="ico_more_info">icon more info</string>
+    <string name="ico_inspections">icon inspection</string>
+
+    <string name="status_in_progress">IN PROGRESS</string>
+    <string name="status_completed">COMPLETED</string>
+    <string name="status_not_started">NOT STARTED</string>
 
 
     <string name="see">SEE</string>

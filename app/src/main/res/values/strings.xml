@@ -22,8 +22,14 @@
     <string name="validation_password_field_not_empty">Preencha o campo Senha para continuar.</string>
     <string name="validation_password_dont_match">A senha inserida está incorreta. Por favor, tente novamente.</string>
     <string name="logo_superbid">Logo Superbid</string>
-    <string name="ico_user">icon user</string>
+    <string name="ico_user">icon usuário</string>
     <string name="ico_password">icon password</string>
+    <string name="ico_more_info">icon + info</string>
+    <string name="ico_inspections">icon inspeções</string>
+
+    <string name="status_in_progress">ANDAMENTO</string>
+    <string name="status_completed">COMPLETA</string>
+    <string name="status_not_started">A INICIAR</string>
 
     <string name="see">VER</string>
     <string name="more_info">+INFOS</string>

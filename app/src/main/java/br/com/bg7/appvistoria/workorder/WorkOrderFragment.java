@@ -31,6 +31,9 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     private ListView listView;
     private WorkOrderAdapter adapter;
 
+    private static final int MAX_SIZE_TEXT_INFO = 12;
+    private static final int MAX_SIZE_TEXT_INSPECTION = 22;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -48,7 +51,6 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     public void onResume() {
         super.onResume();
         workOrderPresenter.start();
-   //     workOrderPresenter.search("");
     }
 
     @Override
@@ -102,7 +104,6 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
             summary.setVisibility(View.GONE);
         }
             getAdapter().setHighlightWorkOrder(null);
-
     }
 
     private void showSummary(WorkOrder workOrder){
@@ -175,6 +176,8 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                  holder.date = convertView.findViewById(R.id.date);
                  holder.inspections = convertView.findViewById(R.id.inspections);
                  holder.moreInfo = convertView.findViewById(R.id.more_info);
+                 holder.inspectionsText = convertView.findViewById(R.id.inspections_text);
+                 holder.moreInfoText = convertView.findViewById(R.id.more_info_text);
                  convertView.setTag(holder);
              }
 
@@ -193,20 +196,31 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              if(item == null) {
                 return;
              }
+
+             holder.moreInfoText.setVisibility(View.VISIBLE);
+             holder.inspectionsText.setVisibility(View.VISIBLE);
              holder.summary.setVisibility(View.GONE);
              holder.moreInfo.setBackgroundColor(Color.TRANSPARENT);
+
+             holder.name.setText(item.getName());
+             holder.shortSummary.setText(item.getShortSummary());
+             holder.date.setText(item.getEndAt(((LocalizationActivity)getActivity()).getLocale()));
+             holder.status.setText(item.getStatus().toString());
 
              if(item.equals(highlightWorkOrder)) {
                  holder.summary.setText(item.getSummary());
                  holder.summary.setVisibility(View.VISIBLE);
                  holder.moreInfo.setBackgroundColor(Color.GRAY);
              }
-             holder.name.setText(item.getName());
-             holder.shortSummary.setText(item.getShortSummary());
 
-             holder.date.setText(item.getEndAt(((LocalizationActivity)getActivity()).getLocale()));
+             if(item.getStatus().toString().length() >= MAX_SIZE_TEXT_INFO) {
+                 holder.moreInfoText.setVisibility(View.GONE);
+             }
 
-             holder.status.setText(item.getStatus().toString());
+             if(item.getStatus().toString().length() >= MAX_SIZE_TEXT_INSPECTION) {
+                 holder.inspectionsText.setVisibility(View.GONE);
+             }
+
              configureListeners(holder, position);
          }
 
@@ -239,7 +253,9 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              TextView status;
              TextView date;
              LinearLayout inspections;
+             LinearLayout inspectionsText;
              LinearLayout moreInfo;
+             LinearLayout moreInfoText;
          }
 
     }
