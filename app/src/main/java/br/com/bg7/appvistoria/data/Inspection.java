@@ -56,7 +56,7 @@ public class Inspection {
         }
 
         if (!canSyncPictures()) {
-            throw new IllegalStateException("Cannot sync Pictures when status is "+syncStatus);
+            throw new IllegalStateException("Cannot sync Pictures when status is " + syncStatus);
         }
 
         final Picture picture = getNextImageReady();
@@ -66,7 +66,9 @@ public class Inspection {
         }
 
         // TODO: Pensar nos potenciais perigos de multithreading em setar status aqui e no onResponse/onFailure
-        syncStatus = SyncStatus.PICTURES_BEING_SYNCED;
+        if (syncStatus == SyncStatus.READY) {
+            syncStatus = SyncStatus.PICTURES_BEING_SYNCED;
+        }
         picture.setSyncStatus(PictureSyncStatus.BEING_SYNCED);
 
         pictureService.send(picture.getFile(), this, new HttpProgressCallback<PictureResponse>() {
