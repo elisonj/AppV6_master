@@ -79,4 +79,50 @@ public class InspectionOnePictureTest extends InspectionTestBase {
         checkThatCanSyncPictures();
         checkThatCannotSyncProduct();
     }
+
+    @Test
+    public void shouldHaveStatusReadyWhenResetFromReady() {
+        inspection.reset();
+        checkStatusIsReady();
+    }
+
+    @Test
+    public void shouldHaveStatusBeingSyncedWhenResetMidSync() {
+        startPictureSync();
+
+        makePictureServiceUpdateProgressTo(10);
+        inspection.reset();
+
+        checkStatusIsPicturesBeingSynced();
+    }
+
+    @Test
+    public void shouldHaveStatusBeingSyncedWhenResetAfterError() {
+        startPictureSync();
+
+        makePictureServiceError();
+        inspection.reset();
+
+        checkStatusIsReady();
+    }
+
+    @Test
+    public void shouldHaveStatusBeingSyncedWhenResetAfterFailure() {
+        startPictureSync();
+
+        makePictureServiceFail();
+        inspection.reset();
+
+        checkStatusIsReady();
+    }
+
+    @Test
+    public void shouldHaveStatusBeingSyncedWhenResetAfterNullResponse() {
+        startPictureSync();
+
+        makePictureServiceRespondNull();
+        inspection.reset();
+
+        checkStatusIsReady();
+    }
 }

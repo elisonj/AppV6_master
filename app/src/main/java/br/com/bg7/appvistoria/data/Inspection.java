@@ -153,14 +153,19 @@ public class Inspection {
     }
 
     public void reset() {
-        for(Picture picture : pictures) {
+        for (Picture picture : pictures) {
             if(picture.getSyncStatus() == PictureSyncStatus.BEING_SYNCED) {
                 picture.setSyncStatus(PictureSyncStatus.NOT_STARTED);
             }
         }
-        if(syncStatus == SyncStatus.INSPECTION_BEING_SYNCED) {
+
+        if (syncStatus == SyncStatus.INSPECTION_BEING_SYNCED) {
             syncStatus = SyncStatus.READY;
             // TODO: syncStatus = SyncStatus.PICTURES_SYNCED;
+        }
+
+        if (syncStatus == SyncStatus.FAILED) {
+            syncStatus = SyncStatus.READY;
         }
     }
 
