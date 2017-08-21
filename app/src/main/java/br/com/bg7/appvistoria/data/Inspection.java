@@ -32,8 +32,8 @@ public class Inspection {
     @DatabaseField(generatedId = true)
     private Long id;
 
-    @DatabaseField(index = true, canBeNull = false)
-    private SyncStatus syncStatus = SyncStatus.READY;
+    @DatabaseField(index = true)
+    private SyncStatus syncStatus;
 
     @ForeignCollectionField
     private Collection<Picture> pictures = new ArrayList<>();
@@ -50,7 +50,7 @@ public class Inspection {
      * false if any pictures are still syncing
      */
     public boolean canSyncProduct() {
-        return pictures.size() == 0 || syncStatus == SyncStatus.PICTURES_SYNCED;
+        return syncStatus != null && (pictures.size() == 0 || syncStatus == SyncStatus.PICTURES_SYNCED);
     }
 
     /**
@@ -60,12 +60,20 @@ public class Inspection {
      * currently in progress or completed
      */
     public boolean canSyncPictures() {
+        if (syncStatus == null) {
+            return false;
+        }
+
         for (Picture picture : pictures) {
             if (picture.getSyncStatus() == PictureSyncStatus.NOT_STARTED)
                 return true;
         }
 
         return false;
+    }
+
+    public void readyToSync() {
+        syncStatus = SyncStatus.READY;
     }
 
     /**
@@ -168,9 +176,8 @@ public class Inspection {
         });
     }
 
-    // TODO: Não permitir mais isso se a sincronização já tiver começado. Note que temos que impedir o retorno a READY.
     public synchronized void addImageToSync(File image) {
-        if (syncStatus != SyncStatus.READY) {
+        if (syncStatus != null) {
             throw new IllegalStateException("Cannot add images to an inspection that started syncing");
         }
 
@@ -192,12 +199,12 @@ public class Inspection {
         }
 
         if (syncStatus == SyncStatus.INSPECTION_BEING_SYNCED) {
-            if (!canSyncPictures()) {
-                syncStatus = SyncStatus.READY;
+            if (pictures.size() > 0) {
+                syncStatus = SyncStatus.PICTURES_SYNCED;
                 return;
             }
 
-            syncStatus = SyncStatus.PICTURES_SYNCED;
+            syncStatus = SyncStatus.READY;
         }
 
         if (syncStatus == SyncStatus.FAILED) {

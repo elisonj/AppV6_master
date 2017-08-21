@@ -13,6 +13,12 @@ public class InspectionOnePictureTest extends InspectionTestBase {
     public void setUp() {
         super.setUp();
         inspection.addImageToSync(PICTURE);
+        inspection.readyToSync();
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void shouldNotAllowSyncProductWithPendingPictures() {
+        startProductSync();
     }
 
     @Test

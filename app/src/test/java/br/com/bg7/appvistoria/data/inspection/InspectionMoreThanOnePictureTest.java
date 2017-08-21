@@ -26,6 +26,8 @@ public class InspectionMoreThanOnePictureTest extends InspectionTestBase {
         inspection.addImageToSync(PICTURE);
         inspection.addImageToSync(PICTURE);
 
+        inspection.readyToSync();
+
         startPictureSync();
         makePictureServiceSucceed();
         reset(pictureService);
@@ -68,5 +70,16 @@ public class InspectionMoreThanOnePictureTest extends InspectionTestBase {
         checkStatusIsFailed();
         checkThatCanSyncPictures();
         checkThatCannotSyncProduct();
+    }
+
+    @Test
+    public void shouldChangeStatusToPicturesSyncedWhenResetAfterProductSyncStartedWithPictures() {
+        startPictureSync();
+        makePictureServiceSucceed(secondPictureServiceCallback);
+        startProductSync();
+
+        inspection.reset();
+
+        checkStatusIsPicturesSynced();
     }
 }

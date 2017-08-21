@@ -23,10 +23,17 @@ public class InspectionUncommonStatusTransitionsTest extends InspectionTestBase 
     ArgumentCaptor<HttpProgressCallback<PictureResponse>> thirdPictureServiceCallback;
 
     @Test
+    public void shouldNotBeAbleToSyncAnythingBeforeReady() {
+        checkThatCannotSyncAnything();
+    }
+
+    @Test
     public void shouldHaveStatusFailedEvenWhenNextOneSucceeds() {
         inspection.addImageToSync(PICTURE);
         inspection.addImageToSync(PICTURE);
         inspection.addImageToSync(PICTURE);
+
+        inspection.readyToSync();
 
         startPictureSync();
         makePictureServiceSucceed();

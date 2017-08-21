@@ -1,5 +1,6 @@
 package br.com.bg7.appvistoria.data.inspection;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -7,6 +8,13 @@ import org.junit.Test;
  * Date: 2017-08-02
  */
 public class InspectionNoPictureTest extends InspectionTestBase {
+
+    @Before
+    public void setUp() {
+        super.setUp();
+
+        inspection.readyToSync();
+    }
 
     @Test
     public void shouldInitializeWithStatusReady() {
@@ -88,7 +96,7 @@ public class InspectionNoPictureTest extends InspectionTestBase {
     }
 
     @Test
-    public void shouldChangeStatusToReadyWhenProductSyncStartedWithNoPictures() {
+    public void shouldChangeStatusToReadyWhenResetAfterProductSyncStartedWithNoPictures() {
         startProductSync(); // Vai para INSPECTION_BEING_SYNCED
 
         inspection.reset();

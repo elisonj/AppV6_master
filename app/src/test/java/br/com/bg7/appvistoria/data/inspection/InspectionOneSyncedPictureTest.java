@@ -14,6 +14,9 @@ public class InspectionOneSyncedPictureTest extends InspectionTestBase {
     public void setUp() {
         super.setUp();
         inspection.addImageToSync(PICTURE);
+
+        inspection.readyToSync();
+
         startPictureSync();
         makePictureServiceSucceed();
     }
