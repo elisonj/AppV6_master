@@ -17,12 +17,12 @@ public class InspectionNoPictureTest extends InspectionTestBase {
 
     @Test
     public void shouldNotBeAbleToSyncPicturesWithNoPictures() {
-        Assert.assertFalse(inspection.canSyncPictures());
+        checkThatCannotSyncPictures();
     }
 
     @Test
     public void shouldBeAbleToSyncProductWithNoPictures() {
-        Assert.assertTrue(inspection.canSyncProduct());
+        checkThatCanSyncProduct();
     }
 
     @Test(expected = IllegalStateException.class)
