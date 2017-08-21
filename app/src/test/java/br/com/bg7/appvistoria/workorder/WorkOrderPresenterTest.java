@@ -141,7 +141,6 @@ public class WorkOrderPresenterTest {
         verify(workOrderView).showList(ArgumentMatchers.<WorkOrder>anyList(),anyBoolean());
     }
 
-
     private void setUpLanguages() {
         List<Language> languages = Arrays.asList(
                 new Language("pt_BR", null),
