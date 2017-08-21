@@ -46,7 +46,12 @@ public class Inspection {
     }
 
     public boolean canSyncPictures() {
-        return pictures.size() > 0 && atLeastOnePictureInNotStartedStatus();
+        for (Picture picture : pictures) {
+            if (picture.getSyncStatus() == PictureSyncStatus.NOT_STARTED)
+                return true;
+        }
+
+        return false;
     }
 
     public synchronized void sync(PictureService pictureService, final SyncCallback syncCallback) {
@@ -193,14 +198,5 @@ public class Inspection {
                 return picture;
         }
         return null;
-    }
-
-    private boolean atLeastOnePictureInNotStartedStatus() {
-        for (Picture picture : pictures) {
-            if (picture.getSyncStatus() == PictureSyncStatus.NOT_STARTED)
-                return true;
-        }
-
-        return false;
     }
 }
