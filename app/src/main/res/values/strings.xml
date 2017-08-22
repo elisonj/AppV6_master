@@ -25,11 +25,11 @@
     <string name="ico_user">icon user</string>
     <string name="ico_password">icon password</string>
 
-    <string name="see">VER</string>
+    <string name="view">VER</string>
     <string name="more_info">+INFOS</string>
     <string name="hide">OCULTAR</string>
     <string name="infos">INFOS</string>
-    <string name="access">ACESSAR</string>
+    <string name="open">ACESSAR</string>
     <string name="inspection">INSPEÇÕES</string>
 
 
