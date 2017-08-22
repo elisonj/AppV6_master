@@ -44,11 +44,6 @@ public class WorkOrderPresenter implements WorkOrderContract.Presenter{
     }
 
     @Override
-    public void search(String searchTerm) {
-
-    }
-
-    @Override
     public void moreInfoClicked(WorkOrder workOrder) {
         workOrderView.highlightInfoButton(workOrder);
         workOrderView.expandInfoPanel(workOrder);
