@@ -13,6 +13,7 @@ import br.com.bg7.appvistoria.data.WorkOrder;
 interface WorkOrderContract {
 
     interface View extends BaseView<WorkOrderContract.Presenter> {
+
         void showList(List<WorkOrder> list, boolean showMapButtons);
 
         void highlightInfoButton(WorkOrder workOrder);

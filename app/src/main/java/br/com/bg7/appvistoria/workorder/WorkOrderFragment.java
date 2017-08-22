@@ -79,8 +79,13 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     @Override
     public void showList(List<WorkOrder> list, boolean showMapButtons) {
-        adapter = new WorkOrderAdapter(this, list, showMapButtons);
-        listView.setAdapter(adapter);
+        if(adapter == null) {
+            adapter = new WorkOrderAdapter(this, list, showMapButtons);
+            listView.setAdapter(adapter);
+            return;
+        }
+        adapter.setList(list);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -256,7 +261,11 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              return convertView;
          }
 
-         private void populateWidget(final Holder holder, final int position){
+        public void setList(List<WorkOrder> list) {
+            this.list = list;
+        }
+
+        private void populateWidget(final Holder holder, final int position){
 
              WorkOrder item = getItem(position);
              if(item == null) {
