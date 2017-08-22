@@ -1,5 +1,6 @@
 package br.com.bg7.appvistoria.data;
 
+import com.google.common.base.Objects;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -119,5 +120,27 @@ public class WorkOrder {
         }
 
         return text + "...";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WorkOrder workOrder = (WorkOrder) o;
+        return shortSummarySize == workOrder.shortSummarySize &&
+                Objects.equal(shortSummary, workOrder.shortSummary) &&
+                Objects.equal(id, workOrder.id) &&
+                Objects.equal(name, workOrder.name) &&
+                Objects.equal(summary, workOrder.summary) &&
+                status == workOrder.status &&
+                Objects.equal(endAt, workOrder.endAt) &&
+                Objects.equal(address, workOrder.address) &&
+                Objects.equal(externalId, workOrder.externalId) &&
+                Objects.equal(inspections, workOrder.inspections);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(shortSummarySize, shortSummary, id, name, summary, status, endAt, address, externalId, inspections);
     }
 }
