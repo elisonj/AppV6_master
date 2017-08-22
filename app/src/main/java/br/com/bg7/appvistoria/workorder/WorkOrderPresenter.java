@@ -40,7 +40,7 @@ public class WorkOrderPresenter implements WorkOrderContract.Presenter{
         String language = config.getLanguageName();
 
         List<WorkOrder> workOrderList =  workOrderRepository.findAllOrderByStatus(language);
-        workOrderView.showList(workOrderList, true);
+        workOrderView.showList(workOrderList, workOrderView.isMapAvailable());
     }
 
     @Override
@@ -58,5 +58,10 @@ public class WorkOrderPresenter implements WorkOrderContract.Presenter{
     public void hideInfoClicked(WorkOrder workOrder) {
         workOrderView.removeInfoButtonHighlight(workOrder);
         workOrderView.shrinkInfoPanel(workOrder);
+    }
+
+    @Override
+    public void openMapClicked(WorkOrder workOrder) {
+        workOrderView.showInMap(workOrder.getAddress());
     }
 }

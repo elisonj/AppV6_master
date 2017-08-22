@@ -79,7 +79,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     @Override
     public void showList(List<WorkOrder> list, boolean showMapButtons) {
-        adapter = new WorkOrderAdapter(this, list);
+        adapter = new WorkOrderAdapter(this, list, showMapButtons);
         listView.setAdapter(adapter);
     }
 
@@ -107,6 +107,20 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     @Override
     public void shrinkInfoPanel(WorkOrder workOrder) {
         hideSummary(workOrder);
+    }
+
+    @Override
+    public boolean isMapAvailable() {
+        final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MAP_ADDRESS));
+        intent.setPackage("com.google.android.apps.maps");
+
+        return (intent.resolveActivity(getActivity().getPackageManager()) != null);
+    }
+
+    @Override
+    public void showInMap(String address) {
+        final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MAP_ADDRESS + address));
+        startActivity(intent);
     }
 
     private WorkOrderAdapter getAdapter() {
@@ -176,14 +190,17 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     private class WorkOrderAdapter extends BaseAdapter {
 
+         private boolean showMapButtons;
+
          private WorkOrder highlightWorkOrder = null;
 
          private LayoutInflater inflater=null;
          private List<WorkOrder> list = new ArrayList<>();
 
-         WorkOrderAdapter(WorkOrderFragment fragment, List<WorkOrder> list) {
+         WorkOrderAdapter(WorkOrderFragment fragment, List<WorkOrder> list, boolean showMapButtons) {
              this.list = list;
              this.inflater = fragment.getLayoutInflater();
+             this.showMapButtons = showMapButtons;
          }
 
          void setHighlightWorkOrder(WorkOrder workOrder) {
@@ -254,6 +271,8 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              holder.status.setText(item.getStatus().toString());
              holder.local.setText(item.getAddress());
 
+             if(showMapButtons) holder.buttonMaps.setVisibility(View.VISIBLE);
+
              if(item.getStatus().toString().length() >= MAX_SIZE_TEXT_INFO) {
                  holder.moreInfoText.setVisibility(View.GONE);
              }
@@ -322,17 +341,14 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                 return;
             }
 
-             final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MAP_ADDRESS+ getItem(position).getAddress()));
-             intent.setPackage("com.google.android.apps.maps");
-             if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                 holder.buttonMaps.setVisibility(View.VISIBLE);
-                 holder.buttonMaps.setOnClickListener(new View.OnClickListener() {
-                     @Override
-                     public void onClick(View view) {
-                         startActivity(intent);
-                     }
-                 });
-             }
+            if(showMapButtons) {
+                holder.buttonMaps.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        workOrderPresenter.openMapClicked(list.get(position));
+                    }
+                });
+            }
          }
 
          class Holder {
