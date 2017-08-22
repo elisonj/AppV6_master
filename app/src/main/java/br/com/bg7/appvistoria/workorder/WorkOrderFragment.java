@@ -55,7 +55,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     @Override
     public void showList(List<WorkOrder> list, boolean showMapButtons) {
-        adapter = new WorkOrderAdapter(this, list);
+        adapter = new WorkOrderAdapter(list);
         listView.setAdapter(adapter);
     }
 
@@ -130,12 +130,10 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
          private WorkOrder highlightWorkOrder = null;
 
-         private LayoutInflater inflater=null;
          private List<WorkOrder> list = new ArrayList<>();
 
-         WorkOrderAdapter(WorkOrderFragment fragment, List<WorkOrder> list) {
+         WorkOrderAdapter(List<WorkOrder> list) {
              this.list = list;
-             this.inflater = fragment.getLayoutInflater();
          }
 
          void setHighlightWorkOrder(WorkOrder workOrder) {
@@ -164,7 +162,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              if (convertView == null) {
                 holder = new Holder();
 
-                 convertView = inflater.inflate(R.layout.workorder_item, parent, false);
+                 convertView = getLayoutInflater().inflate(R.layout.workorder_item, parent, false);
                  holder.name = convertView.findViewById(R.id.name);
                  holder.shortSummary = convertView.findViewById(R.id.short_summary);
                  holder.summary = convertView.findViewById(R.id.summary);
