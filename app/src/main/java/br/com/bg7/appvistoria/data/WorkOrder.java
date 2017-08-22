@@ -93,6 +93,10 @@ public class WorkOrder {
         return formatter.format(endAt.toDate());
     }
 
+    public String getAddress() {
+        return address;
+    }
+
     private String ellipsizeShortSummary(String summary) {
 
         String text = summary.substring(0, MAX_SIZE_SHORT_SUMMARY);

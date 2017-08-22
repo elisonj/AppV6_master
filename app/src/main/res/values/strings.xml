@@ -16,6 +16,8 @@
     <string name="language_pt">Português (Brasil)</string>
     <string name="language_en">Inglês</string>
     <string name="language">Idioma</string>
+    <string name="local">LOCAL</string>
+    <string name="date_expected">DATA PREVISTA</string>
     <string name="confirm_change_language">Deseja alterar o idioma do\naplicativo para inglês (EUA)?</string>
     <string name="login_error">Não foi possível realizar o login. Por favor, verifique seu usuário e senha e tente novamente.</string>
     <string name="validation_user_field_not_empty">Preencha o campo Usuário para continuar.</string>
@@ -26,6 +28,7 @@
     <string name="ico_password">icon password</string>
     <string name="ico_more_info">icon + info</string>
     <string name="ico_inspections">icon inspeções</string>
+    <string name="ico_maps">icon maps</string>
 
     <string name="status_in_progress">ANDAMENTO</string>
     <string name="status_completed">COMPLETA</string>
