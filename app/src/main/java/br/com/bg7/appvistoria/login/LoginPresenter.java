@@ -2,8 +2,14 @@ package br.com.bg7.appvistoria.login;
 
 import com.google.common.base.Strings;
 
+import java.util.List;
+
 import br.com.bg7.appvistoria.auth.Auth;
 import br.com.bg7.appvistoria.auth.callback.AuthCallback;
+import br.com.bg7.appvistoria.config.vo.Language;
+import br.com.bg7.appvistoria.data.Config;
+import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
+import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -14,11 +20,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class LoginPresenter implements LoginContract.Presenter {
     public static final int UNAUTHORIZED_CODE = 401;
+    private static final int DEFAULT_LANGUAGE_INDEX = 0;
 
     private final LoginContract.View loginView;
+    private final ConfigRepository configRepository;
+    private final LanguageRepository languageRepository;
 
-    LoginPresenter(LoginContract.View loginView) {
-
+    LoginPresenter(ConfigRepository configRepository, LanguageRepository languageRepository,  LoginContract.View loginView) {
+        this.configRepository = checkNotNull(configRepository);
+        this.languageRepository = checkNotNull(languageRepository);
         this.loginView = checkNotNull(loginView, "loginView cannot be null");
 
         this.loginView.setPresenter(this);
@@ -46,6 +56,14 @@ public class LoginPresenter implements LoginContract.Presenter {
 
             @Override
             public void onSuccess() {
+                List<Language> languageList = languageRepository.getLanguages();
+
+                Config config = configRepository.findByUser(Auth.user());
+                if(config == null) {
+                    config = new Config(languageList.get(DEFAULT_LANGUAGE_INDEX).getName(), Auth.user());
+                    configRepository.save(config);
+                }
+
                 loginView.showMainScreen();
             }
         });
