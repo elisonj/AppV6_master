@@ -39,11 +39,6 @@ class ConfigPresenter implements ConfigContract.Presenter {
         configView.setLanguages(languageList);
 
         Config config = configRepository.findByUser(Auth.user());
-        if(config == null) {
-            applyDefaultConfig(languageList);
-            return;
-        }
-
         loadConfig(config, languageList);
     }
 
