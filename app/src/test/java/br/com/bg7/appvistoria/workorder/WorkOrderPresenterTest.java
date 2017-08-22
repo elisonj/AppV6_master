@@ -13,14 +13,12 @@ import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
 import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.auth.Auth;
 import br.com.bg7.appvistoria.auth.FakeAuthFacade;
-import br.com.bg7.appvistoria.config.vo.Language;
 import br.com.bg7.appvistoria.data.Config;
 import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.WorkOrder;
@@ -30,7 +28,6 @@ import br.com.bg7.appvistoria.data.source.local.fake.FakeWorkOrderRepository;
 
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by: elison
@@ -75,8 +72,9 @@ public class WorkOrderPresenterTest {
         workOrderList.add(ob3);
 
         workOrderPresenter =  new WorkOrderPresenter(workOrderRepository, workOrderView, configRepository);
-
         setUpConfig("pt_BR");
+
+        workOrderPresenter.start();
     }
 
 
@@ -88,13 +86,11 @@ public class WorkOrderPresenterTest {
 
     @Test
     public void shouldShowListItemsWhenStart() {
-        showInitialItems();
+        verify(workOrderView).showList(ArgumentMatchers.<WorkOrder>anyList(),anyBoolean());
     }
 
     @Test
     public void shouldExpandMoreInfoAndHighLightWhenMoreInfoClicked() {
-        showInitialItems();
-
         workOrderPresenter.moreInfoClicked(workOrder);
         verify(workOrderView).expandInfoPanel(workOrder);
         verify(workOrderView).highlightInfoButton(workOrder);
@@ -102,8 +98,6 @@ public class WorkOrderPresenterTest {
 
     @Test
     public void shouldShrinkMoreInfoAndRemoveHighLightWhenMoreInfoClicked() {
-        showInitialItems();
-
         workOrderPresenter.hideInfoClicked(workOrder);
         verify(workOrderView).shrinkInfoPanel(workOrder);
         verify(workOrderView).removeInfoButtonHighlight(workOrder);
@@ -141,10 +135,6 @@ public class WorkOrderPresenterTest {
         Assert.assertEquals("22/08/2017", date);
     }
 
-    private void showInitialItems() {
-        workOrderPresenter.start();
-        verify(workOrderView).showList(ArgumentMatchers.<WorkOrder>anyList(),anyBoolean());
-    }
 
     private void setUpConfig(String language) {
         Config config = new Config(language, USER);
