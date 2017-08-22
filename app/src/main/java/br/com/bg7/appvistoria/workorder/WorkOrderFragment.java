@@ -36,20 +36,16 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_workorder, container, false);
-        initializeViewElements(root);
+
+        listView = root.findViewById(R.id.listview);
 
         return root;
-    }
-
-    private void initializeViewElements(View root) {
-        listView = root.findViewById(R.id.listview);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         workOrderPresenter.start();
-   //     workOrderPresenter.search("");
     }
 
     @Override
