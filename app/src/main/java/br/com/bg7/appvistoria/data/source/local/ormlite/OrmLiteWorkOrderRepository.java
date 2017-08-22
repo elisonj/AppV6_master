@@ -2,6 +2,7 @@ package br.com.bg7.appvistoria.data.source.local.ormlite;
 
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -25,9 +26,10 @@ public class OrmLiteWorkOrderRepository extends OrmLiteRepository<WorkOrder> imp
 
         List<WorkOrder> workOrderList = dao.queryForAll();
         if (workOrderList.size() <= 0) {
-            return null;
+            return new ArrayList<WorkOrder>();
         }
 
+        //TODO: Ver se dá para ordernar pelo banco
         Collections.sort(workOrderList, new Comparator<WorkOrder>() {
             @Override
             public int compare(WorkOrder workOrder, WorkOrder workOrder1) {
