@@ -8,8 +8,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.annotation.Nonnull;
-
 import br.com.bg7.appvistoria.data.source.remote.InspectionService;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
@@ -38,38 +36,39 @@ public class Inspection {
     @ForeignCollectionField
     private Collection<Picture> pictures = new ArrayList<>();
 
+    private PictureCollection pictureCollectionSource;
+
     @SuppressWarnings("unused")
     public Inspection() {
         // used by ormlite
+    }
+
+    private PictureCollection pictureCollection() {
+        if (pictureCollectionSource == null) {
+            pictureCollectionSource = new PictureCollection(pictures);
+        }
+
+        return pictureCollectionSource;
     }
 
     /**
      * Checks if syncing the product is allowed
      *
      * @return true if all pictures are synced (or there are no pictures to sync) and
-     * false if any pictures are still syncing
+     * false if sync hasn't started or if any pictures are still syncing
      */
     public boolean canSyncProduct() {
-        return syncStatus != null && (pictures.size() == 0 || syncStatus == SyncStatus.PICTURES_SYNCED);
+        return syncStatus != null && (pictureCollection().isEmpty() || syncStatus == SyncStatus.PICTURES_SYNCED);
     }
 
     /**
      * Checks if syncing pictures is allowed
      *
-     * @return true if there are any pictures to sync, false if pictures are all whether
-     * currently in progress or completed
+     * @return true if there are any pictures to sync, false if sync hasn't started yet,
+     * or if pictures are all currently in progress or completed
      */
     public boolean canSyncPictures() {
-        if (syncStatus == null) {
-            return false;
-        }
-
-        for (Picture picture : pictures) {
-            if (picture.getSyncStatus() == PictureSyncStatus.NOT_STARTED)
-                return true;
-        }
-
-        return false;
+        return syncStatus != null && pictureCollection().hasOneNotStarted();
     }
 
     public void readyToSync() {
@@ -94,7 +93,7 @@ public class Inspection {
             throw new IllegalStateException("Cannot sync Pictures when status is " + syncStatus);
         }
 
-        final Picture picture = getNextPicture();
+        final Picture picture = pictureCollection().next();
         picture.setSyncStatus(PictureSyncStatus.BEING_SYNCED);
 
         if (syncStatus == SyncStatus.READY) {
@@ -121,7 +120,7 @@ public class Inspection {
 
                 picture.setSyncStatus(PictureSyncStatus.DONE);
 
-                if(countImagesNotDone() == 0) {
+                if(pictureCollection().allDone()) {
                     syncStatus = SyncStatus.PICTURES_SYNCED;
                 }
                 syncCallback.onSuccess(Inspection.this);
@@ -183,8 +182,7 @@ public class Inspection {
 
         image = checkNotNull(image);
 
-        Picture picture = new Picture(this, image);
-        pictures.add(picture);
+        pictureCollection().add(new Picture(this, image));
     }
 
     public SyncStatus getSyncStatus() {
@@ -192,14 +190,10 @@ public class Inspection {
     }
 
     public void reset() {
-        for (Picture picture : pictures) {
-            if (picture.getSyncStatus() == PictureSyncStatus.BEING_SYNCED) {
-                picture.setSyncStatus(PictureSyncStatus.NOT_STARTED);
-            }
-        }
+        pictureCollection().reset();
 
         if (syncStatus == SyncStatus.INSPECTION_BEING_SYNCED) {
-            if (pictures.size() > 0) {
+            if (!pictureCollection().isEmpty()) {
                 syncStatus = SyncStatus.PICTURES_SYNCED;
                 return;
             }
@@ -215,24 +209,5 @@ public class Inspection {
 
             syncStatus = SyncStatus.READY;
         }
-    }
-
-    private int countImagesNotDone() {
-        int countImagesNotDone = 0;
-        for (Picture picture : pictures) {
-            if (picture.getSyncStatus() != PictureSyncStatus.DONE) countImagesNotDone++;
-        }
-        return countImagesNotDone;
-    }
-
-    @Nonnull
-    private Picture getNextPicture() {
-        for (Picture picture : pictures) {
-            if (picture.getSyncStatus() == PictureSyncStatus.NOT_STARTED)
-                return picture;
-        }
-
-        // Should never reach this because we check for at least one NOT_STARTED before calling this
-        throw new IllegalStateException("Erro crítico: próxima imagem para sync não encontrada!");
     }
 }
