@@ -16,7 +16,7 @@
     <string name="language_pt">Português (Brasil)</string>
     <string name="language_en">Inglês</string>
     <string name="language">Idioma</string>
-    <string name="confirm_change_language">Deseja alterar o idioma do\naplicativo para inglês (EUA)?</string>
+    <string name="confirm_change_language_format">Deseja alterar o idioma do\naplicativo para %s?</string>
     <string name="login_error">Não foi possível realizar o login. Por favor, verifique seu usuário e senha e tente novamente.</string>
     <string name="validation_user_field_not_empty">Preencha o campo Usuário para continuar.</string>
     <string name="validation_password_field_not_empty">Preencha o campo Senha para continuar.</string>
