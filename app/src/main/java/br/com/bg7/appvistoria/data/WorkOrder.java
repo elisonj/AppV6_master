@@ -5,7 +5,6 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -108,16 +107,7 @@ public class WorkOrder {
     private String ellipsizeShortSummary(int maxSize) {
 
         String text = summary.substring(0, maxSize);
-        text = text.substring(0, text.lastIndexOf(" "));
-
-        String numeric = text.substring(text.lastIndexOf(" "));
-        if(StringUtils.isNumeric(numeric.trim())) {
-            text = text.substring(0, text.lastIndexOf(" "));
-        }
-
-        if(text.endsWith(",")) {
-            text = text.substring(0, text.length() - 1);
-        }
+        text = text.substring(0, text.lastIndexOf(","));
 
         return text + "...";
     }
