@@ -28,6 +28,9 @@ android {
         buildConfigField 'String[]', 'LANGUAGE_NAMES', '{ "pt", "en" }'
         buildConfigField 'String', 'BASE_URL', '"https://preapi.s4bdigital.net"'
 
+        buildConfigField 'String', 'DATE_TIME_STYLE', '"S-"'
+        buildConfigField 'Integer', 'MAX_SIZE_SHORT_SUMMARY', '54'
+
         buildConfigField 'String', 'DATABASE_NAME', '"mobileassetinspection.db"'
         buildConfigField 'Integer', 'DATABASE_VERSION', '1'
     }

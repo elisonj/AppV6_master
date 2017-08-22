@@ -6,12 +6,14 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Locale;
 
+import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.workorder.WorkOrderStatus;
 
 /**
@@ -21,10 +23,9 @@ import br.com.bg7.appvistoria.workorder.WorkOrderStatus;
 @DatabaseTable(tableName = "workorders")
 public class WorkOrder {
 
-    public static final int MAX_SIZE_SHORT_SUMMARY = 54;
+    private int shortSummarySize = -1;
 
-    private String dateFormatPtBr = "dd/MM/yyyy";
-    private String dateFormatEnUs = "yyyy-MM-dd";
+    private String shortSummary;
 
     @DatabaseField(generatedId = true)
     private Long id;
@@ -34,9 +35,6 @@ public class WorkOrder {
 
     @DatabaseField(canBeNull = false)
     private String summary;
-
-    @DatabaseField(canBeNull = false)
-    private String shortSummary;
 
     @DatabaseField(index = true, canBeNull = false)
     private WorkOrderStatus status;
@@ -59,18 +57,23 @@ public class WorkOrder {
     @SuppressWarnings("unused")
     public WorkOrder() {}
 
-    public WorkOrder(String name,String summary, WorkOrderStatus status) {
+    public WorkOrder(String name, String summary) {
         this.name = name;
         this.summary = summary;
-        this.shortSummary = ellipsizeShortSummary(summary);
-        this.status = status;
+        this.status = WorkOrderStatus.NOT_STARTED;
+        this.endAt = DateTime.now();
     }
 
     public String getName() {
         return name;
     }
 
-    public String getShortSummary() {
+    public String getShortSummary(int maxSize) {
+        if (maxSize != shortSummarySize) {
+            shortSummarySize = maxSize;
+            shortSummary = ellipsizeShortSummary(maxSize);
+        }
+
         return shortSummary;
     }
 
@@ -82,20 +85,28 @@ public class WorkOrder {
         return status;
     }
 
-    public String getEndAt(Locale locale) {
-        if(endAt == null) {
-            endAt = new DateTime();
-        }
-        SimpleDateFormat formatter = new SimpleDateFormat(dateFormatPtBr, locale);
-        if(locale.equals(Locale.ENGLISH)) {
-            formatter = new SimpleDateFormat(dateFormatEnUs, locale);
-        }
-        return formatter.format(endAt.toDate());
+    public void start() {
+        status = WorkOrderStatus.IN_PROGRESS;
     }
 
-    private String ellipsizeShortSummary(String summary) {
+    public void finish() {
+        status = WorkOrderStatus.COMPLETED;
+    }
 
-        String text = summary.substring(0, MAX_SIZE_SHORT_SUMMARY);
+    public String getEndAt(Locale locale) {
+        String pattern = DateTimeFormat.patternForStyle(BuildConfig.DATE_TIME_STYLE, locale);
+
+        if (pattern.contains("yy") && !pattern.contains("yyyy")) {
+            pattern = pattern.replace("yy", "yyyy");
+        }
+
+        DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
+        return formatter.print(endAt);
+    }
+
+    private String ellipsizeShortSummary(int maxSize) {
+
+        String text = summary.substring(0, maxSize);
         text = text.substring(0, text.lastIndexOf(" "));
 
         String numeric = text.substring(text.lastIndexOf(" "));
@@ -104,10 +115,9 @@ public class WorkOrder {
         }
 
         if(text.endsWith(",")) {
-            text = text.substring(0, text.length()-1);
+            text = text.substring(0, text.length() - 1);
         }
 
-        text = text+"...";
-        return text;
+        return text + "...";
     }
 }

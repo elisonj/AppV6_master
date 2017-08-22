@@ -3,6 +3,8 @@ package br.com.bg7.appvistoria.workorder;
 import junit.framework.Assert;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
@@ -15,14 +17,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.auth.Auth;
 import br.com.bg7.appvistoria.auth.FakeAuthFacade;
 import br.com.bg7.appvistoria.config.vo.Language;
 import br.com.bg7.appvistoria.data.Config;
 import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.WorkOrder;
-import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeConfigRepository;
+import br.com.bg7.appvistoria.data.source.local.fake.FakeLanguageRepository;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeWorkOrderRepository;
 
 import static org.mockito.ArgumentMatchers.anyBoolean;
@@ -38,23 +41,18 @@ public class WorkOrderPresenterTest {
     private static final User USER = new User("username", "token", "pwd");
 
     private List<WorkOrder> workOrderList = new ArrayList<>();
-    private WorkOrder ob1 = new WorkOrder("Projeto 1", "Resumo completo - 50 carros, 30 motos, 20 caminhões, 13 vans, 5 empilhadeiras, 1 trator", WorkOrderStatus.IN_PROGRESS);
-    private WorkOrder ob2 = new WorkOrder("Projeto 2", "Resumo completo --- 50 carros, 30 motos, 20 caminhões, 13 vans, 5 empilhadeiras, 1 trator", WorkOrderStatus.COMPLETED);
-    private WorkOrder ob3 = new WorkOrder("Projeto 3", "Resumo completo ------ 50 carros, 30 motos, 20 caminhões, 13 vans, 5 empilhadeiras, 1 trator", WorkOrderStatus.NOT_STARTED);
-
-    private Locale localePtBr = new Locale("pt", "BR");
-    private Locale localeEnglish = new Locale("en");
+    private WorkOrder ob1 = new InProgressWorkOrder("Projeto 1", "Resumo completo - 50 carros, 30 motos, 20 caminhões, 13 vans, 5 empilhadeiras, 1 trator");
+    private WorkOrder ob2 = new CompletedWorkOrder("Projeto 2", "Resumo completo --- 50 carros, 30 motos, 20 caminhões, 13 vans, 5 empilhadeiras, 1 trator");
+    private WorkOrder ob3 = new WorkOrder("Projeto 3", "Resumo completo ------ 50 carros, 30 motos, 20 caminhões, 13 vans, 5 empilhadeiras, 1 trator");
 
     @Mock
     WorkOrderContract.View workOrderView;
 
     private FakeConfigRepository configRepository = new FakeConfigRepository();
 
-    @Mock
-    private LanguageRepository languageRepository;
+    private FakeLanguageRepository languageRepository = new FakeLanguageRepository();
 
-    @Mock
-    FakeWorkOrderRepository fakeWorkOrderRepository;
+    private FakeWorkOrderRepository workOrderRepository = new FakeWorkOrderRepository();
 
     private WorkOrderPresenter workOrderPresenter;
 
@@ -69,13 +67,15 @@ public class WorkOrderPresenterTest {
         Auth.configure(authFacade);
         authFacade.fakeLogin(USER);
 
+        DateTime date = new DateTime(2017, 8, 22, 0, 0, 0);
+        DateTimeUtils.setCurrentMillisFixed(date.getMillis());
+
         workOrderList.add(ob1);
         workOrderList.add(ob2);
         workOrderList.add(ob3);
 
-        workOrderPresenter =  new WorkOrderPresenter(fakeWorkOrderRepository, workOrderView, configRepository);
+        workOrderPresenter =  new WorkOrderPresenter(workOrderRepository, workOrderView, configRepository);
 
-        setUpLanguages();
         setUpConfig("pt_BR");
     }
 
@@ -112,41 +112,38 @@ public class WorkOrderPresenterTest {
     @Test
     public void shouldCropShortSummary() {
         for (WorkOrder workOrder: workOrderList) {
-            Assert.assertTrue(workOrder.getShortSummary().length() <= WorkOrder.MAX_SIZE_SHORT_SUMMARY+3);
+            Assert.assertTrue(workOrder.getShortSummary(BuildConfig.MAX_SIZE_SHORT_SUMMARY).length() <= BuildConfig.MAX_SIZE_SHORT_SUMMARY + 3);
         }
     }
 
     @Test
     public void shouldShortSummaryNotEndWithNumeric() {
         for (WorkOrder workOrder: workOrderList) {
-            String lastElement = workOrder.getShortSummary().substring(workOrder.getShortSummary().lastIndexOf(" "), workOrder.getShortSummary().length()-3);
+            String lastElement = workOrder.getShortSummary(BuildConfig.MAX_SIZE_SHORT_SUMMARY)
+                    .substring(
+                            workOrder.getShortSummary(BuildConfig.MAX_SIZE_SHORT_SUMMARY).lastIndexOf(" "),
+                            workOrder.getShortSummary(BuildConfig.MAX_SIZE_SHORT_SUMMARY).length() - 3
+                    );
+
             Assert.assertFalse(StringUtils.isNumeric(lastElement.trim()));
         }
     }
 
     @Test
-    public void shouldShowDateBr() {
-        String stringDate = ob1.getEndAt(localePtBr);
-        Assert.assertTrue(stringDate.contains("/"));
-    }
+    public void shouldShowLocalizedDates() {
+        String date = ob1.getEndAt(new Locale("pt", "BR"));
+        Assert.assertEquals("22/08/2017", date);
 
-    @Test
-    public void shouldShowDateUS() {
-        String stringDate = ob1.getEndAt(localeEnglish);
-        Assert.assertTrue(stringDate.contains("-"));
+        date = ob1.getEndAt(new Locale("en", "US"));
+        Assert.assertEquals("8/22/2017", date);
+
+        date = ob1.getEndAt(new Locale("en", "GB"));
+        Assert.assertEquals("22/08/2017", date);
     }
 
     private void showInitialItems() {
         workOrderPresenter.start();
         verify(workOrderView).showList(ArgumentMatchers.<WorkOrder>anyList(),anyBoolean());
-    }
-
-    private void setUpLanguages() {
-        List<Language> languages = Arrays.asList(
-                new Language("pt_BR", null),
-                new Language("en_US", null)
-        );
-        when(languageRepository.getLanguages()).thenReturn(languages);
     }
 
     private void setUpConfig(String language) {

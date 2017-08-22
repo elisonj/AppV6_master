@@ -16,6 +16,7 @@ import com.akexorcist.localizationactivity.LocalizationActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.WorkOrder;
 
@@ -202,7 +203,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                  holder.moreInfo.setBackgroundColor(Color.GRAY);
              }
              holder.name.setText(item.getName());
-             holder.shortSummary.setText(item.getShortSummary());
+             holder.shortSummary.setText(item.getShortSummary(BuildConfig.MAX_SIZE_SHORT_SUMMARY));
 
              holder.date.setText(item.getEndAt(((LocalizationActivity)getActivity()).getLocale()));
 
