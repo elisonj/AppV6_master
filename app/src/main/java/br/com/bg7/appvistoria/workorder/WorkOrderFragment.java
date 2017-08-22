@@ -61,14 +61,14 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     @Override
     public void highlightInfoButton(WorkOrder workOrder) {
-        View v = getItemListView(workOrder);
+        View v = getListItem(workOrder);
         LinearLayout moreInfo = v.findViewById(R.id.more_info);
         moreInfo.setBackgroundColor(Color.GRAY);
     }
 
     @Override
     public void removeInfoButtonHighlight(WorkOrder workOrder) {
-        View v = getItemListView(workOrder);
+        View v = getListItem(workOrder);
         if(v != null) {
             LinearLayout moreInfo = v.findViewById(R.id.more_info);
             moreInfo.setBackgroundColor(Color.TRANSPARENT);
@@ -90,7 +90,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     }
 
     private void hideSummary(WorkOrder workOrder){
-        View v = getItemListView(workOrder);
+        View v = getListItem(workOrder);
 
         if(v != null) {
             TextView shortSummary = v.findViewById(R.id.short_summary);
@@ -103,7 +103,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     }
 
     private void showSummary(WorkOrder workOrder){
-       View v = getItemListView(workOrder);
+       View v = getListItem(workOrder);
 
         TextView shortSummary = v.findViewById(R.id.short_summary);
         TextView summary = v.findViewById(R.id.summary);
@@ -113,10 +113,10 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
         getAdapter().setHighlightWorkOrder(workOrder);
     }
 
-    private View getItemListView(WorkOrder workOrder) {
+    private View getListItem(WorkOrder workOrder) {
         int index = -1;
 
-        for(int i=0; i < adapter.getCount(); i++) {
+        for(int i = 0; i < adapter.getCount(); i++) {
             if(workOrder.equals(adapter.getItem(i))) {
                 index = i;
                 break;
