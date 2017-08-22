@@ -77,19 +77,18 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     @Override
     public void expandInfoPanel(WorkOrder workOrder) {
-        showSummary(workOrder);
+        View v = getListItem(workOrder);
+
+        TextView shortSummary = v.findViewById(R.id.short_summary);
+        TextView summary = v.findViewById(R.id.summary);
+        summary.setText(workOrder.getSummary());
+        shortSummary.setVisibility(View.GONE);
+        summary.setVisibility(View.VISIBLE);
+        getAdapter().setExpandedWorkOrder(workOrder);
     }
 
     @Override
     public void shrinkInfoPanel(WorkOrder workOrder) {
-        hideSummary(workOrder);
-    }
-
-    private WorkOrderAdapter getAdapter() {
-        return (WorkOrderAdapter)listView.getAdapter();
-    }
-
-    private void hideSummary(WorkOrder workOrder){
         View v = getListItem(workOrder);
 
         if(v != null) {
@@ -98,19 +97,12 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
             shortSummary.setVisibility(View.VISIBLE);
             summary.setVisibility(View.GONE);
         }
-            getAdapter().setHighlightWorkOrder(null);
 
+        getAdapter().setExpandedWorkOrder(null);
     }
 
-    private void showSummary(WorkOrder workOrder){
-       View v = getListItem(workOrder);
-
-        TextView shortSummary = v.findViewById(R.id.short_summary);
-        TextView summary = v.findViewById(R.id.summary);
-        summary.setText(workOrder.getSummary());
-        shortSummary.setVisibility(View.GONE);
-        summary.setVisibility(View.VISIBLE);
-        getAdapter().setHighlightWorkOrder(workOrder);
+    private WorkOrderAdapter getAdapter() {
+        return (WorkOrderAdapter) listView.getAdapter();
     }
 
     private View getListItem(WorkOrder workOrder) {
@@ -128,7 +120,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     private class WorkOrderAdapter extends BaseAdapter {
 
-         private WorkOrder highlightWorkOrder = null;
+         private WorkOrder expandedWorkOrder = null;
 
          private List<WorkOrder> list = new ArrayList<>();
 
@@ -136,8 +128,8 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              this.list = list;
          }
 
-         void setHighlightWorkOrder(WorkOrder workOrder) {
-             this.highlightWorkOrder = workOrder;
+         void setExpandedWorkOrder(WorkOrder workOrder) {
+             this.expandedWorkOrder = workOrder;
          }
 
         @Override
@@ -191,7 +183,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              holder.summary.setVisibility(View.GONE);
              holder.moreInfo.setBackgroundColor(Color.TRANSPARENT);
 
-             if(item.equals(highlightWorkOrder)) {
+             if(item.equals(expandedWorkOrder)) {
                  holder.summary.setText(item.getSummary());
                  holder.summary.setVisibility(View.VISIBLE);
                  holder.moreInfo.setBackgroundColor(Color.GRAY);
@@ -211,16 +203,16 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                  public void onClick(View view) {
 
                      WorkOrder item = getItem(position);
-                     if(item.equals(highlightWorkOrder)) {
-                         workOrderPresenter.hideInfoClicked(highlightWorkOrder);
+                     if(item.equals(expandedWorkOrder)) {
+                         workOrderPresenter.hideInfoClicked(expandedWorkOrder);
                          return;
                      }
 
-                     if(highlightWorkOrder != null) {
-                         workOrderPresenter.hideInfoClicked(highlightWorkOrder);
+                     if(expandedWorkOrder != null) {
+                         workOrderPresenter.hideInfoClicked(expandedWorkOrder);
                      }
 
-                     if(!item.equals(highlightWorkOrder)) {
+                     if(!item.equals(expandedWorkOrder)) {
                          workOrderPresenter.moreInfoClicked(list.get(position));
                      }
                  }
