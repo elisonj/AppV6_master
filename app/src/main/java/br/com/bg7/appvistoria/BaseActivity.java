@@ -8,8 +8,6 @@ import com.akexorcist.localizationactivity.LocalizationActivity;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 
-import java.sql.SQLException;
-
 import br.com.bg7.appvistoria.data.Config;
 import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.Picture;
