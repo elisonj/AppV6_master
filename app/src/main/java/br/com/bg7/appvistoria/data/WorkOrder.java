@@ -25,6 +25,10 @@ public class WorkOrder {
 
     private int shortSummarySize = -1;
 
+    private final static String ELLIPSIS = "...";
+    private final static int ELLIPSIS_SIZE = ELLIPSIS.length();
+    private final static String SEPARATOR = ",";
+
     private String shortSummary;
 
     @DatabaseField(generatedId = true)
@@ -106,16 +110,16 @@ public class WorkOrder {
 
     private String ellipsizeShortSummary(int maxSize) {
         if(summary.length() > maxSize) {
-            String text = summary.substring(0, maxSize - 2);
+            String text = summary.substring(0, maxSize - ELLIPSIS_SIZE + 1);
 
-            if(!text.endsWith(",")) {
-                text = summary.substring(0, maxSize - 3);
+            if(!text.endsWith(SEPARATOR)) {
+                text = summary.substring(0, maxSize - ELLIPSIS_SIZE);
             }
-            text = text.substring(0, text.lastIndexOf(","));
+            text = text.substring(0, text.lastIndexOf(SEPARATOR));
 
-
-            return text + "...";
+            return text + ELLIPSIS;
         }
+
         return summary;
     }
 
