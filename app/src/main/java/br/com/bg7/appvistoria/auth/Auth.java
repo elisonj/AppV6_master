@@ -3,7 +3,7 @@ package br.com.bg7.appvistoria.auth;
 import br.com.bg7.appvistoria.auth.callback.AuthCallback;
 import br.com.bg7.appvistoria.data.User;
 
-import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by: luciolucio

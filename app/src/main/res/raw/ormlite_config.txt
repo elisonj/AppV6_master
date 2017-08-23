@@ -32,7 +32,6 @@ generatedId=true
 # --field-end--
 # --field-start--
 fieldName=syncStatus
-canBeNull=false
 indexName=inspections_syncStatus_idx
 # --field-end--
 # --field-start--
