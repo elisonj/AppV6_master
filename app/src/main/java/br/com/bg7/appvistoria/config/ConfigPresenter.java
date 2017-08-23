@@ -64,15 +64,10 @@ class ConfigPresenter implements ConfigContract.Presenter {
         applyConfig(languageName);
     }
 
-    private void applyDefaultConfig(List<Language> languageList) {
-        applyConfig(languageList.get(DEFAULT_LANGUAGE_INDEX).getName());
-    }
-
     private void applyConfig(String name) {
         configView.setLanguage(name);
         currentLanguage = name;
     }
-
 
     @Override
     public void confirmClicked(String language) {
