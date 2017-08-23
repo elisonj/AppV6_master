@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 
 import br.com.bg7.appvistoria.auth.Auth;
 import br.com.bg7.appvistoria.auth.RemoteLocalAuth;
+import br.com.bg7.appvistoria.data.Config;
 import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeAuthRepository;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeConfigRepository;
@@ -147,6 +148,11 @@ class LoginPresenterTestBase {
         verifyShowMainScreen();
     }
 
+    void verifySaveConfig() {
+        Config config = configRepository.findByUser(Auth.user());
+        Assert.assertNotNull(config);
+    }
+
     void verifySaveTokenAndShowMainScreen() {
         User user = userRepository.findByUsername(USERNAME);
         Assert.assertEquals(TOKEN_FROM_SERVICE, user.getToken());
@@ -159,6 +165,7 @@ class LoginPresenterTestBase {
      */
     void verifySaveAllUserDataAndEnter() {
         verifySaveTokenAndPasswordAndShowMainScreen();
+        verifySaveConfig();
     }
 
     private void verifyShowMainScreen() {
