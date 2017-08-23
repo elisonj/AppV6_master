@@ -12,7 +12,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import br.com.bg7.appvistoria.auth.AuthTest;
@@ -31,9 +30,6 @@ public class WorkOrderPresenterTest {
 
     private static final int MAX_SUMMARY = 40;
 
-    private List<WorkOrder> workOrderList = new ArrayList<>();
-    private WorkOrder ob1 = new InProgressWorkOrder("Projeto 1","Resumo completo - Carros: 50, motos: 30, caminhões: 20, vans: 13, empilhadeiras: 5, trator: 1");
-
     @Mock
     WorkOrderContract.View workOrderView;
 
@@ -51,8 +47,6 @@ public class WorkOrderPresenterTest {
         MockitoAnnotations.initMocks(this);
 
         AuthTest auth = new AuthTest(configRepository);
-
-        workOrderList.add(ob1);
 
         DateTime date = new DateTime(2017, 8, 22, 0, 0, 0);
         DateTimeUtils.setCurrentMillisFixed(date.getMillis());
@@ -91,13 +85,15 @@ public class WorkOrderPresenterTest {
 
     @Test
     public void shouldShowLocalizedDates() {
-        String date = ob1.getEndAt(new Locale("pt", "BR"));
+        WorkOrder wo = new InProgressWorkOrder("", "");
+
+        String date = wo.getEndAt(new Locale("pt", "BR"));
         Assert.assertEquals("22/08/2017", date);
 
-        date = ob1.getEndAt(new Locale("en", "US"));
+        date = wo.getEndAt(new Locale("en", "US"));
         Assert.assertEquals("8/22/2017", date);
 
-        date = ob1.getEndAt(new Locale("en", "GB"));
+        date = wo.getEndAt(new Locale("en", "GB"));
         Assert.assertEquals("22/08/2017", date);
     }
 
