@@ -38,7 +38,7 @@ import static org.mockito.Mockito.when;
  * Date: 2017-07-19
  */
 
-class LoginPresenterTestBase extends UserLoggedInTest {
+class LoginPresenterTestBase {
     @Mock
     LoginContract.View loginView;
 
@@ -64,7 +64,7 @@ class LoginPresenterTestBase extends UserLoggedInTest {
 
     LoginPresenter loginPresenter;
 
-    private FakeConfigRepository configRepository = new FakeConfigRepository();
+    FakeConfigRepository configRepository = new FakeConfigRepository();
     private FakeLanguageRepository languageRepository = new FakeLanguageRepository();
 
     static final String USERNAME = "user";
@@ -148,36 +148,6 @@ class LoginPresenterTestBase extends UserLoggedInTest {
 
         verifyShowMainScreen();
     }
-
-
-    void clearConfigRepository() {
-        configRepository.clear();
-    }
-
-    void verifySaveDefaultConfig() {
-        Config config = configRepository.findByUser(Auth.user());
-
-        List<Language> languageList = languageRepository.getLanguages();
-
-        Config defautConfig = new Config(languageList.get(DEFAULT_LANGUAGE_INDEX).getName(), Auth.user());
-        Assert.assertEquals(config.getLanguageName(), defautConfig.getLanguageName());
-        Assert.assertEquals(config.getUser(),defautConfig.getUser());
-    }
-
-        void verifyNotDefaultConfig() {
-
-            Config config = configRepository.findByUser(Auth.user());
-
-            List<Language> languageList = languageRepository.getLanguages();
-
-            Config defautConfig = new Config(languageList.get(DEFAULT_LANGUAGE_INDEX).getName(), Auth.user());
-            Assert.assertEquals(config.getLanguageName(), defautConfig.getLanguageName());
-            Assert.assertEquals(config.getUser(),defautConfig.getUser());
-    }
-
-
-
-
 
     void verifySaveTokenAndShowMainScreen() {
         User user = userRepository.findByUsername(USERNAME);

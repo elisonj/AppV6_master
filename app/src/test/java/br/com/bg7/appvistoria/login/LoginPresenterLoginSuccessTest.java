@@ -1,6 +1,17 @@
 package br.com.bg7.appvistoria.login;
 
+import junit.framework.Assert;
+
 import org.junit.Test;
+
+import java.io.IOException;
+
+import br.com.bg7.appvistoria.auth.Auth;
+import br.com.bg7.appvistoria.auth.FakeAuthFacade;
+import br.com.bg7.appvistoria.data.Config;
+import br.com.bg7.appvistoria.data.User;
+
+import static org.mockito.Mockito.reset;
 
 /**
  * Created by: elison
@@ -51,37 +62,31 @@ public class LoginPresenterLoginSuccessTest extends LoginPresenterTestBase {
     }
 
     @Test
-    public void shouldCreateConfigWhenFirstLogin() {
-        clearConfigRepository();
+    public void shouldCreateConfigOnFirstLogin() {
         setUpGoodPassword();
 
         callLogin();
 
         invokeUserService();
-        verifySaveDefaultConfig();
+
+        Config config = configRepository.findByUser(Auth.user());
+        Assert.assertEquals("pt_BR", config.getLanguageName());
     }
 
     @Test
-    public void shouldLoginWithDefaultConfig() {
+    public void shouldNotChangeExistingConfigWhenLoggingIn() throws IOException {
         setUpGoodPassword();
-
         callLogin();
-
         invokeUserService();
-        verifySaveDefaultConfig();
-    }
 
-    @Test
-    public void shouldLoginWithNotDefaultConfig() {
-        clearConfigRepository();
-        setUpConfig("en_US");
+        configRepository.save(new Config("en_US", Auth.user()));
 
-        setUpGoodPassword();
-
+        reset(tokenService);
+        reset(userService);
         callLogin();
-
         invokeUserService();
-        verifyNotDefaultConfig();
-    }
 
+        Config config = configRepository.findByUser(Auth.user());
+        Assert.assertEquals("en_US", config.getLanguageName());
+    }
 }
