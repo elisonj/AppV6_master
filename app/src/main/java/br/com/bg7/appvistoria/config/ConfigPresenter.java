@@ -43,7 +43,12 @@ class ConfigPresenter implements ConfigContract.Presenter {
     }
 
     private void loadConfig(Config config, List<Language> languageList) {
-        String languageName = config.getLanguageName();
+        String languageName = null;
+
+        if(config != null) {
+            languageName = config.getLanguageName();
+        }
+
         if (Strings.isNullOrEmpty(languageName) || Strings.isNullOrEmpty(languageName.trim())) {
             languageName = languageList.get(DEFAULT_LANGUAGE_INDEX).getName();
         }

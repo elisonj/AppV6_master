@@ -17,13 +17,9 @@ import java.util.List;
 import java.util.Locale;
 
 import br.com.bg7.appvistoria.BuildConfig;
-import br.com.bg7.appvistoria.auth.Auth;
-import br.com.bg7.appvistoria.auth.FakeAuthFacade;
-import br.com.bg7.appvistoria.data.Config;
-import br.com.bg7.appvistoria.data.User;
+import br.com.bg7.appvistoria.auth.AuthTest;
 import br.com.bg7.appvistoria.data.WorkOrder;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeConfigRepository;
-import br.com.bg7.appvistoria.data.source.local.fake.FakeLanguageRepository;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeWorkOrderRepository;
 
 import static org.mockito.ArgumentMatchers.anyBoolean;
@@ -35,8 +31,6 @@ import static org.mockito.Mockito.verify;
  */
 public class WorkOrderPresenterTest {
 
-    private static final User USER = new User("username", "token", "pwd");
-
     private List<WorkOrder> workOrderList = new ArrayList<>();
     private WorkOrder ob1 = new InProgressWorkOrder("Projeto 1", "Resumo completo - 50 carros, 30 motos, 20 caminhões, 13 vans, 5 empilhadeiras, 1 trator");
     private WorkOrder ob2 = new CompletedWorkOrder("Projeto 2", "Resumo completo --- 50 carros, 30 motos, 20 caminhões, 13 vans, 5 empilhadeiras, 1 trator");
@@ -47,13 +41,10 @@ public class WorkOrderPresenterTest {
 
     private FakeConfigRepository configRepository = new FakeConfigRepository();
 
-    private FakeLanguageRepository languageRepository = new FakeLanguageRepository();
-
     private FakeWorkOrderRepository workOrderRepository = new FakeWorkOrderRepository();
 
     private WorkOrderPresenter workOrderPresenter;
 
-    private FakeAuthFacade authFacade = new FakeAuthFacade();
 
     private WorkOrder workOrder = new WorkOrder();
 
@@ -61,8 +52,7 @@ public class WorkOrderPresenterTest {
     public void setUp() throws IOException {
         MockitoAnnotations.initMocks(this);
 
-        Auth.configure(authFacade);
-        authFacade.fakeLogin(USER);
+        AuthTest auth = new AuthTest(configRepository);
 
         DateTime date = new DateTime(2017, 8, 22, 0, 0, 0);
         DateTimeUtils.setCurrentMillisFixed(date.getMillis());
@@ -72,7 +62,7 @@ public class WorkOrderPresenterTest {
         workOrderList.add(ob3);
 
         workOrderPresenter =  new WorkOrderPresenter(workOrderRepository, workOrderView, configRepository);
-        setUpConfig("pt_BR");
+        auth.setUpConfig("pt_BR");
 
         workOrderPresenter.start();
     }
@@ -134,12 +124,4 @@ public class WorkOrderPresenterTest {
         date = ob1.getEndAt(new Locale("en", "GB"));
         Assert.assertEquals("22/08/2017", date);
     }
-
-
-    private void setUpConfig(String language) {
-        Config config = new Config(language, USER);
-        configRepository.save(config);
-
-    }
-
 }

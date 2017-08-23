@@ -12,7 +12,7 @@ import static org.mockito.Mockito.verify;
 public class LoginPresenterInitializationTest extends LoginPresenterTestBase {
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullViewWhenCreated() {
-        new LoginPresenter(null);
+        new LoginPresenter(null, null, null);
     }
 
     @Test

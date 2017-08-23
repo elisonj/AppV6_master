@@ -13,11 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import br.com.bg7.appvistoria.auth.Auth;
-import br.com.bg7.appvistoria.auth.FakeAuthFacade;
+import br.com.bg7.appvistoria.auth.AuthTest;
 import br.com.bg7.appvistoria.config.vo.Language;
-import br.com.bg7.appvistoria.data.Config;
-import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeConfigRepository;
 
@@ -32,8 +29,6 @@ import static org.mockito.Mockito.when;
  */
 
 public class ConfigPresenterTest {
-    private static final User USER = new User("username", "token", "pwd");
-
     @Mock
     private ConfigContract.View configView;
 
@@ -42,21 +37,19 @@ public class ConfigPresenterTest {
     @Mock
     private LanguageRepository languageRepository;
 
-    private FakeAuthFacade authFacade = new FakeAuthFacade();
-
     private ConfigPresenter configPresenter;
+    private AuthTest auth;
 
     @Before
     public void setUp() throws IOException {
         MockitoAnnotations.initMocks(this);
 
-        Auth.configure(authFacade);
-        authFacade.fakeLogin(USER);
+        auth = new AuthTest(configRepository);
 
         configPresenter = new ConfigPresenter(configRepository, languageRepository, configView);
 
         setUpLanguages();
-        setUpConfig("pt_BR");
+        auth.setUpConfig("pt_BR");
     }
 
     private void setUpLanguages() {
@@ -65,11 +58,6 @@ public class ConfigPresenterTest {
                 new Language("en_US", null)
         );
         when(languageRepository.getLanguages()).thenReturn(languages);
-    }
-
-    private void setUpConfig(String language) {
-        Config config = new Config(language, USER);
-        configRepository.save(config);
     }
 
     @Test
@@ -98,7 +86,7 @@ public class ConfigPresenterTest {
 
     @Test
     public void shouldSelectLanguageOnStart() {
-        setUpConfig("en_US");
+        auth.setUpConfig("en_US");
 
         configPresenter.start();
 
@@ -118,7 +106,7 @@ public class ConfigPresenterTest {
             String description = testCase.getKey();
             String configValueUnderTest = testCase.getValue();
 
-            setUpConfig(configValueUnderTest);
+            auth.setUpConfig(configValueUnderTest);
             reset(configView);
 
             configPresenter.start();
@@ -183,6 +171,6 @@ public class ConfigPresenterTest {
         configPresenter.logoutClicked();
 
         verify(configView).showLoginScreen();
-        Assert.assertNull(authFacade.user());
+        Assert.assertNull(auth.getAuthFacade().user());
     }
 }
