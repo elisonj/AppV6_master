@@ -7,7 +7,6 @@ import br.com.bg7.appvistoria.data.WorkOrder;
 import br.com.bg7.appvistoria.data.source.local.WorkOrderRepository;
 import br.com.bg7.appvistoria.workorder.CompletedWorkOrder;
 import br.com.bg7.appvistoria.workorder.InProgressWorkOrder;
-import br.com.bg7.appvistoria.workorder.WorkOrderStatus;
 
 /**
  * Created by: elison

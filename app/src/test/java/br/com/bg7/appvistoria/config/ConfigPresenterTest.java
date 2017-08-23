@@ -8,56 +8,36 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import br.com.bg7.appvistoria.auth.AuthTest;
-import br.com.bg7.appvistoria.config.vo.Language;
-import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
-import br.com.bg7.appvistoria.data.source.local.fake.FakeConfigRepository;
+import br.com.bg7.appvistoria.UserLoggedInTest;
+import br.com.bg7.appvistoria.auth.Auth;
+import br.com.bg7.appvistoria.data.source.local.fake.FakeLanguageRepository;
 
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by: luciolucio
  * Date: 2017-07-21
  */
 
-public class ConfigPresenterTest {
+public class ConfigPresenterTest extends UserLoggedInTest {
     @Mock
     private ConfigContract.View configView;
 
-    private FakeConfigRepository configRepository = new FakeConfigRepository();
-
-    @Mock
-    private LanguageRepository languageRepository;
+    private FakeLanguageRepository languageRepository = new FakeLanguageRepository();
 
     private ConfigPresenter configPresenter;
-    private AuthTest auth;
 
     @Before
     public void setUp() throws IOException {
+        super.setUp();
         MockitoAnnotations.initMocks(this);
 
-        auth = new AuthTest(configRepository);
-
         configPresenter = new ConfigPresenter(configRepository, languageRepository, configView);
-
-        setUpLanguages();
-        auth.setUpConfig("pt_BR");
-    }
-
-    private void setUpLanguages() {
-        List<Language> languages = Arrays.asList(
-                new Language("pt_BR", null),
-                new Language("en_US", null)
-        );
-        when(languageRepository.getLanguages()).thenReturn(languages);
     }
 
     @Test
@@ -86,7 +66,7 @@ public class ConfigPresenterTest {
 
     @Test
     public void shouldSelectLanguageOnStart() {
-        auth.setUpConfig("en_US");
+        setUpConfig("en_US");
 
         configPresenter.start();
 
@@ -106,7 +86,7 @@ public class ConfigPresenterTest {
             String description = testCase.getKey();
             String configValueUnderTest = testCase.getValue();
 
-            auth.setUpConfig(configValueUnderTest);
+            setUpConfig(configValueUnderTest);
             reset(configView);
 
             configPresenter.start();
@@ -162,6 +142,7 @@ public class ConfigPresenterTest {
         configPresenter.logoutClicked();
 
         verify(configView).showLoginScreen();
-        Assert.assertNull(auth.getAuthFacade().user());
+        Assert.assertNull(Auth.user());
+        Assert.assertFalse(Auth.check());
     }
 }
