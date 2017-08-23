@@ -2,7 +2,6 @@ package br.com.bg7.appvistoria.workorder;
 
 import junit.framework.Assert;
 
-import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
 import org.junit.Before;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.auth.AuthTest;
 import br.com.bg7.appvistoria.data.WorkOrder;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeConfigRepository;
@@ -31,10 +29,10 @@ import static org.mockito.Mockito.verify;
  */
 public class WorkOrderPresenterTest {
 
+    private static final int MAX_SUMMARY = 40;
+
     private List<WorkOrder> workOrderList = new ArrayList<>();
-    private WorkOrder ob1 = new InProgressWorkOrder("Projeto 1", "Resumo completo - 50 carros, 30 motos, 20 caminhões, 13 vans, 5 empilhadeiras, 1 trator");
-    private WorkOrder ob2 = new CompletedWorkOrder("Projeto 2", "Resumo completo --- 50 carros, 30 motos, 20 caminhões, 13 vans, 5 empilhadeiras, 1 trator");
-    private WorkOrder ob3 = new WorkOrder("Projeto 3", "Resumo completo ------ 50 carros, 30 motos, 20 caminhões, 13 vans, 5 empilhadeiras, 1 trator");
+    private WorkOrder ob1 = new InProgressWorkOrder("Projeto 1","Resumo completo - Carros: 50, motos: 30, caminhões: 20, vans: 13, empilhadeiras: 5, trator: 1");
 
     @Mock
     WorkOrderContract.View workOrderView;
@@ -54,12 +52,10 @@ public class WorkOrderPresenterTest {
 
         AuthTest auth = new AuthTest(configRepository);
 
+        workOrderList.add(ob1);
+
         DateTime date = new DateTime(2017, 8, 22, 0, 0, 0);
         DateTimeUtils.setCurrentMillisFixed(date.getMillis());
-
-        workOrderList.add(ob1);
-        workOrderList.add(ob2);
-        workOrderList.add(ob3);
 
         workOrderPresenter =  new WorkOrderPresenter(workOrderRepository, workOrderView, configRepository);
         auth.setUpConfig("pt_BR");
@@ -94,26 +90,6 @@ public class WorkOrderPresenterTest {
     }
 
     @Test
-    public void shouldCropShortSummary() {
-        for (WorkOrder workOrder: workOrderList) {
-            Assert.assertTrue(workOrder.getShortSummary(BuildConfig.MAX_SIZE_SHORT_SUMMARY).length() <= BuildConfig.MAX_SIZE_SHORT_SUMMARY + 3);
-        }
-    }
-
-    @Test
-    public void shouldShortSummaryNotEndWithNumeric() {
-        for (WorkOrder workOrder: workOrderList) {
-            String lastElement = workOrder.getShortSummary(BuildConfig.MAX_SIZE_SHORT_SUMMARY)
-                    .substring(
-                            workOrder.getShortSummary(BuildConfig.MAX_SIZE_SHORT_SUMMARY).lastIndexOf(" "),
-                            workOrder.getShortSummary(BuildConfig.MAX_SIZE_SHORT_SUMMARY).length() - 3
-                    );
-
-            Assert.assertFalse(StringUtils.isNumeric(lastElement.trim()));
-        }
-    }
-
-    @Test
     public void shouldShowLocalizedDates() {
         String date = ob1.getEndAt(new Locale("pt", "BR"));
         Assert.assertEquals("22/08/2017", date);
@@ -123,5 +99,42 @@ public class WorkOrderPresenterTest {
 
         date = ob1.getEndAt(new Locale("en", "GB"));
         Assert.assertEquals("22/08/2017", date);
+    }
+
+    @Test
+    public void shouldCropShortSummaries() {
+
+        ArrayList<SummaryTestCase> testCases = new ArrayList<>();
+        testCases.add(new SummaryTestCase("Carros: 50, motos: 30, caminhões: 20",
+                "Carros: 50, motos: 30, caminhões: 20"));
+        testCases.add(new SummaryTestCase("Carros: 500, motos: 300, caminhões: 2305",
+                "Carros: 500, motos: 300, caminhões: 2305"));
+        testCases.add(new SummaryTestCase("Carros: 50, motos: 30, caminhões: 20, vans: 13, empilhadeiras: 5, trator: 1",
+                                    "Carros: 50, motos: 30, caminhões: 20..."));
+        testCases.add(new SummaryTestCase("Motos: 300, caminhões: 200, trator: 14567",
+                "Motos: 300, caminhões: 200..."));
+        testCases.add(new SummaryTestCase("Motos: 30023, trator: 14567, caminhões: 200",
+                "Motos: 30023, trator: 14567..."));
+        testCases.add(new SummaryTestCase("Motos: 30023, trator: 14567, vans: 1333, caminhões: 200",
+                "Motos: 30023, trator: 14567, vans: 1333..."));
+
+        for (SummaryTestCase testCase: testCases) {
+            testSummary(testCase.actual, testCase.expected);
+        }
+    }
+
+    private void testSummary(String actual, String expect) {
+        WorkOrder workOrder = new WorkOrder("Projeto", actual);
+        Assert.assertEquals(expect, workOrder.getShortSummary(MAX_SUMMARY));
+    }
+
+    private class SummaryTestCase {
+        String actual;
+        String expected;
+
+        SummaryTestCase(String actual, String expected) {
+            this.actual = actual;
+            this.expected = expected;
+        }
     }
 }
