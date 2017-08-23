@@ -25,9 +25,6 @@ public class OrmLiteWorkOrderRepository extends OrmLiteRepository<WorkOrder> imp
         if(language == null)  return null;
 
         List<WorkOrder> workOrderList = dao.queryForAll();
-        if (workOrderList.size() <= 0) {
-            return new ArrayList<WorkOrder>();
-        }
 
         //TODO: Ver se dá para ordernar pelo banco
         Collections.sort(workOrderList, new Comparator<WorkOrder>() {
