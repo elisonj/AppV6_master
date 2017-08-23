@@ -106,8 +106,13 @@ public class WorkOrder {
 
     private String ellipsizeShortSummary(int maxSize) {
         if(summary.length() > maxSize) {
-            String text = summary.substring(0, maxSize);
+            String text = summary.substring(0, maxSize - 2);
+
+            if(!text.endsWith(",")) {
+                text = summary.substring(0, maxSize - 3);
+            }
             text = text.substring(0, text.lastIndexOf(","));
+
 
             return text + "...";
         }
