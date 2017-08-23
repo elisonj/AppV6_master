@@ -1,9 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Mobile Asset Inspection</string>
 
-    <string name="menu_visita">VISIT</string>
-    <string name="menu_sync">SYNC</string>
-    <string name="menu_config">CONFIG</string>
+    <string name="menu_visita">Visits</string>
+    <string name="menu_sync">Sync</string>
+    <string name="menu_config">Configuration</string>
 
     <string name="password">Password</string>
     <string name="user">User</string>
@@ -16,11 +16,11 @@
     <string name="language_pt">Portuguese (Brazil)</string>
     <string name="language_en">English</string>
     <string name="language">Language</string>
-    <string name="confirm_change_language_format">Do you want to change application\nlanguage to %s?</string>
-    <string name="login_error">Login failed. Please verify your user and password and try again.</string>
-    <string name="validation_user_field_not_empty">User field cannot be empty.</string>
+    <string name="confirm_change_language_format">Do you want to change the application\nlanguage to %s?</string>
+    <string name="validation_user_field_not_empty">User cannot be empty.</string>
     <string name="validation_password_field_not_empty">Password cannot be empty.</string>
-    <string name="validation_password_dont_match">Wrong password. Please try again.</string>
+    <string name="cannot_login_error">Login failed. Please try again later.</string>
+    <string name="bad_credentials_error">Login failed. Please check your credentials and try again.</string>
     <string name="logo_superbid">Logo Superbid</string>
     <string name="ico_user">icon user</string>
     <string name="ico_password">icon password</string>
@@ -29,7 +29,7 @@
     <string name="view">VIEW</string>
     <string name="more_info">+INFO</string>
     <string name="hide">HIDE</string>
-    <string name="infos">INFOS</string>
+    <string name="infos">INFO</string>
     <string name="open">OPEN</string>
     <string name="inspection">INSPECTIONS</string>
 
