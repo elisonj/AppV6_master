@@ -117,15 +117,6 @@ public class ConfigPresenterTest {
     }
 
     @Test
-    public void shouldSetDefaultsWhenNoConfig() {
-        configRepository.clear();
-
-        configPresenter.start();
-
-        verify(configView).setLanguage("pt_BR");
-    }
-
-    @Test
     public void shouldShowButtonsWhenLanguageSelectedIsDifferent()
     {
         configPresenter.start();
