@@ -7,12 +7,14 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
+import java.util.List;
 
 import br.com.bg7.appvistoria.UserLoggedInTest;
+import br.com.bg7.appvistoria.auth.Auth;
+import br.com.bg7.appvistoria.data.Config;
 import br.com.bg7.appvistoria.data.WorkOrder;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeWorkOrderRepository;
 
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -35,6 +37,7 @@ public class WorkOrderPresenterTest extends UserLoggedInTest {
         super.setUp();
         MockitoAnnotations.initMocks(this);
 
+
         workOrderPresenter =  new WorkOrderPresenter(workOrderRepository, workOrderView, configRepository);
 
         workOrderPresenter.start();
@@ -48,7 +51,10 @@ public class WorkOrderPresenterTest extends UserLoggedInTest {
 
     @Test
     public void shouldShowListItemsWhenStart() {
-        verify(workOrderView).showList(ArgumentMatchers.<WorkOrder>anyList(),anyBoolean());
+        Config config = configRepository.findByUser(Auth.user());
+        String language = config.getLanguageName();
+        List<WorkOrder> workOrderList =  workOrderRepository.findAllOrderByStatus(language);
+        verify(workOrderView).showList(ArgumentMatchers.eq(workOrderList),ArgumentMatchers.eq(true));
     }
 
     @Test

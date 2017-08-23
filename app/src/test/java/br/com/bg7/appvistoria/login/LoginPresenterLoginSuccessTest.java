@@ -49,4 +49,39 @@ public class LoginPresenterLoginSuccessTest extends LoginPresenterTestBase {
         invokeUserService();
         verifySaveAllUserDataAndEnter();
     }
+
+    @Test
+    public void shouldCreateConfigWhenFirstLogin() {
+        clearConfigRepository();
+        setUpGoodPassword();
+
+        callLogin();
+
+        invokeUserService();
+        verifySaveDefaultConfig();
+    }
+
+    @Test
+    public void shouldLoginWithDefaultConfig() {
+        setUpGoodPassword();
+
+        callLogin();
+
+        invokeUserService();
+        verifySaveDefaultConfig();
+    }
+
+    @Test
+    public void shouldLoginWithNotDefaultConfig() {
+        clearConfigRepository();
+        setUpConfig("en_US");
+
+        setUpGoodPassword();
+
+        callLogin();
+
+        invokeUserService();
+        verifyNotDefaultConfig();
+    }
+
 }

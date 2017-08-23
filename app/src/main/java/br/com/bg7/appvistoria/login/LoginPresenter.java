@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class LoginPresenter implements LoginContract.Presenter {
     public static final int UNAUTHORIZED_CODE = 401;
-    private static final int DEFAULT_LANGUAGE_INDEX = 0;
+    static final int DEFAULT_LANGUAGE_INDEX = 0;
 
     private final LoginContract.View loginView;
     private final ConfigRepository configRepository;
