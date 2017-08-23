@@ -1,5 +1,5 @@
 #
-# generated on 2017/08/18 09:38:35
+# generated on 2017/08/22 12:50:37
 #
 # --table-start--
 dataClass=br.com.bg7.appvistoria.data.Config
@@ -38,6 +38,11 @@ indexName=inspections_syncStatus_idx
 # --field-start--
 fieldName=pictures
 foreignCollection=true
+# --field-end--
+# --field-start--
+fieldName=workOrder
+canBeNull=false
+foreign=true
 # --field-end--
 # --table-fields-end--
 # --table-end--
@@ -87,6 +92,46 @@ fieldName=username
 columnName=username
 canBeNull=false
 uniqueIndexName=users_username_idx
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=br.com.bg7.appvistoria.data.WorkOrder
+tableName=workorders
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=name
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=summary
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=status
+canBeNull=false
+indexName=workorders_status_idx
+# --field-end--
+# --field-start--
+fieldName=endAt
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=address
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=externalId
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=inspections
+foreignCollection=true
 # --field-end--
 # --table-fields-end--
 # --table-end--

@@ -19,6 +19,7 @@ import br.com.bg7.appvistoria.data.Config;
 import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.Picture;
 import br.com.bg7.appvistoria.data.User;
+import br.com.bg7.appvistoria.data.WorkOrder;
 
 /**
  * Created by: luciolucio
@@ -34,10 +35,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABASE_NAME = BuildConfig.DATABASE_NAME;
     private static final int DATABASE_VERSION = BuildConfig.DATABASE_VERSION;
 
-    private RuntimeExceptionDao<User, Long> userDao = null;
     private RuntimeExceptionDao<Config, Long> configDao = null;
     private RuntimeExceptionDao<Inspection, Long> inspectionDao = null;
     private RuntimeExceptionDao<Picture, Long> pictureDao = null;
+    private RuntimeExceptionDao<User, Long> userDao = null;
+    private RuntimeExceptionDao<WorkOrder, Long> workOrderDao = null;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION, R.raw.ormlite_config);
@@ -51,10 +53,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
         try {
             LOG.info("onCreate");
-            TableUtils.createTable(connectionSource, User.class);
             TableUtils.createTable(connectionSource, Config.class);
             TableUtils.createTable(connectionSource, Inspection.class);
             TableUtils.createTable(connectionSource, Picture.class);
+            TableUtils.createTable(connectionSource, User.class);
+            TableUtils.createTable(connectionSource, WorkOrder.class);
         } catch (SQLException exception) {
             LOG.error("Can't create database", exception);
             throw new RuntimeException(exception);
@@ -70,18 +73,13 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     /**
-     * Gets a DAO for User. The ones below are all similar to this one.
+     * Gets a DAO for Config. The ones below are all similar to this one.
      *
      * We ignore the 'unchecked' inspection because we have full control over
      * this part of the code and we really wanted to reuse the {@link #getDao(RuntimeExceptionDao, Class)}
      *
-     * @return a DAO for User
+     * @return a DAO for Config
      */
-    public RuntimeExceptionDao<User, Long> getUserDao() {
-        //noinspection unchecked
-        return getDao(userDao, User.class);
-    }
-
     public RuntimeExceptionDao<Config, Long> getConfigDao() {
         //noinspection unchecked
         return getDao(configDao, Config.class);
@@ -97,16 +95,27 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return getDao(pictureDao, Picture.class);
     }
 
+    public RuntimeExceptionDao<User, Long> getUserDao() {
+        //noinspection unchecked
+        return getDao(userDao, User.class);
+    }
+
+    public RuntimeExceptionDao<WorkOrder, Long> getWorkOrderDao() {
+        //noinspection unchecked
+        return getDao(workOrderDao, WorkOrder.class);
+    }
+
     /**
      * Close the database connections and clear any cached DAOs.
      */
     @Override
     public void close() {
         super.close();
-        userDao = null;
         configDao = null;
         inspectionDao = null;
         pictureDao = null;
+        userDao = null;
+        workOrderDao = null;
     }
 
     private RuntimeExceptionDao getDao(RuntimeExceptionDao dao, Class clazz) {
