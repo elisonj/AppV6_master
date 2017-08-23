@@ -101,17 +101,23 @@ public class WorkOrderPresenterTest {
     public void shouldCropShortSummaries() {
 
         ArrayList<SummaryTestCase> testCases = new ArrayList<>();
-        testCases.add(new SummaryTestCase("Carros: 50, motos: 30, caminhões: 20",
+        testCases.add(new SummaryTestCase(
+                "Carros: 50, motos: 30, caminhões: 20",
                 "Carros: 50, motos: 30, caminhões: 20"));
-        testCases.add(new SummaryTestCase("Carros: 500, motos: 300, caminhões: 2305",
+        testCases.add(new SummaryTestCase(
+                "Carros: 500, motos: 300, caminhões: 2305",
                 "Carros: 500, motos: 300, caminhões: 2305"));
-        testCases.add(new SummaryTestCase("Carros: 50, motos: 30, caminhões: 20, vans: 13, empilhadeiras: 5, trator: 1",
-                                    "Carros: 50, motos: 30, caminhões: 20..."));
-        testCases.add(new SummaryTestCase("Motos: 300, caminhões: 200, trator: 14567",
+        testCases.add(new SummaryTestCase(
+                "Carros: 50, motos: 30, caminhões: 20, vans: 13, empilhadeiras: 5, trator: 1",
+                "Carros: 50, motos: 30, caminhões: 20..."));
+        testCases.add(new SummaryTestCase(
+                "Motos: 300, caminhões: 200, trator: 14567",
                 "Motos: 300, caminhões: 200..."));
-        testCases.add(new SummaryTestCase("Motos: 30023, trator: 14567, caminhões: 200",
+        testCases.add(new SummaryTestCase(
+                "Motos: 30023, trator: 14567, caminhões: 200",
                 "Motos: 30023, trator: 14567..."));
-        testCases.add(new SummaryTestCase("Motos: 30023, trator: 14567, vans: 1333, caminhões: 200",
+        testCases.add(new SummaryTestCase(
+                "Motos: 30023, trator: 14567, vans: 1333, caminhões: 200",
                 "Motos: 30023, trator: 14567, vans: 1333..."));
 
         for (SummaryTestCase testCase: testCases) {
