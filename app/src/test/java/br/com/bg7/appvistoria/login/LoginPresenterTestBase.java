@@ -44,7 +44,6 @@ class LoginPresenterTestBase {
     UserService userService;
 
     private FakeUserRepository userRepository;
-    private FakeAuthRepository authRepository;
 
     @Mock
     HttpResponse<Token> tokenHttpResponse;
@@ -67,7 +66,6 @@ class LoginPresenterTestBase {
     private static final String PASSWORD = "password";
     private static final String HASHED_PASSWORD;
     private static final String WRONG_PASSWORD = "not-the-password";
-    private static final String HASHED_WRONG_PASSWORD;
     private static final String TOKEN = "token";
     static final String TOKEN_FROM_SERVICE = "token-from-service";
     static final String USER_ID = "user_id";
@@ -76,7 +74,6 @@ class LoginPresenterTestBase {
 
     static {
         HASHED_PASSWORD = BCrypt.hashpw(PASSWORD, BCrypt.gensalt());
-        HASHED_WRONG_PASSWORD = BCrypt.hashpw(WRONG_PASSWORD, BCrypt.gensalt());
     }
 
     @Before
@@ -94,8 +91,7 @@ class LoginPresenterTestBase {
         userRepository = new FakeUserRepository();
         userRepository.clear();
 
-        authRepository = new FakeAuthRepository();
-        authRepository.clear();
+        FakeAuthRepository authRepository = new FakeAuthRepository();
 
         Auth.configure(new RemoteLocalAuth(userService, tokenService, userRepository, authRepository));
 
@@ -148,7 +144,7 @@ class LoginPresenterTestBase {
         verifyShowMainScreen();
     }
 
-    void verifySaveConfig() {
+    private void verifySaveConfig() {
         Config config = configRepository.findByUser(Auth.user());
         Assert.assertNotNull(config);
     }
