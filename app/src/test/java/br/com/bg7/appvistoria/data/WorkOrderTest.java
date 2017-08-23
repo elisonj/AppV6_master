@@ -54,21 +54,19 @@ public class WorkOrderTest {
                 "Carros: 500, motos: 300, caminhões: 2305"));
         testCases.add(new SummaryTestCase(
                 "Carros: 500, motos: 300, caminhões: 23057",
-                "Carros: 500, motos: 300, caminhões: 23057"));
-        // TODO: Corrigir este caso (1)
-        testCases.add(new SummaryTestCase( // Este retorna 42 caracteres
+                "Carros: 500, motos: 300..."));
+        testCases.add(new SummaryTestCase(
                 "Carros: 500, motos: 300, caminhões: 230, vans: 13",
-                "Carros: 500, motos: 300, caminhões: 230..."));
-        // TODO: Corrigir este caso (2)
-        testCases.add(new SummaryTestCase( // Este retorna 41 caracteres
+                "Carros: 500, motos: 300..."));
+        testCases.add(new SummaryTestCase(
                 "Carros: 500, motos: 300, caminhões: 23, vans: 13",
-                "Carros: 500, motos: 300, caminhões: 23..."));
+                "Carros: 500, motos: 300..."));
         testCases.add(new SummaryTestCase(
                 "Carros: 500, motos: 300, caminhões: 2, vans: 13",
                 "Carros: 500, motos: 300, caminhões: 2..."));
         testCases.add(new SummaryTestCase(
                 "Carros: 500, motos: 300, caminhões: 2305, vans: 13",
-                "Carros: 500, motos: 300, caminhões: 2305..."));
+                "Carros: 500, motos: 300..."));
         testCases.add(new SummaryTestCase(
                 "Carros: 500, motos: 300, caminhões: 23057, vans: 13",
                 "Carros: 500, motos: 300..."));
@@ -77,13 +75,14 @@ public class WorkOrderTest {
                 "Carros: 50, motos: 30, caminhões: 20..."));
         testCases.add(new SummaryTestCase(
                 "Motos: 300, caminhões: 200, trator: 14567",
-                "Motos: 300, caminhões: 200, trator: 14567"));
+                "Motos: 300, caminhões: 200..."));
         testCases.add(new SummaryTestCase(
                 "Motos: 30023, trator: 14567, caminhões: 200",
-                "Motos: 30023, trator: 14567, caminhões: 200"));
+                "Motos: 30023, trator: 14567..."));
         testCases.add(new SummaryTestCase(
                 "Motos: 30023, trator: 14567, vans: 1333, caminhões: 200",
-                "Motos: 30023, trator: 14567, vans: 1333..."));
+                "Motos: 30023, trator: 14567..."));
+
 
         for (SummaryTestCase testCase: testCases) {
             testSummary(testCase.actual, testCase.expected);
@@ -91,7 +90,7 @@ public class WorkOrderTest {
     }
 
     private void testSummary(String actual, String expected) {
-        int maxSummarySize = 43;
+        int maxSummarySize = 40;
 
         WorkOrder workOrder = new WorkOrder("Projeto", actual);
         Assert.assertEquals(expected, workOrder.getShortSummary(maxSummarySize));
