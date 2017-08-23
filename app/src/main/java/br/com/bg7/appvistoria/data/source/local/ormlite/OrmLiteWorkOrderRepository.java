@@ -2,7 +2,6 @@ package br.com.bg7.appvistoria.data.source.local.ormlite;
 
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
