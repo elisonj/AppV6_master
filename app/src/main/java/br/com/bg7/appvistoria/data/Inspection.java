@@ -79,6 +79,7 @@ public class Inspection {
      * Send a single picture via a {@code PictureService}
      *
      * TODO: Pensar nos potenciais perigos de multithreading em setar status aqui e no onResponse/onFailure
+     * TODO: Retirar a duplicação que existe entre este e o outro sync
      *
      * @param pictureService the picture service where the file should be sent to
      * @param syncCallback a callback that will be invoked for progress, success or failure
