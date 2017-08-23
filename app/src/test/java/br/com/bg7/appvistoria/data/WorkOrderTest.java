@@ -47,10 +47,30 @@ public class WorkOrderTest {
                 "Carros: 50, motos: 30, caminhões: 20",
                 "Carros: 50, motos: 30, caminhões: 20"));
         testCases.add(new SummaryTestCase(
+                "Carros: 500, motos: 300, caminhões: 230",
+                "Carros: 500, motos: 300, caminhões: 230"));
+        testCases.add(new SummaryTestCase(
                 "Carros: 500, motos: 300, caminhões: 2305",
                 "Carros: 500, motos: 300, caminhões: 2305"));
         testCases.add(new SummaryTestCase(
                 "Carros: 500, motos: 300, caminhões: 23057",
+                "Carros: 500, motos: 300..."));
+        // TODO: Corrigir este caso (1)
+        testCases.add(new SummaryTestCase( // Este retorna 42 caracteres
+                "Carros: 500, motos: 300, caminhões: 230, vans: 13",
+                "Carros: 500, motos: 300..."));
+        // TODO: Corrigir este caso (2)
+        testCases.add(new SummaryTestCase( // Este retorna 41 caracteres
+                "Carros: 500, motos: 300, caminhões: 23, vans: 13",
+                "Carros: 500, motos: 300..."));
+        testCases.add(new SummaryTestCase(
+                "Carros: 500, motos: 300, caminhões: 2, vans: 13",
+                "Carros: 500, motos: 300, caminhões: 2..."));
+        testCases.add(new SummaryTestCase(
+                "Carros: 500, motos: 300, caminhões: 2305, vans: 13",
+                "Carros: 500, motos: 300..."));
+        testCases.add(new SummaryTestCase(
+                "Carros: 500, motos: 300, caminhões: 23057, vans: 13",
                 "Carros: 500, motos: 300..."));
         testCases.add(new SummaryTestCase(
                 "Carros: 50, motos: 30, caminhões: 20, vans: 13, empilhadeiras: 5, trator: 1",
