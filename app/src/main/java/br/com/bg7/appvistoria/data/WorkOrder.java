@@ -109,10 +109,10 @@ public class WorkOrder {
     }
 
     private String ellipsizeShortSummary(int maxSize) {
-        if(summary.length() > maxSize) {
+        if (summary.length() > maxSize) {
             String text = summary.substring(0, maxSize - ELLIPSIS_SIZE + 1);
 
-            if(!text.endsWith(SEPARATOR)) {
+            if (!text.endsWith(SEPARATOR)) {
                 text = summary.substring(0, maxSize - ELLIPSIS_SIZE);
             }
             text = text.substring(0, text.lastIndexOf(SEPARATOR));
