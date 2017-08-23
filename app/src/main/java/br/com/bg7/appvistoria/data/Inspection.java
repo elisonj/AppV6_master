@@ -38,6 +38,9 @@ public class Inspection {
 
     private PictureCollection pictureCollectionSource;
 
+    @DatabaseField(canBeNull = false, foreign = true)
+    private WorkOrder workOrder;
+
     @SuppressWarnings("unused")
     public Inspection() {
         // used by ormlite

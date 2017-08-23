@@ -20,6 +20,10 @@ public class Language {
         return name;
     }
 
+    public String getDisplayName() {
+        return displayName;
+    }
+
     @Override
     public String toString() {
         return displayName;

@@ -7,7 +7,9 @@ import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.auth.Auth;
 import br.com.bg7.appvistoria.auth.RemoteLocalAuth;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
+import br.com.bg7.appvistoria.data.source.local.android.ResourcesLanguageRepository;
 import br.com.bg7.appvistoria.data.source.local.android.SharedPreferencesAuthRepository;
+import br.com.bg7.appvistoria.data.source.local.ormlite.OrmLiteConfigRepository;
 import br.com.bg7.appvistoria.data.source.local.ormlite.OrmLiteUserRepository;
 import br.com.bg7.appvistoria.data.source.remote.retrofit.RetrofitTokenService;
 import br.com.bg7.appvistoria.data.source.remote.retrofit.RetrofitUserService;
@@ -24,9 +26,12 @@ public class LoginActivity extends BaseActivity {
     private static final String GRANT_TYPE = BuildConfig.GRANT_TYPE;
     private static final String CLIENT_ID = BuildConfig.CLIENT_ID;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        OrmLiteConfigRepository configRepository = new OrmLiteConfigRepository(getConfigDao());
 
         LoginView loginView = new LoginView(this);
         RetrofitUserService userService = new RetrofitUserService(BASE_URL);
@@ -37,7 +42,7 @@ public class LoginActivity extends BaseActivity {
         RemoteLocalAuth remoteLocalAuth = new RemoteLocalAuth(userService, tokenService, userRepository, authRepository);
         Auth.configure(remoteLocalAuth);
 
-        loginPresenter = new LoginPresenter(loginView);
+        loginPresenter = new LoginPresenter(configRepository, loginView);
 
         setContentView(loginView);
     }

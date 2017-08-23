@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     private List<Language> languageList;
 
     private LinearLayout buttonsContainer;
+    private TextView dialogMessage;
     private Button cancelButton;
     private Button confirmButton;
 
@@ -57,6 +59,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
         logout = root.findViewById(R.id.linear_logout);
 
         buttonsContainer = root.findViewById(R.id.linear_buttons);
+        dialogMessage = root.findViewById(R.id.dialog_message);
         cancelButton = root.findViewById(R.id.button_cancel);
         confirmButton = root.findViewById(R.id.button_confirm);
     }
@@ -129,6 +132,8 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
         languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String message = getString(R.string.confirm_change_language_format);
+                dialogMessage.setText(String.format(message, languageList.get(i).getDisplayName()));
                 configPresenter.languageSelected(languageList.get(i).getName());
             }
 

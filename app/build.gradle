@@ -26,7 +26,11 @@ android {
         buildConfigField 'String', 'GRANT_TYPE', '"password"'
         buildConfigField 'String', 'CLIENT_ID', '"61922-5b5d19794c749cfbc5d20becc3826e08-s4b-cda-app"'
         buildConfigField 'String[]', 'LANGUAGE_NAMES', '{ "pt", "en" }'
+        buildConfigField 'String', 'DEFAULT_LANGUAGE_NAME', '"pt"'
         buildConfigField 'String', 'BASE_URL', '"https://preapi.s4bdigital.net"'
+
+        buildConfigField 'String', 'DATE_TIME_STYLE', '"S-"'
+        buildConfigField 'Integer', 'MAX_SIZE_SHORT_SUMMARY', '54'
 
         buildConfigField 'String', 'DATABASE_NAME', '"mobileassetinspection.db"'
         buildConfigField 'Integer', 'DATABASE_VERSION', '1'
@@ -82,4 +86,5 @@ dependencies {
     compile group: 'org.mindrot', name: 'jbcrypt', version: '0.3m'
     compile group: 'com.google.guava', name: 'guava', version: '22.0-android'
     compile 'com.akexorcist:localizationactivity:1.1.2'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.1'
 }

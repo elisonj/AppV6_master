@@ -68,7 +68,7 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
 
     @Override
     public void showCannotLoginError() {
-        showError(getContext().getString(R.string.login_error));
+        showError(getContext().getString(R.string.cannot_login_error));
     }
 
     @Override
@@ -79,7 +79,7 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
 
     @Override
     public void showBadCredentialsError() {
-        showError(getContext().getString(R.string.validation_password_dont_match));
+        showError(getContext().getString(R.string.bad_credentials_error));
     }
 
     private void showError(String message) {

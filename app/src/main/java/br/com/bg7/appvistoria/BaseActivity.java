@@ -12,6 +12,7 @@ import br.com.bg7.appvistoria.data.Config;
 import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.Picture;
 import br.com.bg7.appvistoria.data.User;
+import br.com.bg7.appvistoria.data.WorkOrder;
 import br.com.bg7.appvistoria.data.source.local.ormlite.DatabaseHelper;
 
 /**
@@ -29,6 +30,12 @@ public abstract class BaseActivity extends LocalizationActivity {
     public RuntimeExceptionDao<Config, Long> getConfigDao() {
         return getHelper().getConfigDao();
     }
+
+
+    public RuntimeExceptionDao<WorkOrder, Long> getWorkOrderDao() {
+        return getHelper().getWorkOrderDao();
+    }
+
 
     public RuntimeExceptionDao<Inspection, Long> getInspectionDao() {
         return getHelper().getInspectionDao();
