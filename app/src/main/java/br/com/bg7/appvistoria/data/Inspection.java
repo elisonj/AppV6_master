@@ -42,6 +42,7 @@ public class Inspection {
     private WorkOrder workOrder;
 
     @SuppressWarnings("unused")
+    // TODO: Verificar se precisamos mesmo ter esse método público - Inspection
     public Inspection() {
         // used by ormlite
     }

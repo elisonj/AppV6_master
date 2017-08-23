@@ -59,6 +59,7 @@ public class WorkOrder {
      * Default constructor used by ormlite
      */
     @SuppressWarnings("unused")
+    // TODO: Verificar se precisamos mesmo ter esse método público - WorkOrder
     public WorkOrder() {}
 
     public WorkOrder(String name, String summary) {
