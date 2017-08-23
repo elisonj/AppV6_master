@@ -22,7 +22,6 @@ public class OrmLiteWorkOrderRepository extends OrmLiteRepository<WorkOrder> imp
     @Override
     public List<WorkOrder> findAllOrderByStatus(String language) {
         if(language == null)  return null;
-
         List<WorkOrder> workOrderList = dao.queryForAll();
 
         //TODO: Ver se dá para ordernar pelo banco
