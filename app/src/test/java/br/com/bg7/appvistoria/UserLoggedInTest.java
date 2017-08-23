@@ -26,7 +26,7 @@ public abstract class UserLoggedInTest {
         Auth.configure(authFacade);
 
         authFacade.fakeLogin(USER);
-        setUpConfig("pt_BR");
+        setUpConfig("pt");
     }
 
     protected void setUpConfig(String language) {

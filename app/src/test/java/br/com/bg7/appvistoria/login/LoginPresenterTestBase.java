@@ -9,13 +9,8 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.List;
-
-import br.com.bg7.appvistoria.UserLoggedInTest;
 import br.com.bg7.appvistoria.auth.Auth;
 import br.com.bg7.appvistoria.auth.RemoteLocalAuth;
-import br.com.bg7.appvistoria.config.vo.Language;
-import br.com.bg7.appvistoria.data.Config;
 import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeAuthRepository;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeConfigRepository;
@@ -28,7 +23,6 @@ import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
 
-import static br.com.bg7.appvistoria.login.LoginPresenter.DEFAULT_LANGUAGE_INDEX;
 import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -100,7 +94,7 @@ class LoginPresenterTestBase {
 
         Auth.configure(new RemoteLocalAuth(userService, tokenService, userRepository, authRepository));
 
-        loginPresenter = new LoginPresenter(configRepository, languageRepository, loginView);
+        loginPresenter = new LoginPresenter(configRepository, loginView);
 
         userRepository.save(new User(USERNAME, TOKEN, HASHED_PASSWORD));
     }

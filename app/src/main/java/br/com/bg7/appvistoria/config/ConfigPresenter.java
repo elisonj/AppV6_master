@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 
 import java.util.List;
 
+import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.auth.Auth;
 import br.com.bg7.appvistoria.config.vo.Language;
 import br.com.bg7.appvistoria.data.Config;
@@ -18,7 +19,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 
 class ConfigPresenter implements ConfigContract.Presenter {
-    private static final int DEFAULT_LANGUAGE_INDEX = 0;
 
     private final ConfigContract.View configView;
     private final ConfigRepository configRepository;
@@ -46,7 +46,7 @@ class ConfigPresenter implements ConfigContract.Presenter {
         String languageName = config.getLanguageName();
 
         if (Strings.isNullOrEmpty(languageName) || Strings.isNullOrEmpty(languageName.trim())) {
-            languageName = languageList.get(DEFAULT_LANGUAGE_INDEX).getName();
+            languageName = BuildConfig.DEFAULT_LANGUAGE_NAME;
         }
 
         boolean languageExists = false;
@@ -58,7 +58,7 @@ class ConfigPresenter implements ConfigContract.Presenter {
         }
 
         if (!languageExists) {
-            languageName = languageList.get(DEFAULT_LANGUAGE_INDEX).getName();
+            languageName = BuildConfig.DEFAULT_LANGUAGE_NAME;
         }
 
         applyConfig(languageName);

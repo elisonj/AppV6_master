@@ -66,11 +66,11 @@ public class ConfigPresenterTest extends UserLoggedInTest {
 
     @Test
     public void shouldSelectLanguageOnStart() {
-        setUpConfig("en_US");
+        setUpConfig("en");
 
         configPresenter.start();
 
-        verify(configView).setLanguage("en_US");
+        verify(configView).setLanguage("en");
     }
 
 
@@ -92,7 +92,7 @@ public class ConfigPresenterTest extends UserLoggedInTest {
             configPresenter.start();
 
             System.out.println("shouldSelectFirstItemIfConfigLanguageNotValid - " + description);
-            verify(configView).setLanguage("pt_BR");
+            verify(configView).setLanguage("pt");
         }
     }
 
@@ -100,7 +100,7 @@ public class ConfigPresenterTest extends UserLoggedInTest {
     public void shouldShowButtonsWhenLanguageSelectedIsDifferent()
     {
         configPresenter.start();
-        configPresenter.languageSelected("en_US");
+        configPresenter.languageSelected("en");
         verify(configView).showButtons();
     }
 
@@ -108,7 +108,7 @@ public class ConfigPresenterTest extends UserLoggedInTest {
     public void shouldNotShowButtonsWhenLanguageSelectedIsTheSame()
     {
         configPresenter.start();
-        configPresenter.languageSelected("pt_BR");
+        configPresenter.languageSelected("pt");
         verify(configView, never()).showButtons();
     }
 
@@ -131,9 +131,9 @@ public class ConfigPresenterTest extends UserLoggedInTest {
     @Test
     public void shouldChangeLanguageWhenConfirmClicked()
     {
-        configPresenter.confirmClicked("pt_BR");
+        configPresenter.confirmClicked("pt");
 
-        verify(configView).changeLanguage("pt_BR");
+        verify(configView).changeLanguage("pt");
     }
 
     @Test

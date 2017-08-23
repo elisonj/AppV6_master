@@ -7,9 +7,7 @@ import org.junit.Test;
 import java.io.IOException;
 
 import br.com.bg7.appvistoria.auth.Auth;
-import br.com.bg7.appvistoria.auth.FakeAuthFacade;
 import br.com.bg7.appvistoria.data.Config;
-import br.com.bg7.appvistoria.data.User;
 
 import static org.mockito.Mockito.reset;
 
@@ -70,7 +68,7 @@ public class LoginPresenterLoginSuccessTest extends LoginPresenterTestBase {
         invokeUserService();
 
         Config config = configRepository.findByUser(Auth.user());
-        Assert.assertEquals("pt_BR", config.getLanguageName());
+        Assert.assertEquals("pt", config.getLanguageName());
     }
 
     @Test
@@ -79,7 +77,7 @@ public class LoginPresenterLoginSuccessTest extends LoginPresenterTestBase {
         callLogin();
         invokeUserService();
 
-        configRepository.save(new Config("en_US", Auth.user()));
+        configRepository.save(new Config("en", Auth.user()));
 
         reset(tokenService);
         reset(userService);
@@ -87,6 +85,6 @@ public class LoginPresenterLoginSuccessTest extends LoginPresenterTestBase {
         invokeUserService();
 
         Config config = configRepository.findByUser(Auth.user());
-        Assert.assertEquals("en_US", config.getLanguageName());
+        Assert.assertEquals("en", config.getLanguageName());
     }
 }

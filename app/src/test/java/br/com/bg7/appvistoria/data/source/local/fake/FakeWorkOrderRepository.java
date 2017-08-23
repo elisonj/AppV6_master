@@ -1,15 +1,12 @@
 package br.com.bg7.appvistoria.data.source.local.fake;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import br.com.bg7.appvistoria.data.WorkOrder;
 import br.com.bg7.appvistoria.data.source.local.WorkOrderRepository;
-import br.com.bg7.appvistoria.workorder.CompletedWorkOrder;
-import br.com.bg7.appvistoria.workorder.InProgressWorkOrder;
 
 /**
  * Created by: elison

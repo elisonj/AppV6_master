@@ -26,6 +26,7 @@ android {
         buildConfigField 'String', 'GRANT_TYPE', '"password"'
         buildConfigField 'String', 'CLIENT_ID', '"61922-5b5d19794c749cfbc5d20becc3826e08-s4b-cda-app"'
         buildConfigField 'String[]', 'LANGUAGE_NAMES', '{ "pt", "en" }'
+        buildConfigField 'String', 'DEFAULT_LANGUAGE_NAME', '"pt"'
         buildConfigField 'String', 'BASE_URL', '"https://preapi.s4bdigital.net"'
 
         buildConfigField 'String', 'DATE_TIME_STYLE', '"S-"'

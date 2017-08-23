@@ -15,8 +15,8 @@ public class FakeLanguageRepository implements LanguageRepository {
     @Override
     public List<Language> getLanguages() {
         return Arrays.asList(
-                new Language("pt_BR", null),
-                new Language("en_US", null)
+                new Language("pt", null),
+                new Language("en", null)
         );
     }
 }
