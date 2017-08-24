@@ -1,8 +1,12 @@
 package br.com.bg7.appvistoria;
 
+import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.akexorcist.localizationactivity.LocalizationActivity;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
@@ -22,6 +26,7 @@ import br.com.bg7.appvistoria.data.source.local.ormlite.DatabaseHelper;
 public abstract class BaseActivity extends LocalizationActivity {
 
     private DatabaseHelper databaseHelper = null;
+    public  Dialog dialog;
 
     public RuntimeExceptionDao<User, Long> getUserDao() {
         return getHelper().getUserDao();
@@ -72,4 +77,35 @@ public abstract class BaseActivity extends LocalizationActivity {
             databaseHelper = null;
         }
     }
+
+    public void showConfirmDialog(String message, View.OnClickListener confirm, View.OnClickListener cancel) {
+        dialog = new Dialog(this);
+        dialog.setContentView(R.layout.confirm_dialog);
+
+        TextView text = dialog.findViewById(R.id.message);
+        text.setText(message);
+
+        Button cancelButton = dialog.findViewById(R.id.button_cancel);
+        cancelButton.setOnClickListener(cancel);
+
+        Button confirmButton =dialog.findViewById(R.id.button_confirm);
+        confirmButton.setOnClickListener(confirm);
+
+        dialog.show();
+    }
+
+    public void showAlertDialog(String message, View.OnClickListener confirm) {
+        dialog = new Dialog(this);
+
+        dialog.setContentView(R.layout.alert_dialog);
+
+        TextView text = dialog.findViewById(R.id.message);
+        text.setText(message);
+
+        Button confirmButton =dialog.findViewById(R.id.button_confirm);
+        confirmButton.setOnClickListener(confirm);
+
+        dialog.show();
+    }
+
 }

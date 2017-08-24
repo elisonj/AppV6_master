@@ -24,9 +24,11 @@
     </style>
 
     <style name = "Login" parent = "Theme.AppCompat.Light.NoActionBar">
-        <item name = "android:background">@drawable/background_login</item>
         <item name = "android:windowActionBar">false</item>
         <item name = "android:windowNoTitle">true</item>
     </style>
+
+
+
 
 </resources>

@@ -93,6 +93,10 @@ public class WorkOrder {
         return formatter.format(endAt.toDate());
     }
 
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public String getAddress() {
         return address;
     }

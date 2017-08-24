@@ -10,6 +10,7 @@
     <string name="login">ENTRAR</string>
     <string name="error">Erro</string>
     <string name="confirm">CONFIRMAR</string>
+    <string name="ok">OK</string>
     <string name="cancel">CANCELAR</string>
     <string name="logout">LOGOUT</string>
     <string name="exit_app">Sair do aplicativo</string>

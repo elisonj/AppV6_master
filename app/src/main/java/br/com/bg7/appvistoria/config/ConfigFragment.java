@@ -10,12 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import java.util.List;
 
+import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.Constants;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.config.vo.Language;
@@ -37,9 +37,8 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     private Spinner languageSpinner;
     private List<Language> languageList;
 
-    private LinearLayout buttonsContainer;
-    private Button cancelButton;
-    private Button confirmButton;
+    private View.OnClickListener cancelButton;
+    private View.OnClickListener confirmButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,10 +54,6 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     private void initializeViewElements(View root) {
         languageSpinner = root.findViewById(R.id.spinner_language);
         logout = root.findViewById(R.id.linear_logout);
-
-        buttonsContainer = root.findViewById(R.id.linear_buttons);
-        cancelButton = root.findViewById(R.id.button_cancel);
-        confirmButton = root.findViewById(R.id.button_confirm);
     }
 
     private void initializeListeners() {
@@ -70,22 +65,21 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
             }
         });
 
-
-        cancelButton.setOnClickListener(new View.OnClickListener() {
+        cancelButton = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 configPresenter.cancelClicked();
             }
-        });
+        };
 
-        confirmButton.setOnClickListener(new View.OnClickListener() {
+        confirmButton = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Language selectedLanguage = (Language) languageSpinner.getSelectedItem();
 
                 configPresenter.confirmClicked(selectedLanguage.getName());
             }
-        });
+        };
     }
 
     @Override
@@ -101,12 +95,12 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
 
     @Override
     public void hideButtons() {
-        buttonsContainer.setVisibility(View.GONE);
+        ((BaseActivity)getActivity()).dialog.dismiss();
     }
 
     @Override
     public void showButtons() {
-        buttonsContainer.setVisibility(View.VISIBLE);
+        ((BaseActivity)getActivity()).showConfirmDialog(getString(R.string.confirm_change_language), confirmButton, cancelButton);
     }
 
     @Override

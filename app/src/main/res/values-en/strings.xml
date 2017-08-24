@@ -10,6 +10,7 @@
     <string name="login">LOGIN</string>
     <string name="error">Error</string>
     <string name="confirm">CONFIRM</string>
+    <string name="ok">OK</string>
     <string name="cancel" tools:ignore="ButtonCase">CANCEL</string> <!-- No layout esta em maiusculas -->
     <string name="logout">LOGOUT</string>
     <string name="exit_app">Exit application</string>

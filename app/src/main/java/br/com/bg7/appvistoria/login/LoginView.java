@@ -1,6 +1,5 @@
 package br.com.bg7.appvistoria.login;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -9,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.config.ConfigActivity;
 
@@ -21,6 +21,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class LoginView extends ConstraintLayout implements LoginContract.View {
     private LoginContract.Presenter loginPresenter;
+
+    private View.OnClickListener confirmButton;
 
     public LoginView(Context context) {
         super(context);
@@ -40,6 +42,14 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
                 loginPresenter.login(username.getText().toString(), password.getText().toString());
             }
         });
+
+        confirmButton = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((BaseActivity)getContext()).dialog.dismiss();
+            }
+        };
+
     }
 
     @Override
@@ -87,10 +97,6 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
     }
 
     private void showMessage(String title, String message) {
-        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-        alert.setTitle(title);
-        alert.setMessage(message);
-        alert.setPositiveButton("OK",null);
-        alert.show();
+        ((BaseActivity)getContext()).showAlertDialog(message, confirmButton);
     }
 }
