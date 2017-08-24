@@ -19,7 +19,6 @@ import com.akexorcist.localizationactivity.LocalizationActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.WorkOrder;
 
@@ -37,6 +36,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     private WorkOrderAdapter adapter;
 
     private static final String MAP_ADDRESS = "geo:0,0?q=";
+    private static final int MAX_SIZE_SUMARY = 50;
     private static final int MAX_SIZE_TEXT_INFO = 12;
     private static final int MAX_SIZE_TEXT_INSPECTION = 22;
 
@@ -77,20 +77,20 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     @Override
     public void showList(List<WorkOrder> list, boolean showMapButtons) {
-        adapter = new WorkOrderAdapter(this, list);
+        adapter = new WorkOrderAdapter(this, list, showMapButtons);
         listView.setAdapter(adapter);
     }
 
     @Override
     public void highlightInfoButton(WorkOrder workOrder) {
-        View v = getItemListView(workOrder);
+        View v = getListItem(workOrder);
         ImageView moreInfo = v.findViewById(R.id.image_more_info);
         setImageHighlightWorkOrder(moreInfo, workOrder.getStatus());
     }
 
     @Override
     public void removeInfoButtonHighlight(WorkOrder workOrder) {
-        View v = getItemListView(workOrder);
+        View v = getListItem(workOrder);
         if(v != null) {
             ImageView moreInfo = v.findViewById(R.id.image_more_info);
             removeImageHighlightWorkOrder(moreInfo, workOrder.getStatus());
@@ -121,12 +121,8 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
         startActivity(intent);
     }
 
-    private WorkOrderAdapter getAdapter() {
-        return (WorkOrderAdapter)listView.getAdapter();
-    }
-
     private void hideSummary(WorkOrder workOrder){
-        View v = getItemListView(workOrder);
+        View v = getListItem(workOrder);
 
         if(v != null) {
             TextView shortSummary = v.findViewById(R.id.short_summary);
@@ -134,18 +130,18 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
             shortSummary.setVisibility(View.VISIBLE);
             summary.setVisibility(View.GONE);
         }
-            getAdapter().setHighlightWorkOrder(null);
+            getAdapter().setExpandedWorkOrder(null);
     }
 
     private void showSummary(WorkOrder workOrder){
-       View v = getItemListView(workOrder);
+       View v = getListItem(workOrder);
 
         TextView shortSummary = v.findViewById(R.id.short_summary);
         TextView summary = v.findViewById(R.id.summary);
         summary.setText(workOrder.getSummary());
         shortSummary.setVisibility(View.GONE);
         summary.setVisibility(View.VISIBLE);
-        getAdapter().setHighlightWorkOrder(workOrder);
+        getAdapter().setExpandedWorkOrder(workOrder);
     }
 
     private WorkOrderAdapter getAdapter() {
@@ -195,6 +191,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
          private boolean showMapButtons;
          private WorkOrder expandedWorkOrder = null;
+        private LayoutInflater inflater=null;
 
          private List<WorkOrder> list = new ArrayList<>();
 
@@ -271,7 +268,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              resetHolder(holder);
 
              holder.name.setText(item.getName());
-             holder.shortSummary.setText(item.getShortSummary());
+             holder.shortSummary.setText(item.getShortSummary(MAX_SIZE_SUMARY));
              holder.date.setText(item.getEndAt(((LocalizationActivity)getActivity()).getLocale()));
              holder.status.setText(item.getStatus().toString());
              holder.local.setText(item.getAddress());
@@ -302,7 +299,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                  holder.imageInspections.setImageResource(IMAGE_WORKORDER_IN_PROGRESS);
                  holder.item.setBackgroundResource(BACKGROUND_IN_PROGRESS);
              }
-             if(item.equals(highlightWorkOrder)) {
+             if(item.equals(expandedWorkOrder)) {
                  holder.summary.setText(item.getSummary());
                  holder.summary.setVisibility(View.VISIBLE);
                  setImageHighlightWorkOrder(holder.imageMoreInfo, item.getStatus());

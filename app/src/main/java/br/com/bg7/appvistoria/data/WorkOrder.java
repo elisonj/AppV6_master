@@ -86,6 +86,10 @@ public class WorkOrder {
         return summary;
     }
 
+    public void setStatus(WorkOrderStatus status) {
+        this.status = status;
+    }
+
     public WorkOrderStatus getStatus() {
         return status;
     }
@@ -94,7 +98,7 @@ public class WorkOrder {
         status = WorkOrderStatus.IN_PROGRESS;
     }
 
-    public void finish() {
+    protected void finish() {
         status = WorkOrderStatus.COMPLETED;
     }
 

@@ -59,7 +59,7 @@ public class WorkOrderPresenterTest extends UserLoggedInTest {
     @Test
     public void shouldShowListItemsWhenStart() {
         List<WorkOrder> workOrderList =  workOrderRepository.findAllOrderByStatus(null);
-        verify(workOrderView).showList(ArgumentMatchers.eq(workOrderList),ArgumentMatchers.eq(true));
+        verify(workOrderView).showList(ArgumentMatchers.eq(workOrderList),ArgumentMatchers.eq(false));
     }
 
     @Test

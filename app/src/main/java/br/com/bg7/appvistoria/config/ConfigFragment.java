@@ -10,12 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import java.util.List;
 
+import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.Constants;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.config.vo.Language;
@@ -39,6 +39,8 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
 
     private View.OnClickListener cancelButton;
     private View.OnClickListener confirmButton;
+    private View.OnClickListener confirmButtonLogout;
+    private String messageDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,7 +63,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                configPresenter.logoutClicked();
+                ((BaseActivity)getActivity()).showConfirmDialog(getString(R.string.confirm_logout), confirmButtonLogout, cancelButton);
             }
         });
 
@@ -76,8 +78,14 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
             @Override
             public void onClick(View view) {
                 Language selectedLanguage = (Language) languageSpinner.getSelectedItem();
-
                 configPresenter.confirmClicked(selectedLanguage.getName());
+            }
+        };
+
+        confirmButtonLogout = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                configPresenter.logoutClicked();
             }
         };
     }
@@ -100,7 +108,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
 
     @Override
     public void showButtons() {
-        ((BaseActivity)getActivity()).showConfirmDialog(getString(R.string.confirm_change_language), confirmButton, cancelButton);
+        ((BaseActivity)getActivity()).showConfirmDialog(messageDialog, confirmButton, cancelButton);
     }
 
     @Override
@@ -124,7 +132,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String message = getString(R.string.confirm_change_language_format);
-                dialogMessage.setText(String.format(message, languageList.get(i).getDisplayName()));
+                messageDialog = String.format(message, languageList.get(i).getDisplayName());
                 configPresenter.languageSelected(languageList.get(i).getName());
             }
 

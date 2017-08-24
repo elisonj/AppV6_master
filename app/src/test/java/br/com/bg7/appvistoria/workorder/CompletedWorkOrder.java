@@ -7,8 +7,8 @@ import br.com.bg7.appvistoria.data.WorkOrder;
  * Date: 2017-08-22
  */
 
-public class CompletedWorkOrder extends WorkOrder {
-    public CompletedWorkOrder(String name, String summary) {
+ class CompletedWorkOrder extends WorkOrder {
+     CompletedWorkOrder(String name, String summary) {
         super(name, summary);
         this.finish();
     }
