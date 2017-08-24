@@ -31,6 +31,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     private ListView listView;
     private WorkOrderAdapter adapter;
 
+    private static final int MAX_SIZE_SUMARY = 43;
     private static final int MAX_SIZE_TEXT_INFO = 12;
     private static final int MAX_SIZE_TEXT_INSPECTION = 22;
 
@@ -203,7 +204,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              holder.moreInfo.setBackgroundColor(Color.TRANSPARENT);
 
              holder.name.setText(item.getName());
-             holder.shortSummary.setText(item.getShortSummary());
+             holder.shortSummary.setText(item.getShortSummary(MAX_SIZE_SUMARY));
              holder.date.setText(item.getEndAt(((LocalizationActivity)getActivity()).getLocale()));
              holder.status.setText(item.getStatus().toString());
 
