@@ -1,12 +1,15 @@
 package br.com.bg7.appvistoria.workorder;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,6 +22,7 @@ import java.util.List;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.WorkOrder;
 
+import static br.com.bg7.appvistoria.R.id.status;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
