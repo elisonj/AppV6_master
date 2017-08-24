@@ -22,8 +22,14 @@
     <string name="cannot_login_error">Não foi possível realizar o login. Por favor, tente novamente mais tarde.</string>
     <string name="bad_credentials_error">Não foi possível realizar o login. Por favor, verifique seu usuário e senha e tente novamente.</string>
     <string name="logo_superbid">Logo Superbid</string>
-    <string name="ico_user">icon user</string>
+    <string name="ico_user">icon usuário</string>
     <string name="ico_password">icon password</string>
+    <string name="ico_more_info">icon + info</string>
+    <string name="ico_inspections">icon inspeções</string>
+
+    <string name="status_in_progress">ANDAMENTO</string>
+    <string name="status_completed">COMPLETA</string>
+    <string name="status_not_started">A INICIAR</string>
 
     <string name="view">VER</string>
     <string name="more_info">+INFOS</string>

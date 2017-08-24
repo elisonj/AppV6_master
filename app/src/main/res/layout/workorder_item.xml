@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:background="@drawable/background_workorder_in_progress"
+    android:gravity="bottom"
+    android:layout_height="wrap_content">
+
 
     <TextView
         android:id="@+id/name"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
          />
@@ -12,6 +17,8 @@
     <TextView
         android:id="@+id/short_summary"
         android:ellipsize="end"
+        android:layout_marginStart="10dp"
+        android:textColor="#7a8187"
         android:maxLines="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +26,9 @@
 
     <TextView
         android:visibility="gone"
+        android:layout_marginStart="10dp"
         android:id="@+id/summary"
+        android:textColor="#7a8187"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
@@ -27,12 +36,25 @@
     <TextView
         android:id="@+id/date"
         android:maxLines="1"
+        android:layout_marginStart="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="10dp"
+        android:background="#eeeeee">
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:paddingTop="5dp"
+        android:layout_marginStart="10dp"
+        android:gravity="center_vertical"
+        android:background="@android:color/white"
         android:layout_height="wrap_content">
 
         <TextView
@@ -43,41 +65,86 @@
             />
         <LinearLayout
             android:id="@+id/more_info"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1"
+            android:layout_marginEnd="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             >
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/view"
-                />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/more_info"
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="5dp"
+                android:contentDescription="@string/ico_more_info"
+                android:src="@drawable/ic_info_in_progress"
                 />
 
+
+                   <LinearLayout
+                       android:id="@+id/more_info_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:textColor="#484d51"
+                        android:text="@string/view"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#484d51"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        android:text="@string/more_info"
+                        />
+
+                </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/inspections"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1"
+            android:layout_marginEnd="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             >
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="5dp"
+                android:contentDescription="@string/ico_inspections"
+                android:src="@drawable/ic_workorder_in_progress"
+                />
+            <LinearLayout
+                android:id="@+id/inspections_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:textColor="#484d51"
                 android:text="@string/open"
                 />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="#484d51"
+                android:textSize="12sp"
+                android:textStyle="bold"
                 android:text="@string/inspection"
                 />
 
+        </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
