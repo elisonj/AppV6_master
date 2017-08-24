@@ -24,6 +24,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by: elison
  * Date: 2017-08-15
+ *
+ * TODO: Reaplicar os refactoring perdidos no merge (ver PR https://bitbucket.org/tagnclick/0885-appvistoria/pull-requests/56/visitas-status/diff)
  */
 public class WorkOrderFragment extends Fragment implements  WorkOrderContract.View {
 
