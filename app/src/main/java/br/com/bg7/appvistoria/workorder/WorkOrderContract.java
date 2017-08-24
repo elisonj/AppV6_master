@@ -35,8 +35,6 @@ interface WorkOrderContract {
 
         void start();
 
-        void search(String searchTerm);
-
         void moreInfoClicked(WorkOrder workOrder);
 
         void hideInfoClicked(WorkOrder workOrder);

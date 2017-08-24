@@ -1,17 +1,19 @@
 package br.com.bg7.appvistoria.data;
 
+import com.google.common.base.Objects;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Locale;
 
+import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.workorder.WorkOrderStatus;
 
 /**
@@ -21,10 +23,13 @@ import br.com.bg7.appvistoria.workorder.WorkOrderStatus;
 @DatabaseTable(tableName = "workorders")
 public class WorkOrder {
 
-    public static final int MAX_SIZE_SHORT_SUMMARY = 54;
+    private int shortSummarySize = -1;
 
-    private String dateFormatPtBr = "dd/MM/yyyy";
-    private String dateFormatEnUs = "yyyy-MM-dd";
+    private final static String ELLIPSIS = "...";
+    private final static int ELLIPSIS_SIZE = ELLIPSIS.length();
+    private final static String SEPARATOR = ",";
+
+    private String shortSummary;
 
     @DatabaseField(generatedId = true)
     private Long id;
@@ -34,9 +39,6 @@ public class WorkOrder {
 
     @DatabaseField(canBeNull = false)
     private String summary;
-
-    @DatabaseField(canBeNull = false)
-    private String shortSummary;
 
     @DatabaseField(index = true, canBeNull = false)
     private WorkOrderStatus status;
@@ -57,20 +59,26 @@ public class WorkOrder {
      * Default constructor used by ormlite
      */
     @SuppressWarnings("unused")
+    // TODO: Verificar se precisamos mesmo ter esse método público - WorkOrder
     public WorkOrder() {}
 
-    public WorkOrder(String name,String summary, WorkOrderStatus status) {
+    public WorkOrder(String name, String summary) {
         this.name = name;
         this.summary = summary;
-        this.shortSummary = ellipsizeShortSummary(summary);
-        this.status = status;
+        this.status = WorkOrderStatus.NOT_STARTED;
+        this.endAt = DateTime.now();
     }
 
     public String getName() {
         return name;
     }
 
-    public String getShortSummary() {
+    public String getShortSummary(int maxSize) {
+        if (maxSize != shortSummarySize) {
+            shortSummarySize = maxSize;
+            shortSummary = ellipsizeShortSummary(maxSize);
+        }
+
         return shortSummary;
     }
 
@@ -82,15 +90,23 @@ public class WorkOrder {
         return status;
     }
 
+    public void start() {
+        status = WorkOrderStatus.IN_PROGRESS;
+    }
+
+    public void finish() {
+        status = WorkOrderStatus.COMPLETED;
+    }
+
     public String getEndAt(Locale locale) {
-        if(endAt == null) {
-            endAt = new DateTime();
+        String pattern = DateTimeFormat.patternForStyle(BuildConfig.DATE_TIME_STYLE, locale);
+
+        if (pattern.contains("yy") && !pattern.contains("yyyy")) {
+            pattern = pattern.replace("yy", "yyyy");
         }
-        SimpleDateFormat formatter = new SimpleDateFormat(dateFormatPtBr, locale);
-        if(locale.equals(Locale.ENGLISH)) {
-            formatter = new SimpleDateFormat(dateFormatEnUs, locale);
-        }
-        return formatter.format(endAt.toDate());
+
+        DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
+        return formatter.print(endAt);
     }
 
     public void setAddress(String address) {
@@ -101,21 +117,40 @@ public class WorkOrder {
         return address;
     }
 
-    private String ellipsizeShortSummary(String summary) {
-
-        String text = summary.substring(0, MAX_SIZE_SHORT_SUMMARY);
-        text = text.substring(0, text.lastIndexOf(" "));
-
-        String numeric = text.substring(text.lastIndexOf(" "));
-        if(StringUtils.isNumeric(numeric.trim())) {
-            text = text.substring(0, text.lastIndexOf(" "));
+    private String ellipsizeShortSummary(int maxSize) {
+        if (summary.length() <= maxSize) {
+            return summary;
         }
 
-        if(text.endsWith(",")) {
-            text = text.substring(0, text.length()-1);
-        }
+        String text = summary.substring(0, maxSize - ELLIPSIS_SIZE + 1);
 
-        text = text+"...";
-        return text;
+        if (!text.endsWith(SEPARATOR)) {
+            text = summary.substring(0, maxSize - ELLIPSIS_SIZE);
+        }
+        text = text.substring(0, text.lastIndexOf(SEPARATOR));
+
+        return text + ELLIPSIS;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WorkOrder workOrder = (WorkOrder) o;
+        return shortSummarySize == workOrder.shortSummarySize &&
+                Objects.equal(shortSummary, workOrder.shortSummary) &&
+                Objects.equal(id, workOrder.id) &&
+                Objects.equal(name, workOrder.name) &&
+                Objects.equal(summary, workOrder.summary) &&
+                status == workOrder.status &&
+                Objects.equal(endAt, workOrder.endAt) &&
+                Objects.equal(address, workOrder.address) &&
+                Objects.equal(externalId, workOrder.externalId) &&
+                Objects.equal(inspections, workOrder.inspections);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(shortSummarySize, shortSummary, id, name, summary, status, endAt, address, externalId, inspections);
     }
 }

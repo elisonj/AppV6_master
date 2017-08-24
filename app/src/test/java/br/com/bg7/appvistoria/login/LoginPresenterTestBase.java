@@ -13,6 +13,8 @@ import br.com.bg7.appvistoria.auth.Auth;
 import br.com.bg7.appvistoria.auth.RemoteLocalAuth;
 import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeAuthRepository;
+import br.com.bg7.appvistoria.data.source.local.fake.FakeConfigRepository;
+import br.com.bg7.appvistoria.data.source.local.fake.FakeLanguageRepository;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeUserRepository;
 import br.com.bg7.appvistoria.data.source.remote.TokenService;
 import br.com.bg7.appvistoria.data.source.remote.UserService;
@@ -40,8 +42,7 @@ class LoginPresenterTestBase {
     @Mock
     UserService userService;
 
-    FakeUserRepository userRepository;
-    FakeAuthRepository authRepository;
+    private FakeUserRepository userRepository;
 
     @Mock
     HttpResponse<Token> tokenHttpResponse;
@@ -57,12 +58,14 @@ class LoginPresenterTestBase {
 
     LoginPresenter loginPresenter;
 
+    FakeConfigRepository configRepository = new FakeConfigRepository();
+    private FakeLanguageRepository languageRepository = new FakeLanguageRepository();
+
     static final String USERNAME = "user";
-    static final String PASSWORD = "password";
-    static final String HASHED_PASSWORD;
-    static final String WRONG_PASSWORD = "not-the-password";
-    static final String HASHED_WRONG_PASSWORD;
-    static final String TOKEN = "token";
+    private static final String PASSWORD = "password";
+    private static final String HASHED_PASSWORD;
+    private static final String WRONG_PASSWORD = "not-the-password";
+    private static final String TOKEN = "token";
     static final String TOKEN_FROM_SERVICE = "token-from-service";
     static final String USER_ID = "user_id";
 
@@ -70,7 +73,6 @@ class LoginPresenterTestBase {
 
     static {
         HASHED_PASSWORD = BCrypt.hashpw(PASSWORD, BCrypt.gensalt());
-        HASHED_WRONG_PASSWORD = BCrypt.hashpw(WRONG_PASSWORD, BCrypt.gensalt());
     }
 
     @Before
@@ -88,12 +90,11 @@ class LoginPresenterTestBase {
         userRepository = new FakeUserRepository();
         userRepository.clear();
 
-        authRepository = new FakeAuthRepository();
-        authRepository.clear();
+        FakeAuthRepository authRepository = new FakeAuthRepository();
 
         Auth.configure(new RemoteLocalAuth(userService, tokenService, userRepository, authRepository));
 
-        loginPresenter = new LoginPresenter(loginView);
+        loginPresenter = new LoginPresenter(configRepository, loginView);
 
         userRepository.save(new User(USERNAME, TOKEN, HASHED_PASSWORD));
     }

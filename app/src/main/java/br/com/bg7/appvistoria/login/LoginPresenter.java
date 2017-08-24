@@ -2,8 +2,15 @@ package br.com.bg7.appvistoria.login;
 
 import com.google.common.base.Strings;
 
+import java.util.List;
+
+import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.auth.Auth;
 import br.com.bg7.appvistoria.auth.callback.AuthCallback;
+import br.com.bg7.appvistoria.config.vo.Language;
+import br.com.bg7.appvistoria.data.Config;
+import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
+import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -16,9 +23,10 @@ public class LoginPresenter implements LoginContract.Presenter {
     public static final int UNAUTHORIZED_CODE = 401;
 
     private final LoginContract.View loginView;
+    private final ConfigRepository configRepository;
 
-    LoginPresenter(LoginContract.View loginView) {
-
+    LoginPresenter(ConfigRepository configRepository, LoginContract.View loginView) {
+        this.configRepository = checkNotNull(configRepository);
         this.loginView = checkNotNull(loginView, "loginView cannot be null");
 
         this.loginView.setPresenter(this);
@@ -46,6 +54,13 @@ public class LoginPresenter implements LoginContract.Presenter {
 
             @Override
             public void onSuccess() {
+                Config config = configRepository.findByUser(Auth.user());
+
+                if(config == null) {
+                    config = new Config(BuildConfig.DEFAULT_LANGUAGE_NAME, Auth.user());
+                    configRepository.save(config);
+                }
+
                 loginView.showMainScreen();
             }
         });

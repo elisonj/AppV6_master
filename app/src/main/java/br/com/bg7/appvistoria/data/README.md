@@ -9,6 +9,7 @@ How to add a new ormlite persisted entity
     * Create a getter for the DAO. It should call `getDao` with the appropriate parameters
     * Make sure it is set to `null` during `close()`
     * Change `onUpgrade` so that it applies your changes between the previous version and now
+        * **WARNING** DO NOT EVER CHANGE **onCreate**
 1. Add a convenience DAO getter method to `br.com.bg7.appvistoria.BaseActivity`
 1. Add a `createTable` statement to `DatabaseHelper`
 1. Generate the config file (see `ORMLITE.md` at the root dir of the project)

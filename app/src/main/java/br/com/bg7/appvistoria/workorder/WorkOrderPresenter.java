@@ -33,19 +33,10 @@ public class WorkOrderPresenter implements WorkOrderContract.Presenter{
     public void start() {
 
         Config config = configRepository.findByUser(Auth.user());
-        if(config == null) {
-            return;
-        }
-
         String language = config.getLanguageName();
 
         List<WorkOrder> workOrderList =  workOrderRepository.findAllOrderByStatus(language);
         workOrderView.showList(workOrderList, workOrderView.isMapAvailable());
-    }
-
-    @Override
-    public void search(String searchTerm) {
-
     }
 
     @Override

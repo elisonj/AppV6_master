@@ -19,6 +19,7 @@ import com.akexorcist.localizationactivity.LocalizationActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.WorkOrder;
 
@@ -57,13 +58,10 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_workorder, container, false);
-        initializeViewElements(root);
+
+        listView = root.findViewById(R.id.listview);
 
         return root;
-    }
-
-    private void initializeViewElements(View root) {
-        listView = root.findViewById(R.id.listview);
     }
 
     @Override
@@ -79,13 +77,8 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     @Override
     public void showList(List<WorkOrder> list, boolean showMapButtons) {
-        if(adapter == null) {
-            adapter = new WorkOrderAdapter(this, list, showMapButtons);
-            listView.setAdapter(adapter);
-            return;
-        }
-        adapter.setList(list);
-        adapter.notifyDataSetChanged();
+        adapter = new WorkOrderAdapter(this, list);
+        listView.setAdapter(adapter);
     }
 
     @Override
@@ -155,10 +148,15 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
         getAdapter().setHighlightWorkOrder(workOrder);
     }
 
-    private View getItemListView(WorkOrder workOrder) {
+    private WorkOrderAdapter getAdapter() {
+        return (WorkOrderAdapter) listView.getAdapter();
+    }
+
+
+    private View getListItem(WorkOrder workOrder) {
         int index = -1;
 
-        for(int i=0; i < adapter.getCount(); i++) {
+        for(int i = 0; i < adapter.getCount(); i++) {
             if(workOrder.equals(adapter.getItem(i))) {
                 index = i;
                 break;
@@ -196,10 +194,8 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     private class WorkOrderAdapter extends BaseAdapter {
 
          private boolean showMapButtons;
+         private WorkOrder expandedWorkOrder = null;
 
-         private WorkOrder highlightWorkOrder = null;
-
-         private LayoutInflater inflater=null;
          private List<WorkOrder> list = new ArrayList<>();
 
          WorkOrderAdapter(WorkOrderFragment fragment, List<WorkOrder> list, boolean showMapButtons) {
@@ -208,8 +204,8 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              this.showMapButtons = showMapButtons;
          }
 
-         void setHighlightWorkOrder(WorkOrder workOrder) {
-             this.highlightWorkOrder = workOrder;
+         void setExpandedWorkOrder(WorkOrder workOrder) {
+             this.expandedWorkOrder = workOrder;
          }
 
         @Override
@@ -331,16 +327,16 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                  public void onClick(View view) {
 
                      WorkOrder item = getItem(position);
-                     if(item.equals(highlightWorkOrder)) {
-                         workOrderPresenter.hideInfoClicked(highlightWorkOrder);
+                     if(item.equals(expandedWorkOrder)) {
+                         workOrderPresenter.hideInfoClicked(expandedWorkOrder);
                          return;
                      }
 
-                     if(highlightWorkOrder != null) {
-                         workOrderPresenter.hideInfoClicked(highlightWorkOrder);
+                     if(expandedWorkOrder != null) {
+                         workOrderPresenter.hideInfoClicked(expandedWorkOrder);
                      }
 
-                     if(!item.equals(highlightWorkOrder)) {
+                     if(!item.equals(expandedWorkOrder)) {
                          workOrderPresenter.moreInfoClicked(list.get(position));
                      }
                  }

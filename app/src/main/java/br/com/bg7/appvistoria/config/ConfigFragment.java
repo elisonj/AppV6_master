@@ -10,12 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import java.util.List;
 
-import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.Constants;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.config.vo.Language;
@@ -123,6 +123,8 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
         languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String message = getString(R.string.confirm_change_language_format);
+                dialogMessage.setText(String.format(message, languageList.get(i).getDisplayName()));
                 configPresenter.languageSelected(languageList.get(i).getName());
             }
 
