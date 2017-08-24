@@ -109,6 +109,11 @@ public class WorkOrder {
         return formatter.print(endAt);
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+
     private String ellipsizeShortSummary(int maxSize) {
         if (summary.length() <= maxSize) {
             return summary;
