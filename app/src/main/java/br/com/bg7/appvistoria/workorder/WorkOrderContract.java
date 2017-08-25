@@ -23,6 +23,10 @@ interface WorkOrderContract {
 
         void  shrinkInfoPanel(WorkOrder workOrder);
 
+        boolean isMapAvailable();
+
+        void showInMap(String address);
+
     }
 
 
@@ -33,6 +37,8 @@ interface WorkOrderContract {
         void moreInfoClicked(WorkOrder workOrder);
 
         void hideInfoClicked(WorkOrder workOrder);
+
+        void openMapClicked(WorkOrder workOrder);
 
     }
 }

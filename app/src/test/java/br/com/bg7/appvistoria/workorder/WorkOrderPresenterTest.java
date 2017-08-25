@@ -1,5 +1,7 @@
 package br.com.bg7.appvistoria.workorder;
 
+import junit.framework.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
@@ -14,6 +16,7 @@ import br.com.bg7.appvistoria.data.WorkOrder;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeWorkOrderRepository;
 
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by: elison
@@ -59,7 +62,7 @@ public class WorkOrderPresenterTest extends UserLoggedInTest {
     @Test
     public void shouldShowListItemsWhenStart() {
         List<WorkOrder> workOrderList =  workOrderRepository.findAllOrderByStatus(null);
-        verify(workOrderView).showList(ArgumentMatchers.eq(workOrderList),ArgumentMatchers.eq(true));
+        verify(workOrderView).showList(ArgumentMatchers.eq(workOrderList),ArgumentMatchers.eq(false));
     }
 
     @Test
@@ -74,5 +77,19 @@ public class WorkOrderPresenterTest extends UserLoggedInTest {
         workOrderPresenter.hideInfoClicked(workOrder);
         verify(workOrderView).shrinkInfoPanel(workOrder);
         verify(workOrderView).removeInfoButtonHighlight(workOrder);
+    }
+
+    @Test
+    public void shouldOpenMapWhenMapAvailable() {
+        when(workOrderView.isMapAvailable()).thenReturn(true);
+        workOrderPresenter.start();
+
+        workOrderPresenter.openMapClicked(workOrder);
+        verify(workOrderView).showInMap(workOrder.getAddress());
+    }
+
+    @Test
+    public void shouldMapNotAvailableWhenGoogleMapsNotExists() {
+        Assert.assertFalse(workOrderView.isMapAvailable());
     }
 }

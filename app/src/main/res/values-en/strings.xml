@@ -16,6 +16,8 @@
     <string name="language_pt">Portuguese (Brazil)</string>
     <string name="language_en">English</string>
     <string name="language">Language</string>
+    <string name="location">LOCATION</string>
+    <string name="date_expected">EXPECTED DATE</string>
     <string name="confirm_change_language_format">Do you want to change the application\nlanguage to %s?</string>
     <string name="validation_user_field_not_empty">User cannot be empty.</string>
     <string name="validation_password_field_not_empty">Password cannot be empty.</string>
@@ -26,6 +28,7 @@
     <string name="ico_password">icon password</string>
     <string name="ico_more_info">icon more info</string>
     <string name="ico_inspections">icon inspection</string>
+    <string name="ico_maps">icon maps</string>
 
     <string name="status_in_progress">IN PROGRESS</string>
     <string name="status_completed">COMPLETED</string>
