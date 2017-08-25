@@ -115,12 +115,14 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     @Override
     public boolean isMapAvailable() {
-        if (mapAvailable == null) {
-            final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MAP_ADDRESS));
-            intent.setPackage("com.google.android.apps.maps");
-            mapAvailable = (intent.resolveActivity(getActivity().getPackageManager()) != null);
+        if (mapAvailable != null) {
             return mapAvailable;
         }
+
+        final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MAP_ADDRESS));
+        intent.setPackage("com.google.android.apps.maps");
+        mapAvailable = (intent.resolveActivity(getActivity().getPackageManager()) != null);
+
         return mapAvailable;
     }
 
