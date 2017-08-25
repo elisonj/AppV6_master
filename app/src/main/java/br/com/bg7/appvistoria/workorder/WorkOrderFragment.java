@@ -33,6 +33,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     WorkOrderContract.Presenter workOrderPresenter;
     private ListView listView;
+    private LinearLayout emptyLayout;
     private WorkOrderAdapter adapter;
 
     private static final String MAP_ADDRESS = "geo:0,0?q=";
@@ -60,6 +61,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
         View root = inflater.inflate(R.layout.fragment_workorder, container, false);
 
         listView = root.findViewById(R.id.listview);
+        emptyLayout = root.findViewById(R.id.empty_layout);
 
         return root;
     }
@@ -77,8 +79,14 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     @Override
     public void showList(List<WorkOrder> list, boolean showMapButtons) {
-        adapter = new WorkOrderAdapter(this, list, showMapButtons);
-        listView.setAdapter(adapter);
+
+        if(list.size() > 0) {
+            emptyLayout.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+
+            adapter = new WorkOrderAdapter(this, list, showMapButtons);
+            listView.setAdapter(adapter);
+        }
     }
 
     @Override
@@ -122,25 +130,45 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     }
 
     private void hideSummary(WorkOrder workOrder){
-        View v = getListItem(workOrder);
+        View view = getListItem(workOrder);
 
-        if(v != null) {
-            TextView shortSummary = v.findViewById(R.id.short_summary);
-            TextView summary = v.findViewById(R.id.summary);
+        if(view != null) {
+            TextView shortSummary = view.findViewById(R.id.short_summary);
+            TextView summary = view.findViewById(R.id.summary);
             shortSummary.setVisibility(View.VISIBLE);
             summary.setVisibility(View.GONE);
+            TextView date = view.findViewById(R.id.date);
+            TextView dateTitle = view.findViewById(R.id.date_title);
+            TextView locationTitle = view.findViewById(R.id.location_title);
+            LinearLayout locationLayout = view.findViewById(R.id.location_layout);
+
+            date.setVisibility(View.GONE);
+            dateTitle.setVisibility(View.GONE);
+            locationTitle.setVisibility(View.GONE);
+            locationLayout.setVisibility(View.GONE);
         }
             getAdapter().setExpandedWorkOrder(null);
     }
 
     private void showSummary(WorkOrder workOrder){
-       View v = getListItem(workOrder);
+       View view = getListItem(workOrder);
 
-        TextView shortSummary = v.findViewById(R.id.short_summary);
-        TextView summary = v.findViewById(R.id.summary);
+        TextView shortSummary = view.findViewById(R.id.short_summary);
+        TextView summary = view.findViewById(R.id.summary);
+        TextView date = view.findViewById(R.id.date);
+        TextView dateTitle = view.findViewById(R.id.date_title);
+        TextView locationTitle = view.findViewById(R.id.location_title);
+        LinearLayout locationLayout = view.findViewById(R.id.location_layout);
+
+
         summary.setText(workOrder.getSummary());
         shortSummary.setVisibility(View.GONE);
         summary.setVisibility(View.VISIBLE);
+
+        date.setVisibility(View.VISIBLE);
+        dateTitle.setVisibility(View.VISIBLE);
+        locationTitle.setVisibility(View.VISIBLE);
+        locationLayout.setVisibility(View.VISIBLE);
         getAdapter().setExpandedWorkOrder(workOrder);
     }
 
@@ -242,6 +270,10 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                  holder.buttonMaps = convertView.findViewById(R.id.bt_maps);
                  holder.imageInspections = convertView.findViewById(R.id.image_inspections);
                  holder.imageMoreInfo = convertView.findViewById(R.id.image_more_info);
+                 holder.dateTitle = convertView.findViewById(R.id.date_title);
+                 holder.locationTitle  = convertView.findViewById(R.id.location_title);
+                 holder.locationLayout = convertView.findViewById(R.id.location_layout);
+
                  convertView.setTag(holder);
              }
 
@@ -288,20 +320,28 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                  holder.imageMoreInfo.setImageResource(IMAGE_MORE_INFO_NOT_STARTED);
                  holder.imageInspections.setImageResource(IMAGE_WORKORDER_NOT_STARTED);
                  holder.item.setBackgroundResource(BACKGROUND_NOT_STARTED);
+                 holder.status.setTextColor(0xFF919aa0);
              }
              if(item.getStatus() == WorkOrderStatus.COMPLETED) {
                  holder.imageMoreInfo.setImageResource(IMAGE_MORE_INFO_COMPLETED);
                  holder.imageInspections.setImageResource(IMAGE_WORKORDER_COMPLETED);
                  holder.item.setBackgroundResource(BACKGROUND_COMPLETED);
+                 holder.status.setTextColor(0xFF35ac53);
              }
              if(item.getStatus() == WorkOrderStatus.IN_PROGRESS) {
                  holder.imageMoreInfo.setImageResource(IMAGE_MORE_INFO_IN_PROGRESS);
                  holder.imageInspections.setImageResource(IMAGE_WORKORDER_IN_PROGRESS);
                  holder.item.setBackgroundResource(BACKGROUND_IN_PROGRESS);
+                 holder.status.setTextColor(0xFF0552a1);
              }
              if(item.equals(expandedWorkOrder)) {
                  holder.summary.setText(item.getSummary());
                  holder.summary.setVisibility(View.VISIBLE);
+                 holder.date.setVisibility(View.VISIBLE);
+                 holder.dateTitle.setVisibility(View.VISIBLE);
+                 holder.locationTitle.setVisibility(View.VISIBLE);
+                 holder.locationLayout.setVisibility(View.VISIBLE);
+
                  setImageHighlightWorkOrder(holder.imageMoreInfo, item.getStatus());
              }
          }
@@ -313,6 +353,10 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
             holder.moreInfoText.setVisibility(View.VISIBLE);
             holder.inspectionsText.setVisibility(View.VISIBLE);
             holder.buttonMaps.setVisibility(View.GONE);
+            holder.dateTitle.setVisibility(View.GONE);
+            holder.locationLayout.setVisibility(View.GONE);
+            holder.locationTitle.setVisibility(View.GONE);
+            holder.date.setVisibility(View.GONE);
             holder.summary.setVisibility(View.GONE);
             holder.moreInfo.setBackgroundColor(Color.TRANSPARENT);
         }
@@ -360,10 +404,13 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              TextView status;
              TextView date;
              TextView local;
+             TextView dateTitle;
+             TextView locationTitle;
              LinearLayout inspections;
              LinearLayout inspectionsText;
              LinearLayout moreInfo;
              LinearLayout moreInfoText;
+             LinearLayout locationLayout;
              LinearLayout item;
              ImageView buttonMaps;
              ImageView imageMoreInfo;

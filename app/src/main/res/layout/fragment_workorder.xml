@@ -14,25 +14,28 @@
         android:layout_height="match_parent" />
 
     <LinearLayout
-
-        android:id="@+id/empty"
+        android:id="@+id/empty_layout"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-
         <ImageView
             android:layout_width="200dp"
             android:layout_height="230dp"
+            android:contentDescription="@string/ico_empty"
             app:srcCompat="@drawable/logo_sb" />
 
         <TextView
             android:id="@+id/message_empty"
             android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#788186"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="@string/empty_list" />
 
     </LinearLayout>
 
