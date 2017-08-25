@@ -62,9 +62,10 @@ public class WorkOrder {
     // TODO: Verificar se precisamos mesmo ter esse método público - WorkOrder
     public WorkOrder() {}
 
-    public WorkOrder(String name, String summary) {
+    public WorkOrder(String name, String summary, String address) {
         this.name = name;
         this.summary = summary;
+        this.address = address;
         this.status = WorkOrderStatus.NOT_STARTED;
         this.endAt = DateTime.now();
     }
@@ -86,10 +87,6 @@ public class WorkOrder {
         return summary;
     }
 
-    public void setStatus(WorkOrderStatus status) {
-        this.status = status;
-    }
-
     public WorkOrderStatus getStatus() {
         return status;
     }
@@ -98,7 +95,7 @@ public class WorkOrder {
         status = WorkOrderStatus.IN_PROGRESS;
     }
 
-    protected void finish() {
+    public void finish() {
         status = WorkOrderStatus.COMPLETED;
     }
 
@@ -111,10 +108,6 @@ public class WorkOrder {
 
         DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
         return formatter.print(endAt);
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public String getAddress() {

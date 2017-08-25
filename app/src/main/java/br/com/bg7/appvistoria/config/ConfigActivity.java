@@ -18,6 +18,7 @@ import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
 import br.com.bg7.appvistoria.data.source.local.android.ResourcesLanguageRepository;
 import br.com.bg7.appvistoria.data.source.local.ormlite.OrmLiteConfigRepository;
 import br.com.bg7.appvistoria.data.source.local.ormlite.OrmLiteWorkOrderRepository;
+import br.com.bg7.appvistoria.data.source.local.stub.StubWorkOrderRepository;
 import br.com.bg7.appvistoria.workorder.WorkOrderFragment;
 import br.com.bg7.appvistoria.workorder.WorkOrderPresenter;
 
@@ -33,7 +34,7 @@ public class ConfigActivity extends BaseActivity {
     private int selectedItem = DEFAULT_SCREEN_MENU_ITEM_INDEX;
     private Menu menu = null;
 
-    private final OrmLiteWorkOrderRepository workOrderRepository = new OrmLiteWorkOrderRepository(getWorkOrderDao());
+    private final StubWorkOrderRepository workOrderRepository = new StubWorkOrderRepository();
     private final ConfigRepository configRepository = new OrmLiteConfigRepository(getConfigDao());
     private final ResourcesLanguageRepository languageRepository = new ResourcesLanguageRepository(this);
 

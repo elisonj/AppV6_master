@@ -17,7 +17,7 @@
     <string name="language_pt">Portuguese (Brazil)</string>
     <string name="language_en">English</string>
     <string name="language">Language</string>
-    <string name="local">LOCAL</string>
+    <string name="location">LOCATION</string>
     <string name="date_expected">EXPECTED DATE</string>
     <string name="confirm_logout">Do you really want logout application?</string>
     <string name="confirm_change_language_format">Do you want to change the application\nlanguage to %s?</string>
