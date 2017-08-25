@@ -28,8 +28,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by: elison
  * Date: 2017-08-15
- *
- * TODO: Reaplicar os refactoring perdidos no merge (ver PR https://bitbucket.org/tagnclick/0885-appvistoria/pull-requests/56/visitas-status/diff)
  */
 public class WorkOrderFragment extends Fragment implements  WorkOrderContract.View {
 
@@ -61,13 +59,9 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_workorder, container, false);
-        initializeViewElements(root);
+        listView = root.findViewById(R.id.listview);
 
         return root;
-    }
-
-    private void initializeViewElements(View root) {
-        listView = root.findViewById(R.id.listview);
     }
 
     @Override
@@ -83,20 +77,20 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     @Override
     public void showList(List<WorkOrder> list, boolean showMapButtons) {
-        adapter = new WorkOrderAdapter(this, list, showMapButtons);
+        adapter = new WorkOrderAdapter(list, showMapButtons);
         listView.setAdapter(adapter);
     }
 
     @Override
     public void highlightInfoButton(WorkOrder workOrder) {
-        View view = getItemListView(workOrder);
+        View view = getListItem(workOrder);
         ImageView moreInfo = view.findViewById(R.id.image_more_info);
         setImageHighlightWorkOrder(moreInfo, workOrder.getStatus());
     }
 
     @Override
     public void removeInfoButtonHighlight(WorkOrder workOrder) {
-        View view = getItemListView(workOrder);
+        View view = getListItem(workOrder);
         if (view != null) {
             ImageView moreInfo = view.findViewById(R.id.image_more_info);
             removeImageHighlightWorkOrder(moreInfo, workOrder.getStatus());
@@ -105,12 +99,28 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     @Override
     public void expandInfoPanel(WorkOrder workOrder) {
-        showSummary(workOrder);
+        View view = getListItem(workOrder);
+
+        TextView shortSummary = view.findViewById(R.id.short_summary);
+        TextView summary = view.findViewById(R.id.summary);
+        summary.setText(workOrder.getSummary());
+        shortSummary.setVisibility(View.GONE);
+        summary.setVisibility(View.VISIBLE);
+        getAdapter().setExpandedWorkOrder(workOrder);
     }
 
     @Override
     public void shrinkInfoPanel(WorkOrder workOrder) {
-        hideSummary(workOrder);
+        View view = getListItem(workOrder);
+
+        if (view != null) {
+            TextView shortSummary = view.findViewById(R.id.short_summary);
+            TextView summary = view.findViewById(R.id.summary);
+            shortSummary.setVisibility(View.VISIBLE);
+            summary.setVisibility(View.GONE);
+        }
+
+        getAdapter().setExpandedWorkOrder(null);
     }
 
     @Override
@@ -136,30 +146,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
         return (WorkOrderAdapter)listView.getAdapter();
     }
 
-    private void hideSummary(WorkOrder workOrder){
-        View view = getItemListView(workOrder);
-
-        if (view != null) {
-            TextView shortSummary = view.findViewById(R.id.short_summary);
-            TextView summary = view.findViewById(R.id.summary);
-            shortSummary.setVisibility(View.VISIBLE);
-            summary.setVisibility(View.GONE);
-        }
-            getAdapter().setHighlightWorkOrder(null);
-    }
-
-    private void showSummary(WorkOrder workOrder){
-       View view = getItemListView(workOrder);
-
-        TextView shortSummary = view.findViewById(R.id.short_summary);
-        TextView summary = view.findViewById(R.id.summary);
-        summary.setText(workOrder.getSummary());
-        shortSummary.setVisibility(View.GONE);
-        summary.setVisibility(View.VISIBLE);
-        getAdapter().setHighlightWorkOrder(workOrder);
-    }
-
-    private View getItemListView(WorkOrder workOrder) {
+    private View getListItem(WorkOrder workOrder) {
         int index = -1;
 
         for (int i = 0; i < adapter.getCount(); i++) {
@@ -201,19 +188,17 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
          private boolean showMapButtons;
 
-         private WorkOrder highlightWorkOrder = null;
+         private WorkOrder expandedWorkOrder = null;
 
-         private LayoutInflater inflater=null;
          private List<WorkOrder> list = new ArrayList<>();
 
-         WorkOrderAdapter(WorkOrderFragment fragment, List<WorkOrder> list, boolean showMapButtons) {
+         WorkOrderAdapter(List<WorkOrder> list, boolean showMapButtons) {
              this.list = list;
-             this.inflater = fragment.getLayoutInflater();
              this.showMapButtons = showMapButtons;
          }
 
-         void setHighlightWorkOrder(WorkOrder workOrder) {
-             this.highlightWorkOrder = workOrder;
+         void setExpandedWorkOrder(WorkOrder workOrder) {
+             this.expandedWorkOrder = workOrder;
          }
 
         @Override
@@ -238,7 +223,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              if (convertView == null) {
                 holder = new Holder();
 
-                 convertView = inflater.inflate(R.layout.workorder_item, parent, false);
+                 convertView = getLayoutInflater().inflate(R.layout.workorder_item, parent, false);
                  holder.item = convertView.findViewById(R.id.item);
                  holder.name = convertView.findViewById(R.id.name);
                  holder.shortSummary = convertView.findViewById(R.id.short_summary);
@@ -306,7 +291,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                  holder.imageInspections.setImageResource(IMAGE_WORKORDER_IN_PROGRESS);
                  holder.item.setBackgroundResource(BACKGROUND_IN_PROGRESS);
              }
-             if (item.equals(highlightWorkOrder)) {
+             if (item.equals(expandedWorkOrder)) {
                  holder.summary.setText(item.getSummary());
                  holder.summary.setVisibility(View.VISIBLE);
                  setImageHighlightWorkOrder(holder.imageMoreInfo, item.getStatus());
@@ -331,16 +316,16 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                  public void onClick(View view) {
 
                      WorkOrder item = getItem(position);
-                     if (item.equals(highlightWorkOrder)) {
-                         workOrderPresenter.hideInfoClicked(highlightWorkOrder);
+                     if (item.equals(expandedWorkOrder)) {
+                         workOrderPresenter.hideInfoClicked(expandedWorkOrder);
                          return;
                      }
 
-                     if (highlightWorkOrder != null) {
-                         workOrderPresenter.hideInfoClicked(highlightWorkOrder);
+                     if (expandedWorkOrder != null) {
+                         workOrderPresenter.hideInfoClicked(expandedWorkOrder);
                      }
 
-                     if (!item.equals(highlightWorkOrder)) {
+                     if (!item.equals(expandedWorkOrder)) {
                          workOrderPresenter.moreInfoClicked(list.get(position));
                      }
                  }
