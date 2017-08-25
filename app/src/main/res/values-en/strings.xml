@@ -1,9 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Mobile Asset Inspection</string>
 
-    <string name="menu_visita">VISIT</string>
-    <string name="menu_sync">SYNC</string>
-    <string name="menu_config">CONFIG</string>
+    <string name="menu_visita">Visits</string>
+    <string name="menu_sync">Sync</string>
+    <string name="menu_config">Configuration</string>
 
     <string name="password">Password</string>
     <string name="user">User</string>
