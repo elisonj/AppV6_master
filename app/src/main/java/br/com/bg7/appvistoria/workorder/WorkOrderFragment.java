@@ -89,16 +89,16 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     @Override
     public void highlightInfoButton(WorkOrder workOrder) {
-        View v = getItemListView(workOrder);
-        ImageView moreInfo = v.findViewById(R.id.image_more_info);
+        View view = getItemListView(workOrder);
+        ImageView moreInfo = view.findViewById(R.id.image_more_info);
         setImageHighlightWorkOrder(moreInfo, workOrder.getStatus());
     }
 
     @Override
     public void removeInfoButtonHighlight(WorkOrder workOrder) {
-        View v = getItemListView(workOrder);
-        if(v != null) {
-            ImageView moreInfo = v.findViewById(R.id.image_more_info);
+        View view = getItemListView(workOrder);
+        if(view != null) {
+            ImageView moreInfo = view.findViewById(R.id.image_more_info);
             removeImageHighlightWorkOrder(moreInfo, workOrder.getStatus());
         }
     }
@@ -135,11 +135,11 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     }
 
     private void hideSummary(WorkOrder workOrder){
-        View v = getItemListView(workOrder);
+        View view = getItemListView(workOrder);
 
-        if(v != null) {
-            TextView shortSummary = v.findViewById(R.id.short_summary);
-            TextView summary = v.findViewById(R.id.summary);
+        if(view != null) {
+            TextView shortSummary = view.findViewById(R.id.short_summary);
+            TextView summary = view.findViewById(R.id.summary);
             shortSummary.setVisibility(View.VISIBLE);
             summary.setVisibility(View.GONE);
         }
@@ -147,10 +147,10 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     }
 
     private void showSummary(WorkOrder workOrder){
-       View v = getItemListView(workOrder);
+       View view = getItemListView(workOrder);
 
-        TextView shortSummary = v.findViewById(R.id.short_summary);
-        TextView summary = v.findViewById(R.id.summary);
+        TextView shortSummary = view.findViewById(R.id.short_summary);
+        TextView summary = view.findViewById(R.id.summary);
         summary.setText(workOrder.getSummary());
         shortSummary.setVisibility(View.GONE);
         summary.setVisibility(View.VISIBLE);
