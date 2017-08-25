@@ -97,7 +97,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     @Override
     public void removeInfoButtonHighlight(WorkOrder workOrder) {
         View view = getItemListView(workOrder);
-        if(view != null) {
+        if (view != null) {
             ImageView moreInfo = view.findViewById(R.id.image_more_info);
             removeImageHighlightWorkOrder(moreInfo, workOrder.getStatus());
         }
@@ -115,7 +115,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     @Override
     public boolean isMapAvailable() {
-        if(mapAvailable) {
+        if (mapAvailable) {
             return true;
         }
         final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MAP_ADDRESS));
@@ -137,7 +137,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     private void hideSummary(WorkOrder workOrder){
         View view = getItemListView(workOrder);
 
-        if(view != null) {
+        if (view != null) {
             TextView shortSummary = view.findViewById(R.id.short_summary);
             TextView summary = view.findViewById(R.id.summary);
             shortSummary.setVisibility(View.VISIBLE);
@@ -160,8 +160,8 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     private View getItemListView(WorkOrder workOrder) {
         int index = -1;
 
-        for(int i=0; i < adapter.getCount(); i++) {
-            if(workOrder.equals(adapter.getItem(i))) {
+        for (int i = 0; i < adapter.getCount(); i++) {
+            if (workOrder.equals(adapter.getItem(i))) {
                 index = i;
                 break;
             }
@@ -172,25 +172,25 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
 
     private void setImageHighlightWorkOrder(ImageView imageMoreInfo, WorkOrderStatus status) {
-        if(status == WorkOrderStatus.NOT_STARTED) {
+        if (status == WorkOrderStatus.NOT_STARTED) {
             imageMoreInfo.setImageResource(IMAGE_HIDE_INFO_NOT_STARTED);
         }
-        if(status == WorkOrderStatus.COMPLETED) {
+        if (status == WorkOrderStatus.COMPLETED) {
             imageMoreInfo.setImageResource(IMAGE_HIDE_INFO_COMPLETED);
         }
-        if(status == WorkOrderStatus.IN_PROGRESS) {
+        if (status == WorkOrderStatus.IN_PROGRESS) {
             imageMoreInfo.setImageResource(IMAGE_HIDE_INFO_IN_PROGRESS);
         }
     }
 
     private void removeImageHighlightWorkOrder(ImageView imageMoreInfo, WorkOrderStatus status) {
-        if(status == WorkOrderStatus.NOT_STARTED) {
+        if (status == WorkOrderStatus.NOT_STARTED) {
             imageMoreInfo.setImageResource(IMAGE_MORE_INFO_NOT_STARTED);
         }
-        if(status == WorkOrderStatus.COMPLETED) {
+        if (status == WorkOrderStatus.COMPLETED) {
             imageMoreInfo.setImageResource(IMAGE_MORE_INFO_COMPLETED);
         }
-        if(status == WorkOrderStatus.IN_PROGRESS) {
+        if (status == WorkOrderStatus.IN_PROGRESS) {
             imageMoreInfo.setImageResource(IMAGE_MORE_INFO_IN_PROGRESS);
         }
     }
@@ -254,7 +254,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                  convertView.setTag(holder);
              }
 
-             if(holder == null) {
+             if (holder == null) {
                  holder = (Holder) convertView.getTag();
              }
 
@@ -266,7 +266,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
          private void populateWidget(final Holder holder, final int position){
 
              WorkOrder item = getItem(position);
-             if(item == null) {
+             if (item == null) {
                 return;
              }
 
@@ -278,33 +278,33 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              holder.status.setText(item.getStatus().toString());
              holder.local.setText(item.getAddress());
 
-             if(showMapButtons) holder.buttonMaps.setVisibility(View.VISIBLE);
+             if (showMapButtons) holder.buttonMaps.setVisibility(View.VISIBLE);
 
-             if(item.getStatus().toString().length() >= MAX_SIZE_TEXT_INFO) {
+             if (item.getStatus().toString().length() >= MAX_SIZE_TEXT_INFO) {
                  holder.moreInfoText.setVisibility(View.GONE);
              }
 
-             if(item.getStatus().toString().length() >= MAX_SIZE_TEXT_INSPECTION) {
+             if (item.getStatus().toString().length() >= MAX_SIZE_TEXT_INSPECTION) {
                  holder.inspectionsText.setVisibility(View.GONE);
              }
              configureListeners(holder, position);
 
-             if(item.getStatus() == WorkOrderStatus.NOT_STARTED) {
+             if (item.getStatus() == WorkOrderStatus.NOT_STARTED) {
                  holder.imageMoreInfo.setImageResource(IMAGE_MORE_INFO_NOT_STARTED);
                  holder.imageInspections.setImageResource(IMAGE_WORKORDER_NOT_STARTED);
                  holder.item.setBackgroundResource(BACKGROUND_NOT_STARTED);
              }
-             if(item.getStatus() == WorkOrderStatus.COMPLETED) {
+             if (item.getStatus() == WorkOrderStatus.COMPLETED) {
                  holder.imageMoreInfo.setImageResource(IMAGE_MORE_INFO_COMPLETED);
                  holder.imageInspections.setImageResource(IMAGE_WORKORDER_COMPLETED);
                  holder.item.setBackgroundResource(BACKGROUND_COMPLETED);
              }
-             if(item.getStatus() == WorkOrderStatus.IN_PROGRESS) {
+             if (item.getStatus() == WorkOrderStatus.IN_PROGRESS) {
                  holder.imageMoreInfo.setImageResource(IMAGE_MORE_INFO_IN_PROGRESS);
                  holder.imageInspections.setImageResource(IMAGE_WORKORDER_IN_PROGRESS);
                  holder.item.setBackgroundResource(BACKGROUND_IN_PROGRESS);
              }
-             if(item.equals(highlightWorkOrder)) {
+             if (item.equals(highlightWorkOrder)) {
                  holder.summary.setText(item.getSummary());
                  holder.summary.setVisibility(View.VISIBLE);
                  setImageHighlightWorkOrder(holder.imageMoreInfo, item.getStatus());
@@ -329,26 +329,26 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                  public void onClick(View view) {
 
                      WorkOrder item = getItem(position);
-                     if(item.equals(highlightWorkOrder)) {
+                     if (item.equals(highlightWorkOrder)) {
                          workOrderPresenter.hideInfoClicked(highlightWorkOrder);
                          return;
                      }
 
-                     if(highlightWorkOrder != null) {
+                     if (highlightWorkOrder != null) {
                          workOrderPresenter.hideInfoClicked(highlightWorkOrder);
                      }
 
-                     if(!item.equals(highlightWorkOrder)) {
+                     if (!item.equals(highlightWorkOrder)) {
                          workOrderPresenter.moreInfoClicked(list.get(position));
                      }
                  }
              });
 
-            if(getItem(position).getAddress() == null) {
+            if (getItem(position).getAddress() == null) {
                 return;
             }
 
-            if(showMapButtons) {
+            if (showMapButtons) {
                 holder.buttonMaps.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
