@@ -45,6 +45,7 @@
     <string name="open">ACESSAR</string>
     <string name="inspection">INSPEÇÕES</string>
     <string name="empty_list">Você não tem visitas agendadas</string>
+    <string name="confirm_open_maps">Deseja abrir este endereço\nem outro aplicativo?</string>
 
 
 </resources>

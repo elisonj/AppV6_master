@@ -19,6 +19,7 @@ import com.akexorcist.localizationactivity.LocalizationActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.WorkOrder;
 
@@ -219,7 +220,9 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
          private boolean showMapButtons;
          private WorkOrder expandedWorkOrder = null;
-        private LayoutInflater inflater=null;
+         private LayoutInflater inflater=null;
+         private View.OnClickListener cancelButton;
+         private View.OnClickListener confirmButton;
 
          private List<WorkOrder> list = new ArrayList<>();
 
@@ -363,6 +366,23 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
 
         void configureListeners(Holder holder, final int position) {
+
+            confirmButton = new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    workOrderPresenter.openMapClicked(list.get(position));
+                    ((BaseActivity)getActivity()).dialog.dismiss();
+                }
+            };
+
+            cancelButton = new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((BaseActivity)getActivity()).dialog.dismiss();
+                }
+            };
+
+
              holder.moreInfo.setOnClickListener(new View.OnClickListener() {
                  @Override
                  public void onClick(View view) {
@@ -391,7 +411,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                 holder.buttonMaps.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        workOrderPresenter.openMapClicked(list.get(position));
+                        ((BaseActivity)getActivity()).showConfirmDialog(getString(R.string.confirm_open_maps), confirmButton, cancelButton);
                     }
                 });
             }
