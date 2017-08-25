@@ -86,10 +86,6 @@ public class WorkOrder {
         return summary;
     }
 
-    public void setStatus(WorkOrderStatus status) {
-        this.status = status;
-    }
-
     public WorkOrderStatus getStatus() {
         return status;
     }
@@ -111,10 +107,6 @@ public class WorkOrder {
 
         DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
         return formatter.print(endAt);
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public String getAddress() {
