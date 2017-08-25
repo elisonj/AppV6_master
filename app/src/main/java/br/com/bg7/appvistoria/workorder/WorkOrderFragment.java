@@ -55,6 +55,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     private static final int BACKGROUND_COMPLETED = R.drawable.background_workorder_completed;
     private static final int BACKGROUND_IN_PROGRESS = R.drawable.background_workorder_in_progress;
     private static final int BACKGROUND_NOT_STARTED = R.drawable.background_workorder_not_started;
+    private boolean cacheAvaliable = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -114,10 +115,13 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     @Override
     public boolean isMapAvailable() {
+        if(cacheAvaliable) {
+            return true;
+        }
         final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MAP_ADDRESS));
         intent.setPackage("com.google.android.apps.maps");
-
-        return (intent.resolveActivity(getActivity().getPackageManager()) != null);
+        cacheAvaliable = (intent.resolveActivity(getActivity().getPackageManager()) != null);
+        return cacheAvaliable;
     }
 
     @Override
