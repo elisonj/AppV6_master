@@ -361,6 +361,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
             holder.locationTitle.setVisibility(View.GONE);
             holder.date.setVisibility(View.GONE);
             holder.summary.setVisibility(View.GONE);
+            holder.shortSummary.setVisibility(View.VISIBLE);
             holder.moreInfo.setBackgroundColor(Color.TRANSPARENT);
         }
 
