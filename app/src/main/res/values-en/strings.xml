@@ -19,7 +19,7 @@
     <string name="local">LOCAL</string>
     <string name="date_expected">EXPECTED DATE</string>
     <string name="confirm_change_language_format">Do you want to change the application\nlanguage to %s?</string>
-    <string name="validation_user_field_not_empty">User field cannot be empty.</string>
+    <string name="validation_user_field_not_empty">User cannot be empty.</string>
     <string name="validation_password_field_not_empty">Password cannot be empty.</string>
     <string name="cannot_login_error">Login failed. Please try again later.</string>
     <string name="bad_credentials_error">Login failed. Please check your credentials and try again.</string>
