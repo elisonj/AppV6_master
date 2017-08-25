@@ -27,7 +27,7 @@ public class WorkOrderTest {
 
     @Test
     public void shouldShowLocalizedDates() {
-        WorkOrder wo = new InProgressWorkOrder("", "");
+        WorkOrder wo = new InProgressWorkOrder("", "", "");
 
         String date = wo.getEndAt(new Locale("pt", "BR"));
         Assert.assertEquals("22/08/2017", date);
@@ -92,7 +92,7 @@ public class WorkOrderTest {
     private void testSummary(String actual, String expected) {
         int maxSummarySize = 40;
 
-        WorkOrder workOrder = new WorkOrder("Projeto", actual);
+        WorkOrder workOrder = new WorkOrder("Projeto", actual, "");
         Assert.assertEquals(expected, workOrder.getShortSummary(maxSummarySize));
     }
 

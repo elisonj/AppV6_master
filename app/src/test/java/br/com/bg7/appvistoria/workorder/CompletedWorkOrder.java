@@ -8,8 +8,8 @@ import br.com.bg7.appvistoria.data.WorkOrder;
  */
 
  class CompletedWorkOrder extends WorkOrder {
-     CompletedWorkOrder(String name, String summary) {
-        super(name, summary);
+     CompletedWorkOrder(String name, String summary, String address) {
+        super(name, summary, address);
         this.finish();
     }
 }
