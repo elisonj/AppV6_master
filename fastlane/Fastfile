@@ -32,5 +32,15 @@ platform :android do
         skip_upload_screenshots: true
     )
   end
+
+  desc "Deploy a new version to Google Play - Alpha channel + screenshots"
+  lane :alphadeployscreenshots do
+    gradle(
+        task: 'assembleRelease'
+    )
+    supply(
+        track: 'alpha',
+    )
+  end
 end
 
