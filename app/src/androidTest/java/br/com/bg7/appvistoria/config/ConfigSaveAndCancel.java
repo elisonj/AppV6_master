@@ -45,11 +45,6 @@ public class ConfigSaveAndCancel {
         appCompatButton.perform(click());
 
 
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.button_confirm), withText("CONFIRMAR"),
-                        withParent(withId(R.id.linear_buttons)),
-                        isDisplayed()));
-        appCompatButton2.perform(click());
 
 
         ViewInteraction appCompatSpinner = onView(
@@ -62,11 +57,7 @@ public class ConfigSaveAndCancel {
                 allOf(withId(android.R.id.text1), withText("Inglês"), isDisplayed()));
         appCompatCheckedTextView.perform(click());
 
-        ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.button_cancel), withText("CANCELAR"),
-                        withParent(withId(R.id.linear_buttons)),
-                        isDisplayed()));
-        appCompatButton3.perform(click());
+
 
         ViewInteraction appCompatSpinner2 = onView(
                 allOf(withId(R.id.spinner_language),
@@ -84,11 +75,7 @@ public class ConfigSaveAndCancel {
                 allOf(withId(android.R.id.text1), withText("Inglês"), isDisplayed()));
         appCompatCheckedTextView2.perform(click());
 
-        ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.button_confirm), withText("CONFIRMAR"),
-                        withParent(withId(R.id.linear_buttons)),
-                        isDisplayed()));
-        appCompatButton4.perform(click());
+
 
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
@@ -99,11 +86,7 @@ public class ConfigSaveAndCancel {
             e.printStackTrace();
         }
 
-        ViewInteraction appCompatButton5 = onView(
-                allOf(withId(R.id.button_cancel), withText("CANCEL"),
-                        withParent(withId(R.id.linear_buttons)),
-                        isDisplayed()));
-        appCompatButton5.perform(click());
+
 
     }
 

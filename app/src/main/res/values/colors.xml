@@ -6,4 +6,6 @@
     <color name="color_action_bar">#00539b</color>
     <color name="color_sync">#2196F3</color>
     <color name="color_background">#e4e8eb</color>
+    <color name="active">#00539b</color>
+    <color name="normal">#474d51</color>
 </resources>
