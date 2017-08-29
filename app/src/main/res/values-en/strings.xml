@@ -19,9 +19,8 @@
     <string name="language">Language</string>
     <string name="location">LOCATION</string>
     <string name="date_expected">EXPECTED DATE</string>
-    <string name="confirm_logout">Do you really want logout application?</string>
+    <string name="confirm_logout">Do you really want to log out?</string>
     <string name="confirm_change_language_format">Do you want to change the application\nlanguage to %s?</string>
-    <string name="login_error">Login failed. Please verify your user and password and try again.</string>
     <string name="validation_user_field_not_empty">User cannot be empty.</string>
     <string name="validation_password_field_not_empty">Password cannot be empty.</string>
     <string name="cannot_login_error">Login failed. Please try again later.</string>
