@@ -16,10 +16,10 @@ android {
     buildToolsVersion '26.0.0'
     defaultConfig {
         applicationId 'br.com.bg7.appvistoria'
-        minSdkVersion 25
+        minSdkVersion 23
         targetSdkVersion 26
-        versionCode 3
-        versionName '0.2.2'
+        versionCode 6
+        versionName '0.2.2-OFF-CYCLE'
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
 
         // Build config fields

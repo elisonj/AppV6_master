@@ -7,7 +7,6 @@ import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.auth.Auth;
 import br.com.bg7.appvistoria.auth.RemoteLocalAuth;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
-import br.com.bg7.appvistoria.data.source.local.android.ResourcesLanguageRepository;
 import br.com.bg7.appvistoria.data.source.local.android.SharedPreferencesAuthRepository;
 import br.com.bg7.appvistoria.data.source.local.ormlite.OrmLiteConfigRepository;
 import br.com.bg7.appvistoria.data.source.local.ormlite.OrmLiteUserRepository;

@@ -23,7 +23,7 @@ class ConfigPresenter implements ConfigContract.Presenter {
     private final ConfigContract.View configView;
     private final ConfigRepository configRepository;
     private final LanguageRepository languageRepository;
-    private String currentLanguage;
+    private Language currentLanguage;
 
     ConfigPresenter(ConfigRepository configRepository, LanguageRepository languageRepository, ConfigContract.View configView) {
         this.configRepository = checkNotNull(configRepository);
@@ -36,10 +36,56 @@ class ConfigPresenter implements ConfigContract.Presenter {
     @Override
     public void start() {
         List<Language> languageList = languageRepository.getLanguages();
-        configView.setLanguages(languageList);
+        configView.setLanguageList(languageList);
 
         Config config = configRepository.findByUser(Auth.user());
         loadConfig(config, languageList);
+    }
+
+    @Override
+    public void languageChangeClicked(Language language) {
+        if(!language.equals(currentLanguage))
+            configView.showLanguageChangeConfirmation(language);
+    }
+
+    @Override
+    public void confirmLanguageChangeClicked(Language language) {
+        Config config = new Config(language.getName(), Auth.user());
+        Config existingConfig = configRepository.findByUser(Auth.user());
+
+        if(existingConfig != null) {
+            config = existingConfig
+                    .withLanguage(language.getName());
+        }
+
+        configRepository.save(config);
+
+        configView.hideLanguageChangeConfirmation();
+        configView.changeLanguage(language);
+    }
+
+    @Override
+    public void cancelLanguageChangeClicked() {
+        configView.hideLanguageChangeConfirmation();
+        start();
+    }
+
+    @Override
+    public void logoutClicked() {
+        configView.showLogoutConfirmation();
+    }
+
+    @Override
+    public void confirmLogoutClicked() {
+        Auth.logout();
+
+        configView.hideLogoutConfirmation();
+        configView.showLoginScreen();
+    }
+
+    @Override
+    public void cancelLogoutClicked() {
+        configView.hideLogoutConfirmation();
     }
 
     private void loadConfig(Config config, List<Language> languageList) {
@@ -49,57 +95,19 @@ class ConfigPresenter implements ConfigContract.Presenter {
             languageName = BuildConfig.DEFAULT_LANGUAGE_NAME;
         }
 
-        boolean languageExists = false;
-        for (Language language : languageList) {
-            if (languageName.equals(language.getName())) {
-                languageExists = true;
+        Language languageToSet = languageRepository.getDefaultLanguage();
+        for (Language languageFromList : languageList) {
+            if (languageName.equals(languageFromList.getName())) {
+                languageToSet = languageFromList;
                 break;
             }
         }
 
-        if (!languageExists) {
-            languageName = BuildConfig.DEFAULT_LANGUAGE_NAME;
-        }
-
-        applyConfig(languageName);
+        applyConfig(languageToSet);
     }
 
-    private void applyConfig(String name) {
-        configView.setLanguage(name);
-        currentLanguage = name;
-    }
-
-    @Override
-    public void confirmClicked(String language) {
-        Config config = new Config(language, Auth.user());
-        Config existingConfig = configRepository.findByUser(Auth.user());
-
-        if(existingConfig != null) {
-            config = existingConfig
-                    .withLanguage(language);
-        }
-
-        configRepository.save(config);
-
-        configView.hideButtons();
-        configView.changeLanguage(language);
-    }
-
-    @Override
-    public void languageSelected(String language) {
-        if(!language.equals(currentLanguage))
-            configView.showButtons();
-    }
-
-    @Override
-    public void cancelClicked() {
-        configView.hideButtons();
-        start();
-    }
-
-    @Override
-    public void logoutClicked() {
-        Auth.logout();
-        configView.showLoginScreen();
+    private void applyConfig(Language language) {
+        configView.setSelectedLanguage(language);
+        currentLanguage = language;
     }
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.com.bg7.appvistoria.BasePresenter;
 import br.com.bg7.appvistoria.BaseView;
+import br.com.bg7.appvistoria.config.vo.Language;
 import br.com.bg7.appvistoria.data.WorkOrder;
 
 /**
@@ -26,8 +27,11 @@ interface WorkOrderContract {
 
         boolean isMapAvailable();
 
-        void showInMap(String address);
+        void showOpenMapConfirmation(WorkOrder workOrder);
 
+        void hideOpenMapConfirmation();
+
+        void showInMap(String address);
     }
 
 
@@ -41,5 +45,8 @@ interface WorkOrderContract {
 
         void openMapClicked(WorkOrder workOrder);
 
+        void confirmOpenMapClicked(WorkOrder workOrder);
+
+        void cancelOpenMapClicked();
     }
 }

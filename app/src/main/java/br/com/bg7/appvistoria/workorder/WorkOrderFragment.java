@@ -19,7 +19,7 @@ import com.akexorcist.localizationactivity.LocalizationActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.bg7.appvistoria.BaseActivity;
+import br.com.bg7.appvistoria.ConfirmDialog;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.WorkOrder;
 
@@ -38,9 +38,9 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     private WorkOrderAdapter adapter;
 
     private static final String MAP_ADDRESS = "geo:0,0?q=";
-    private static final int MAX_SIZE_SUMARY = 50;
-    private static final int MAX_SIZE_TEXT_INFO = 12;
-    private static final int MAX_SIZE_TEXT_INSPECTION = 22;
+    private static final int MAX_SHORT_SUMMARY_SIZE = 50;
+    private static final int MAX_INFO_LABEL_SIZE = 12;
+    private static final int MAX_INSPECTION_LABEL_SIZE = 22;
 
     private static final int IMAGE_MORE_INFO_COMPLETED = R.drawable.ic_info_completed;
     private static final int IMAGE_MORE_INFO_IN_PROGRESS = R.drawable.ic_info_in_progress;
@@ -55,14 +55,17 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     private static final int BACKGROUND_COMPLETED = R.drawable.background_workorder_completed;
     private static final int BACKGROUND_IN_PROGRESS = R.drawable.background_workorder_in_progress;
     private static final int BACKGROUND_NOT_STARTED = R.drawable.background_workorder_not_started;
+    private Boolean mapAvailable = null;
+
+    ConfirmDialog confirmDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_workorder, container, false);
-
         listView = root.findViewById(R.id.listview);
         emptyLayout = root.findViewById(R.id.empty_layout);
+        confirmDialog = new ConfirmDialog(getContext(), getString(R.string.confirm_open_maps));
 
         return root;
     }
@@ -80,57 +83,55 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     @Override
     public void showList(List<WorkOrder> list, boolean showMapButtons) {
-
         if(list.size() > 0) {
             emptyLayout.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
 
-            adapter = new WorkOrderAdapter(this, list, showMapButtons);
+            adapter = new WorkOrderAdapter(list, showMapButtons);
             listView.setAdapter(adapter);
         }
     }
 
     @Override
     public void highlightInfoButton(WorkOrder workOrder) {
-        View v = getListItem(workOrder);
-        ImageView moreInfo = v.findViewById(R.id.image_more_info);
+        View view = getListItem(workOrder);
+        ImageView moreInfo = view.findViewById(R.id.image_more_info);
         setImageHighlightWorkOrder(moreInfo, workOrder.getStatus());
     }
 
     @Override
     public void removeInfoButtonHighlight(WorkOrder workOrder) {
-        View v = getListItem(workOrder);
-        if(v != null) {
-            ImageView moreInfo = v.findViewById(R.id.image_more_info);
+        View view = getListItem(workOrder);
+        if (view != null) {
+            ImageView moreInfo = view.findViewById(R.id.image_more_info);
             removeImageHighlightWorkOrder(moreInfo, workOrder.getStatus());
         }
     }
 
     @Override
     public void expandInfoPanel(WorkOrder workOrder) {
-        showSummary(workOrder);
+        View view = getListItem(workOrder);
+
+        TextView shortSummary = view.findViewById(R.id.short_summary);
+        TextView summary = view.findViewById(R.id.summary);
+        TextView date = view.findViewById(R.id.date);
+        TextView dateTitle = view.findViewById(R.id.date_title);
+        TextView locationTitle = view.findViewById(R.id.location_title);
+        LinearLayout locationLayout = view.findViewById(R.id.location_layout);
+
+        summary.setText(workOrder.getSummary());
+        shortSummary.setVisibility(View.GONE);
+        summary.setVisibility(View.VISIBLE);
+
+        date.setVisibility(View.VISIBLE);
+        dateTitle.setVisibility(View.VISIBLE);
+        locationTitle.setVisibility(View.VISIBLE);
+        locationLayout.setVisibility(View.VISIBLE);
+        getAdapter().setExpandedWorkOrder(workOrder);
     }
 
     @Override
     public void shrinkInfoPanel(WorkOrder workOrder) {
-        hideSummary(workOrder);
-    }
-
-    @Override
-    public boolean isMapAvailable() {
-        final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MAP_ADDRESS));
-        intent.setPackage("com.google.android.apps.maps");
-
-        return (intent.resolveActivity(getActivity().getPackageManager()) != null);
-    }
-
-    @Override
-    public void showInMap(String address) {
-        final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MAP_ADDRESS + address));
-        startActivity(intent);
-    }
-
-    private void hideSummary(WorkOrder workOrder){
         View view = getListItem(workOrder);
 
         if(view != null) {
@@ -148,41 +149,61 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
             locationTitle.setVisibility(View.GONE);
             locationLayout.setVisibility(View.GONE);
         }
-            getAdapter().setExpandedWorkOrder(null);
+        getAdapter().setExpandedWorkOrder(null);
     }
 
-    private void showSummary(WorkOrder workOrder){
-       View view = getListItem(workOrder);
+    @Override
+    public boolean isMapAvailable() {
+        if (mapAvailable != null) {
+            return mapAvailable;
+        }
 
-        TextView shortSummary = view.findViewById(R.id.short_summary);
-        TextView summary = view.findViewById(R.id.summary);
-        TextView date = view.findViewById(R.id.date);
-        TextView dateTitle = view.findViewById(R.id.date_title);
-        TextView locationTitle = view.findViewById(R.id.location_title);
-        LinearLayout locationLayout = view.findViewById(R.id.location_layout);
+        final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MAP_ADDRESS));
+        intent.setPackage("com.google.android.apps.maps");
+        mapAvailable = (intent.resolveActivity(getActivity().getPackageManager()) != null);
 
+        return mapAvailable;
+    }
 
-        summary.setText(workOrder.getSummary());
-        shortSummary.setVisibility(View.GONE);
-        summary.setVisibility(View.VISIBLE);
+    @Override
+    public void showOpenMapConfirmation(final WorkOrder workOrder) {
+        View.OnClickListener openMapConfirmListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                workOrderPresenter.confirmOpenMapClicked(workOrder);
+            }
+        };
 
-        date.setVisibility(View.VISIBLE);
-        dateTitle.setVisibility(View.VISIBLE);
-        locationTitle.setVisibility(View.VISIBLE);
-        locationLayout.setVisibility(View.VISIBLE);
-        getAdapter().setExpandedWorkOrder(workOrder);
+        View.OnClickListener openMapCancelListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                workOrderPresenter.cancelOpenMapClicked();
+            }
+        };
+
+        confirmDialog.show(openMapConfirmListener, openMapCancelListener);
+    }
+
+    @Override
+    public void hideOpenMapConfirmation() {
+        confirmDialog.hide();
+    }
+
+    @Override
+    public void showInMap(String address) {
+        final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MAP_ADDRESS + address));
+        startActivity(intent);
     }
 
     private WorkOrderAdapter getAdapter() {
         return (WorkOrderAdapter) listView.getAdapter();
     }
 
-
     private View getListItem(WorkOrder workOrder) {
         int index = -1;
 
-        for(int i = 0; i < adapter.getCount(); i++) {
-            if(workOrder.equals(adapter.getItem(i))) {
+        for (int i = 0; i < adapter.getCount(); i++) {
+            if (workOrder.equals(adapter.getItem(i))) {
                 index = i;
                 break;
             }
@@ -193,25 +214,25 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
 
     private void setImageHighlightWorkOrder(ImageView imageMoreInfo, WorkOrderStatus status) {
-        if(status == WorkOrderStatus.NOT_STARTED) {
+        if (status == WorkOrderStatus.NOT_STARTED) {
             imageMoreInfo.setImageResource(IMAGE_HIDE_INFO_NOT_STARTED);
         }
-        if(status == WorkOrderStatus.COMPLETED) {
+        if (status == WorkOrderStatus.COMPLETED) {
             imageMoreInfo.setImageResource(IMAGE_HIDE_INFO_COMPLETED);
         }
-        if(status == WorkOrderStatus.IN_PROGRESS) {
+        if (status == WorkOrderStatus.IN_PROGRESS) {
             imageMoreInfo.setImageResource(IMAGE_HIDE_INFO_IN_PROGRESS);
         }
     }
 
     private void removeImageHighlightWorkOrder(ImageView imageMoreInfo, WorkOrderStatus status) {
-        if(status == WorkOrderStatus.NOT_STARTED) {
+        if (status == WorkOrderStatus.NOT_STARTED) {
             imageMoreInfo.setImageResource(IMAGE_MORE_INFO_NOT_STARTED);
         }
-        if(status == WorkOrderStatus.COMPLETED) {
+        if (status == WorkOrderStatus.COMPLETED) {
             imageMoreInfo.setImageResource(IMAGE_MORE_INFO_COMPLETED);
         }
-        if(status == WorkOrderStatus.IN_PROGRESS) {
+        if (status == WorkOrderStatus.IN_PROGRESS) {
             imageMoreInfo.setImageResource(IMAGE_MORE_INFO_IN_PROGRESS);
         }
     }
@@ -220,15 +241,12 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
          private boolean showMapButtons;
          private WorkOrder expandedWorkOrder = null;
-         private LayoutInflater inflater=null;
          private View.OnClickListener cancelButton;
-         private View.OnClickListener confirmButton;
 
          private List<WorkOrder> list = new ArrayList<>();
 
-         WorkOrderAdapter(WorkOrderFragment fragment, List<WorkOrder> list, boolean showMapButtons) {
+         WorkOrderAdapter(List<WorkOrder> list, boolean showMapButtons) {
              this.list = list;
-             this.inflater = fragment.getLayoutInflater();
              this.showMapButtons = showMapButtons;
          }
 
@@ -258,7 +276,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              if (convertView == null) {
                 holder = new Holder();
 
-                 convertView = inflater.inflate(R.layout.workorder_item, parent, false);
+                 convertView = getLayoutInflater().inflate(R.layout.workorder_item, parent, false);
                  holder.item = convertView.findViewById(R.id.item);
                  holder.name = convertView.findViewById(R.id.name);
                  holder.shortSummary = convertView.findViewById(R.id.short_summary);
@@ -280,7 +298,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                  convertView.setTag(holder);
              }
 
-             if(holder == null) {
+             if (holder == null) {
                  holder = (Holder) convertView.getTag();
              }
 
@@ -289,55 +307,51 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              return convertView;
          }
 
-        public void setList(List<WorkOrder> list) {
-            this.list = list;
-        }
-
         private void populateWidget(final Holder holder, final int position){
 
              WorkOrder item = getItem(position);
-             if(item == null) {
+             if (item == null) {
                 return;
              }
 
              resetHolder(holder);
 
              holder.name.setText(item.getName());
-             holder.shortSummary.setText(item.getShortSummary(MAX_SIZE_SUMARY));
+             holder.shortSummary.setText(item.getShortSummary(MAX_SHORT_SUMMARY_SIZE));
              holder.date.setText(item.getEndAt(((LocalizationActivity)getActivity()).getLocale()));
              holder.status.setText(item.getStatus().toString());
              holder.local.setText(item.getAddress());
 
-             if(showMapButtons) holder.buttonMaps.setVisibility(View.VISIBLE);
+             if (showMapButtons) holder.buttonMaps.setVisibility(View.VISIBLE);
 
-             if(item.getStatus().toString().length() >= MAX_SIZE_TEXT_INFO) {
+             if (item.getStatus().toString().length() >= MAX_INFO_LABEL_SIZE) {
                  holder.moreInfoText.setVisibility(View.GONE);
              }
 
-             if(item.getStatus().toString().length() >= MAX_SIZE_TEXT_INSPECTION) {
+             if (item.getStatus().toString().length() >= MAX_INSPECTION_LABEL_SIZE) {
                  holder.inspectionsText.setVisibility(View.GONE);
              }
              configureListeners(holder, position);
 
-             if(item.getStatus() == WorkOrderStatus.NOT_STARTED) {
+             if (item.getStatus() == WorkOrderStatus.NOT_STARTED) {
                  holder.imageMoreInfo.setImageResource(IMAGE_MORE_INFO_NOT_STARTED);
                  holder.imageInspections.setImageResource(IMAGE_WORKORDER_NOT_STARTED);
                  holder.item.setBackgroundResource(BACKGROUND_NOT_STARTED);
                  holder.status.setTextColor(0xFF919aa0);
              }
-             if(item.getStatus() == WorkOrderStatus.COMPLETED) {
+             if (item.getStatus() == WorkOrderStatus.COMPLETED) {
                  holder.imageMoreInfo.setImageResource(IMAGE_MORE_INFO_COMPLETED);
                  holder.imageInspections.setImageResource(IMAGE_WORKORDER_COMPLETED);
                  holder.item.setBackgroundResource(BACKGROUND_COMPLETED);
                  holder.status.setTextColor(0xFF35ac53);
              }
-             if(item.getStatus() == WorkOrderStatus.IN_PROGRESS) {
+             if (item.getStatus() == WorkOrderStatus.IN_PROGRESS) {
                  holder.imageMoreInfo.setImageResource(IMAGE_MORE_INFO_IN_PROGRESS);
                  holder.imageInspections.setImageResource(IMAGE_WORKORDER_IN_PROGRESS);
                  holder.item.setBackgroundResource(BACKGROUND_IN_PROGRESS);
                  holder.status.setTextColor(0xFF0552a1);
              }
-             if(item.equals(expandedWorkOrder)) {
+             if (item.equals(expandedWorkOrder)) {
                  holder.summary.setText(item.getSummary());
                  holder.summary.setVisibility(View.VISIBLE);
                  holder.date.setVisibility(View.VISIBLE);
@@ -368,54 +382,36 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
         void configureListeners(Holder holder, final int position) {
 
-            confirmButton = new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    workOrderPresenter.openMapClicked(list.get(position));
-                    ((BaseActivity)getActivity()).dialog.dismiss();
-                }
-            };
-
-            cancelButton = new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((BaseActivity)getActivity()).dialog.dismiss();
-                }
-            };
-
-
              holder.moreInfo.setOnClickListener(new View.OnClickListener() {
                  @Override
                  public void onClick(View view) {
 
                      WorkOrder item = getItem(position);
-                     if(item.equals(expandedWorkOrder)) {
+                     if (item.equals(expandedWorkOrder)) {
                          workOrderPresenter.hideInfoClicked(expandedWorkOrder);
                          return;
                      }
 
-                     if(expandedWorkOrder != null) {
+                     if (expandedWorkOrder != null) {
                          workOrderPresenter.hideInfoClicked(expandedWorkOrder);
                      }
 
-                     if(!item.equals(expandedWorkOrder)) {
+                     if (!item.equals(expandedWorkOrder)) {
                          workOrderPresenter.moreInfoClicked(list.get(position));
                      }
                  }
              });
 
-            if(getItem(position).getAddress() == null) {
+            if (getItem(position).getAddress() == null) {
                 return;
             }
 
-            if(showMapButtons) {
-                holder.buttonMaps.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        ((BaseActivity)getActivity()).showConfirmDialog(getString(R.string.confirm_open_maps), confirmButton, cancelButton);
-                    }
-                });
-            }
+            holder.buttonMaps.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    workOrderPresenter.openMapClicked(list.get(position));
+                }
+            });
          }
 
          class Holder {
