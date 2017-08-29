@@ -249,10 +249,6 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              return convertView;
          }
 
-        public void setList(List<WorkOrder> list) {
-            this.list = list;
-        }
-
         private void populateWidget(final Holder holder, final int position){
 
              WorkOrder item = getItem(position);
