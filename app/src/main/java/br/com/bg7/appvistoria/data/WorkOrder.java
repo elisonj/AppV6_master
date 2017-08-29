@@ -94,7 +94,7 @@ public class WorkOrder {
         status = WorkOrderStatus.IN_PROGRESS;
     }
 
-    protected void finish() {
+    public void finish() {
         status = WorkOrderStatus.COMPLETED;
     }
 
