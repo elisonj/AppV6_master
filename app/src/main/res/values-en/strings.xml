@@ -45,7 +45,7 @@
     <string name="open">OPEN</string>
     <string name="inspection">INSPECTIONS</string>
     <string name="empty_list">No scheduled visits</string>
-    <string name="confirm_open_maps">Open this address in an external application?</string>
+    <string name="confirm_open_maps">Open this address in an\nexternal application?</string>
 
 
 </resources>
