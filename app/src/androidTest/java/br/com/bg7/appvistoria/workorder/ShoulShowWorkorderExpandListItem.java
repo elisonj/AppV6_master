@@ -3,19 +3,15 @@ package br.com.bg7.appvistoria.workorder;
 
 import android.support.test.espresso.DataInteraction;
 import android.support.test.espresso.ViewInteraction;
-import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import br.com.bg7.appvistoria.R;
-import br.com.bg7.appvistoria.data.WorkOrder;
 import br.com.bg7.appvistoria.login.LoginActivity;
 
 import static android.support.test.espresso.Espresso.onData;
@@ -29,7 +25,7 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class ShoulShowWorkorderExpandListItem {
+public class ShoulShowWorkorderExpandListItem extends WorkorderBaseMatcher {
 
     @Rule
     public ActivityTestRule<LoginActivity> mActivityTestRule = new ActivityTestRule<>(LoginActivity.class);
@@ -63,20 +59,5 @@ public class ShoulShowWorkorderExpandListItem {
         dataInteraction.onChildView(withId(R.id.date)).check(matches(isDisplayed()));
         dataInteraction.onChildView(withId(R.id.location_layout)).check(matches(isDisplayed()));
 
-    }
-
-
-    public static Matcher<Object> withItemValue(final String value) {
-        return new BoundedMatcher<Object, WorkOrder>(WorkOrder.class) {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText(value);
-            }
-
-            @Override
-            public boolean matchesSafely(WorkOrder item) {
-                return item.getName().toUpperCase().equals(String.valueOf(value));
-            }
-        };
     }
 }

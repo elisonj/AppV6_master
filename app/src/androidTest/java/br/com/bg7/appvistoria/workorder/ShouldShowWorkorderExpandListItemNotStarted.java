@@ -17,6 +17,7 @@ import br.com.bg7.appvistoria.login.LoginActivity;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -24,13 +25,13 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class ShouldOpenMapsWhenClickButtonMaps extends WorkorderBaseMatcher {
+public class ShouldShowWorkorderExpandListItemNotStarted extends WorkorderBaseMatcher {
 
     @Rule
     public ActivityTestRule<LoginActivity> mActivityTestRule = new ActivityTestRule<>(LoginActivity.class);
 
     @Test
-    public void shouldOpenMapsWhenClickButtonMaps() {
+    public void shouldShowWorkorderExpandListItemCompleted() {
         try {
             Thread.sleep(200);
         } catch (InterruptedException e) {
@@ -49,16 +50,16 @@ public class ShouldOpenMapsWhenClickButtonMaps extends WorkorderBaseMatcher {
                 allOf(withId(R.id.menu_visita), isDisplayed()));
         bottomNavigationItemView.perform(click());
 
-
-        DataInteraction dataInteraction = onData(withItemValue("PROJETO 1"))
+        DataInteraction dataInteraction = onData(withItemValue("PROJETO 7"))
                 .inAdapterView(withId(R.id.listview));
 
         dataInteraction.onChildView(withId(R.id.more_info)).perform(click());
-        dataInteraction.onChildView(withId(R.id.bt_maps)).perform(click());
 
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.button_confirm), withText("CONFIRMAR"), isDisplayed()));
-        appCompatButton2.perform(click());
+        dataInteraction.onChildView(withId(R.id.summary)).check(matches(isDisplayed()));
+        dataInteraction.onChildView(withId(R.id.date)).check(matches(isDisplayed()));
+        dataInteraction.onChildView(withId(R.id.location_layout)).check(matches(isDisplayed()));
+
+        dataInteraction.onChildView(withId(R.id.status)).check(matches(withText("NOT_STARTED")));
 
     }
 
