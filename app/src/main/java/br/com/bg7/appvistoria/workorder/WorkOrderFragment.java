@@ -2,6 +2,7 @@ package br.com.bg7.appvistoria.workorder;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -56,8 +57,12 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     private static final int BACKGROUND_IN_PROGRESS = R.drawable.background_workorder_in_progress;
     private static final int BACKGROUND_NOT_STARTED = R.drawable.background_workorder_not_started;
     private Boolean mapAvailable = null;
+    private Typeface nunito = null;
+    private Typeface roboto = null;
+    private Typeface nunitoBold = null;
 
     ConfirmDialog confirmDialog;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,6 +71,10 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
         listView = root.findViewById(R.id.listview);
         emptyLayout = root.findViewById(R.id.empty_layout);
         confirmDialog = new ConfirmDialog(getContext(), getString(R.string.confirm_open_maps));
+
+        nunito = Typeface.createFromAsset(getActivity().getAssets(),"nunitoregular.ttf");
+        nunitoBold = Typeface.createFromAsset(getActivity().getAssets(),"nunitobold.ttf");
+        roboto = Typeface.createFromAsset(getActivity().getAssets(),"robotoregular.ttf");
 
         return root;
     }
@@ -295,6 +304,21 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                  holder.locationTitle  = convertView.findViewById(R.id.location_title);
                  holder.locationLayout = convertView.findViewById(R.id.location_layout);
 
+
+                 holder.inspectionButtonText = convertView.findViewById(R.id.inspection_button_text);
+                 holder.infoButtonText = convertView.findViewById(R.id.info_button_text);
+                 holder.inspectionButtonTopText = convertView.findViewById(R.id.inspection_button_top_text);
+                 holder.infoButtonTopText = convertView.findViewById(R.id.info_button_top_text);
+                 holder.inspectionButtonText.setTypeface(nunito);
+                 holder.infoButtonText.setTypeface(nunito);
+                 holder.inspectionButtonTopText.setTypeface(nunito);
+                 holder.infoButtonTopText.setTypeface(nunito);
+                 holder.status.setTypeface(nunitoBold);
+                 holder.name.setTypeface(nunito);
+                 holder.shortSummary.setTypeface(roboto);
+                 holder.summary.setTypeface(roboto);
+
+
                  convertView.setTag(holder);
              }
 
@@ -423,6 +447,10 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              TextView local;
              TextView dateTitle;
              TextView locationTitle;
+             TextView inspectionButtonText;
+             TextView infoButtonText;
+             TextView inspectionButtonTopText;
+             TextView infoButtonTopText;
              LinearLayout inspections;
              LinearLayout inspectionsText;
              LinearLayout moreInfo;
