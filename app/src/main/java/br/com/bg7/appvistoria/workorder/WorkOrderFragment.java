@@ -29,6 +29,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by: elison
  * Date: 2017-08-15
+ *
+ * TODO: Reduzir o tamanho desta classe
  */
 public class WorkOrderFragment extends Fragment implements  WorkOrderContract.View {
 
