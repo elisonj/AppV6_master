@@ -15,26 +15,34 @@ import br.com.bg7.appvistoria.config.vo.Language;
 @SuppressWarnings("unused")
 interface ConfigContract {
     interface View extends BaseView<ConfigContract.Presenter> {
-        void hideButtons();
+        void setLanguageList(List<Language> languageList);
 
-        void showButtons();
-
-        void setLanguages(List<Language> languageList);
-
-        void setLanguage(String languageName);
+        void setSelectedLanguage(String languageName);
 
         void changeLanguage(String language);
+
+        void showLogoutConfirmation();
+
+        void hideLogoutConfirmation();
+
+        void showLanguageChangeConfirmation(String languageName);
+
+        void hideLanguageChangeConfirmation();
 
         void showLoginScreen();
     }
 
     interface Presenter extends BasePresenter {
-        void confirmClicked(String language);
+        void languageChangeClicked(String language);
 
-        void cancelClicked();
+        void confirmLanguageChangeClicked(String language);
+
+        void cancelLanguageChangeClicked();
 
         void logoutClicked();
 
-        void languageSelected(String language);
+        void confirmLogoutClicked();
+
+        void cancelLogoutClicked();
     }
 }

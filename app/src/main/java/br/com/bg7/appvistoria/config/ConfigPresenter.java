@@ -36,7 +36,7 @@ class ConfigPresenter implements ConfigContract.Presenter {
     @Override
     public void start() {
         List<Language> languageList = languageRepository.getLanguages();
-        configView.setLanguages(languageList);
+        configView.setLanguageList(languageList);
 
         Config config = configRepository.findByUser(Auth.user());
         loadConfig(config, languageList);
@@ -65,12 +65,18 @@ class ConfigPresenter implements ConfigContract.Presenter {
     }
 
     private void applyConfig(String name) {
-        configView.setLanguage(name);
+        configView.setSelectedLanguage(name);
         currentLanguage = name;
     }
 
     @Override
-    public void confirmClicked(String language) {
+    public void languageChangeClicked(String language) {
+        if(!language.equals(currentLanguage))
+            configView.showLanguageChangeConfirmation(language);
+    }
+
+    @Override
+    public void confirmLanguageChangeClicked(String language) {
         Config config = new Config(language, Auth.user());
         Config existingConfig = configRepository.findByUser(Auth.user());
 
@@ -81,25 +87,30 @@ class ConfigPresenter implements ConfigContract.Presenter {
 
         configRepository.save(config);
 
-        configView.hideButtons();
+        configView.hideLanguageChangeConfirmation();
         configView.changeLanguage(language);
     }
 
     @Override
-    public void languageSelected(String language) {
-        if(!language.equals(currentLanguage))
-            configView.showButtons();
-    }
-
-    @Override
-    public void cancelClicked() {
-        configView.hideButtons();
-        start();
+    public void cancelLanguageChangeClicked() {
+        configView.hideLanguageChangeConfirmation();
     }
 
     @Override
     public void logoutClicked() {
+        configView.showLogoutConfirmation();
+    }
+
+    @Override
+    public void confirmLogoutClicked() {
         Auth.logout();
+
+        configView.hideLogoutConfirmation();
         configView.showLoginScreen();
+    }
+
+    @Override
+    public void cancelLogoutClicked() {
+        configView.hideLogoutConfirmation();
     }
 }

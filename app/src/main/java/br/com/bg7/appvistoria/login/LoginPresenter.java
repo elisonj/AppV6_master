@@ -2,15 +2,11 @@ package br.com.bg7.appvistoria.login;
 
 import com.google.common.base.Strings;
 
-import java.util.List;
-
 import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.auth.Auth;
 import br.com.bg7.appvistoria.auth.callback.AuthCallback;
-import br.com.bg7.appvistoria.config.vo.Language;
 import br.com.bg7.appvistoria.data.Config;
 import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
-import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
