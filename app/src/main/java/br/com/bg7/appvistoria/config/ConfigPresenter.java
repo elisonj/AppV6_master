@@ -23,7 +23,7 @@ class ConfigPresenter implements ConfigContract.Presenter {
     private final ConfigContract.View configView;
     private final ConfigRepository configRepository;
     private final LanguageRepository languageRepository;
-    private String currentLanguage;
+    private Language currentLanguage;
 
     ConfigPresenter(ConfigRepository configRepository, LanguageRepository languageRepository, ConfigContract.View configView) {
         this.configRepository = checkNotNull(configRepository);
@@ -49,40 +49,36 @@ class ConfigPresenter implements ConfigContract.Presenter {
             languageName = BuildConfig.DEFAULT_LANGUAGE_NAME;
         }
 
-        boolean languageExists = false;
-        for (Language language : languageList) {
-            if (languageName.equals(language.getName())) {
-                languageExists = true;
+        Language languageToSet = languageRepository.getDefaultLanguage();
+        for (Language languageFromList : languageList) {
+            if (languageName.equals(languageFromList.getName())) {
+                languageToSet = languageFromList;
                 break;
             }
         }
 
-        if (!languageExists) {
-            languageName = BuildConfig.DEFAULT_LANGUAGE_NAME;
-        }
-
-        applyConfig(languageName);
+        applyConfig(languageToSet);
     }
 
-    private void applyConfig(String name) {
-        configView.setSelectedLanguage(name);
-        currentLanguage = name;
+    private void applyConfig(Language language) {
+        configView.setSelectedLanguage(language);
+        currentLanguage = language;
     }
 
     @Override
-    public void languageChangeClicked(String language) {
+    public void languageChangeClicked(Language language) {
         if(!language.equals(currentLanguage))
             configView.showLanguageChangeConfirmation(language);
     }
 
     @Override
-    public void confirmLanguageChangeClicked(String language) {
-        Config config = new Config(language, Auth.user());
+    public void confirmLanguageChangeClicked(Language language) {
+        Config config = new Config(language.getName(), Auth.user());
         Config existingConfig = configRepository.findByUser(Auth.user());
 
         if(existingConfig != null) {
             config = existingConfig
-                    .withLanguage(language);
+                    .withLanguage(language.getName());
         }
 
         configRepository.save(config);
@@ -94,6 +90,7 @@ class ConfigPresenter implements ConfigContract.Presenter {
     @Override
     public void cancelLanguageChangeClicked() {
         configView.hideLanguageChangeConfirmation();
+        start();
     }
 
     @Override

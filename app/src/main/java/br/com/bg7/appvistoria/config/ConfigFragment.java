@@ -37,7 +37,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     private Spinner languageSpinner;
     private List<Language> languageList;
 
-    private ConfirmDialog logoutDialog = new ConfirmDialog(getActivity(), getString(R.string.confirm_logout));
+    private ConfirmDialog logoutDialog;
     private ConfirmDialog languageChangeDialog;
 
     @Override
@@ -54,6 +54,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     private void initializeViewElements(View root) {
         languageSpinner = root.findViewById(R.id.spinner_language);
         logout = root.findViewById(R.id.linear_logout);
+        logoutDialog = new ConfirmDialog(getContext(), getString(R.string.confirm_logout));
     }
 
     private void initializeListeners() {
@@ -77,11 +78,11 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     }
 
     @Override
-    public void setSelectedLanguage(String languageName) {
+    public void setSelectedLanguage(Language language) {
         int selected = 0;
         for (int i = 0; i < languageList.size(); i++) {
             Language languageFromList = languageList.get(i);
-            if (languageFromList.getName().equals(languageName)) {
+            if (languageFromList.equals(language)) {
                 selected = i;
             }
         }
@@ -96,7 +97,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
         languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                configPresenter.languageChangeClicked(languageList.get(i).getName());
+                configPresenter.languageChangeClicked(languageList.get(i));
             }
 
             @Override
@@ -109,10 +110,10 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     }
 
     @Override
-    public void changeLanguage(String language) {
+    public void changeLanguage(Language language) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(Constants.PREFERENCE_LANGUAGE_KEY, language);
+        editor.putString(Constants.PREFERENCE_LANGUAGE_KEY, language.getName());
         editor.apply();
 
         getActivity().recreate();
@@ -143,16 +144,16 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     }
 
     @Override
-    public void showLanguageChangeConfirmation(final String languageName) {
+    public void showLanguageChangeConfirmation(final Language language) {
         String messageFormat = getString(R.string.confirm_change_language_format);
-        String message = String.format(messageFormat, languageName);
+        String message = String.format(messageFormat, language.getDisplayName());
 
-        languageChangeDialog = new ConfirmDialog(getActivity(), message);
+        languageChangeDialog = new ConfirmDialog(getContext(), message);
 
         View.OnClickListener languageConfirmListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                configPresenter.confirmLanguageChangeClicked(languageName);
+                configPresenter.confirmLanguageChangeClicked(language);
             }
         };
 

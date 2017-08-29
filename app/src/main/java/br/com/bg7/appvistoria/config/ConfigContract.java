@@ -17,15 +17,15 @@ interface ConfigContract {
     interface View extends BaseView<ConfigContract.Presenter> {
         void setLanguageList(List<Language> languageList);
 
-        void setSelectedLanguage(String languageName);
+        void setSelectedLanguage(Language language);
 
-        void changeLanguage(String language);
+        void changeLanguage(Language language);
 
         void showLogoutConfirmation();
 
         void hideLogoutConfirmation();
 
-        void showLanguageChangeConfirmation(String languageName);
+        void showLanguageChangeConfirmation(Language language);
 
         void hideLanguageChangeConfirmation();
 
@@ -33,9 +33,9 @@ interface ConfigContract {
     }
 
     interface Presenter extends BasePresenter {
-        void languageChangeClicked(String language);
+        void languageChangeClicked(Language language);
 
-        void confirmLanguageChangeClicked(String language);
+        void confirmLanguageChangeClicked(Language language);
 
         void cancelLanguageChangeClicked();
 
