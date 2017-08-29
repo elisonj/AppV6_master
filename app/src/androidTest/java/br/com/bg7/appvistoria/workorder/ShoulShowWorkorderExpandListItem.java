@@ -1,18 +1,24 @@
 package br.com.bg7.appvistoria.workorder;
 
 
+import android.support.test.espresso.DataInteraction;
 import android.support.test.espresso.ViewInteraction;
+import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import br.com.bg7.appvistoria.R;
+import br.com.bg7.appvistoria.data.WorkOrder;
 import br.com.bg7.appvistoria.login.LoginActivity;
 
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -48,14 +54,29 @@ public class ShoulShowWorkorderExpandListItem {
                 allOf(withId(R.id.menu_visita), isDisplayed()));
         bottomNavigationItemView.perform(click());
 
-        ViewInteraction linearLayout = onView(
-                allOf(withId(R.id.more_info), isDisplayed()));
-        linearLayout.perform(click());
+        DataInteraction dataInteraction = onData(withItemValue("PROJETO 1"))
+                .inAdapterView(withId(R.id.listview));
 
-        onView(withId(R.id.summary)).check(matches(isDisplayed()));
-        onView(withId(R.id.date)).check(matches(isDisplayed()));
-        onView(withId(R.id.location_layout)).check(matches(isDisplayed()));
+        dataInteraction.onChildView(withId(R.id.more_info)).perform(click());
+
+        dataInteraction.onChildView(withId(R.id.summary)).check(matches(isDisplayed()));
+        dataInteraction.onChildView(withId(R.id.date)).check(matches(isDisplayed()));
+        dataInteraction.onChildView(withId(R.id.location_layout)).check(matches(isDisplayed()));
 
     }
 
+
+    public static Matcher<Object> withItemValue(final String value) {
+        return new BoundedMatcher<Object, WorkOrder>(WorkOrder.class) {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText(value);
+            }
+
+            @Override
+            public boolean matchesSafely(WorkOrder item) {
+                return item.getName().toUpperCase().equals(String.valueOf(value));
+            }
+        };
+    }
 }
