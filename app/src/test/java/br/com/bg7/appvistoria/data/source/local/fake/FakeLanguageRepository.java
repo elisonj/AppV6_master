@@ -12,16 +12,20 @@ import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
  */
 
 public class FakeLanguageRepository implements LanguageRepository {
+
+    public static final Language PT_LANGUAGE = new Language("pt", "Portugues");
+    public static final Language EN_LANGUAGE = new Language("en", "English");
+
     @Override
     public List<Language> getLanguages() {
         return Arrays.asList(
-                new Language("pt", "Portugues"),
-                new Language("en", "English")
+                PT_LANGUAGE,
+                EN_LANGUAGE
         );
     }
 
     @Override
     public Language getDefaultLanguage() {
-        return new Language("pt", "Portugues");
+        return PT_LANGUAGE;
     }
 }

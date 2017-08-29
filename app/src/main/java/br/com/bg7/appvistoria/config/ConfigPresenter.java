@@ -42,29 +42,6 @@ class ConfigPresenter implements ConfigContract.Presenter {
         loadConfig(config, languageList);
     }
 
-    private void loadConfig(Config config, List<Language> languageList) {
-        String languageName = config.getLanguageName();
-
-        if (Strings.isNullOrEmpty(languageName) || Strings.isNullOrEmpty(languageName.trim())) {
-            languageName = BuildConfig.DEFAULT_LANGUAGE_NAME;
-        }
-
-        Language languageToSet = languageRepository.getDefaultLanguage();
-        for (Language languageFromList : languageList) {
-            if (languageName.equals(languageFromList.getName())) {
-                languageToSet = languageFromList;
-                break;
-            }
-        }
-
-        applyConfig(languageToSet);
-    }
-
-    private void applyConfig(Language language) {
-        configView.setSelectedLanguage(language);
-        currentLanguage = language;
-    }
-
     @Override
     public void languageChangeClicked(Language language) {
         if(!language.equals(currentLanguage))
@@ -109,5 +86,28 @@ class ConfigPresenter implements ConfigContract.Presenter {
     @Override
     public void cancelLogoutClicked() {
         configView.hideLogoutConfirmation();
+    }
+
+    private void loadConfig(Config config, List<Language> languageList) {
+        String languageName = config.getLanguageName();
+
+        if (Strings.isNullOrEmpty(languageName) || Strings.isNullOrEmpty(languageName.trim())) {
+            languageName = BuildConfig.DEFAULT_LANGUAGE_NAME;
+        }
+
+        Language languageToSet = languageRepository.getDefaultLanguage();
+        for (Language languageFromList : languageList) {
+            if (languageName.equals(languageFromList.getName())) {
+                languageToSet = languageFromList;
+                break;
+            }
+        }
+
+        applyConfig(languageToSet);
+    }
+
+    private void applyConfig(Language language) {
+        configView.setSelectedLanguage(language);
+        currentLanguage = language;
     }
 }

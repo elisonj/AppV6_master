@@ -16,6 +16,9 @@ import br.com.bg7.appvistoria.auth.Auth;
 import br.com.bg7.appvistoria.config.vo.Language;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeLanguageRepository;
 
+import static br.com.bg7.appvistoria.data.source.local.fake.FakeLanguageRepository.EN_LANGUAGE;
+import static br.com.bg7.appvistoria.data.source.local.fake.FakeLanguageRepository.PT_LANGUAGE;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
@@ -71,7 +74,7 @@ public class ConfigPresenterTest extends UserLoggedInTest {
 
         configPresenter.start();
 
-        verify(configView).setSelectedLanguage(new Language("en", "English"));
+        verify(configView).setSelectedLanguage(EN_LANGUAGE);
     }
 
 
@@ -84,7 +87,6 @@ public class ConfigPresenterTest extends UserLoggedInTest {
         testCases.put("Null", null);
 
         for (Map.Entry<String, String> testCase : testCases.entrySet()) {
-            String description = testCase.getKey();
             String configValueUnderTest = testCase.getValue();
 
             setUpConfig(configValueUnderTest);
@@ -92,60 +94,74 @@ public class ConfigPresenterTest extends UserLoggedInTest {
 
             configPresenter.start();
 
-            System.out.println("shouldSelectFirstItemIfConfigLanguageNotValid - " + description);
-            verify(configView).setSelectedLanguage(new Language("pt", "Portugues"));
+            verify(configView).setSelectedLanguage(PT_LANGUAGE);
         }
     }
 
-    /*
     @Test
-    public void shouldShowButtonsWhenLanguageSelectedIsDifferent()
+    public void shouldShowConfirmationWhenLanguageSelectedIsDifferent()
     {
         configPresenter.start();
-        configPresenter.languageChangeClicked("en");
-        verify(configView).showButtons();
+        configPresenter.languageChangeClicked(EN_LANGUAGE);
+        verify(configView).showLanguageChangeConfirmation(EN_LANGUAGE);
     }
 
     @Test
-    public void shouldNotShowButtonsWhenLanguageSelectedIsTheSame()
+    public void shouldNotShowConfirmationWhenLanguageSelectedIsTheSame()
     {
         configPresenter.start();
-        configPresenter.languageChangeClicked("pt");
-        verify(configView, never()).showButtons();
+        configPresenter.languageChangeClicked(PT_LANGUAGE);
+        verify(configView, never()).showLanguageChangeConfirmation(any(Language.class));
     }
 
     @Test
-    public void shouldHideElementsWhenCancelClicked()
+    public void shouldHideLanguageConfirmationWhenCancelClicked()
     {
-        configPresenter.cancelClicked();
+        configPresenter.languageChangeClicked(EN_LANGUAGE);
+        configPresenter.cancelLanguageChangeClicked();
 
-        verify(configView).hideButtons();
+        verify(configView).setSelectedLanguage(PT_LANGUAGE); // Previous value
+        verify(configView).hideLanguageChangeConfirmation();
     }
 
     @Test
-    public void shouldHideButtonsAndLanguagesWhenConfirmClicked()
+    public void shouldHideLanguageConfirmationWhenConfirmClicked()
     {
-        configPresenter.confirmClicked(null);
+        configPresenter.confirmLanguageChangeClicked(EN_LANGUAGE);
 
-        verify(configView).hideButtons();
+        verify(configView).hideLanguageChangeConfirmation();
     }
 
     @Test
     public void shouldChangeLanguageWhenConfirmClicked()
     {
-        configPresenter.confirmClicked("pt");
+        configPresenter.confirmLanguageChangeClicked(PT_LANGUAGE);
 
-        verify(configView).changeLanguage("pt");
+        verify(configView).changeLanguage(PT_LANGUAGE);
+        Assert.assertEquals(PT_LANGUAGE.getName(), configRepository.findByUser(Auth.user()).getLanguageName());
     }
-    */
 
     @Test
-    public void shouldLogoutAndShowLoginScreenWhenLoggingOut()
+    public void shouldShowConfirmationWhenLogoutClicked() {
+        configPresenter.logoutClicked();
+
+        verify(configView).showLogoutConfirmation();
+    }
+
+    @Test
+    public void shouldHideConfirmationWhenCancelLogoutClicked() {
+        configPresenter.cancelLogoutClicked();
+
+        verify(configView).hideLogoutConfirmation();
+    }
+
+    @Test
+    public void shouldLogoutHideConfirmationAndShowLoginScreenWhenLoggingOut()
     {
         configPresenter.confirmLogoutClicked();
 
+        verify(configView).hideLogoutConfirmation();
         verify(configView).showLoginScreen();
-        Assert.assertNull(Auth.user());
         Assert.assertFalse(Auth.check());
     }
 }
