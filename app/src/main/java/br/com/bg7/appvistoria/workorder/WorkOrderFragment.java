@@ -19,6 +19,7 @@ import com.akexorcist.localizationactivity.LocalizationActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.bg7.appvistoria.ConfirmDialog;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.WorkOrder;
 
@@ -28,11 +29,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by: elison
  * Date: 2017-08-15
+ *
+ * TODO: Reduzir o tamanho desta classe
  */
 public class WorkOrderFragment extends Fragment implements  WorkOrderContract.View {
 
     WorkOrderContract.Presenter workOrderPresenter;
     private ListView listView;
+    private LinearLayout emptyLayout;
     private WorkOrderAdapter adapter;
 
     private static final String MAP_ADDRESS = "geo:0,0?q=";
@@ -55,11 +59,15 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     private static final int BACKGROUND_NOT_STARTED = R.drawable.background_workorder_not_started;
     private Boolean mapAvailable = null;
 
+    ConfirmDialog confirmDialog;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_workorder, container, false);
         listView = root.findViewById(R.id.listview);
+        emptyLayout = root.findViewById(R.id.empty_layout);
+        confirmDialog = new ConfirmDialog(getContext(), getString(R.string.confirm_open_maps));
 
         return root;
     }
@@ -77,8 +85,13 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     @Override
     public void showList(List<WorkOrder> list, boolean showMapButtons) {
-        adapter = new WorkOrderAdapter(list, showMapButtons);
-        listView.setAdapter(adapter);
+        if(list.size() > 0) {
+            emptyLayout.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+
+            adapter = new WorkOrderAdapter(list, showMapButtons);
+            listView.setAdapter(adapter);
+        }
     }
 
     @Override
@@ -103,9 +116,19 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
         TextView shortSummary = view.findViewById(R.id.short_summary);
         TextView summary = view.findViewById(R.id.summary);
+        TextView date = view.findViewById(R.id.date);
+        TextView dateTitle = view.findViewById(R.id.date_title);
+        TextView locationTitle = view.findViewById(R.id.location_title);
+        LinearLayout locationLayout = view.findViewById(R.id.location_layout);
+
         summary.setText(workOrder.getSummary());
         shortSummary.setVisibility(View.GONE);
         summary.setVisibility(View.VISIBLE);
+
+        date.setVisibility(View.VISIBLE);
+        dateTitle.setVisibility(View.VISIBLE);
+        locationTitle.setVisibility(View.VISIBLE);
+        locationLayout.setVisibility(View.VISIBLE);
         getAdapter().setExpandedWorkOrder(workOrder);
     }
 
@@ -113,13 +136,21 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     public void shrinkInfoPanel(WorkOrder workOrder) {
         View view = getListItem(workOrder);
 
-        if (view != null) {
+        if(view != null) {
             TextView shortSummary = view.findViewById(R.id.short_summary);
             TextView summary = view.findViewById(R.id.summary);
             shortSummary.setVisibility(View.VISIBLE);
             summary.setVisibility(View.GONE);
-        }
+            TextView date = view.findViewById(R.id.date);
+            TextView dateTitle = view.findViewById(R.id.date_title);
+            TextView locationTitle = view.findViewById(R.id.location_title);
+            LinearLayout locationLayout = view.findViewById(R.id.location_layout);
 
+            date.setVisibility(View.GONE);
+            dateTitle.setVisibility(View.GONE);
+            locationTitle.setVisibility(View.GONE);
+            locationLayout.setVisibility(View.GONE);
+        }
         getAdapter().setExpandedWorkOrder(null);
     }
 
@@ -134,6 +165,30 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
         mapAvailable = (intent.resolveActivity(getActivity().getPackageManager()) != null);
 
         return mapAvailable;
+    }
+
+    @Override
+    public void showOpenMapConfirmation(final WorkOrder workOrder) {
+        View.OnClickListener openMapConfirmListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                workOrderPresenter.confirmOpenMapClicked(workOrder);
+            }
+        };
+
+        View.OnClickListener openMapCancelListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                workOrderPresenter.cancelOpenMapClicked();
+            }
+        };
+
+        confirmDialog.show(openMapConfirmListener, openMapCancelListener);
+    }
+
+    @Override
+    public void hideOpenMapConfirmation() {
+        confirmDialog.hide();
     }
 
     @Override
@@ -188,6 +243,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
          private boolean showMapButtons;
          private WorkOrder expandedWorkOrder = null;
+         private View.OnClickListener cancelButton;
 
          private List<WorkOrder> list = new ArrayList<>();
 
@@ -237,6 +293,10 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                  holder.buttonMaps = convertView.findViewById(R.id.bt_maps);
                  holder.imageInspections = convertView.findViewById(R.id.image_inspections);
                  holder.imageMoreInfo = convertView.findViewById(R.id.image_more_info);
+                 holder.dateTitle = convertView.findViewById(R.id.date_title);
+                 holder.locationTitle  = convertView.findViewById(R.id.location_title);
+                 holder.locationLayout = convertView.findViewById(R.id.location_layout);
+
                  convertView.setTag(holder);
              }
 
@@ -279,20 +339,28 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                  holder.imageMoreInfo.setImageResource(IMAGE_MORE_INFO_NOT_STARTED);
                  holder.imageInspections.setImageResource(IMAGE_WORKORDER_NOT_STARTED);
                  holder.item.setBackgroundResource(BACKGROUND_NOT_STARTED);
+                 holder.status.setTextColor(getResources().getColor(R.color.not_started, null));
              }
              if (item.getStatus() == WorkOrderStatus.COMPLETED) {
                  holder.imageMoreInfo.setImageResource(IMAGE_MORE_INFO_COMPLETED);
                  holder.imageInspections.setImageResource(IMAGE_WORKORDER_COMPLETED);
                  holder.item.setBackgroundResource(BACKGROUND_COMPLETED);
+                 holder.status.setTextColor(getResources().getColor(R.color.completed, null));
              }
              if (item.getStatus() == WorkOrderStatus.IN_PROGRESS) {
                  holder.imageMoreInfo.setImageResource(IMAGE_MORE_INFO_IN_PROGRESS);
                  holder.imageInspections.setImageResource(IMAGE_WORKORDER_IN_PROGRESS);
                  holder.item.setBackgroundResource(BACKGROUND_IN_PROGRESS);
+                 holder.status.setTextColor(getResources().getColor(R.color.in_progress, null));
              }
              if (item.equals(expandedWorkOrder)) {
                  holder.summary.setText(item.getSummary());
                  holder.summary.setVisibility(View.VISIBLE);
+                 holder.date.setVisibility(View.VISIBLE);
+                 holder.dateTitle.setVisibility(View.VISIBLE);
+                 holder.locationTitle.setVisibility(View.VISIBLE);
+                 holder.locationLayout.setVisibility(View.VISIBLE);
+
                  setImageHighlightWorkOrder(holder.imageMoreInfo, item.getStatus());
              }
          }
@@ -304,12 +372,18 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
             holder.moreInfoText.setVisibility(View.VISIBLE);
             holder.inspectionsText.setVisibility(View.VISIBLE);
             holder.buttonMaps.setVisibility(View.GONE);
+            holder.dateTitle.setVisibility(View.GONE);
+            holder.locationLayout.setVisibility(View.GONE);
+            holder.locationTitle.setVisibility(View.GONE);
+            holder.date.setVisibility(View.GONE);
             holder.summary.setVisibility(View.GONE);
+            holder.shortSummary.setVisibility(View.VISIBLE);
             holder.moreInfo.setBackgroundColor(Color.TRANSPARENT);
         }
 
 
         void configureListeners(Holder holder, final int position) {
+
              holder.moreInfo.setOnClickListener(new View.OnClickListener() {
                  @Override
                  public void onClick(View view) {
@@ -334,14 +408,12 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                 return;
             }
 
-            if (showMapButtons) {
-                holder.buttonMaps.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        workOrderPresenter.openMapClicked(list.get(position));
-                    }
-                });
-            }
+            holder.buttonMaps.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    workOrderPresenter.openMapClicked(list.get(position));
+                }
+            });
          }
 
          class Holder {
@@ -351,10 +423,13 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              TextView status;
              TextView date;
              TextView local;
+             TextView dateTitle;
+             TextView locationTitle;
              LinearLayout inspections;
              LinearLayout inspectionsText;
              LinearLayout moreInfo;
              LinearLayout moreInfoText;
+             LinearLayout locationLayout;
              LinearLayout item;
              ImageView buttonMaps;
              ImageView imageMoreInfo;

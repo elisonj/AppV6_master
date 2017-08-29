@@ -31,6 +31,7 @@
     <string name="ico_more_info">icon more info</string>
     <string name="ico_inspections">icon inspection</string>
     <string name="ico_maps">icon maps</string>
+    <string name="ico_empty">icon empty list</string>
 
     <string name="status_in_progress">IN PROGRESS</string>
     <string name="status_completed">COMPLETED</string>
@@ -43,7 +44,8 @@
     <string name="infos">INFO</string>
     <string name="open">OPEN</string>
     <string name="inspection">INSPECTIONS</string>
-
+    <string name="empty_list">No scheduled visits</string>
+    <string name="confirm_open_maps">Open this address in an\nexternal application?</string>
 
 
 </resources>

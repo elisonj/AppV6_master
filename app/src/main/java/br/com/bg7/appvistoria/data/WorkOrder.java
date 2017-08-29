@@ -62,9 +62,10 @@ public class WorkOrder {
     // TODO: Verificar se precisamos mesmo ter esse método público - WorkOrder
     public WorkOrder() {}
 
-    public WorkOrder(String name, String summary) {
+    public WorkOrder(String name, String summary, String address) {
         this.name = name;
         this.summary = summary;
+        this.address = address;
         this.status = WorkOrderStatus.NOT_STARTED;
         this.endAt = DateTime.now();
     }

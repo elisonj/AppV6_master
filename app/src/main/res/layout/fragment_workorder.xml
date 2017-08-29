@@ -1,13 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:background="#e4e8eb"
     android:layout_height="match_parent">
 
     <ListView
+        android:visibility="gone"
         android:id="@+id/listview"
         android:divider="@null"
         android:dividerHeight="0dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/empty_layout"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="230dp"
+            android:contentDescription="@string/ico_empty"
+            app:srcCompat="@drawable/logo_sb" />
+
+        <TextView
+            android:id="@+id/message_empty"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#788186"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/empty_list" />
+
+    </LinearLayout>
+
+
 </LinearLayout>

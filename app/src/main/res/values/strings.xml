@@ -31,6 +31,7 @@
     <string name="ico_more_info">icon + info</string>
     <string name="ico_inspections">icon inspeções</string>
     <string name="ico_maps">icon maps</string>
+    <string name="ico_empty">icon lista vazia</string>
 
     <string name="status_in_progress">ANDAMENTO</string>
     <string name="status_completed">COMPLETA</string>
@@ -42,6 +43,8 @@
     <string name="infos">INFOS</string>
     <string name="open">ACESSAR</string>
     <string name="inspection">INSPEÇÕES</string>
+    <string name="empty_list">Você não tem visitas agendadas</string>
+    <string name="confirm_open_maps">Deseja abrir este endereço\nem outro aplicativo?</string>
 
 
 </resources>

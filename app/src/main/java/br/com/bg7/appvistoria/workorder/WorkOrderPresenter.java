@@ -53,8 +53,20 @@ public class WorkOrderPresenter implements WorkOrderContract.Presenter{
 
     @Override
     public void openMapClicked(WorkOrder workOrder) {
+        workOrderView.showOpenMapConfirmation(workOrder);
+    }
+
+    @Override
+    public void confirmOpenMapClicked(WorkOrder workOrder) {
         if (workOrderView.isMapAvailable()) {
             workOrderView.showInMap(workOrder.getAddress());
         }
+
+        workOrderView.hideOpenMapConfirmation();
+    }
+
+    @Override
+    public void cancelOpenMapClicked() {
+        workOrderView.hideOpenMapConfirmation();
     }
 }

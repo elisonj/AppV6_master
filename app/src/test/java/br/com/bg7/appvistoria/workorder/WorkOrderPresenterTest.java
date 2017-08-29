@@ -39,15 +39,15 @@ public class WorkOrderPresenterTest extends UserLoggedInTest {
         super.setUp();
         MockitoAnnotations.initMocks(this);
 
-        workOrderRepository.save(new InProgressWorkOrder("Projeto 1", "Resumo completo"));
-        workOrderRepository.save(new CompletedWorkOrder("Projeto 2", "Resumo completo"));
-        workOrderRepository.save(new WorkOrder("Projeto 3", "Resumo completo"));
-        workOrderRepository.save(new InProgressWorkOrder("Projeto 4", "Resumo completo"));
-        workOrderRepository.save(new CompletedWorkOrder("Projeto 5", "Resumo completo"));
-        workOrderRepository.save(new WorkOrder("Projeto 6", "Resumo completo"));
-        workOrderRepository.save(new InProgressWorkOrder("Projeto 7", "Resumo completo"));
-        workOrderRepository.save(new CompletedWorkOrder("Projeto 8", "Resumo completo"));
-        workOrderRepository.save(new WorkOrder("Projeto 9", "Resumo completo"));
+        workOrderRepository.save(new InProgressWorkOrder("Projeto 1", "Resumo completo", ""));
+        workOrderRepository.save(new CompletedWorkOrder("Projeto 2", "Resumo completo", ""));
+        workOrderRepository.save(new WorkOrder("Projeto 3", "Resumo completo", ""));
+        workOrderRepository.save(new InProgressWorkOrder("Projeto 4", "Resumo completo", ""));
+        workOrderRepository.save(new CompletedWorkOrder("Projeto 5", "Resumo completo", ""));
+        workOrderRepository.save(new WorkOrder("Projeto 6", "Resumo completo", ""));
+        workOrderRepository.save(new InProgressWorkOrder("Projeto 7", "Resumo completo", ""));
+        workOrderRepository.save(new CompletedWorkOrder("Projeto 8", "Resumo completo", ""));
+        workOrderRepository.save(new WorkOrder("Projeto 9", "Resumo completo", ""));
 
         workOrderPresenter =  new WorkOrderPresenter(workOrderRepository, workOrderView, configRepository);
 
@@ -84,7 +84,7 @@ public class WorkOrderPresenterTest extends UserLoggedInTest {
     public void shouldOpenMapWhenMapAvailable() {
         when(workOrderView.isMapAvailable()).thenReturn(true);
 
-        workOrderPresenter.openMapClicked(workOrder);
+        workOrderPresenter.confirmOpenMapClicked(workOrder);
 
         verify(workOrderView).showInMap(workOrder.getAddress());
     }
