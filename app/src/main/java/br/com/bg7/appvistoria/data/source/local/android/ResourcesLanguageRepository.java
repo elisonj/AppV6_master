@@ -39,4 +39,19 @@ public class ResourcesLanguageRepository implements LanguageRepository {
 
         return languageList;
     }
+
+    @Override
+    public Language getDefaultLanguage() {
+        List<Language> languages = getLanguages();
+
+        for (Language language : languages) {
+            if (language.getName().equals(BuildConfig.DEFAULT_LANGUAGE_NAME)) {
+                return language;
+            }
+        }
+
+        throw new ServiceConfigurationError(
+                String.format("Default language '%s' does not exist in LANGUAGE_NAMES", BuildConfig.DEFAULT_LANGUAGE_NAME)
+        );
+    }
 }

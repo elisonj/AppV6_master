@@ -19,7 +19,7 @@ import com.akexorcist.localizationactivity.LocalizationActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.bg7.appvistoria.BaseActivity;
+import br.com.bg7.appvistoria.ConfirmDialog;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.WorkOrder;
 
@@ -38,9 +38,9 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     private WorkOrderAdapter adapter;
 
     private static final String MAP_ADDRESS = "geo:0,0?q=";
-    private static final int MAX_SIZE_SUMARY = 50;
-    private static final int MAX_SIZE_TEXT_INFO = 12;
-    private static final int MAX_SIZE_TEXT_INSPECTION = 22;
+    private static final int MAX_SHORT_SUMMARY_SIZE = 50;
+    private static final int MAX_INFO_LABEL_SIZE = 12;
+    private static final int MAX_INSPECTION_LABEL_SIZE = 22;
 
     private static final int IMAGE_MORE_INFO_COMPLETED = R.drawable.ic_info_completed;
     private static final int IMAGE_MORE_INFO_IN_PROGRESS = R.drawable.ic_info_in_progress;
@@ -57,12 +57,15 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     private static final int BACKGROUND_NOT_STARTED = R.drawable.background_workorder_not_started;
     private Boolean mapAvailable = null;
 
+    ConfirmDialog confirmDialog;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_workorder, container, false);
         listView = root.findViewById(R.id.listview);
         emptyLayout = root.findViewById(R.id.empty_layout);
+        confirmDialog = new ConfirmDialog(getContext(), getString(R.string.confirm_open_maps));
 
         return root;
     }
@@ -163,13 +166,37 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     }
 
     @Override
+    public void showOpenMapConfirmation(final WorkOrder workOrder) {
+        View.OnClickListener openMapConfirmListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                workOrderPresenter.confirmOpenMapClicked(workOrder);
+            }
+        };
+
+        View.OnClickListener openMapCancelListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                workOrderPresenter.cancelOpenMapClicked();
+            }
+        };
+
+        confirmDialog.show(openMapConfirmListener, openMapCancelListener);
+    }
+
+    @Override
+    public void hideOpenMapConfirmation() {
+        confirmDialog.hide();
+    }
+
+    @Override
     public void showInMap(String address) {
         final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MAP_ADDRESS + address));
         startActivity(intent);
     }
 
     private WorkOrderAdapter getAdapter() {
-        return (WorkOrderAdapter)listView.getAdapter();
+        return (WorkOrderAdapter) listView.getAdapter();
     }
 
     private View getListItem(WorkOrder workOrder) {
@@ -215,7 +242,6 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
          private boolean showMapButtons;
          private WorkOrder expandedWorkOrder = null;
          private View.OnClickListener cancelButton;
-         private View.OnClickListener confirmButton;
 
          private List<WorkOrder> list = new ArrayList<>();
 
@@ -281,10 +307,6 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              return convertView;
          }
 
-        public void setList(List<WorkOrder> list) {
-            this.list = list;
-        }
-
         private void populateWidget(final Holder holder, final int position){
 
              WorkOrder item = getItem(position);
@@ -295,18 +317,18 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              resetHolder(holder);
 
              holder.name.setText(item.getName());
-             holder.shortSummary.setText(item.getShortSummary(MAX_SIZE_SUMARY));
+             holder.shortSummary.setText(item.getShortSummary(MAX_SHORT_SUMMARY_SIZE));
              holder.date.setText(item.getEndAt(((LocalizationActivity)getActivity()).getLocale()));
              holder.status.setText(item.getStatus().toString());
              holder.local.setText(item.getAddress());
 
              if (showMapButtons) holder.buttonMaps.setVisibility(View.VISIBLE);
 
-             if (item.getStatus().toString().length() >= MAX_SIZE_TEXT_INFO) {
+             if (item.getStatus().toString().length() >= MAX_INFO_LABEL_SIZE) {
                  holder.moreInfoText.setVisibility(View.GONE);
              }
 
-             if (item.getStatus().toString().length() >= MAX_SIZE_TEXT_INSPECTION) {
+             if (item.getStatus().toString().length() >= MAX_INSPECTION_LABEL_SIZE) {
                  holder.inspectionsText.setVisibility(View.GONE);
              }
              configureListeners(holder, position);
@@ -360,22 +382,6 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
         void configureListeners(Holder holder, final int position) {
 
-            confirmButton = new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    workOrderPresenter.openMapClicked(list.get(position));
-                    ((BaseActivity)getActivity()).dialog.dismiss();
-                }
-            };
-
-            cancelButton = new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((BaseActivity)getActivity()).dialog.dismiss();
-                }
-            };
-
-
              holder.moreInfo.setOnClickListener(new View.OnClickListener() {
                  @Override
                  public void onClick(View view) {
@@ -400,14 +406,12 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                 return;
             }
 
-            if (showMapButtons) {
-                holder.buttonMaps.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        ((BaseActivity)getActivity()).showConfirmDialog(getString(R.string.confirm_open_maps), confirmButton, cancelButton);
-                    }
-                });
-            }
+            holder.buttonMaps.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    workOrderPresenter.openMapClicked(list.get(position));
+                }
+            });
          }
 
          class Holder {

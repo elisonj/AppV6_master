@@ -15,6 +15,7 @@ import br.com.bg7.appvistoria.UserLoggedInTest;
 import br.com.bg7.appvistoria.data.WorkOrder;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeWorkOrderRepository;
 
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -82,14 +83,18 @@ public class WorkOrderPresenterTest extends UserLoggedInTest {
     @Test
     public void shouldOpenMapWhenMapAvailable() {
         when(workOrderView.isMapAvailable()).thenReturn(true);
-        workOrderPresenter.start();
 
-        workOrderPresenter.openMapClicked(workOrder);
+        workOrderPresenter.confirmOpenMapClicked(workOrder);
+
         verify(workOrderView).showInMap(workOrder.getAddress());
     }
 
     @Test
-    public void shouldMapNotAvailableWhenGoogleMapsNotExists() {
-        Assert.assertFalse(workOrderView.isMapAvailable());
+    public void shouldNotOpenMapWhenMapNotAvailable() {
+        when(workOrderView.isMapAvailable()).thenReturn(false);
+
+        workOrderPresenter.openMapClicked(workOrder);
+
+        verify(workOrderView, never()).showInMap(workOrder.getAddress());
     }
 }
