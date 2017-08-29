@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import br.com.bg7.appvistoria.BaseActivity;
+import br.com.bg7.appvistoria.AlertDialog;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.config.ConfigActivity;
 
@@ -24,7 +24,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class LoginView extends ConstraintLayout implements LoginContract.View {
     private LoginContract.Presenter loginPresenter;
 
-    private View.OnClickListener confirmButton;
     private Typeface robotoMedium = Typeface.createFromAsset(getContext().getAssets(),"robotomedium.ttf");
 
     public LoginView(Context context) {
@@ -45,13 +44,6 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
                 loginPresenter.login(username.getText().toString(), password.getText().toString());
             }
         });
-
-        confirmButton = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((BaseActivity)getContext()).dialog.dismiss();
-            }
-        };
 
         username.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
@@ -120,10 +112,7 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
     }
 
     private void showError(String message) {
-        showMessage(getContext().getString(R.string.error), message);
-    }
-
-    private void showMessage(String title, String message) {
-        ((BaseActivity)getContext()).showAlertDialog(message, confirmButton);
+        AlertDialog dialog = new AlertDialog(getContext(), message);
+        dialog.show();
     }
 }
