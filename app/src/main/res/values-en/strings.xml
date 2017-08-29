@@ -10,6 +10,7 @@
     <string name="login">LOGIN</string>
     <string name="error">Error</string>
     <string name="confirm">CONFIRM</string>
+    <string name="ok">OK</string>
     <string name="cancel" tools:ignore="ButtonCase">CANCEL</string> <!-- No layout esta em maiusculas -->
     <string name="logout">LOGOUT</string>
     <string name="exit_app">Exit application</string>
@@ -18,6 +19,7 @@
     <string name="language">Language</string>
     <string name="location">LOCATION</string>
     <string name="date_expected">EXPECTED DATE</string>
+    <string name="confirm_logout">Do you really want to log out?</string>
     <string name="confirm_change_language_format">Do you want to change the application\nlanguage to %s?</string>
     <string name="validation_user_field_not_empty">User cannot be empty.</string>
     <string name="validation_password_field_not_empty">Password cannot be empty.</string>

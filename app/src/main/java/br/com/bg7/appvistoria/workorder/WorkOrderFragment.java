@@ -36,9 +36,9 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     private WorkOrderAdapter adapter;
 
     private static final String MAP_ADDRESS = "geo:0,0?q=";
-    private static final int MAX_SIZE_SUMARY = 43;
-    private static final int MAX_SIZE_TEXT_INFO = 12;
-    private static final int MAX_SIZE_TEXT_INSPECTION = 22;
+    private static final int MAX_SHORT_SUMMARY_SIZE = 50;
+    private static final int MAX_INFO_LABEL_SIZE = 12;
+    private static final int MAX_INSPECTION_LABEL_SIZE = 22;
 
     private static final int IMAGE_MORE_INFO_COMPLETED = R.drawable.ic_info_completed;
     private static final int IMAGE_MORE_INFO_IN_PROGRESS = R.drawable.ic_info_in_progress;
@@ -143,7 +143,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     }
 
     private WorkOrderAdapter getAdapter() {
-        return (WorkOrderAdapter)listView.getAdapter();
+        return (WorkOrderAdapter) listView.getAdapter();
     }
 
     private View getListItem(WorkOrder workOrder) {
@@ -187,7 +187,6 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     private class WorkOrderAdapter extends BaseAdapter {
 
          private boolean showMapButtons;
-
          private WorkOrder expandedWorkOrder = null;
 
          private List<WorkOrder> list = new ArrayList<>();
@@ -250,7 +249,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              return convertView;
          }
 
-         private void populateWidget(final Holder holder, final int position){
+        private void populateWidget(final Holder holder, final int position){
 
              WorkOrder item = getItem(position);
              if (item == null) {
@@ -260,18 +259,18 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
              resetHolder(holder);
 
              holder.name.setText(item.getName());
-             holder.shortSummary.setText(item.getShortSummary(MAX_SIZE_SUMARY));
+             holder.shortSummary.setText(item.getShortSummary(MAX_SHORT_SUMMARY_SIZE));
              holder.date.setText(item.getEndAt(((LocalizationActivity)getActivity()).getLocale()));
              holder.status.setText(item.getStatus().toString());
              holder.local.setText(item.getAddress());
 
              if (showMapButtons) holder.buttonMaps.setVisibility(View.VISIBLE);
 
-             if (item.getStatus().toString().length() >= MAX_SIZE_TEXT_INFO) {
+             if (item.getStatus().toString().length() >= MAX_INFO_LABEL_SIZE) {
                  holder.moreInfoText.setVisibility(View.GONE);
              }
 
-             if (item.getStatus().toString().length() >= MAX_SIZE_TEXT_INSPECTION) {
+             if (item.getStatus().toString().length() >= MAX_INSPECTION_LABEL_SIZE) {
                  holder.inspectionsText.setVisibility(View.GONE);
              }
              configureListeners(holder, position);

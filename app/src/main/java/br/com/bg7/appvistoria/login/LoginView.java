@@ -1,6 +1,5 @@
 package br.com.bg7.appvistoria.login;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -9,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import br.com.bg7.appvistoria.AlertDialog;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.config.ConfigActivity;
 
@@ -83,14 +83,7 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
     }
 
     private void showError(String message) {
-        showMessage(getContext().getString(R.string.error), message);
-    }
-
-    private void showMessage(String title, String message) {
-        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-        alert.setTitle(title);
-        alert.setMessage(message);
-        alert.setPositiveButton("OK",null);
-        alert.show();
+        AlertDialog dialog = new AlertDialog(getContext(), message);
+        dialog.show();
     }
 }

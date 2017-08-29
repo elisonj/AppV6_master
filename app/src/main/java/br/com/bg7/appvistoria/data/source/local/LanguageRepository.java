@@ -11,4 +11,6 @@ import br.com.bg7.appvistoria.config.vo.Language;
 
 public interface LanguageRepository {
     List<Language> getLanguages();
+
+    Language getDefaultLanguage();
 }

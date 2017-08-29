@@ -113,7 +113,6 @@ public class WorkOrder {
         return address;
     }
 
-
     private String ellipsizeShortSummary(int maxSize) {
         if (summary.length() <= maxSize) {
             return summary;

@@ -181,9 +181,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/open"
                 android:textSize="10sp"
                 android:textColor="#484d51"
-                android:text="@string/open"
                 />
             <TextView
                 android:layout_width="match_parent"

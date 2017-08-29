@@ -10,13 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.util.List;
 
+import br.com.bg7.appvistoria.ConfirmDialog;
 import br.com.bg7.appvistoria.Constants;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.config.vo.Language;
@@ -38,10 +37,8 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     private Spinner languageSpinner;
     private List<Language> languageList;
 
-    private LinearLayout buttonsContainer;
-    private TextView dialogMessage;
-    private Button cancelButton;
-    private Button confirmButton;
+    private ConfirmDialog logoutDialog;
+    private ConfirmDialog languageChangeDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,36 +54,14 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     private void initializeViewElements(View root) {
         languageSpinner = root.findViewById(R.id.spinner_language);
         logout = root.findViewById(R.id.linear_logout);
-
-        buttonsContainer = root.findViewById(R.id.linear_buttons);
-        dialogMessage = root.findViewById(R.id.dialog_message);
-        cancelButton = root.findViewById(R.id.button_cancel);
-        confirmButton = root.findViewById(R.id.button_confirm);
+        logoutDialog = new ConfirmDialog(getContext(), getString(R.string.confirm_logout));
     }
 
     private void initializeListeners() {
-
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 configPresenter.logoutClicked();
-            }
-        });
-
-
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                configPresenter.cancelClicked();
-            }
-        });
-
-        confirmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Language selectedLanguage = (Language) languageSpinner.getSelectedItem();
-
-                configPresenter.confirmClicked(selectedLanguage.getName());
             }
         });
     }
@@ -103,21 +78,11 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     }
 
     @Override
-    public void hideButtons() {
-        buttonsContainer.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showButtons() {
-        buttonsContainer.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void setLanguage(String languageName) {
+    public void setSelectedLanguage(Language language) {
         int selected = 0;
         for (int i = 0; i < languageList.size(); i++) {
             Language languageFromList = languageList.get(i);
-            if (languageFromList.getName().equals(languageName)) {
+            if (languageFromList.equals(language)) {
                 selected = i;
             }
         }
@@ -125,16 +90,14 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     }
 
     @Override
-    public void setLanguages(final List<Language> languageList) {
+    public void setLanguageList(final List<Language> languageList) {
         ArrayAdapter<Language> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, languageList);
         languageSpinner.setAdapter(adapter);
 
         languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String message = getString(R.string.confirm_change_language_format);
-                dialogMessage.setText(String.format(message, languageList.get(i).getDisplayName()));
-                configPresenter.languageSelected(languageList.get(i).getName());
+                configPresenter.languageChangeClicked(languageList.get(i));
             }
 
             @Override
@@ -147,13 +110,66 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     }
 
     @Override
-    public void changeLanguage(String language) {
+    public void changeLanguage(Language language) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(Constants.PREFERENCE_LANGUAGE_KEY, language);
+        editor.putString(Constants.PREFERENCE_LANGUAGE_KEY, language.getName());
         editor.apply();
 
         getActivity().recreate();
+    }
+
+    @Override
+    public void showLogoutConfirmation() {
+        View.OnClickListener logoutConfirmListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                configPresenter.confirmLogoutClicked();
+            }
+        };
+
+        View.OnClickListener logoutCancelListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                configPresenter.cancelLogoutClicked();
+            }
+        };
+
+        logoutDialog.show(logoutConfirmListener, logoutCancelListener);
+    }
+
+    @Override
+    public void hideLogoutConfirmation() {
+        logoutDialog.hide();
+    }
+
+    @Override
+    public void showLanguageChangeConfirmation(final Language language) {
+        String messageFormat = getString(R.string.confirm_change_language_format);
+        String message = String.format(messageFormat, language.getDisplayName());
+
+        languageChangeDialog = new ConfirmDialog(getContext(), message);
+
+        View.OnClickListener languageConfirmListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                configPresenter.confirmLanguageChangeClicked(language);
+            }
+        };
+
+        View.OnClickListener languageCancelListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                configPresenter.cancelLanguageChangeClicked();
+            }
+        };
+
+        languageChangeDialog.show(languageConfirmListener, languageCancelListener);
+    }
+
+    @Override
+    public void hideLanguageChangeConfirmation() {
+        languageChangeDialog.hide();
     }
 
     @Override
