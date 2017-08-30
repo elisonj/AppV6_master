@@ -238,8 +238,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     @Override
     public void showNewWorkOrderScreen() {
-        Intent intent = new Intent(getContext(), ConfigActivity.class);
-        getContext().startActivity(intent);
+
     }
 
     @Override
