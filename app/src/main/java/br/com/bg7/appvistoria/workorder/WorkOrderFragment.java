@@ -24,6 +24,7 @@ import java.util.List;
 import br.com.bg7.appvistoria.ConfirmDialog;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.WorkOrder;
+import br.com.bg7.appvistoria.projectselection.ProjectSelectionActivity;
 
 import static br.com.bg7.appvistoria.R.id.status;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -237,7 +238,8 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     @Override
     public void showNewWorkOrderScreen() {
-
+        Intent intent = new Intent(getActivity(), ProjectSelectionActivity.class);
+        startActivity(intent);
     }
 
     @Override
