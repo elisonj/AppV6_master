@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/main_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
     android:background="#e4e8eb"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
 
     <ListView
         android:visibility="gone"
@@ -12,6 +15,18 @@
         android:dividerHeight="0dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/float_button"
+        app:layout_anchorGravity="bottom|right|end"
+        app:backgroundTint="#f05f2a"
+        app:layout_anchor="@id/listview" />
 
     <LinearLayout
         android:id="@+id/empty_layout"
@@ -40,4 +55,4 @@
     </LinearLayout>
 
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

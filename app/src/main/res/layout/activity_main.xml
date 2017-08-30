@@ -1,33 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:design="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="br.com.bg7.appvistoria.config.ConfigActivity">
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:design="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="br.com.bg7.appvistoria.config.ConfigActivity">
+
+        <LinearLayout
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/color_action_bar"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:background="@drawable/background_search"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="10dp"
+                    design:srcCompat="@drawable/ic_search" />
+
+                <EditText
+                    android:id="@+id/editText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@android:color/transparent"
+                    android:ems="10"
+                    android:hint="@string/search"
+                    android:inputType="textPersonName"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="#cbcedf" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
 
         <FrameLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/navigation"
-            android:background="#e4e8eb">
-        </FrameLayout>
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/navigation"
+                android:layout_below="@+id/search"
+                android:background="#e4e8eb">
+            </FrameLayout>
+
 
         <android.support.design.widget.BottomNavigationView
-            android:id="@+id/navigation"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            design:itemBackground="@drawable/bottom_nav_selector"
-            android:background="@android:color/transparent"
-            design:itemIconTint="#FFFFFF"
-            design:paddingStart="5dp"
-            design:itemTextColor="#FFFFFF"
-            design:itemTextAppearance="@style/BottomBar"
-            android:layout_gravity="end"
-            android:layout_alignParentBottom="true"
-            design:menu="@menu/bottom_nav_items" />
-    </RelativeLayout>
+                android:id="@+id/navigation"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_gravity="end"
+                android:background="@android:color/transparent"
+                design:itemBackground="@drawable/bottom_nav_selector"
+                design:itemIconTint="#FFFFFF"
+                design:itemTextAppearance="@style/BottomBar"
+                design:itemTextColor="#FFFFFF"
+                design:paddingStart="5dp"
+                android:layout_alignParentBottom="true"
+                design:menu="@menu/bottom_nav_items" />
+
+        </RelativeLayout>

@@ -1,5 +1,6 @@
 package br.com.bg7.appvistoria.config;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,8 +13,12 @@ import android.support.v7.app.ActionBar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.TypefaceSpan;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import br.com.bg7.appvistoria.BaseActivity;
@@ -41,6 +46,11 @@ public class ConfigActivity extends BaseActivity {
     private final StubWorkOrderRepository workOrderRepository = new StubWorkOrderRepository();
     private final ConfigRepository configRepository = new OrmLiteConfigRepository(getConfigDao());
     private final ResourcesLanguageRepository languageRepository = new ResourcesLanguageRepository(this);
+    private Typeface nunito = null;
+    private LayoutInflater inflater;
+    private String title = null;
+
+    private LinearLayout searchLayout = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,10 +62,11 @@ public class ConfigActivity extends BaseActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setIcon(R.drawable.actionbar_logo);
         }
+        inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
+        nunito = Typeface.createFromAsset(getAssets(),"nunitoregular.ttf");
 
-        Typeface nunito = Typeface.createFromAsset(getAssets(),"nunitoregular.ttf");
         TextView label = navigation.findViewById(R.id.largeLabel);
         label.setTypeface(nunito);
 
@@ -75,7 +86,14 @@ public class ConfigActivity extends BaseActivity {
             selectedItem = savedInstanceState.getInt(SELECTED_MENU_ITEM_KEY, DEFAULT_SCREEN_MENU_ITEM_INDEX);
             menuSelectedItem = menu.findItem(selectedItem);
         }
+        title = menuSelectedItem.getTitle().toString();
         selectFragment(menuSelectedItem);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        searchLayout = findViewById(R.id.search);
     }
 
     @Override
@@ -96,19 +114,25 @@ public class ConfigActivity extends BaseActivity {
 
     // TODO: Separar telas em fragments próprios
     private void selectFragment(MenuItem item) {
+
+        if(searchLayout != null) searchLayout.setVisibility(View.GONE);
+
         Fragment fragment = null;
         switch (item.getItemId()) {
             case R.id.menu_visita:
-
                 WorkOrderFragment workOrderFragment = new WorkOrderFragment();
                 fragment = workOrderFragment;
                 fragment.setRetainInstance(true);
                 new WorkOrderPresenter(workOrderRepository, workOrderFragment, configRepository);
 
+                title = item.getTitle().toString();
+                configureSearchButton(true);
+
                 break;
             case R.id.menu_sync:
                 fragment = MainFragment.newInstance(getString(R.string.menu_sync),
                         ContextCompat.getColor(this, R.color.color_sync));
+                configureSearchButton(false);
                 break;
 
             case R.id.menu_config:
@@ -116,6 +140,7 @@ public class ConfigActivity extends BaseActivity {
                 fragment = configFrag;
                 fragment.setRetainInstance(true);
                 new ConfigPresenter(configRepository, languageRepository, configFrag);
+                configureSearchButton(false);
                 break;
         }
         selectedItem = item.getItemId();
@@ -134,6 +159,32 @@ public class ConfigActivity extends BaseActivity {
         }
     }
 
+    private void configureSearchButton(boolean showSearch) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar == null) {
+            return;
+        }
+            actionBar.setDisplayShowCustomEnabled(true);
+
+            View view = inflater.inflate(R.layout.search_button, null);
+            TextView textView = view.findViewById(R.id.title);
+            textView.setTypeface(nunito);
+            textView.setText(title);
+
+            ImageView buttonSearch = view.findViewById(R.id.search_button_bar);
+            if(showSearch) {
+                textView.setVisibility(View.VISIBLE);
+                buttonSearch.setVisibility(View.VISIBLE);
+                actionBar.setCustomView(view);
+                buttonSearch.setOnClickListener(search);
+                return;
+            }
+            textView.setVisibility(View.GONE);
+            buttonSearch.setVisibility(View.GONE);
+            actionBar.setCustomView(view);
+
+    }
+
     private void updateToolbarText(CharSequence text) {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -144,5 +195,32 @@ public class ConfigActivity extends BaseActivity {
             actionBar.setTitle(span);
         }
     }
+
+    View.OnClickListener search = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            View inflate = inflater.inflate(R.layout.search_button, null);
+            ImageView buttonSearch = inflate.findViewById(R.id.search_button_bar);
+
+            ActionBar actionBar = getSupportActionBar();
+            if(actionBar == null) return;
+
+            actionBar.setDisplayShowCustomEnabled(true);
+            TextView textView = inflate.findViewById(R.id.title);
+            textView.setTypeface(nunito);
+            textView.setText(title);
+            buttonSearch.setOnClickListener(this);
+
+            if(!searchLayout.isShown()) {
+                buttonSearch.setImageResource(R.drawable.ic_search_bar_active);
+                searchLayout.setVisibility(View.VISIBLE);
+                actionBar.setCustomView(inflate);
+                return;
+            }
+            buttonSearch.setImageResource(R.drawable.ic_search_bar);
+            searchLayout.setVisibility(View.GONE);
+            actionBar.setCustomView(inflate);
+        }
+    };
 
 }
