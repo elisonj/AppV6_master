@@ -2,7 +2,6 @@ package br.com.bg7.appvistoria.login;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.support.constraint.ConstraintLayout;
@@ -37,6 +36,8 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
         final EditText username = findViewById(R.id.editText_user);
         final EditText password = findViewById(R.id.editText_password);
         Button buttonLogin = findViewById(R.id.button_login);
+        username.setTypeface(robotoMedium);
+        password.setTypeface(robotoMedium);
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,25 +48,24 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
 
         username.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View view, boolean b) {
-                username.setTypeface(robotoMedium);
-                if(!b) {
-                    username.setTextColor(Color.parseColor("#474d51"));
+            public void onFocusChange(View view, boolean focus) {
+                if(!focus) {
+                    username.setTextColor(getResources().getColor(R.color.edit_default, null));
                     return;
                 }
-                username.setTextColor(Color.parseColor("#00539b"));
+                username.setTextColor(getResources().getColor(R.color.edit_highlight, null));
             }
         });
 
         password.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View view, boolean b) {
-                password.setTypeface(robotoMedium);
-                if(!b) {
-                    password.setTextColor(Color.parseColor("#474d51"));
+            public void onFocusChange(View view, boolean focus) {
+
+                if(!focus) {
+                    password.setTextColor(getResources().getColor(R.color.edit_default, null));
                     return;
                 }
-                password.setTextColor(Color.parseColor("#00539b"));
+                password.setTextColor(getResources().getColor(R.color.edit_highlight, null));
             }
         });
 
