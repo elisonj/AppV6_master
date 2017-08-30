@@ -44,8 +44,8 @@
     <string name="infos">INFO</string>
     <string name="open">OPEN</string>
     <string name="inspection">INSPECTIONS</string>
-    <string name="empty_list">You don\'t have Visits</string>
-    <string name="confirm_open_maps">Would like to open the address\nin other application?</string>
+    <string name="empty_list">No scheduled visits</string>
+    <string name="confirm_open_maps">Open this address in an\nexternal application?</string>
     <string name="workorder_title">CREATE WORKORDER</string>
     <string name="workorder_subtitle">Fill data below to create a new\nworkorder based on project.</string>
     <string name="next">NEXT</string>
@@ -56,4 +56,5 @@
     <string name="full_address">Full address</string>
     <string name="search">Search</string>
     <string name="confirm_new_workorder">Do you want to create a\nnew WorkOrder?</string>
+
 </resources>

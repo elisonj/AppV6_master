@@ -32,6 +32,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by: elison
  * Date: 2017-08-15
+ *
+ * TODO: Reduzir o tamanho desta classe
  */
 public class WorkOrderFragment extends Fragment implements  WorkOrderContract.View {
 
@@ -408,19 +410,19 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
                  holder.imageMoreInfo.setImageResource(IMAGE_MORE_INFO_NOT_STARTED);
                  holder.imageInspections.setImageResource(IMAGE_WORKORDER_NOT_STARTED);
                  holder.item.setBackgroundResource(BACKGROUND_NOT_STARTED);
-                 holder.status.setTextColor(0xFF919aa0);
+                 holder.status.setTextColor(getResources().getColor(R.color.not_started, null));
              }
              if (item.getStatus() == WorkOrderStatus.COMPLETED) {
                  holder.imageMoreInfo.setImageResource(IMAGE_MORE_INFO_COMPLETED);
                  holder.imageInspections.setImageResource(IMAGE_WORKORDER_COMPLETED);
                  holder.item.setBackgroundResource(BACKGROUND_COMPLETED);
-                 holder.status.setTextColor(0xFF35ac53);
+                 holder.status.setTextColor(getResources().getColor(R.color.completed, null));
              }
              if (item.getStatus() == WorkOrderStatus.IN_PROGRESS) {
                  holder.imageMoreInfo.setImageResource(IMAGE_MORE_INFO_IN_PROGRESS);
                  holder.imageInspections.setImageResource(IMAGE_WORKORDER_IN_PROGRESS);
                  holder.item.setBackgroundResource(BACKGROUND_IN_PROGRESS);
-                 holder.status.setTextColor(0xFF0552a1);
+                 holder.status.setTextColor(getResources().getColor(R.color.in_progress, null));
              }
              if (item.equals(expandedWorkOrder)) {
                  holder.summary.setText(item.getSummary());

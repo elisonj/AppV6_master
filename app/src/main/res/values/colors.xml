@@ -6,6 +6,9 @@
     <color name="color_action_bar">#00539b</color>
     <color name="color_sync">#2196F3</color>
     <color name="color_background">#ebebeb</color>
+    <color name="not_started">#FF919aa0</color>
+    <color name="completed">#FF35ac53</color>
+    <color name="in_progress">#FF0552a1</color>
     <color name="active">#00539b</color>
     <color name="normal">#474d51</color>
 </resources>
