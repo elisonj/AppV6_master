@@ -14,18 +14,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/navigation"
-            android:background="#f1f1f1">
+            android:background="#e4e8eb">
         </FrameLayout>
 
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/navigation"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="64dp"
             design:itemBackground="@drawable/bottom_nav_selector"
-            android:background="@color/color_background"
+            android:background="@android:color/transparent"
             design:itemIconTint="#FFFFFF"
             design:paddingStart="5dp"
             design:itemTextColor="#FFFFFF"
+            design:itemTextAppearance="@style/BottomBar"
             android:layout_gravity="end"
             android:layout_alignParentBottom="true"
             design:menu="@menu/bottom_nav_items" />

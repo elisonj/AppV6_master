@@ -54,11 +54,6 @@ public class ConfigChangeLanguageTest {
                 allOf(withId(android.R.id.text1), withText("Inglês"), isDisplayed()));
         appCompatCheckedTextView.perform(click());
 
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.button_confirm), withText("CONFIRMAR"),
-                        withParent(withId(R.id.linear_buttons)),
-                        isDisplayed()));
-        appCompatButton2.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:

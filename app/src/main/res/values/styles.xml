@@ -27,8 +27,9 @@
         <item name = "android:windowActionBar">false</item>
         <item name = "android:windowNoTitle">true</item>
     </style>
-
-
-
+    <style name="BottomBar">
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
 
 </resources>

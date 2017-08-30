@@ -2,6 +2,8 @@ package br.com.bg7.appvistoria.login;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
@@ -22,6 +24,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class LoginView extends ConstraintLayout implements LoginContract.View {
     private LoginContract.Presenter loginPresenter;
 
+    private Typeface robotoMedium = Typeface.createFromAsset(getContext().getAssets(),"robotomedium.ttf");
+
     public LoginView(Context context) {
         super(context);
         init();
@@ -40,6 +44,31 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
                 loginPresenter.login(username.getText().toString(), password.getText().toString());
             }
         });
+
+        username.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                username.setTypeface(robotoMedium);
+                if(!b) {
+                    username.setTextColor(Color.parseColor("#474d51"));
+                    return;
+                }
+                username.setTextColor(Color.parseColor("#00539b"));
+            }
+        });
+
+        password.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                password.setTypeface(robotoMedium);
+                if(!b) {
+                    password.setTextColor(Color.parseColor("#474d51"));
+                    return;
+                }
+                password.setTextColor(Color.parseColor("#00539b"));
+            }
+        });
+
     }
 
     @Override

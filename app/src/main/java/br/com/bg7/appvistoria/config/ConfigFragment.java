@@ -2,6 +2,7 @@ package br.com.bg7.appvistoria.config;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -40,6 +42,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     private ConfirmDialog logoutDialog;
     private ConfirmDialog languageChangeDialog;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,6 +55,16 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     }
 
     private void initializeViewElements(View root) {
+        Typeface robotoMedium = Typeface.createFromAsset(getContext().getAssets(),"robotomedium.ttf");
+        Typeface nunito = Typeface.createFromAsset(getContext().getAssets(),"nunitoregular.ttf");
+        Typeface roboto = Typeface.createFromAsset(getContext().getAssets(),"robotoregular.ttf");
+
+        TextView idiomaTitle = root.findViewById(R.id.idioma_title);
+        TextView logoutText = root.findViewById(R.id.logout_text);
+        TextView exitText = root.findViewById(R.id.exit_text);
+        idiomaTitle.setTypeface(robotoMedium);
+        logoutText.setTypeface(nunito);
+        exitText.setTypeface(roboto);
         languageSpinner = root.findViewById(R.id.spinner_language);
         logout = root.findViewById(R.id.linear_logout);
         logoutDialog = new ConfirmDialog(getContext(), getString(R.string.confirm_logout));
