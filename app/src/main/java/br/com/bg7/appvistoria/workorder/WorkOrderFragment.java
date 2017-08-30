@@ -23,7 +23,6 @@ import java.util.List;
 
 import br.com.bg7.appvistoria.ConfirmDialog;
 import br.com.bg7.appvistoria.R;
-import br.com.bg7.appvistoria.config.ConfigActivity;
 import br.com.bg7.appvistoria.data.WorkOrder;
 
 import static br.com.bg7.appvistoria.R.id.status;
