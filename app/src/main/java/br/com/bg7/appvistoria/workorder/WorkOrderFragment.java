@@ -24,6 +24,9 @@ import br.com.bg7.appvistoria.ConfirmDialog;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.WorkOrder;
 
+import static br.com.bg7.appvistoria.Constants.FONT_NAME_NUNITO_BOLD;
+import static br.com.bg7.appvistoria.Constants.FONT_NAME_NUNITO_REGULAR;
+import static br.com.bg7.appvistoria.Constants.FONT_NAME_ROBOTO_REGULAR;
 import static br.com.bg7.appvistoria.R.id.status;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -59,9 +62,10 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     private static final int BACKGROUND_IN_PROGRESS = R.drawable.background_workorder_in_progress;
     private static final int BACKGROUND_NOT_STARTED = R.drawable.background_workorder_not_started;
     private Boolean mapAvailable = null;
-    private Typeface nunito = null;
-    private Typeface roboto = null;
-    private Typeface nunitoBold = null;
+
+    private Typeface nunito;
+    private Typeface roboto;
+    private Typeface nunitoBold;
 
     ConfirmDialog confirmDialog;
 
@@ -73,10 +77,9 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
         listView = root.findViewById(R.id.listview);
         emptyLayout = root.findViewById(R.id.empty_layout);
         confirmDialog = new ConfirmDialog(getContext(), getString(R.string.confirm_open_maps));
-
-        nunito = Typeface.createFromAsset(getActivity().getAssets(),"nunitoregular.ttf");
-        nunitoBold = Typeface.createFromAsset(getActivity().getAssets(),"nunitobold.ttf");
-        roboto = Typeface.createFromAsset(getActivity().getAssets(),"robotoregular.ttf");
+        nunito = Typeface.createFromAsset(getContext().getAssets(),FONT_NAME_NUNITO_REGULAR);
+        roboto = Typeface.createFromAsset(getContext().getAssets(),FONT_NAME_ROBOTO_REGULAR);
+        nunitoBold = Typeface.createFromAsset(getContext().getAssets(),FONT_NAME_NUNITO_BOLD);
 
         return root;
     }

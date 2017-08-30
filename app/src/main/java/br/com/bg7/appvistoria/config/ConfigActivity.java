@@ -26,6 +26,8 @@ import br.com.bg7.appvistoria.data.source.local.stub.StubWorkOrderRepository;
 import br.com.bg7.appvistoria.workorder.WorkOrderFragment;
 import br.com.bg7.appvistoria.workorder.WorkOrderPresenter;
 
+import static br.com.bg7.appvistoria.Constants.FONT_NAME_NUNITO_REGULAR;
+
 /**
  * Created by: luciolucio
  * Date: 2017-07-17
@@ -37,6 +39,8 @@ public class ConfigActivity extends BaseActivity {
 
     private int selectedItem = DEFAULT_SCREEN_MENU_ITEM_INDEX;
     private Menu menu = null;
+    private Typeface nunito;
+    private TypefaceSpan nunitoSpan = new TypefaceSpan(FONT_NAME_NUNITO_REGULAR);
 
     private final StubWorkOrderRepository workOrderRepository = new StubWorkOrderRepository();
     private final ConfigRepository configRepository = new OrmLiteConfigRepository(getConfigDao());
@@ -46,6 +50,7 @@ public class ConfigActivity extends BaseActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        nunito = Typeface.createFromAsset(getApplicationContext().getAssets(), FONT_NAME_NUNITO_REGULAR);
 
         if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayUseLogoEnabled(true);
@@ -55,7 +60,7 @@ public class ConfigActivity extends BaseActivity {
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
 
-        Typeface nunito = Typeface.createFromAsset(getAssets(),"nunitoregular.ttf");
+
         TextView label = navigation.findViewById(R.id.largeLabel);
         label.setTypeface(nunito);
 
@@ -138,7 +143,7 @@ public class ConfigActivity extends BaseActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             SpannableString span = new SpannableString(text);
-            span.setSpan(new TypefaceSpan("nunitoregular.ttf"), 0, span.length(),
+            span.setSpan(nunitoSpan, 0, span.length(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             actionBar.setTitle(span);

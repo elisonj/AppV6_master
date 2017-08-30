@@ -13,6 +13,7 @@ import br.com.bg7.appvistoria.AlertDialog;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.config.ConfigActivity;
 
+import static br.com.bg7.appvistoria.Constants.FONT_NAME_ROBOTO_MEDIUM;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -23,7 +24,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class LoginView extends ConstraintLayout implements LoginContract.View {
     private LoginContract.Presenter loginPresenter;
 
-    private Typeface robotoMedium = Typeface.createFromAsset(getContext().getAssets(),"robotomedium.ttf");
+    private Typeface robotoMedium = Typeface.createFromAsset(getContext().getAssets(), FONT_NAME_ROBOTO_MEDIUM);
 
     public LoginView(Context context) {
         super(context);
