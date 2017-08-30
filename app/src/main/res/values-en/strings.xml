@@ -8,7 +8,6 @@
     <string name="password">Password</string>
     <string name="user">User</string>
     <string name="login">LOGIN</string>
-    <string name="error">Error</string>
     <string name="confirm">CONFIRM</string>
     <string name="ok">OK</string>
     <string name="cancel" tools:ignore="ButtonCase">CANCEL</string> <!-- No layout esta em maiusculas -->
@@ -40,20 +39,10 @@
 
     <string name="view">VIEW</string>
     <string name="more_info">+INFO</string>
-    <string name="hide">HIDE</string>
-    <string name="infos">INFO</string>
     <string name="open">OPEN</string>
     <string name="inspection">INSPECTIONS</string>
     <string name="empty_list">No scheduled visits</string>
     <string name="confirm_open_maps">Open this address in an\nexternal application?</string>
-    <string name="workorder_title">CREATE WORKORDER</string>
-    <string name="workorder_subtitle">Fill data below to create a new\nworkorder based on project.</string>
-    <string name="next">NEXT</string>
-    <string name="required">Required field</string>
-    <string name="ico_idproject">icon id project</string>
-    <string name="ico_address">icon address</string>
-    <string name="id_project">ID and/or Project</string>
-    <string name="full_address">Full address</string>
 
 
 </resources>
