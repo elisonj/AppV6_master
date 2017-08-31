@@ -49,24 +49,25 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
 
         username.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View view, boolean focus) {
-                if(!focus) {
-                    username.setTextColor(getResources().getColor(R.color.edit_default, null));
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    username.setTextColor(getResources().getColor(R.color.edit_highlight, null));
                     return;
                 }
-                username.setTextColor(getResources().getColor(R.color.edit_highlight, null));
+
+                username.setTextColor(getResources().getColor(R.color.edit_default, null));
             }
         });
 
         password.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View view, boolean focus) {
+            public void onFocusChange(View view, boolean hasFocus) {
 
-                if(!focus) {
-                    password.setTextColor(getResources().getColor(R.color.edit_default, null));
+                if (hasFocus) {
+                    password.setTextColor(getResources().getColor(R.color.edit_highlight, null));
                     return;
                 }
-                password.setTextColor(getResources().getColor(R.color.edit_highlight, null));
+                password.setTextColor(getResources().getColor(R.color.edit_default, null));
             }
         });
 
