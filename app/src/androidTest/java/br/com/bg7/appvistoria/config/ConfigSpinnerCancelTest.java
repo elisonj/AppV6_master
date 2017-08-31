@@ -54,11 +54,6 @@ public class ConfigSpinnerCancelTest {
                 allOf(withId(android.R.id.text1), withText("Inglês"), isDisplayed()));
         appCompatCheckedTextView.perform(click());
 
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.button_cancel), withText("CANCELAR"),
-                        withParent(withId(R.id.linear_buttons)),
-                        isDisplayed()));
-        appCompatButton2.perform(click());
 
     }
 

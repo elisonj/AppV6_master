@@ -2,6 +2,7 @@ package br.com.bg7.appvistoria.config;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -21,6 +23,9 @@ import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.config.vo.Language;
 import br.com.bg7.appvistoria.login.LoginActivity;
 
+import static br.com.bg7.appvistoria.Constants.FONT_NAME_NUNITO_REGULAR;
+import static br.com.bg7.appvistoria.Constants.FONT_NAME_ROBOTO_MEDIUM;
+import static br.com.bg7.appvistoria.Constants.FONT_NAME_ROBOTO_REGULAR;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -39,11 +44,18 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
 
     private ConfirmDialog logoutDialog;
     private ConfirmDialog languageChangeDialog;
+    private Typeface robotoMedium;
+    private Typeface nunito;
+    private Typeface roboto;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_config, container, false);
+        robotoMedium = Typeface.createFromAsset(getContext().getAssets(),FONT_NAME_ROBOTO_MEDIUM);
+        nunito = Typeface.createFromAsset(getContext().getAssets(),FONT_NAME_NUNITO_REGULAR);
+        roboto = Typeface.createFromAsset(getContext().getAssets(),FONT_NAME_ROBOTO_REGULAR);
 
         initializeViewElements(root);
         initializeListeners();
@@ -52,6 +64,14 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     }
 
     private void initializeViewElements(View root) {
+
+
+        TextView idiomaTitle = root.findViewById(R.id.idioma_title);
+        TextView logoutText = root.findViewById(R.id.logout_text);
+        TextView exitText = root.findViewById(R.id.exit_text);
+        idiomaTitle.setTypeface(robotoMedium);
+        logoutText.setTypeface(nunito);
+        exitText.setTypeface(roboto);
         languageSpinner = root.findViewById(R.id.spinner_language);
         logout = root.findViewById(R.id.linear_logout);
         logoutDialog = new ConfirmDialog(getContext(), getString(R.string.confirm_logout));

@@ -14,6 +14,7 @@
                 android:id="@+id/message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="16sp"
                 android:layout_margin="10dp"/>
 
             <LinearLayout
@@ -25,12 +26,12 @@
                 <Button
                     android:id="@+id/button_confirm"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="38dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginBottom="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginTop="10dp"
-                    android:background="#f05f2a"
+                    android:background="@drawable/selector_dialog_confirm"
                     android:textColor="@android:color/white"
                     style="?android:attr/buttonBarButtonStyle"
                     android:text="@string/ok" />

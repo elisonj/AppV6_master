@@ -27,14 +27,14 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/idioma_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginStart="20dp"
             android:textColor="#494e52"
             android:text="@string/language"
-            android:textStyle="bold" />
+            android:textSize="12sp"/>
 
         <Spinner
             android:id="@+id/spinner_language"
@@ -87,17 +87,20 @@
             android:layout_weight="0.2"
             android:orientation="vertical" >
             <TextView
+                android:id="@+id/logout_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 android:text="@string/logout" />
             <TextView
+                android:id="@+id/exit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
+                android:textSize="11sp"
                 android:textStyle="italic"
                 android:text="@string/exit_app" />
         </LinearLayout>

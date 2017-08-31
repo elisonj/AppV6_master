@@ -1,5 +1,6 @@
 package br.com.bg7.appvistoria.config;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,8 +9,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.TypefaceSpan;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.MainFragment;
@@ -17,10 +22,11 @@ import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
 import br.com.bg7.appvistoria.data.source.local.android.ResourcesLanguageRepository;
 import br.com.bg7.appvistoria.data.source.local.ormlite.OrmLiteConfigRepository;
-import br.com.bg7.appvistoria.data.source.local.ormlite.OrmLiteWorkOrderRepository;
 import br.com.bg7.appvistoria.data.source.local.stub.StubWorkOrderRepository;
 import br.com.bg7.appvistoria.workorder.WorkOrderFragment;
 import br.com.bg7.appvistoria.workorder.WorkOrderPresenter;
+
+import static br.com.bg7.appvistoria.Constants.FONT_NAME_NUNITO_REGULAR;
 
 /**
  * Created by: luciolucio
@@ -33,6 +39,8 @@ public class ConfigActivity extends BaseActivity {
 
     private int selectedItem = DEFAULT_SCREEN_MENU_ITEM_INDEX;
     private Menu menu = null;
+    private Typeface nunito;
+    private TypefaceSpan nunitoSpan = new TypefaceSpan(FONT_NAME_NUNITO_REGULAR);
 
     private final StubWorkOrderRepository workOrderRepository = new StubWorkOrderRepository();
     private final ConfigRepository configRepository = new OrmLiteConfigRepository(getConfigDao());
@@ -42,6 +50,7 @@ public class ConfigActivity extends BaseActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        nunito = Typeface.createFromAsset(getApplicationContext().getAssets(), FONT_NAME_NUNITO_REGULAR);
 
         if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayUseLogoEnabled(true);
@@ -50,6 +59,11 @@ public class ConfigActivity extends BaseActivity {
         }
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
+
+
+        TextView label = navigation.findViewById(R.id.largeLabel);
+        label.setTypeface(nunito);
+
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -128,7 +142,11 @@ public class ConfigActivity extends BaseActivity {
     private void updateToolbarText(CharSequence text) {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(text);
+            SpannableString span = new SpannableString(text);
+            span.setSpan(nunitoSpan, 0, span.length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            actionBar.setTitle(span);
         }
     }
 
