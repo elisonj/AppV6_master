@@ -42,11 +42,20 @@
             app:srcCompat="@drawable/logo_sb" />
 
         <TextView
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#788186"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="" />
+
+     <TextView
             android:id="@+id/message_empty"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="#788186"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

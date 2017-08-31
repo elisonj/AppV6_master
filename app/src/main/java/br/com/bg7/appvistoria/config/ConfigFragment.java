@@ -23,6 +23,9 @@ import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.config.vo.Language;
 import br.com.bg7.appvistoria.login.LoginActivity;
 
+import static br.com.bg7.appvistoria.Constants.FONT_NAME_NUNITO_REGULAR;
+import static br.com.bg7.appvistoria.Constants.FONT_NAME_ROBOTO_MEDIUM;
+import static br.com.bg7.appvistoria.Constants.FONT_NAME_ROBOTO_REGULAR;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -41,12 +44,18 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
 
     private ConfirmDialog logoutDialog;
     private ConfirmDialog languageChangeDialog;
+    private Typeface robotoMedium;
+    private Typeface nunito;
+    private Typeface roboto;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_config, container, false);
+        robotoMedium = Typeface.createFromAsset(getContext().getAssets(),FONT_NAME_ROBOTO_MEDIUM);
+        nunito = Typeface.createFromAsset(getContext().getAssets(),FONT_NAME_NUNITO_REGULAR);
+        roboto = Typeface.createFromAsset(getContext().getAssets(),FONT_NAME_ROBOTO_REGULAR);
 
         initializeViewElements(root);
         initializeListeners();
@@ -55,9 +64,7 @@ public class ConfigFragment extends Fragment implements ConfigContract.View {
     }
 
     private void initializeViewElements(View root) {
-        Typeface robotoMedium = Typeface.createFromAsset(getContext().getAssets(),"robotomedium.ttf");
-        Typeface nunito = Typeface.createFromAsset(getContext().getAssets(),"nunitoregular.ttf");
-        Typeface roboto = Typeface.createFromAsset(getContext().getAssets(),"robotoregular.ttf");
+
 
         TextView idiomaTitle = root.findViewById(R.id.idioma_title);
         TextView logoutText = root.findViewById(R.id.logout_text);

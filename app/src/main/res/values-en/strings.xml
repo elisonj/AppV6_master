@@ -8,7 +8,6 @@
     <string name="password">Password</string>
     <string name="user">User</string>
     <string name="login">LOGIN</string>
-    <string name="error">Error</string>
     <string name="confirm">CONFIRM</string>
     <string name="ok">OK</string>
     <string name="cancel" tools:ignore="ButtonCase">CANCEL</string> <!-- No layout esta em maiusculas -->
@@ -32,16 +31,8 @@
     <string name="ico_inspections">icon inspection</string>
     <string name="ico_maps">icon maps</string>
     <string name="ico_empty">icon empty list</string>
-
-    <string name="status_in_progress">IN PROGRESS</string>
-    <string name="status_completed">COMPLETED</string>
-    <string name="status_not_started">NOT STARTED</string>
-
-
     <string name="view">VIEW</string>
     <string name="more_info">+INFO</string>
-    <string name="hide">HIDE</string>
-    <string name="infos">INFO</string>
     <string name="open">OPEN</string>
     <string name="inspection">INSPECTIONS</string>
     <string name="empty_list">No scheduled visits</string>
