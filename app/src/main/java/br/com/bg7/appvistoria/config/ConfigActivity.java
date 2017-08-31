@@ -53,6 +53,8 @@ public class ConfigActivity extends BaseActivity {
     private LayoutInflater inflater;
     private String title = null;
 
+    private LinearLayout searchLayout = null;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
