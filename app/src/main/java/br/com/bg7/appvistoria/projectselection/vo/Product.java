@@ -8,4 +8,11 @@ public class Product {
     private Long id;
     private String type;
     private Category category;
+
+    public Product(Long id, String type, Category category) {
+        this.id = id;
+        this.type = type;
+        this.category = category;
+    }
+
 }
