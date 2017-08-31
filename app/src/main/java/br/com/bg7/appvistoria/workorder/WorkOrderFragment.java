@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     WorkOrderContract.Presenter workOrderPresenter;
     private ListView listView;
     private LinearLayout emptyLayout;
+    private FloatingActionButton floatingActionButton;
     private WorkOrderAdapter adapter;
 
     private static final String MAP_ADDRESS = "geo:0,0?q=";
@@ -62,12 +64,12 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     private static final int BACKGROUND_IN_PROGRESS = R.drawable.background_workorder_in_progress;
     private static final int BACKGROUND_NOT_STARTED = R.drawable.background_workorder_not_started;
     private Boolean mapAvailable = null;
-
-    private Typeface nunito;
-    private Typeface roboto;
-    private Typeface nunitoBold;
+    private Typeface nunito = null;
+    private Typeface roboto = null;
+    private Typeface nunitoBold = null;
 
     ConfirmDialog confirmDialog;
+    ConfirmDialog confirmDialogNewWorkOrder;
 
 
     @Override
@@ -76,12 +78,26 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
         View root = inflater.inflate(R.layout.fragment_workorder, container, false);
         listView = root.findViewById(R.id.listview);
         emptyLayout = root.findViewById(R.id.empty_layout);
+        floatingActionButton = root.findViewById(R.id.floatingActionButton);
         confirmDialog = new ConfirmDialog(getContext(), getString(R.string.confirm_open_maps));
+        confirmDialogNewWorkOrder = new ConfirmDialog(getContext(), getString(R.string.confirm_new_workorder));
+
         nunito = Typeface.createFromAsset(getContext().getAssets(),FONT_NAME_NUNITO_REGULAR);
         roboto = Typeface.createFromAsset(getContext().getAssets(),FONT_NAME_ROBOTO_REGULAR);
         nunitoBold = Typeface.createFromAsset(getContext().getAssets(),FONT_NAME_NUNITO_BOLD);
 
+        configureListener();
+
         return root;
+    }
+
+    private void configureListener() {
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                workOrderPresenter.newWorkOrderClicked();
+            }
+        });
     }
 
     @Override
@@ -196,6 +212,35 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
         };
 
         confirmDialog.show(openMapConfirmListener, openMapCancelListener);
+    }
+
+    @Override
+    public void showNewWorkOrderConfirmation() {
+        View.OnClickListener openNewWorkOrderConfirmListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                workOrderPresenter.confirmNewWorkOrderClicked();
+            }
+        };
+
+        View.OnClickListener openMNewWorkOrderancelListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                workOrderPresenter.cancelNewWorkOrderClicked();
+            }
+        };
+
+        confirmDialogNewWorkOrder.show(openNewWorkOrderConfirmListener, openMNewWorkOrderancelListener);
+    }
+
+    @Override
+    public void hideNewWorkOrderConfirmation() {
+        confirmDialogNewWorkOrder.hide();
+    }
+
+    @Override
+    public void showNewWorkOrderScreen() {
+
     }
 
     @Override
