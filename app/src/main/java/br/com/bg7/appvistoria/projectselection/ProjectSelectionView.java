@@ -88,6 +88,12 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
     }
 
     @Override
+    public void showSelectedProject(Project project, List<String> addresses) {
+        editIdProject.setText(project.getId() + DIVISOR + project.getDescription());
+        layoutListViewProjects.setVisibility(View.GONE);
+    }
+
+    @Override
     public void setPresenter(ProjectSelectionContract.Presenter presenter) {
         projectSelectionPresenter = Preconditions.checkNotNull(presenter);
     }
@@ -104,8 +110,7 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 project = ((ProjectSelectionAdapter)adapterView.getAdapter()).getItem(position);
-                editIdProject.setText(project.getId() + DIVISOR + project.getDescription());
-                layoutListViewProjects.setVisibility(View.GONE);
+                projectSelectionPresenter.selectProject(project);
             }
         });
     }

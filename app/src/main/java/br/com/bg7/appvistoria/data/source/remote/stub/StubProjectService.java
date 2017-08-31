@@ -1,7 +1,9 @@
 package br.com.bg7.appvistoria.data.source.remote.stub;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import br.com.bg7.appvistoria.data.source.remote.ProjectService;
 import br.com.bg7.appvistoria.projectselection.vo.Category;
@@ -13,6 +15,13 @@ import br.com.bg7.appvistoria.projectselection.vo.Project;
  * Date: 2017-08-31
  */
 public class StubProjectService implements ProjectService {
+
+    Project project1 = new Project(1L, "Projeto 1");
+    Project project2 = new Project(2L, "Projeto 2");
+    Project project3 = new Project(3L, "Projeto 3");
+    Project project4 = new Project(4L, "Projeto 4");
+    Project project5 = new Project(5L, "Projeto 5");
+
     @Override
     public List<Project> findByIdOrDescription(String idOrDescription) {
 
@@ -31,17 +40,42 @@ public class StubProjectService implements ProjectService {
 
     @Override
     public List<String> findAddressesForProject(Project project) {
-        return null;
+        List<String> list = getAddressData(project);
+        return list;
+    }
+
+    private List<String> getAddressData(Project key) {
+
+        List<String> list = new ArrayList<>();
+
+        HashMap<Project, String> address = new HashMap<Project, String>();
+        address.put(project1, "Endereço 1 do projeto 1");
+        address.put(project1, "Endereço 2 do projeto 1");
+        address.put(project1, "Endereço 3 do projeto 1");
+        address.put(project2, "Endereço 1 do projeto 2");
+        address.put(project2, "Endereço 2 do projeto 2");
+        address.put(project2, "Endereço 3 do projeto 2");
+        address.put(project3, "Endereço 1 do projeto 3");
+        address.put(project3, "Endereço 2 do projeto 3");
+        address.put(project3, "Endereço 3 do projeto 3");
+        address.put(project4, "Endereço 1 do projeto 4");
+        address.put(project4, "Endereço 2 do projeto 4");
+        address.put(project4, "Endereço 3 do projeto 4");
+        address.put(project5, "Endereço 1 do projeto 5");
+        address.put(project5, "Endereço 2 do projeto 5");
+        address.put(project5, "Endereço 3 do projeto 5");
+
+        for(Map.Entry<Project, String> entry: address.entrySet()) {
+            if(entry.getKey().equals(key)) {
+                list.add(entry.getValue());
+            }
+        }
+
+        return list;
     }
 
     private List<Project> getData() {
         List<Project> list = new ArrayList<>();
-
-        Project project1 = new Project(1L, "Projeto 1");
-        Project project2 = new Project(2L, "Projeto 2");
-        Project project3 = new Project(3L, "Projeto 3");
-        Project project4 = new Project(4L, "Projeto 4");
-        Project project5 = new Project(5L, "Projeto 5");
 
         Category category1 = new Category(1L, "Carros e Motos");
         Category category2 = new Category(2L, "Caminhões e Ônibus");

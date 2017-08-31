@@ -15,9 +15,15 @@ public interface ProjectSelectionContract {
     interface View extends BaseView<Presenter> {
         void showProjectResults(List<Project> projectList);
 
+        void showSelectedProject(Project project, List<String> addresses);
+
+
     }
 
     interface Presenter extends BasePresenter {
         void search(String idOrDescription);
+
+        void selectProject(Project project);
+
     }
 }

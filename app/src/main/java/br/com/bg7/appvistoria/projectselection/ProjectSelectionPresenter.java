@@ -29,6 +29,13 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
     public void search(String idOrDescription) {
         List<Project> projects = projectService.findByIdOrDescription(idOrDescription);
         projectServiceView.showProjectResults(projects);
-
     }
+
+    @Override
+    public void selectProject(Project project) {
+        List<String> addressesForProject = projectService.findAddressesForProject(project);
+        projectServiceView.showSelectedProject(project, addressesForProject);
+    }
+
+
 }
