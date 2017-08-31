@@ -16,7 +16,8 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
 
     ProjectSelectionPresenter(ProjectService projectService, ProjectSelectionContract.View view) {
         this.projectService = projectService;
-        this.projectServiceView = view;
+        projectServiceView = view;
+        projectServiceView.setPresenter(this);
     }
 
     @Override

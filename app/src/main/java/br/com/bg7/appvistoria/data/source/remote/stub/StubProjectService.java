@@ -20,12 +20,9 @@ public class StubProjectService implements ProjectService {
         List<Project> list = getData();
 
         for(Project project: list) {
-            if(String.valueOf(project.getId()).equals(idOrDescription)) {
+            if(String.valueOf(project.getId()).toUpperCase().contains(idOrDescription.toUpperCase())
+                    || project.getDescription().toUpperCase().contains(idOrDescription.toUpperCase())) {
                  listReturn.add(project);
-                continue;
-            }
-            if(project.getDescription().equals(idOrDescription)) {
-                listReturn.add(project);
             }
         }
 
