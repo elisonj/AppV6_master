@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import br.com.bg7.appvistoria.AlertDialog;
+import br.com.bg7.appvistoria.ProgressDialog;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.config.ConfigActivity;
 
@@ -26,6 +27,9 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
 
     private Typeface robotoMedium = Typeface.createFromAsset(getContext().getAssets(), FONT_NAME_ROBOTO_MEDIUM);
 
+    private ProgressDialog progress;
+
+
     public LoginView(Context context) {
         super(context);
         init();
@@ -33,6 +37,8 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
 
     private void init() {
         inflate(getContext(), R.layout.activity_login, this);
+
+        progress = new ProgressDialog(getContext());
 
         final EditText username = findViewById(R.id.editText_user);
         final EditText password = findViewById(R.id.editText_password);
@@ -44,6 +50,7 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
             @Override
             public void onClick(View view) {
                 loginPresenter.login(username.getText().toString(), password.getText().toString());
+                progress.show();
             }
         });
 
@@ -104,6 +111,7 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
 
     @Override
     public void showMainScreen() {
+        progress.hide();
         Intent intent = new Intent(getContext(), ConfigActivity.class);
         getContext().startActivity(intent);
     }
@@ -114,6 +122,7 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
     }
 
     private void showError(String message) {
+        progress.hide();
         AlertDialog dialog = new AlertDialog(getContext(), message);
         dialog.show();
     }

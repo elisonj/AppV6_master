@@ -47,5 +47,6 @@
     <string name="full_address">Full address</string>
     <string name="search">Search</string>
     <string name="confirm_new_workorder">Do you want to create a\nnew WorkOrder?</string>
+    <string name="ico_loading">Loading</string>
 
 </resources>
