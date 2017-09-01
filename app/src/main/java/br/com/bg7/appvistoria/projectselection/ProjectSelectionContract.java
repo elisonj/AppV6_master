@@ -17,7 +17,15 @@ public interface ProjectSelectionContract {
 
         void showSelectedProject(Project project, List<String> addresses);
 
+        void showProductSelection(Long projectId, String address);
 
+        void clearProjectField();
+
+        void clearAddressField();
+
+        void showLoading();
+
+        void hideLoading();
     }
 
     interface Presenter extends BasePresenter {
@@ -25,5 +33,10 @@ public interface ProjectSelectionContract {
 
         void selectProject(Project project);
 
+        void selectAddress(String address);
+
+        void projectFieldClicked();
+
+        void addressFieldClicked();
     }
 }

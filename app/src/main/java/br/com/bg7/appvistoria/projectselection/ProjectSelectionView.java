@@ -18,9 +18,12 @@ import android.widget.TextView;
 
 import com.google.common.base.Preconditions;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.bg7.appvistoria.ProgressDialog;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
@@ -35,14 +38,18 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
 
     private static final String DIVISOR = " | ";
 
-    private Typeface roboto = null;
-    private Typeface nunitoRegular = null;
     private ProjectSelectionContract.Presenter projectSelectionPresenter;
     private ListView listViewProjects;
+    private ListView listViewAddress;
     private LinearLayout layoutListViewProjects;
+    private LinearLayout layoutListViewAddress;
     private EditText editIdProject;
     private EditText editAddress;
     private Project project;
+    private String address;
+    private AddressSelectionAdapter adapterAddress = null;
+    private ProgressDialog progress;
+
 
     public ProjectSelectionView(Context context) {
         super(context);
@@ -51,8 +58,9 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
 
     private void init() {
         inflate(getContext(), R.layout.activity_project_selection, this);
-        roboto = Typeface.createFromAsset(getContext().getAssets(),FONT_NAME_ROBOTO_REGULAR);
-        nunitoRegular = Typeface.createFromAsset(getContext().getAssets(),FONT_NAME_NUNITO_REGULAR);
+        Typeface roboto = Typeface.createFromAsset(getContext().getAssets(), FONT_NAME_ROBOTO_REGULAR);
+        Typeface nunitoRegular = Typeface.createFromAsset(getContext().getAssets(), FONT_NAME_NUNITO_REGULAR);
+        progress = new ProgressDialog(getContext());
 
         editIdProject = findViewById(R.id.editText_idproject);
         editAddress = findViewById(R.id.editText_address);
@@ -63,16 +71,34 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
         title.setTypeface(nunitoRegular);
         listViewProjects = findViewById(R.id.listView_project);
         layoutListViewProjects = findViewById(R.id.list_layout);
+        listViewAddress = findViewById(R.id.listView_address);
+        layoutListViewAddress = findViewById(R.id.list_layout_address);
 
         configureListeners();
 
     }
 
     private void configureListeners() {
+
+        editIdProject.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                projectSelectionPresenter.projectFieldClicked();
+            }
+        });
+
+        editAddress.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                projectSelectionPresenter.addressFieldClicked();
+            }
+        });
+
         editIdProject.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void onTextChanged(CharSequence sequence, int start, int before, int count) {
+                if(StringUtils.isNotEmpty(sequence))
                     projectSelectionPresenter.search(sequence.toString());
             }
 
@@ -88,9 +114,55 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
     }
 
     @Override
-    public void showSelectedProject(Project project, List<String> addresses) {
-        editIdProject.setText(project.getId() + DIVISOR + project.getDescription());
+    public void showSelectedProject(Project projectSelected, List<String> addresses) {
+        editIdProject.setText(projectSelected.getId() + DIVISOR + projectSelected.getDescription());
         layoutListViewProjects.setVisibility(View.GONE);
+
+        adapterAddress = new AddressSelectionAdapter(getContext(), addresses);
+        listViewAddress.setAdapter(adapterAddress);
+        listViewAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                String address = ((AddressSelectionAdapter)adapterView.getAdapter()).getItem(position);
+                projectSelectionPresenter.selectAddress(address);
+            }
+        });
+        layoutListViewAddress.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        progress.hide();
+    }
+
+    @Override
+    public void showLoading() {
+        progress.show();
+    }
+
+    @Override
+    public void clearProjectField() {
+        editIdProject.setText("");
+        editAddress.setText("");
+        project = null;
+        adapterAddress = null;
+    }
+
+    @Override
+    public void clearAddressField() {
+        editAddress.setText("");
+
+        if(project != null && adapterAddress != null) {
+            listViewAddress.setAdapter(adapterAddress);
+            layoutListViewAddress.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void showProductSelection(Long projectId, String address) {
+        this.address = address;
+        editAddress.setText(address);
+        layoutListViewAddress.setVisibility(View.GONE);
     }
 
     @Override
@@ -115,16 +187,13 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
         });
     }
 
+    private class ProjectSelectionAdapter extends BaseAdapter {
 
-    private class ProjectSelectionAdapter<T> extends BaseAdapter {
-
-        private Context context;
         private LayoutInflater layoutInflater;
 
-        private List<Project> items = new ArrayList<Project>();
+        private List<Project> items = new ArrayList<>();
 
         private ProjectSelectionAdapter(Context context, List<Project> items) {
-            this.context = context;
             this.items = items;
             this.layoutInflater = LayoutInflater.from(context);
         }
@@ -146,6 +215,57 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
 
         @Override
         public Project getItem(int position) {
+            return items.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public int getCount() {
+            return items.size();
+        }
+
+        private class ViewHolder {
+
+            TextView title;
+
+            private ViewHolder(View view) {
+                title = view.findViewById(R.id.title);
+            }
+        }
+    }
+
+    private class AddressSelectionAdapter extends BaseAdapter {
+
+        private LayoutInflater layoutInflater;
+
+        private List<String> items = new ArrayList<>();
+
+        private AddressSelectionAdapter(Context context, List<String> items) {
+            this.items = items;
+            this.layoutInflater = LayoutInflater.from(context);
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = layoutInflater.inflate(R.layout.projectselection_item, null);
+                convertView.setTag(new ViewHolder(convertView));
+            }
+            initializeViews(getItem(position), (ViewHolder) convertView.getTag());
+            return convertView;
+        }
+
+        private void initializeViews(String item, ViewHolder holder) {
+            holder.title.setText(item);
+        }
+
+        @Override
+        public String getItem(int position) {
             return items.get(position);
         }
 

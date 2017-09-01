@@ -13,6 +13,7 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
 
     private ProjectService projectService;
     private ProjectSelectionContract.View projectServiceView;
+    private Project project = null;
 
     ProjectSelectionPresenter(ProjectService projectService, ProjectSelectionContract.View view) {
         this.projectService = projectService;
@@ -22,20 +23,38 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
 
     @Override
     public void start() {
-
     }
 
     @Override
     public void search(String idOrDescription) {
+        projectServiceView.showLoading();
         List<Project> projects = projectService.findByIdOrDescription(idOrDescription);
+        projectServiceView.hideLoading();
         projectServiceView.showProjectResults(projects);
+
     }
 
     @Override
     public void selectProject(Project project) {
+        this.project = project;
+        projectServiceView.showLoading();
         List<String> addressesForProject = projectService.findAddressesForProject(project);
+        projectServiceView.hideLoading();
         projectServiceView.showSelectedProject(project, addressesForProject);
     }
 
+    @Override
+    public void selectAddress(String address) {
+        projectServiceView.showProductSelection(project.getId(), address);
+    }
 
+    @Override
+    public void addressFieldClicked() {
+        projectServiceView.clearAddressField();
+    }
+
+    @Override
+    public void projectFieldClicked() {
+        projectServiceView.clearProjectField();
+    }
 }

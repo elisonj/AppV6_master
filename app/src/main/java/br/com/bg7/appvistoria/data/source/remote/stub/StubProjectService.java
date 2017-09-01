@@ -1,7 +1,8 @@
 package br.com.bg7.appvistoria.data.source.remote.stub;
 
+import com.google.common.collect.HashMultimap;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,11 +17,11 @@ import br.com.bg7.appvistoria.projectselection.vo.Project;
  */
 public class StubProjectService implements ProjectService {
 
-    Project project1 = new Project(1L, "Projeto 1");
-    Project project2 = new Project(2L, "Projeto 2");
-    Project project3 = new Project(3L, "Projeto 3");
-    Project project4 = new Project(4L, "Projeto 4");
-    Project project5 = new Project(5L, "Projeto 5");
+    private Project project1 = new Project(1L, "Projeto 1");
+    private Project project2 = new Project(2L, "Projeto 2");
+    private Project project3 = new Project(3L, "Projeto 3");
+    private Project project4 = new Project(4L, "Projeto 4");
+    private Project project5 = new Project(5L, "Projeto 5");
 
     @Override
     public List<Project> findByIdOrDescription(String idOrDescription) {
@@ -40,15 +41,15 @@ public class StubProjectService implements ProjectService {
 
     @Override
     public List<String> findAddressesForProject(Project project) {
-        List<String> list = getAddressData(project);
-        return list;
+        return getAddressData(project);
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private List<String> getAddressData(Project key) {
 
         List<String> list = new ArrayList<>();
 
-        HashMap<Project, String> address = new HashMap<Project, String>();
+        HashMultimap<Project, String> address = HashMultimap.create();
         address.put(project1, "Endereço 1 do projeto 1");
         address.put(project1, "Endereço 2 do projeto 1");
         address.put(project1, "Endereço 3 do projeto 1");
@@ -65,7 +66,7 @@ public class StubProjectService implements ProjectService {
         address.put(project5, "Endereço 2 do projeto 5");
         address.put(project5, "Endereço 3 do projeto 5");
 
-        for(Map.Entry<Project, String> entry: address.entrySet()) {
+        for(Map.Entry<Project, String> entry: address.entries()) {
             if(entry.getKey().equals(key)) {
                 list.add(entry.getValue());
             }
