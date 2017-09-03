@@ -119,7 +119,10 @@ public class ConfigActivity extends BaseActivity {
                 ConfigFragment configFrag = new ConfigFragment();
                 fragment = configFrag;
                 fragment.setRetainInstance(true);
-                new ConfigPresenter(services.getConfigRepository(), services.getLanguageRepository(), configFrag);
+                new ConfigPresenter(
+                        services.getConfigRepository(),
+                        services.getLanguageRepository(),
+                        configFrag);
                 break;
         }
         selectedItem = item.getItemId();
