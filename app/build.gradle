@@ -78,8 +78,8 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-scalars:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'org.slf4j:slf4j-api:1.7.25'
-    // TODO: Usar slf4j-simple apenas quando for teste. Senão, usar slf4j-android
-    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+    testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+    apk group: 'org.slf4j', name: 'slf4j-android', version: '1.7.25'
     compile group: 'com.j256.ormlite', name: 'ormlite-core', version: '5.0'
     compile group: 'com.j256.ormlite', name: 'ormlite-android', version: '5.0'
     compile group: 'joda-time', name: 'joda-time', version: '2.3'
