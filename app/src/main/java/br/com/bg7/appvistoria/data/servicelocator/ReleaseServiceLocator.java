@@ -23,37 +23,37 @@ import br.com.bg7.appvistoria.data.source.remote.retrofit.RetrofitUserService;
 
 class ReleaseServiceLocator extends ServiceLocator {
     @Override
-    AuthRepository getAuthRepository() {
+    public AuthRepository getAuthRepository() {
         return new SharedPreferencesAuthRepository(context);
     }
 
     @Override
-    ConfigRepository getConfigRepository() {
+    public ConfigRepository getConfigRepository() {
         return new OrmLiteConfigRepository(baseActivity.getConfigDao());
     }
 
     @Override
-    LanguageRepository getLanguageRepository() {
+    public LanguageRepository getLanguageRepository() {
         return new ResourcesLanguageRepository(context);
     }
 
     @Override
-    UserRepository getUserRepository() {
+    public UserRepository getUserRepository() {
         return new OrmLiteUserRepository(baseActivity.getUserDao());
     }
 
     @Override
-    WorkOrderRepository getWorkOrderRepository() {
+    public WorkOrderRepository getWorkOrderRepository() {
         return new OrmLiteWorkOrderRepository(baseActivity.getWorkOrderDao());
     }
 
     @Override
-    TokenService getTokenService() {
+    public TokenService getTokenService() {
         return new RetrofitTokenService(BuildConfig.BASE_URL, BuildConfig.GRANT_TYPE, BuildConfig.CLIENT_ID);
     }
 
     @Override
-    UserService getUserService() {
+    public UserService getUserService() {
         return new RetrofitUserService(BuildConfig.BASE_URL);
     }
 }

@@ -26,25 +26,20 @@ public class LoginActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        try {
-            ServiceLocator services = ServiceLocator.create(BuildConfig.BUILD_TYPE, this, this);
-            LoginView loginView = new LoginView(this);
+        ServiceLocator services = ServiceLocator.create(BuildConfig.BUILD_TYPE, this, this);
+        LoginView loginView = new LoginView(this);
 
-            RemoteLocalAuth remoteLocalAuth = new RemoteLocalAuth(
-                    services.getUserService(),
-                    services.getTokenService(),
-                    services.getUserRepository(),
-                    services.getAuthRepository()
-            );
-            Auth.configure(remoteLocalAuth);
+        RemoteLocalAuth remoteLocalAuth = new RemoteLocalAuth(
+                services.getUserService(),
+                services.getTokenService(),
+                services.getUserRepository(),
+                services.getAuthRepository()
+        );
+        Auth.configure(remoteLocalAuth);
 
-            loginPresenter = new LoginPresenter(services.getConfigRepository(), loginView);
+        loginPresenter = new LoginPresenter(services.getConfigRepository(), loginView);
 
-            setContentView(loginView);
-        } catch (InstantiationException e) {
-            LOG.error(String.format("Could not instantiate service locator for %s", BuildConfig.BUILD_TYPE), e);
-            throw new RuntimeException(e);
-        }
+        setContentView(loginView);
     }
 
     @Override

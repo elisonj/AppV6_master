@@ -17,12 +17,10 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import br.com.bg7.appvistoria.BaseActivity;
+import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.MainFragment;
 import br.com.bg7.appvistoria.R;
-import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
-import br.com.bg7.appvistoria.data.source.local.android.ResourcesLanguageRepository;
-import br.com.bg7.appvistoria.data.source.local.ormlite.OrmLiteConfigRepository;
-import br.com.bg7.appvistoria.data.source.local.stub.StubWorkOrderRepository;
+import br.com.bg7.appvistoria.data.servicelocator.ServiceLocator;
 import br.com.bg7.appvistoria.workorder.WorkOrderFragment;
 import br.com.bg7.appvistoria.workorder.WorkOrderPresenter;
 
@@ -39,18 +37,15 @@ public class ConfigActivity extends BaseActivity {
 
     private int selectedItem = DEFAULT_SCREEN_MENU_ITEM_INDEX;
     private Menu menu = null;
-    private Typeface nunito;
     private TypefaceSpan nunitoSpan = new TypefaceSpan(FONT_NAME_NUNITO_REGULAR);
 
-    private final StubWorkOrderRepository workOrderRepository = new StubWorkOrderRepository();
-    private final ConfigRepository configRepository = new OrmLiteConfigRepository(getConfigDao());
-    private final ResourcesLanguageRepository languageRepository = new ResourcesLanguageRepository(this);
+    private final ServiceLocator services = ServiceLocator.create(BuildConfig.BUILD_TYPE, this, this);
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        nunito = Typeface.createFromAsset(getApplicationContext().getAssets(), FONT_NAME_NUNITO_REGULAR);
+        Typeface nunito = Typeface.createFromAsset(getApplicationContext().getAssets(), FONT_NAME_NUNITO_REGULAR);
 
         if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayUseLogoEnabled(true);
@@ -108,7 +103,11 @@ public class ConfigActivity extends BaseActivity {
                 WorkOrderFragment workOrderFragment = new WorkOrderFragment();
                 fragment = workOrderFragment;
                 fragment.setRetainInstance(true);
-                new WorkOrderPresenter(workOrderRepository, workOrderFragment, configRepository);
+                new WorkOrderPresenter(
+                        services.getWorkOrderRepository(),
+                        services.getConfigRepository(),
+                        workOrderFragment
+                );
 
                 break;
             case R.id.menu_sync:
@@ -120,7 +119,7 @@ public class ConfigActivity extends BaseActivity {
                 ConfigFragment configFrag = new ConfigFragment();
                 fragment = configFrag;
                 fragment.setRetainInstance(true);
-                new ConfigPresenter(configRepository, languageRepository, configFrag);
+                new ConfigPresenter(services.getConfigRepository(), services.getLanguageRepository(), configFrag);
                 break;
         }
         selectedItem = item.getItemId();

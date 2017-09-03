@@ -1,7 +1,5 @@
 package br.com.bg7.appvistoria.workorder;
 
-import junit.framework.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
@@ -49,7 +47,7 @@ public class WorkOrderPresenterTest extends UserLoggedInTest {
         workOrderRepository.save(new CompletedWorkOrder("Projeto 8", "Resumo completo", ""));
         workOrderRepository.save(new WorkOrder("Projeto 9", "Resumo completo", ""));
 
-        workOrderPresenter =  new WorkOrderPresenter(workOrderRepository, workOrderView, configRepository);
+        workOrderPresenter =  new WorkOrderPresenter(workOrderRepository, configRepository, workOrderView);
 
         workOrderPresenter.start();
     }

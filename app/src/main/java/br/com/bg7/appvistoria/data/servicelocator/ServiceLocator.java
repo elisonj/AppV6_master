@@ -35,7 +35,7 @@ public abstract class ServiceLocator {
         map.put("release", ReleaseServiceLocator.class);
     }
 
-    public static ServiceLocator create(String type, BaseActivity baseActivity, Context context) throws InstantiationException {
+    public static ServiceLocator create(String type, BaseActivity baseActivity, Context context) {
         ServiceLocator locator;
         Class clazz = map.get(type);
 
@@ -47,7 +47,7 @@ public abstract class ServiceLocator {
             locator = (ServiceLocator) clazz.newInstance();
         } catch (InstantiationException|IllegalAccessException e) {
             // Can happen if class does not have an accessible default constructor
-            throw new InstantiationException(clazz.getName());
+            throw new RuntimeException("Cannot instantiate Service Locator", e);
         }
 
         locator.baseActivity = baseActivity;

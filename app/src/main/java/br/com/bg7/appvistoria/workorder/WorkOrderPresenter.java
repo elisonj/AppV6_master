@@ -20,11 +20,13 @@ public class WorkOrderPresenter implements WorkOrderContract.Presenter{
     private final WorkOrderContract.View workOrderView;
     private final ConfigRepository configRepository;
 
-    public WorkOrderPresenter(WorkOrderRepository workOrderRepository, WorkOrderContract.View workOrderView,
-                       ConfigRepository configRepository) {
+    public WorkOrderPresenter(
+            WorkOrderRepository workOrderRepository,
+            ConfigRepository configRepository,
+            WorkOrderContract.View workOrderView) {
         this.workOrderRepository = checkNotNull(workOrderRepository);
-        this.workOrderView = checkNotNull(workOrderView);
         this.configRepository = checkNotNull(configRepository);
+        this.workOrderView = checkNotNull(workOrderView);
 
         this.workOrderView.setPresenter(this);
     }
