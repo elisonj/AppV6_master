@@ -31,6 +31,7 @@ public abstract class ServiceLocator {
     static {
         map = new HashMap<>();
 
+        map.put("debug", ReleaseServiceLocator.class);
         map.put("release", ReleaseServiceLocator.class);
     }
 
@@ -55,12 +56,12 @@ public abstract class ServiceLocator {
         return locator;
     }
 
-    abstract AuthRepository getAuthRepository();
-    abstract ConfigRepository getConfigRepository();
-    abstract LanguageRepository getLanguageRepository();
-    abstract UserRepository getUserRepository();
-    abstract WorkOrderRepository getWorkOrderRepository();
+    public abstract AuthRepository getAuthRepository();
+    public abstract ConfigRepository getConfigRepository();
+    public abstract LanguageRepository getLanguageRepository();
+    public abstract UserRepository getUserRepository();
+    public abstract WorkOrderRepository getWorkOrderRepository();
 
-    abstract TokenService getTokenService();
-    abstract UserService getUserService();
+    public abstract TokenService getTokenService();
+    public abstract UserService getUserService();
 }

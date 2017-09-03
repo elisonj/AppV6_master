@@ -2,16 +2,14 @@ package br.com.bg7.appvistoria.login;
 
 import android.os.Bundle;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.auth.Auth;
 import br.com.bg7.appvistoria.auth.RemoteLocalAuth;
-import br.com.bg7.appvistoria.data.source.local.UserRepository;
-import br.com.bg7.appvistoria.data.source.local.android.SharedPreferencesAuthRepository;
-import br.com.bg7.appvistoria.data.source.local.ormlite.OrmLiteConfigRepository;
-import br.com.bg7.appvistoria.data.source.local.ormlite.OrmLiteUserRepository;
-import br.com.bg7.appvistoria.data.source.remote.retrofit.RetrofitTokenService;
-import br.com.bg7.appvistoria.data.source.remote.retrofit.RetrofitUserService;
+import br.com.bg7.appvistoria.data.servicelocator.ServiceLocator;
 
 /**
  * Created by: elison
@@ -20,30 +18,33 @@ import br.com.bg7.appvistoria.data.source.remote.retrofit.RetrofitUserService;
 
 public class LoginActivity extends BaseActivity {
 
-    private LoginPresenter loginPresenter;
-    private static final String BASE_URL = BuildConfig.BASE_URL;
-    private static final String GRANT_TYPE = BuildConfig.GRANT_TYPE;
-    private static final String CLIENT_ID = BuildConfig.CLIENT_ID;
+    private static final Logger LOG = LoggerFactory.getLogger(LoginActivity.class);
 
+    private LoginPresenter loginPresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        OrmLiteConfigRepository configRepository = new OrmLiteConfigRepository(getConfigDao());
+        try {
+            ServiceLocator services = ServiceLocator.create(BuildConfig.BUILD_TYPE, this, this);
+            LoginView loginView = new LoginView(this);
 
-        LoginView loginView = new LoginView(this);
-        RetrofitUserService userService = new RetrofitUserService(BASE_URL);
-        RetrofitTokenService tokenService = new RetrofitTokenService(BASE_URL, GRANT_TYPE, CLIENT_ID);
-        SharedPreferencesAuthRepository authRepository = new SharedPreferencesAuthRepository(this);
-        UserRepository userRepository = new OrmLiteUserRepository(getUserDao());
+            RemoteLocalAuth remoteLocalAuth = new RemoteLocalAuth(
+                    services.getUserService(),
+                    services.getTokenService(),
+                    services.getUserRepository(),
+                    services.getAuthRepository()
+            );
+            Auth.configure(remoteLocalAuth);
 
-        RemoteLocalAuth remoteLocalAuth = new RemoteLocalAuth(userService, tokenService, userRepository, authRepository);
-        Auth.configure(remoteLocalAuth);
+            loginPresenter = new LoginPresenter(services.getConfigRepository(), loginView);
 
-        loginPresenter = new LoginPresenter(configRepository, loginView);
-
-        setContentView(loginView);
+            setContentView(loginView);
+        } catch (InstantiationException e) {
+            LOG.error(String.format("Could not instantiate service locator for %s", BuildConfig.BUILD_TYPE), e);
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
