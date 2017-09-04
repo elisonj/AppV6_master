@@ -17,8 +17,6 @@ import br.com.bg7.appvistoria.data.servicelocator.ServiceLocator;
 
 public class LoginActivity extends BaseActivity {
 
-    private static final Logger LOG = LoggerFactory.getLogger(LoginActivity.class);
-
     private LoginPresenter loginPresenter;
 
     @Override
