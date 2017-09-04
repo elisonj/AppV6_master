@@ -24,10 +24,7 @@ import android.widget.TextView;
 import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.MainFragment;
 import br.com.bg7.appvistoria.R;
-import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
-import br.com.bg7.appvistoria.data.source.local.android.ResourcesLanguageRepository;
-import br.com.bg7.appvistoria.data.source.local.ormlite.OrmLiteConfigRepository;
-import br.com.bg7.appvistoria.data.source.local.stub.StubWorkOrderRepository;
+import br.com.bg7.appvistoria.data.servicelocator.ServiceLocator;
 import br.com.bg7.appvistoria.workorder.WorkOrderFragment;
 import br.com.bg7.appvistoria.workorder.WorkOrderPresenter;
 
@@ -42,13 +39,12 @@ public class ConfigActivity extends BaseActivity {
     private static final String SELECTED_MENU_ITEM_KEY = "SELECTED_MENU_ITEM_KEY";
     private static final int DEFAULT_SCREEN_MENU_ITEM_INDEX = 2;
 
+    private final ServiceLocator services = ServiceLocator.create(this, this);
+
     private int selectedItem = DEFAULT_SCREEN_MENU_ITEM_INDEX;
     private Menu menu = null;
     private TypefaceSpan nunitoSpan = new TypefaceSpan(FONT_NAME_NUNITO_REGULAR);
 
-    private final StubWorkOrderRepository workOrderRepository = new StubWorkOrderRepository();
-    private final ConfigRepository configRepository = new OrmLiteConfigRepository(getConfigDao());
-    private final ResourcesLanguageRepository languageRepository = new ResourcesLanguageRepository(this);
     private Typeface nunito = null;
     private LayoutInflater inflater;
     private String title = null;
@@ -59,7 +55,7 @@ public class ConfigActivity extends BaseActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        nunito = Typeface.createFromAsset(getApplicationContext().getAssets(), FONT_NAME_NUNITO_REGULAR);
+        Typeface nunito = Typeface.createFromAsset(getApplicationContext().getAssets(), FONT_NAME_NUNITO_REGULAR);
 
         if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayUseLogoEnabled(true);
@@ -128,7 +124,11 @@ public class ConfigActivity extends BaseActivity {
                 WorkOrderFragment workOrderFragment = new WorkOrderFragment();
                 fragment = workOrderFragment;
                 fragment.setRetainInstance(true);
-                new WorkOrderPresenter(workOrderRepository, workOrderFragment, configRepository);
+                new WorkOrderPresenter(
+                        services.getWorkOrderRepository(),
+                        services.getConfigRepository(),
+                        workOrderFragment
+                );
 
                 title = item.getTitle().toString();
                 configureSearchButton(true);
@@ -144,8 +144,12 @@ public class ConfigActivity extends BaseActivity {
                 ConfigFragment configFrag = new ConfigFragment();
                 fragment = configFrag;
                 fragment.setRetainInstance(true);
-                new ConfigPresenter(configRepository, languageRepository, configFrag);
+                new ConfigPresenter(
+                        services.getConfigRepository(),
+                        services.getLanguageRepository(),
+                        configFrag);
                 configureSearchButton(false);
+
                 break;
         }
         selectedItem = item.getItemId();

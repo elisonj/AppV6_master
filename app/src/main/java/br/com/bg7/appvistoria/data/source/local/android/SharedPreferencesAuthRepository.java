@@ -36,7 +36,7 @@ public class SharedPreferencesAuthRepository implements AuthRepository {
     }
 
     @Override
-    public void save(User user, String token) throws IOException {
+    public void save(User user, String token) {
         SharedPreferences.Editor editor = getEditor();
 
         editor.putString(CURRENT_USER, user.serialize());
