@@ -48,6 +48,33 @@ public class ConfigActivity extends BaseActivity {
 
     private LinearLayout searchLayout = null;
 
+    View.OnClickListener search = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            View inflate = getLayoutInflater().inflate(R.layout.search_button, null);
+            ImageView buttonSearch = inflate.findViewById(R.id.search_button_bar);
+
+            ActionBar actionBar = getSupportActionBar();
+            if(actionBar == null) return;
+
+            actionBar.setDisplayShowCustomEnabled(true);
+            TextView textView = inflate.findViewById(R.id.title);
+            textView.setTypeface(nunito);
+            textView.setText(title);
+            buttonSearch.setOnClickListener(this);
+
+            if(!searchLayout.isShown()) {
+                buttonSearch.setImageResource(R.drawable.ic_search_bar_active);
+                searchLayout.setVisibility(View.VISIBLE);
+                actionBar.setCustomView(inflate);
+                return;
+            }
+            buttonSearch.setImageResource(R.drawable.ic_search_bar);
+            searchLayout.setVisibility(View.GONE);
+            actionBar.setCustomView(inflate);
+        }
+    };
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -168,25 +195,25 @@ public class ConfigActivity extends BaseActivity {
         if (actionBar == null) {
             return;
         }
-            actionBar.setDisplayShowCustomEnabled(true);
 
-            View view = getLayoutInflater().inflate(R.layout.search_button, null);
-            TextView textView = view.findViewById(R.id.title);
-            textView.setTypeface(nunito);
-            textView.setText(title);
+        actionBar.setDisplayShowCustomEnabled(true);
 
-            ImageView buttonSearch = view.findViewById(R.id.search_button_bar);
-            if(showSearch) {
-                textView.setVisibility(View.VISIBLE);
-                buttonSearch.setVisibility(View.VISIBLE);
-                actionBar.setCustomView(view);
-                buttonSearch.setOnClickListener(search);
-                return;
-            }
-            textView.setVisibility(View.GONE);
-            buttonSearch.setVisibility(View.GONE);
+        View view = getLayoutInflater().inflate(R.layout.search_button, null);
+        TextView textView = view.findViewById(R.id.title);
+        textView.setTypeface(nunito);
+        textView.setText(title);
+
+        ImageView buttonSearch = view.findViewById(R.id.search_button_bar);
+        if(showSearch) {
+            textView.setVisibility(View.VISIBLE);
+            buttonSearch.setVisibility(View.VISIBLE);
             actionBar.setCustomView(view);
-
+            buttonSearch.setOnClickListener(search);
+            return;
+        }
+        textView.setVisibility(View.GONE);
+        buttonSearch.setVisibility(View.GONE);
+        actionBar.setCustomView(view);
     }
 
     private void updateToolbarText(CharSequence text) {
@@ -199,32 +226,4 @@ public class ConfigActivity extends BaseActivity {
             actionBar.setTitle(span);
         }
     }
-
-    View.OnClickListener search = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            View inflate = getLayoutInflater().inflate(R.layout.search_button, null);
-            ImageView buttonSearch = inflate.findViewById(R.id.search_button_bar);
-
-            ActionBar actionBar = getSupportActionBar();
-            if(actionBar == null) return;
-
-            actionBar.setDisplayShowCustomEnabled(true);
-            TextView textView = inflate.findViewById(R.id.title);
-            textView.setTypeface(nunito);
-            textView.setText(title);
-            buttonSearch.setOnClickListener(this);
-
-            if(!searchLayout.isShown()) {
-                buttonSearch.setImageResource(R.drawable.ic_search_bar_active);
-                searchLayout.setVisibility(View.VISIBLE);
-                actionBar.setCustomView(inflate);
-                return;
-            }
-            buttonSearch.setImageResource(R.drawable.ic_search_bar);
-            searchLayout.setVisibility(View.GONE);
-            actionBar.setCustomView(inflate);
-        }
-    };
-
 }
