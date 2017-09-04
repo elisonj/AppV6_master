@@ -98,8 +98,10 @@ public class User {
     }
 
     public String serialize() {
+        Long id = this.id == null ? -1 : this.id;
+
         return String.format(Locale.US, "%d%s%s%s%s%s%s",
-                this.id, SEPARATOR,
+                id, SEPARATOR,
                 this.username, SEPARATOR,
                 this.passwordHash, SEPARATOR,
                 this.token);

@@ -20,12 +20,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import br.com.bg7.appvistoria.BaseActivity;
+import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.MainFragment;
 import br.com.bg7.appvistoria.R;
-import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
-import br.com.bg7.appvistoria.data.source.local.android.ResourcesLanguageRepository;
-import br.com.bg7.appvistoria.data.source.local.ormlite.OrmLiteConfigRepository;
-import br.com.bg7.appvistoria.data.source.local.stub.StubWorkOrderRepository;
+import br.com.bg7.appvistoria.data.servicelocator.ServiceLocator;
 import br.com.bg7.appvistoria.workorder.WorkOrderFragment;
 import br.com.bg7.appvistoria.workorder.WorkOrderPresenter;
 
@@ -44,6 +42,8 @@ public class ConfigActivity extends BaseActivity {
     private Menu menu = null;
     private Typeface nunito;
     private TypefaceSpan nunitoSpan = new TypefaceSpan(FONT_NAME_NUNITO_REGULAR);
+
+    private final ServiceLocator services = ServiceLocator.create(this, this);
 
     private final StubWorkOrderRepository workOrderRepository = new StubWorkOrderRepository();
     private final ConfigRepository configRepository = new OrmLiteConfigRepository(getConfigDao());
@@ -120,10 +120,15 @@ public class ConfigActivity extends BaseActivity {
         Fragment fragment = null;
         switch (item.getItemId()) {
             case R.id.menu_visita:
+
                 WorkOrderFragment workOrderFragment = new WorkOrderFragment();
                 fragment = workOrderFragment;
                 fragment.setRetainInstance(true);
-                new WorkOrderPresenter(workOrderRepository, workOrderFragment, configRepository);
+                new WorkOrderPresenter(
+                        services.getWorkOrderRepository(),
+                        services.getConfigRepository(),
+                        workOrderFragment
+                );
 
                 title = item.getTitle().toString();
                 configureSearchButton(true);
@@ -139,7 +144,10 @@ public class ConfigActivity extends BaseActivity {
                 ConfigFragment configFrag = new ConfigFragment();
                 fragment = configFrag;
                 fragment.setRetainInstance(true);
-                new ConfigPresenter(configRepository, languageRepository, configFrag);
+                new ConfigPresenter(
+                        services.getConfigRepository(),
+                        services.getLanguageRepository(),
+                        configFrag);
                 configureSearchButton(false);
                 break;
         }
