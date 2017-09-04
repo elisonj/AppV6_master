@@ -43,10 +43,10 @@
     <string name="required">Required field</string>
     <string name="ico_idproject">icon id project</string>
     <string name="ico_address">icon address</string>
+    <string name="ico_loading">Loading</string>
     <string name="id_project">ID and/or Project</string>
     <string name="full_address">Full address</string>
     <string name="search">Search</string>
     <string name="confirm_new_workorder">Do you want to create a\nnew WorkOrder?</string>
-    <string name="ico_loading">Loading</string>
 
 </resources>

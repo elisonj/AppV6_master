@@ -30,7 +30,9 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void start() {
-
+        if (Auth.check()) {
+            loginView.showMainScreen();
+        }
     }
 
     @Override
