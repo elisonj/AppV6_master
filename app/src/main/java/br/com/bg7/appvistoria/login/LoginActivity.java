@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.bg7.appvistoria.BaseActivity;
-import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.auth.Auth;
 import br.com.bg7.appvistoria.auth.RemoteLocalAuth;
 import br.com.bg7.appvistoria.data.servicelocator.ServiceLocator;
@@ -26,7 +25,7 @@ public class LoginActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ServiceLocator services = ServiceLocator.create(BuildConfig.BUILD_TYPE, this, this);
+        ServiceLocator services = ServiceLocator.create(this, this);
         LoginView loginView = new LoginView(this);
 
         RemoteLocalAuth remoteLocalAuth = new RemoteLocalAuth(

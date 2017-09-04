@@ -6,14 +6,12 @@ import java.util.HashMap;
 import java.util.ServiceConfigurationError;
 
 import br.com.bg7.appvistoria.BaseActivity;
+import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.data.source.local.AuthRepository;
 import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
-import br.com.bg7.appvistoria.data.source.local.InspectionRepository;
 import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
 import br.com.bg7.appvistoria.data.source.local.WorkOrderRepository;
-import br.com.bg7.appvistoria.data.source.remote.InspectionService;
-import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.TokenService;
 import br.com.bg7.appvistoria.data.source.remote.UserService;
 
@@ -25,23 +23,29 @@ import br.com.bg7.appvistoria.data.source.remote.UserService;
 public abstract class ServiceLocator {
     private static HashMap<String, Class> map;
 
-    protected BaseActivity baseActivity;
-    protected Context context;
+    private static String currentType = BuildConfig.BUILD_TYPE;
+
+    BaseActivity baseActivity;
+    Context context;
 
     static {
         map = new HashMap<>();
 
-        map.put("debug", ReleaseServiceLocator.class);
+        map.put("debug", AlwaysLoggedInServiceLocator.class);
         map.put("release", ReleaseServiceLocator.class);
     }
 
-    public static ServiceLocator create(String type, BaseActivity baseActivity, Context context) {
+    public static void configure(String type) {
+        currentType = type;
+    }
+
+    public static ServiceLocator create(BaseActivity baseActivity, Context context) {
         ServiceLocator locator;
-        Class clazz = map.get(type);
+        Class clazz = map.get(currentType);
 
         try {
             if (clazz == null) {
-                throw new ServiceConfigurationError(String.format("Service Locator config '%s' is not available", type));
+                throw new ServiceConfigurationError(String.format("Service Locator config '%s' is not available", currentType));
             }
 
             locator = (ServiceLocator) clazz.newInstance();

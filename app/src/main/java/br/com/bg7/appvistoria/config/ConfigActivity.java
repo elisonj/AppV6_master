@@ -39,7 +39,7 @@ public class ConfigActivity extends BaseActivity {
     private Menu menu = null;
     private TypefaceSpan nunitoSpan = new TypefaceSpan(FONT_NAME_NUNITO_REGULAR);
 
-    private final ServiceLocator services = ServiceLocator.create(BuildConfig.BUILD_TYPE, this, this);
+    private final ServiceLocator services = ServiceLocator.create(this, this);
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
