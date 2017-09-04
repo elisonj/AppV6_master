@@ -55,9 +55,12 @@ public class ConfigActivity extends BaseActivity {
             ImageView buttonSearch = inflate.findViewById(R.id.search_button_bar);
 
             ActionBar actionBar = getSupportActionBar();
-            if(actionBar == null) return;
+            if(actionBar == null) {
+                return;
+            }
 
             actionBar.setDisplayShowCustomEnabled(true);
+
             TextView textView = inflate.findViewById(R.id.title);
             textView.setTypeface(nunito);
             textView.setText(title);
