@@ -42,8 +42,6 @@ class LoginPresenterTestBase {
     @Mock
     UserService userService;
 
-    private FakeUserRepository userRepository;
-
     @Mock
     HttpResponse<Token> tokenHttpResponse;
 
@@ -59,7 +57,8 @@ class LoginPresenterTestBase {
     LoginPresenter loginPresenter;
 
     FakeConfigRepository configRepository = new FakeConfigRepository();
-    private FakeLanguageRepository languageRepository = new FakeLanguageRepository();
+    FakeAuthRepository authRepository = new FakeAuthRepository();
+    private FakeUserRepository userRepository = new FakeUserRepository();
 
     static final String USERNAME = "user";
     private static final String PASSWORD = "password";
@@ -87,10 +86,8 @@ class LoginPresenterTestBase {
         when(userHttpResponse.isSuccessful()).thenReturn(true);
         when(userHttpResponse.body()).thenReturn(new UserResponse());
 
-        userRepository = new FakeUserRepository();
         userRepository.clear();
-
-        FakeAuthRepository authRepository = new FakeAuthRepository();
+        authRepository.clear();
 
         Auth.configure(new RemoteLocalAuth(userService, tokenService, userRepository, authRepository));
 

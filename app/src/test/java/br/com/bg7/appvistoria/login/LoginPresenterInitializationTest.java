@@ -2,6 +2,9 @@ package br.com.bg7.appvistoria.login;
 
 import org.junit.Test;
 
+import java.io.IOException;
+
+import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeConfigRepository;
 
@@ -29,5 +32,15 @@ public class LoginPresenterInitializationTest extends LoginPresenterTestBase {
     @Test
     public void shouldSetPresenterToViewWhenCreated() {
         verify(loginView).setPresenter(loginPresenter);
+    }
+
+    @Test
+    public void shouldRedirectToMainScreenIfAuthenticated() throws IOException {
+        authRepository.save(new User("", "", ""), "");
+
+        LoginPresenter presenter = new LoginPresenter(configRepository, loginView);
+        presenter.start();
+
+        verify(loginView).showMainScreen();
     }
 }
