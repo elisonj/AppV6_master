@@ -20,10 +20,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import br.com.bg7.appvistoria.BaseActivity;
-import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.MainFragment;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.servicelocator.ServiceLocator;
+import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
+import br.com.bg7.appvistoria.data.source.local.android.ResourcesLanguageRepository;
+import br.com.bg7.appvistoria.data.source.local.ormlite.OrmLiteConfigRepository;
+import br.com.bg7.appvistoria.data.source.local.stub.StubWorkOrderRepository;
 import br.com.bg7.appvistoria.workorder.WorkOrderFragment;
 import br.com.bg7.appvistoria.workorder.WorkOrderPresenter;
 
