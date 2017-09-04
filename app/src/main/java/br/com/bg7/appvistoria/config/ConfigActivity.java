@@ -1,6 +1,5 @@
 package br.com.bg7.appvistoria.config;
 
-import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +12,6 @@ import android.support.v7.app.ActionBar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.TypefaceSpan;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,7 +48,6 @@ public class ConfigActivity extends BaseActivity {
     private final StubWorkOrderRepository workOrderRepository = new StubWorkOrderRepository();
     private final ConfigRepository configRepository = new OrmLiteConfigRepository(getConfigDao());
     private final ResourcesLanguageRepository languageRepository = new ResourcesLanguageRepository(this);
-    private LayoutInflater inflater;
     private String title = null;
 
     private LinearLayout searchLayout = null;
@@ -66,7 +63,6 @@ public class ConfigActivity extends BaseActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setIcon(R.drawable.actionbar_logo);
         }
-        inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
 
@@ -170,7 +166,7 @@ public class ConfigActivity extends BaseActivity {
         }
             actionBar.setDisplayShowCustomEnabled(true);
 
-            View view = inflater.inflate(R.layout.search_button, null);
+            View view = getLayoutInflater().inflate(R.layout.search_button, null);
             TextView textView = view.findViewById(R.id.title);
             textView.setTypeface(nunito);
             textView.setText(title);
@@ -203,7 +199,7 @@ public class ConfigActivity extends BaseActivity {
     View.OnClickListener search = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            View inflate = inflater.inflate(R.layout.search_button, null);
+            View inflate = getLayoutInflater().inflate(R.layout.search_button, null);
             ImageView buttonSearch = inflate.findViewById(R.id.search_button_bar);
 
             ActionBar actionBar = getSupportActionBar();
