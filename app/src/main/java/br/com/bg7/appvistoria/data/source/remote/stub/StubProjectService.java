@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import br.com.bg7.appvistoria.data.source.remote.ProjectService;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
 import br.com.bg7.appvistoria.projectselection.vo.Category;
 import br.com.bg7.appvistoria.projectselection.vo.Product;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
@@ -24,7 +25,7 @@ public class StubProjectService implements ProjectService {
     private Project project5 = new Project(5L, "Projeto 5");
 
     @Override
-    public List<Project> findByIdOrDescription(String idOrDescription) {
+    public void findByIdOrDescription(String idOrDescription, HttpCallback<List<Project>> callback) {
 
         List<Project> listReturn = new ArrayList<>();
         List<Project> list = getData();
@@ -36,12 +37,12 @@ public class StubProjectService implements ProjectService {
             }
         }
 
-        return listReturn;
+    //    return listReturn;
     }
 
     @Override
-    public List<String> findAddressesForProject(Project project) {
-        return getAddressData(project);
+    public void findAddressesForProject(Project project, HttpCallback<List<String>> callback) {
+    //    return getAddressData(project);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")

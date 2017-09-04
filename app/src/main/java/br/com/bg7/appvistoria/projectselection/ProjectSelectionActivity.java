@@ -3,7 +3,8 @@ package br.com.bg7.appvistoria.projectselection;
 import android.os.Bundle;
 
 import br.com.bg7.appvistoria.BaseActivity;
-import br.com.bg7.appvistoria.data.source.remote.stub.StubProjectService;
+import br.com.bg7.appvistoria.BuildConfig;
+import br.com.bg7.appvistoria.data.source.remote.retrofit.RetrofitProjectService;
 
 /**
  * Created by: elison
@@ -11,7 +12,10 @@ import br.com.bg7.appvistoria.data.source.remote.stub.StubProjectService;
  */
 public class ProjectSelectionActivity extends BaseActivity {
 
-    private final StubProjectService projectService = new StubProjectService();
+    private static final String BASE_URL = BuildConfig.BASE_URL;
+
+//    private final StubProjectService projectService = new StubProjectService();
+    private final RetrofitProjectService projectService = new RetrofitProjectService(BASE_URL);
     private ProjectSelectionPresenter projectSelectionPresenter;
 
     @Override

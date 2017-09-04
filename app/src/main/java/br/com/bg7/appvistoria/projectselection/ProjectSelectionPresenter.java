@@ -3,6 +3,8 @@ package br.com.bg7.appvistoria.projectselection;
 import java.util.List;
 
 import br.com.bg7.appvistoria.data.source.remote.ProjectService;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 /**
@@ -28,9 +30,10 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
     @Override
     public void search(String idOrDescription) {
         projectServiceView.showLoading();
-        List<Project> projects = projectService.findByIdOrDescription(idOrDescription);
-        projectServiceView.hideLoading();
-        projectServiceView.showProjectResults(projects);
+
+        ProjectSelectionCallback callback = new ProjectSelectionCallback();
+
+        projectService.findByIdOrDescription(idOrDescription, callback);
 
     }
 
@@ -38,9 +41,11 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
     public void selectProject(Project project) {
         this.project = project;
         projectServiceView.showLoading();
-        List<String> addressesForProject = projectService.findAddressesForProject(project);
-        projectServiceView.hideLoading();
-        projectServiceView.showSelectedProject(project, addressesForProject);
+
+        AddressSelectionCallback callback = new AddressSelectionCallback();
+
+        projectService.findAddressesForProject(project, callback);
+
     }
 
     @Override
@@ -57,4 +62,43 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
     public void projectFieldClicked() {
         projectServiceView.clearProjectField();
     }
+
+
+    private class ProjectSelectionCallback implements HttpCallback<List<Project>>
+
+    {
+        @Override
+        public void onResponse(HttpResponse<List<Project>> httpResponse) {
+            if(httpResponse.isSuccessful() && httpResponse.body() != null) {
+                List<Project> projects = httpResponse.body();
+                        projectServiceView.hideLoading();
+                projectServiceView.showProjectResults(projects);
+                return;
+            }
+            projectServiceView.hideLoading();
+        }
+
+        @Override
+        public void onFailure(Throwable t) {
+            t.printStackTrace();
+        }
+    }
+
+    private class AddressSelectionCallback implements HttpCallback<List<String>>
+
+    {
+        @Override
+        public void onResponse(HttpResponse<List<String>> httpResponse) {
+            if(httpResponse.isSuccessful() && httpResponse.body() != null) {
+                List<String> address = httpResponse.body();
+                projectServiceView.hideLoading();
+                projectServiceView.showSelectedProject(project, address);
+            }
+        }
+
+        @Override
+        public void onFailure(Throwable t) {
+        }
+    }
+
 }
