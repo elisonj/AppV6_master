@@ -31,6 +31,8 @@ import static br.com.bg7.appvistoria.Constants.FONT_NAME_NUNITO_REGULAR;
 /**
  * Created by: luciolucio
  * Date: 2017-07-17
+ *
+ * TODO: Remover duplicacao que existe entre configureSearchButton e search
  */
 
 public class ConfigActivity extends BaseActivity {
