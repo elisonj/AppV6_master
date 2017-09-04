@@ -42,9 +42,24 @@ public class WorkOrderPresenter implements WorkOrderContract.Presenter{
     }
 
     @Override
+    public void cancelNewWorkOrderClicked() {
+        workOrderView.hideNewWorkOrderConfirmation();
+    }
+
+    @Override
+    public void confirmNewWorkOrderClicked() {
+        workOrderView.showNewWorkOrderScreen();
+    }
+
+    @Override
     public void moreInfoClicked(WorkOrder workOrder) {
         workOrderView.highlightInfoButton(workOrder);
         workOrderView.expandInfoPanel(workOrder);
+    }
+
+    @Override
+    public void newWorkOrderClicked() {
+        workOrderView.showNewWorkOrderConfirmation();
     }
 
     @Override

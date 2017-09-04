@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     WorkOrderContract.Presenter workOrderPresenter;
     private ListView listView;
     private LinearLayout emptyLayout;
+    private FloatingActionButton floatingActionButton;
     private WorkOrderAdapter adapter;
 
     private static final String MAP_ADDRESS = "geo:0,0?q=";
@@ -62,26 +64,44 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     private static final int BACKGROUND_IN_PROGRESS = R.drawable.background_workorder_in_progress;
     private static final int BACKGROUND_NOT_STARTED = R.drawable.background_workorder_not_started;
     private Boolean mapAvailable = null;
-
     private Typeface nunito;
     private Typeface roboto;
     private Typeface nunitoBold;
 
-    ConfirmDialog confirmDialog;
+    ConfirmDialog openMapConfirmDialog;
+    ConfirmDialog newWorkOrderConfirmDialog;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_workorder, container, false);
-        listView = root.findViewById(R.id.listview);
-        emptyLayout = root.findViewById(R.id.empty_layout);
-        confirmDialog = new ConfirmDialog(getContext(), getString(R.string.confirm_open_maps));
+
         nunito = Typeface.createFromAsset(getContext().getAssets(),FONT_NAME_NUNITO_REGULAR);
         roboto = Typeface.createFromAsset(getContext().getAssets(),FONT_NAME_ROBOTO_REGULAR);
         nunitoBold = Typeface.createFromAsset(getContext().getAssets(),FONT_NAME_NUNITO_BOLD);
 
+        initializeViewElements(root);
+        initializeListeners();
+
         return root;
+    }
+
+    private void initializeViewElements(View root) {
+        listView = root.findViewById(R.id.listview);
+        emptyLayout = root.findViewById(R.id.empty_layout);
+        floatingActionButton = root.findViewById(R.id.floatingActionButton);
+        openMapConfirmDialog = new ConfirmDialog(getContext(), getString(R.string.confirm_open_maps));
+        newWorkOrderConfirmDialog = new ConfirmDialog(getContext(), getString(R.string.confirm_new_workorder));
+    }
+
+    private void initializeListeners() {
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                workOrderPresenter.newWorkOrderClicked();
+            }
+        });
     }
 
     @Override
@@ -195,12 +215,41 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
             }
         };
 
-        confirmDialog.show(openMapConfirmListener, openMapCancelListener);
+        openMapConfirmDialog.show(openMapConfirmListener, openMapCancelListener);
+    }
+
+    @Override
+    public void showNewWorkOrderConfirmation() {
+        View.OnClickListener newWorkOrderConfirmListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                workOrderPresenter.confirmNewWorkOrderClicked();
+            }
+        };
+
+        View.OnClickListener newWorkOrderCancelListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                workOrderPresenter.cancelNewWorkOrderClicked();
+            }
+        };
+
+        newWorkOrderConfirmDialog.show(newWorkOrderConfirmListener, newWorkOrderCancelListener);
+    }
+
+    @Override
+    public void hideNewWorkOrderConfirmation() {
+        newWorkOrderConfirmDialog.hide();
+    }
+
+    @Override
+    public void showNewWorkOrderScreen() {
+
     }
 
     @Override
     public void hideOpenMapConfirmation() {
-        confirmDialog.hide();
+        openMapConfirmDialog.hide();
     }
 
     @Override

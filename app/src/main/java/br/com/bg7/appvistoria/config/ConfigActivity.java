@@ -14,10 +14,12 @@ import android.text.SpannableString;
 import android.text.style.TypefaceSpan;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import br.com.bg7.appvistoria.BaseActivity;
-import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.MainFragment;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.servicelocator.ServiceLocator;
@@ -29,6 +31,8 @@ import static br.com.bg7.appvistoria.Constants.FONT_NAME_NUNITO_REGULAR;
 /**
  * Created by: luciolucio
  * Date: 2017-07-17
+ *
+ * TODO: Remover duplicacao que existe entre configureSearchButton e search
  */
 
 public class ConfigActivity extends BaseActivity {
@@ -37,15 +41,50 @@ public class ConfigActivity extends BaseActivity {
 
     private int selectedItem = DEFAULT_SCREEN_MENU_ITEM_INDEX;
     private Menu menu = null;
+    private Typeface nunito;
     private TypefaceSpan nunitoSpan = new TypefaceSpan(FONT_NAME_NUNITO_REGULAR);
 
     private final ServiceLocator services = ServiceLocator.create(this, this);
+
+    private String title = null;
+
+    private LinearLayout searchLayout = null;
+
+    View.OnClickListener search = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            View inflate = getLayoutInflater().inflate(R.layout.search_button, null);
+            ImageView buttonSearch = inflate.findViewById(R.id.search_button_bar);
+
+            ActionBar actionBar = getSupportActionBar();
+            if(actionBar == null) {
+                return;
+            }
+
+            actionBar.setDisplayShowCustomEnabled(true);
+
+            TextView textView = inflate.findViewById(R.id.title);
+            textView.setTypeface(nunito);
+            textView.setText(title);
+            buttonSearch.setOnClickListener(this);
+
+            if(!searchLayout.isShown()) {
+                buttonSearch.setImageResource(R.drawable.ic_search_bar_active);
+                searchLayout.setVisibility(View.VISIBLE);
+                actionBar.setCustomView(inflate);
+                return;
+            }
+            buttonSearch.setImageResource(R.drawable.ic_search_bar);
+            searchLayout.setVisibility(View.GONE);
+            actionBar.setCustomView(inflate);
+        }
+    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Typeface nunito = Typeface.createFromAsset(getApplicationContext().getAssets(), FONT_NAME_NUNITO_REGULAR);
+        nunito = Typeface.createFromAsset(getApplicationContext().getAssets(), FONT_NAME_NUNITO_REGULAR);
 
         if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayUseLogoEnabled(true);
@@ -75,7 +114,14 @@ public class ConfigActivity extends BaseActivity {
             selectedItem = savedInstanceState.getInt(SELECTED_MENU_ITEM_KEY, DEFAULT_SCREEN_MENU_ITEM_INDEX);
             menuSelectedItem = menu.findItem(selectedItem);
         }
+        title = menuSelectedItem.getTitle().toString();
         selectFragment(menuSelectedItem);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        searchLayout = findViewById(R.id.search);
     }
 
     @Override
@@ -96,6 +142,9 @@ public class ConfigActivity extends BaseActivity {
 
     // TODO: Separar telas em fragments próprios
     private void selectFragment(MenuItem item) {
+
+        if(searchLayout != null) searchLayout.setVisibility(View.GONE);
+
         Fragment fragment = null;
         switch (item.getItemId()) {
             case R.id.menu_visita:
@@ -109,10 +158,14 @@ public class ConfigActivity extends BaseActivity {
                         workOrderFragment
                 );
 
+                title = item.getTitle().toString();
+                configureSearchButton(true);
+
                 break;
             case R.id.menu_sync:
                 fragment = MainFragment.newInstance(getString(R.string.menu_sync),
                         ContextCompat.getColor(this, R.color.color_sync));
+                configureSearchButton(false);
                 break;
 
             case R.id.menu_config:
@@ -123,6 +176,7 @@ public class ConfigActivity extends BaseActivity {
                         services.getConfigRepository(),
                         services.getLanguageRepository(),
                         configFrag);
+                configureSearchButton(false);
                 break;
         }
         selectedItem = item.getItemId();
@@ -141,6 +195,32 @@ public class ConfigActivity extends BaseActivity {
         }
     }
 
+    private void configureSearchButton(boolean showSearch) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar == null) {
+            return;
+        }
+
+        actionBar.setDisplayShowCustomEnabled(true);
+
+        View view = getLayoutInflater().inflate(R.layout.search_button, null);
+        TextView textView = view.findViewById(R.id.title);
+        textView.setTypeface(nunito);
+        textView.setText(title);
+
+        ImageView buttonSearch = view.findViewById(R.id.search_button_bar);
+        if(showSearch) {
+            textView.setVisibility(View.VISIBLE);
+            buttonSearch.setVisibility(View.VISIBLE);
+            actionBar.setCustomView(view);
+            buttonSearch.setOnClickListener(search);
+            return;
+        }
+        textView.setVisibility(View.GONE);
+        buttonSearch.setVisibility(View.GONE);
+        actionBar.setCustomView(view);
+    }
+
     private void updateToolbarText(CharSequence text) {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -151,5 +231,4 @@ public class ConfigActivity extends BaseActivity {
             actionBar.setTitle(span);
         }
     }
-
 }

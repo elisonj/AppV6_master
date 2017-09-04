@@ -37,6 +37,15 @@
     <string name="inspection">INSPECTIONS</string>
     <string name="empty_list">No scheduled visits</string>
     <string name="confirm_open_maps">Open this address in an\nexternal application?</string>
-
+    <string name="workorder_title">CREATE WORKORDER</string>
+    <string name="workorder_subtitle">Fill data below to create a new\nworkorder based on project.</string>
+    <string name="next">NEXT</string>
+    <string name="required">Required field</string>
+    <string name="ico_idproject">icon id project</string>
+    <string name="ico_address">icon address</string>
+    <string name="id_project">ID and/or Project</string>
+    <string name="full_address">Full address</string>
+    <string name="search">Search</string>
+    <string name="confirm_new_workorder">Do you want to create a\nnew WorkOrder?</string>
 
 </resources>

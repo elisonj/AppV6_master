@@ -37,5 +37,14 @@
     <string name="inspection">INSPEÇÕES</string>
     <string name="empty_list">Você não tem visitas agendadas</string>
     <string name="confirm_open_maps">Deseja abrir este endereço\nem outro aplicativo?</string>
-
+    <string name="workorder_title">CRIAR VISITA</string>
+    <string name="workorder_subtitle">Preencha os dados abaixo para criar\numa nova visita a partir de projeto</string>
+    <string name="next">PRÓXIMO</string>
+    <string name="required">Campo obrigatório</string>
+    <string name="ico_idproject">icon id projeto</string>
+    <string name="ico_address">icon endereço</string>
+    <string name="id_project">ID e/ou Projeto</string>
+    <string name="full_address">Endereço completo</string>
+    <string name="search">Busca</string>
+    <string name="confirm_new_workorder">Deseja criar uma nova visita?</string>
 </resources>
