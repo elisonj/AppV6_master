@@ -65,34 +65,37 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     private static final int BACKGROUND_IN_PROGRESS = R.drawable.background_workorder_in_progress;
     private static final int BACKGROUND_NOT_STARTED = R.drawable.background_workorder_not_started;
     private Boolean mapAvailable = null;
-
     private Typeface nunito;
     private Typeface roboto;
     private Typeface nunitoBold;
 
-    ConfirmDialog confirmDialog;
-    ConfirmDialog confirmDialogNewWorkOrder;
+    ConfirmDialog openMapConfirmDialog;
+    ConfirmDialog newWorkOrderConfirmDialog;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_workorder, container, false);
-        listView = root.findViewById(R.id.listview);
-        emptyLayout = root.findViewById(R.id.empty_layout);
-        floatingActionButton = root.findViewById(R.id.floatingActionButton);
-        confirmDialog = new ConfirmDialog(getContext(), getString(R.string.confirm_open_maps));
-        confirmDialogNewWorkOrder = new ConfirmDialog(getContext(), getString(R.string.confirm_new_workorder));
         nunito = Typeface.createFromAsset(getContext().getAssets(),FONT_NAME_NUNITO_REGULAR);
         roboto = Typeface.createFromAsset(getContext().getAssets(),FONT_NAME_ROBOTO_REGULAR);
         nunitoBold = Typeface.createFromAsset(getContext().getAssets(),FONT_NAME_NUNITO_BOLD);
 
-        configureListener();
+        initializeViewElements(root);
+        initializeListeners();
 
         return root;
     }
 
-    private void configureListener() {
+    private void initializeViewElements(View root) {
+        listView = root.findViewById(R.id.listview);
+        emptyLayout = root.findViewById(R.id.empty_layout);
+        floatingActionButton = root.findViewById(R.id.floatingActionButton);
+        openMapConfirmDialog = new ConfirmDialog(getContext(), getString(R.string.confirm_open_maps));
+        newWorkOrderConfirmDialog = new ConfirmDialog(getContext(), getString(R.string.confirm_new_workorder));
+    }
+
+    private void initializeListeners() {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -214,31 +217,31 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
             }
         };
 
-        confirmDialog.show(openMapConfirmListener, openMapCancelListener);
+        openMapConfirmDialog.show(openMapConfirmListener, openMapCancelListener);
     }
 
     @Override
     public void showNewWorkOrderConfirmation() {
-        View.OnClickListener openNewWorkOrderConfirmListener = new View.OnClickListener() {
+        View.OnClickListener newWorkOrderConfirmListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 workOrderPresenter.confirmNewWorkOrderClicked();
             }
         };
 
-        View.OnClickListener openMNewWorkOrderancelListener = new View.OnClickListener() {
+        View.OnClickListener newWorkOrderCancelListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 workOrderPresenter.cancelNewWorkOrderClicked();
             }
         };
 
-        confirmDialogNewWorkOrder.show(openNewWorkOrderConfirmListener, openMNewWorkOrderancelListener);
+        newWorkOrderConfirmDialog.show(newWorkOrderConfirmListener, newWorkOrderCancelListener);
     }
 
     @Override
     public void hideNewWorkOrderConfirmation() {
-        confirmDialogNewWorkOrder.hide();
+        newWorkOrderConfirmDialog.hide();
     }
 
     @Override
@@ -253,7 +256,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     @Override
     public void hideOpenMapConfirmation() {
-        confirmDialog.hide();
+        openMapConfirmDialog.hide();
     }
 
     @Override
