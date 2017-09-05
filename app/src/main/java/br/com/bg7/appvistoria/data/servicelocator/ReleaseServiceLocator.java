@@ -11,11 +11,13 @@ import br.com.bg7.appvistoria.data.source.local.android.SharedPreferencesAuthRep
 import br.com.bg7.appvistoria.data.source.local.ormlite.OrmLiteConfigRepository;
 import br.com.bg7.appvistoria.data.source.local.ormlite.OrmLiteUserRepository;
 import br.com.bg7.appvistoria.data.source.local.stub.StubWorkOrderRepository;
+import br.com.bg7.appvistoria.data.source.remote.ProductService;
 import br.com.bg7.appvistoria.data.source.remote.ProjectService;
 import br.com.bg7.appvistoria.data.source.remote.TokenService;
 import br.com.bg7.appvistoria.data.source.remote.UserService;
 import br.com.bg7.appvistoria.data.source.remote.retrofit.RetrofitTokenService;
 import br.com.bg7.appvistoria.data.source.remote.retrofit.RetrofitUserService;
+import br.com.bg7.appvistoria.data.source.remote.stub.StubProductService;
 import br.com.bg7.appvistoria.data.source.remote.stub.StubProjectService;
 
 /**
@@ -62,5 +64,10 @@ class ReleaseServiceLocator extends ServiceLocator {
     @Override
     public ProjectService getProjectService() {
         return new StubProjectService();
+    }
+
+    @Override
+    public ProductService getProductService() {
+        return new StubProductService();
     }
 }

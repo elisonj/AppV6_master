@@ -12,6 +12,7 @@ import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
 import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
 import br.com.bg7.appvistoria.data.source.local.WorkOrderRepository;
+import br.com.bg7.appvistoria.data.source.remote.ProductService;
 import br.com.bg7.appvistoria.data.source.remote.ProjectService;
 import br.com.bg7.appvistoria.data.source.remote.TokenService;
 import br.com.bg7.appvistoria.data.source.remote.UserService;
@@ -71,4 +72,5 @@ public abstract class ServiceLocator {
     public abstract TokenService getTokenService();
     public abstract UserService getUserService();
     public abstract ProjectService getProjectService();
+    public abstract ProductService getProductService();
 }

@@ -2,6 +2,8 @@ package br.com.bg7.appvistoria.product;
 
 import br.com.bg7.appvistoria.data.source.remote.ProductService;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by: elison
  * Date: 2017-09-05
@@ -10,10 +12,15 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
 
     private ProductService productService;
     private ProductSelectionContract.View productSelectionView;
+    private Long projectId;
+    private String address;
 
-    ProductSelectionPresenter(ProductService productService, ProductSelectionContract.View productSelectionView ) {
-        this.productSelectionView = productSelectionView;
-        this.productService = productService;
+    ProductSelectionPresenter(ProductService productService, ProductSelectionContract.View productSelectionView, Long projectId, String address ) {
+        this.productSelectionView = checkNotNull(productSelectionView);
+        this.productService = checkNotNull(productService);
+        this.projectId = projectId;
+        this.address = address;
+        this.productSelectionView.setPresenter(this);
     }
 
     @Override

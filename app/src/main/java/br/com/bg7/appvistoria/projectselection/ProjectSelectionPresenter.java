@@ -36,16 +36,15 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
         if (Strings.isNullOrEmpty(idOrDescription) || Strings.isNullOrEmpty(idOrDescription.trim())) {
             return;
         }
-
+        projectServiceView.showLoading();
         ProjectSelectionCallback callback = new ProjectSelectionCallback();
-
         projectService.findByIdOrDescription(idOrDescription, callback);
     }
 
     @Override
     public void selectProject(Project project) {
         this.project = project;
-
+        projectServiceView.showLoading();
         AddressSelectionCallback callback = new AddressSelectionCallback();
         projectService.findAddressesForProject(project, callback);
 
@@ -76,10 +75,12 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
                 List<Project> projects = httpResponse.body();
                 projectServiceView.showProjectResults(projects);
             }
+            projectServiceView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable t) {
+            projectServiceView.hideLoading();
             t.printStackTrace();
         }
     }
@@ -93,10 +94,12 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
                 List<String> address = httpResponse.body();
                 projectServiceView.showSelectedProject(project, address);
             }
+            projectServiceView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable t) {
+            projectServiceView.hideLoading();
         }
     }
 
