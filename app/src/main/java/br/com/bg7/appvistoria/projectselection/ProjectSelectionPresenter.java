@@ -5,6 +5,8 @@ import java.util.List;
 import br.com.bg7.appvistoria.data.source.remote.ProjectService;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by: elison
  * Date: 2017-08-30
@@ -16,8 +18,8 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
     private Project project = null;
 
     ProjectSelectionPresenter(ProjectService projectService, ProjectSelectionContract.View view) {
-        this.projectService = projectService;
-        projectServiceView = view;
+        this.projectService = checkNotNull(projectService);
+        projectServiceView = checkNotNull(view);
         projectServiceView.setPresenter(this);
     }
 

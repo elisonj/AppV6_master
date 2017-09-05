@@ -43,6 +43,16 @@ public class ProjectSelectionPresenterTest {
         verify(projectSelectionView).setPresenter(projectSelectionPresenter);
     }
 
+    @Test(expected = NullPointerException.class)
+    public void shouldNotAcceptNullProjectService() {
+        new ProjectSelectionPresenter(null, projectSelectionView);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldNotAcceptNullView() {
+        new ProjectSelectionPresenter(projectService, null);
+    }
+
     @Test
     public void shouldShowListProjectsWhenSearch() {
         projectSelectionPresenter.search(SEARCH);
