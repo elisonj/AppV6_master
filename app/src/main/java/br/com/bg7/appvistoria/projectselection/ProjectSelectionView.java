@@ -4,8 +4,6 @@ package br.com.bg7.appvistoria.projectselection;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.constraint.ConstraintLayout;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,20 +94,13 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
             }
         });
 
-        editIdProject.addTextChangedListener(new TextWatcher() {
+        editIdProject.setOnFocusChangeListener(new OnFocusChangeListener() {
 
             @Override
-            public void onTextChanged(CharSequence sequence, int start, int before, int count) {
-                projectSelectionPresenter.search(sequence.toString());
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence sequence, int start, int count,
-                                          int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable sequence) {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    projectSelectionPresenter.search(editIdProject.getText().toString());
+                }
             }
         });
     }
