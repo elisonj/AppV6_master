@@ -175,8 +175,6 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
 
     @Override
     public void showProjectResults(List<Project> projectList) {
-        if(projectList.size() <= 0) return;
-
         ProjectSelectionAdapter adapter = new ProjectSelectionAdapter(getContext(), projectList);
         listViewProjects.setAdapter(adapter);
         layoutListViewProjects.setVisibility(View.VISIBLE);

@@ -38,7 +38,10 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
         projectServiceView.showLoading();
         List<Project> projects = projectService.findByIdOrDescription(idOrDescription);
         projectServiceView.hideLoading();
-        projectServiceView.showProjectResults(projects);
+
+        if(projects.size() > 0) {
+            projectServiceView.showProjectResults(projects);
+        }
     }
 
     @Override

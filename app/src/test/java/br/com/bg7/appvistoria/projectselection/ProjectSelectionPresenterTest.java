@@ -82,6 +82,15 @@ public class ProjectSelectionPresenterTest {
     }
 
     @Test
+    public void shouldNotShowListWhenSearchResultsIsEmpty() {
+        when(projectService.findByIdOrDescription(anyString())).thenReturn(new ArrayList<Project>());
+
+        projectSelectionPresenter.search("xis");
+
+        verify(projectSelectionView, never()).showProjectResults(any(List.class));
+    }
+
+    @Test
     public void shouldShowListProjectsWhenSearch() {
         projectSelectionPresenter.search("xyz");
 
