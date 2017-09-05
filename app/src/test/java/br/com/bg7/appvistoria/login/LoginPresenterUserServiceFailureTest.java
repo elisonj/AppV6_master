@@ -35,7 +35,8 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterTestBase
 
         invokeTokenService();
         invokeIOException();
-        verify(loginView).showCannotLoginError();
+
+        verifyShowCannotLogin();
     }
 
     /**
@@ -49,6 +50,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterTestBase
 
         invokeTokenService();
         invokeIOException();
+
         verifySaveTokenAndPasswordAndShowMainScreen();
     }
 
@@ -77,7 +79,8 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterTestBase
 
         invokeTokenService();
         invokeRuntimeException();
-        verify(loginView).showCannotLoginError();
+
+        verifyShowCannotLogin();
     }
 
     /**
@@ -91,6 +94,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterTestBase
 
         invokeTokenService();
         invokeRuntimeException();
+
         verifySaveTokenAndPasswordAndShowMainScreen();
     }
 
@@ -105,6 +109,7 @@ public class LoginPresenterUserServiceFailureTest extends LoginPresenterTestBase
 
         invokeTokenService();
         invokeRuntimeException();
+
         verifySaveTokenAndShowMainScreen();
     }
 

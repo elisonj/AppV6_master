@@ -3,8 +3,7 @@ package br.com.bg7.appvistoria.projectselection;
 import android.os.Bundle;
 
 import br.com.bg7.appvistoria.BaseActivity;
-import br.com.bg7.appvistoria.BuildConfig;
-import br.com.bg7.appvistoria.data.source.remote.retrofit.RetrofitProjectService;
+import br.com.bg7.appvistoria.data.servicelocator.ServiceLocator;
 
 /**
  * Created by: elison
@@ -12,10 +11,7 @@ import br.com.bg7.appvistoria.data.source.remote.retrofit.RetrofitProjectService
  */
 public class ProjectSelectionActivity extends BaseActivity {
 
-    private static final String BASE_URL = BuildConfig.BASE_URL;
-
-//    private final StubProjectService projectService = new StubProjectService();
-    private final RetrofitProjectService projectService = new RetrofitProjectService(BASE_URL);
+    private final ServiceLocator services = ServiceLocator.create(this, this);
     private ProjectSelectionPresenter projectSelectionPresenter;
 
     @Override
@@ -24,7 +20,7 @@ public class ProjectSelectionActivity extends BaseActivity {
 
         ProjectSelectionView view = new ProjectSelectionView(this);
 
-        projectSelectionPresenter = new ProjectSelectionPresenter(projectService, view);
+        projectSelectionPresenter = new ProjectSelectionPresenter(services.getProjectService(), view);
 
         setContentView(view);
     }

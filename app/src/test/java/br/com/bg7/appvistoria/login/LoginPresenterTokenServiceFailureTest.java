@@ -26,7 +26,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterTestBas
 
         callLogin();
 
-        verify(loginView).showCannotLoginError();
+        verifyShowCannotLogin();
     }
 
     /**
@@ -39,7 +39,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterTestBas
 
         callLogin();
 
-        verify(loginView).showBadCredentialsError();
+        verifyShowBadCredentials();
     }
 
     /**
@@ -52,7 +52,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterTestBas
 
         callLogin();
 
-        verify(loginView).showMainScreen();
+        verifyShowMainScreen();
     }
 
     /**
@@ -65,7 +65,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterTestBas
         callLogin();
 
         invokeIOException();
-        verify(loginView).showCannotLoginError();
+        verifyShowCannotLogin();
     }
 
     /**
@@ -78,7 +78,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterTestBas
         callLogin();
 
         invokeIOException();
-        verify(loginView).showBadCredentialsError();
+        verifyShowBadCredentials();
     }
 
     /**
@@ -91,7 +91,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterTestBas
         callLogin();
 
         invokeIOException();
-        verify(loginView).showMainScreen();
+        verifyShowMainScreen();
     }
 
     /**
@@ -104,7 +104,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterTestBas
         callLogin();
 
         invokeRuntimeException();
-        verify(loginView).showCannotLoginError();
+        verifyShowCannotLogin();
     }
 
     /**
@@ -117,7 +117,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterTestBas
         callLogin();
 
         invokeRuntimeException();
-        verify(loginView).showBadCredentialsError();
+        verifyShowBadCredentials();
     }
 
     /**
@@ -130,7 +130,7 @@ public class LoginPresenterTokenServiceFailureTest extends LoginPresenterTestBas
         callLogin();
 
         invokeRuntimeException();
-        verify(loginView).showMainScreen();
+        verifyShowMainScreen();
     }
 
     private void invokeIOException() {

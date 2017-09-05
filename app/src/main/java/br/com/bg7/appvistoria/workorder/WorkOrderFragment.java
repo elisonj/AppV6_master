@@ -117,15 +117,11 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     @Override
     public void showList(List<WorkOrder> list, boolean showMapButtons) {
-        if(list.size() > 0) {
-            emptyLayout.setVisibility(View.GONE);
-            listView.setVisibility(View.VISIBLE);
+        emptyLayout.setVisibility(View.GONE);
+        listView.setVisibility(View.VISIBLE);
 
-            adapter = new WorkOrderAdapter(list, showMapButtons);
-            listView.setAdapter(adapter);
-            return;
-        }
-        openProjectSelection();
+        adapter = new WorkOrderAdapter(list, showMapButtons);
+        listView.setAdapter(adapter);
     }
 
     @Override
@@ -246,10 +242,6 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     @Override
     public void showNewWorkOrderScreen() {
-        openProjectSelection();
-    }
-
-    private void openProjectSelection() {
         Intent intent = new Intent(getActivity(), ProjectSelectionActivity.class);
         startActivity(intent);
     }
