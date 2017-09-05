@@ -6,12 +6,14 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.com.bg7.appvistoria.data.source.remote.ProjectService;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -67,6 +69,16 @@ public class ProjectSelectionPresenterTest {
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullView() {
         new ProjectSelectionPresenter(projectService, null);
+    }
+
+    @Test
+    public void shouldNotSearchOnInvalidString() {
+        projectSelectionPresenter.search("");
+        projectSelectionPresenter.search("   ");
+        projectSelectionPresenter.search(null);
+
+        verify(projectService, never()).findByIdOrDescription(anyString());
+        verify(projectSelectionView, never()).showProjectResults(any(List.class));
     }
 
     @Test

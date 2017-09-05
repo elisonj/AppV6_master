@@ -58,9 +58,16 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
 
     private void init() {
         inflate(getContext(), R.layout.activity_project_selection, this);
+        progress = new ProgressDialog(getContext());
+
+        initializeViewElements();
+
+        initializeListeners();
+    }
+
+    private void initializeViewElements() {
         Typeface roboto = Typeface.createFromAsset(getContext().getAssets(), FONT_NAME_ROBOTO_REGULAR);
         Typeface nunitoRegular = Typeface.createFromAsset(getContext().getAssets(), FONT_NAME_NUNITO_REGULAR);
-        progress = new ProgressDialog(getContext());
 
         editIdProject = findViewById(R.id.editText_idproject);
         editAddress = findViewById(R.id.editText_address);
@@ -73,12 +80,9 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
         layoutListViewProjects = findViewById(R.id.list_layout);
         listViewAddress = findViewById(R.id.listView_address);
         layoutListViewAddress = findViewById(R.id.list_layout_address);
-
-        configureListeners();
-
     }
 
-    private void configureListeners() {
+    private void initializeListeners() {
 
         editIdProject.setOnClickListener(new OnClickListener() {
             @Override
@@ -98,8 +102,7 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
 
             @Override
             public void onTextChanged(CharSequence sequence, int start, int before, int count) {
-                if(StringUtils.isNotEmpty(sequence))
-                    projectSelectionPresenter.search(sequence.toString());
+                projectSelectionPresenter.search(sequence.toString());
             }
 
             @Override

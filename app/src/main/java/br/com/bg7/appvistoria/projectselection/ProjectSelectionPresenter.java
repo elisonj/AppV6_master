@@ -1,5 +1,7 @@
 package br.com.bg7.appvistoria.projectselection;
 
+import com.google.common.base.Strings;
+
 import java.util.List;
 
 import br.com.bg7.appvistoria.data.source.remote.ProjectService;
@@ -29,6 +31,10 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
 
     @Override
     public void search(String idOrDescription) {
+        if (Strings.isNullOrEmpty(idOrDescription) || Strings.isNullOrEmpty(idOrDescription.trim())) {
+            return;
+        }
+
         projectServiceView.showLoading();
         List<Project> projects = projectService.findByIdOrDescription(idOrDescription);
         projectServiceView.hideLoading();
