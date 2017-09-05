@@ -2,16 +2,18 @@ package br.com.bg7.appvistoria.projectselection;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.List;
+import java.util.ArrayList;
 
-import br.com.bg7.appvistoria.data.source.remote.fake.ProjectServiceFake;
+import br.com.bg7.appvistoria.data.source.remote.ProjectService;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by: elison
@@ -19,22 +21,36 @@ import static org.mockito.Mockito.verify;
  */
 public class ProjectSelectionPresenterTest {
 
-    private static final String SEARCH = "Pr";
+    private ArrayList<Project> allProjects = new ArrayList<Project>() {{
+        add(new Project(1L, "Projeto 1"));
+        add(new Project(2L, "Projeto 2"));
+        add(new Project(3L, "Projeto 3"));
+        add(new Project(4L, "Projeto 4"));
+        add(new Project(5L, "Projeto 5"));
+    }};
+
+    private ArrayList<String> allAddresses = new ArrayList<String>() {{
+        add("Endereço 1");
+        add("Endereço 2");
+        add("Endereço 3");
+    }};
 
     @Mock
     ProjectSelectionContract.View projectSelectionView;
-    private ProjectServiceFake projectService;
+
+    @Mock
+    ProjectService projectService;
+
     private ProjectSelectionPresenter projectSelectionPresenter;
-    private List<Project> projectList;
-    private List<String> addressList;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        projectService = new ProjectServiceFake();
+
         projectSelectionPresenter = new ProjectSelectionPresenter(projectService, projectSelectionView);
 
-        projectList =  projectService.findByIdOrDescription(SEARCH);
+        when(projectService.findByIdOrDescription(anyString())).thenReturn(allProjects);
+        when(projectService.findAddressesForProject(any(Project.class))).thenReturn(allAddresses);
     }
 
     @Test
@@ -55,26 +71,31 @@ public class ProjectSelectionPresenterTest {
 
     @Test
     public void shouldShowListProjectsWhenSearch() {
-        projectSelectionPresenter.search(SEARCH);
-        verifyLoadingStartAndEnd();
+        projectSelectionPresenter.search("xyz");
 
-        verify(projectSelectionView).showProjectResults(ArgumentMatchers.eq(projectList));
+        verifyLoadingShowAndHide();
+
+        verify(projectService).findByIdOrDescription("xyz");
+        verify(projectSelectionView).showProjectResults(allProjects);
     }
 
     @Test
     public void shouldShowSelectedProjectWhenSelectProject() {
-        Project project = projectList.get(0);
-        getAddresListByProject(project);
-        verifyLoadingStartAndEnd();
+        Project project = allProjects.get(0);
 
-        verify(projectSelectionView).showSelectedProject(ArgumentMatchers.eq(project), ArgumentMatchers.eq(addressList));
+        projectSelectionPresenter.selectProject(project);
+
+        verifyLoadingShowAndHide();
+        verify(projectService).findAddressesForProject(project);
+        verify(projectSelectionView).showSelectedProject(project, allAddresses);
     }
 
     @Test
     public void shouldShowSelectProjectWhenAddressClicked() {
-        Project project = projectList.get(0);
-        getAddresListByProject(project);
-        String address = addressList.get(0);
+        Project project = allProjects.get(0);
+        String address = allAddresses.get(0);
+        projectSelectionPresenter.selectProject(project);
+
         projectSelectionPresenter.selectAddress(address);
 
         verify(projectSelectionView).showProductSelection(project.getId(), address);
@@ -93,12 +114,7 @@ public class ProjectSelectionPresenterTest {
         verify(projectSelectionView).clearProjectField();
     }
 
-    private void getAddresListByProject(Project project) {
-        projectSelectionPresenter.selectProject(project);
-        addressList = projectService.findAddressesForProject(project);
-    }
-
-    private void verifyLoadingStartAndEnd() {
+    private void verifyLoadingShowAndHide() {
         verify(projectSelectionView).showLoading();
         verify(projectSelectionView).hideLoading();
     }

@@ -33,7 +33,6 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
         List<Project> projects = projectService.findByIdOrDescription(idOrDescription);
         projectServiceView.hideLoading();
         projectServiceView.showProjectResults(projects);
-
     }
 
     @Override
