@@ -28,4 +28,8 @@ public class Project {
     public String getDescription() {
         return description;
     }
+
+    public List<Product> getProducts() {
+        return products;
+    }
 }
