@@ -45,7 +45,6 @@ public class ConfigActivity extends BaseActivity {
     private Menu menu = null;
     private Typeface nunito;
     private TypefaceSpan nunitoSpan = new TypefaceSpan(FONT_NAME_NUNITO_REGULAR);
-    private Typeface nunito;
 
     private String title = null;
 
