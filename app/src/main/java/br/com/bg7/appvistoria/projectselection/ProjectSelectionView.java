@@ -18,8 +18,6 @@ import android.widget.TextView;
 
 import com.google.common.base.Preconditions;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +34,7 @@ import static br.com.bg7.appvistoria.Constants.FONT_NAME_ROBOTO_REGULAR;
  */
 public class ProjectSelectionView extends ConstraintLayout implements  ProjectSelectionContract.View {
 
-    private static final String DIVISOR = " | ";
+    private static final String SEPARATOR = " | ";
 
     private ProjectSelectionContract.Presenter projectSelectionPresenter;
     private ListView listViewProjects;
@@ -118,7 +116,7 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
 
     @Override
     public void showSelectedProject(Project projectSelected, List<String> addresses) {
-        editIdProject.setText(projectSelected.getId() + DIVISOR + projectSelected.getDescription());
+        editIdProject.setText(projectSelected.getId() + SEPARATOR + projectSelected.getDescription());
         layoutListViewProjects.setVisibility(View.GONE);
 
         adapterAddress = new AddressSelectionAdapter(addresses);
@@ -208,7 +206,7 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
         }
 
         private void initializeViews(Project item, ViewHolder holder) {
-            holder.title.setText(item.getId() + DIVISOR + item.getDescription());
+            holder.title.setText(item.getId() + SEPARATOR + item.getDescription());
         }
 
         @Override
