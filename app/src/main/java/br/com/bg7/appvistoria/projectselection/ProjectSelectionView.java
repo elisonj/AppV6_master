@@ -121,7 +121,7 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
         editIdProject.setText(projectSelected.getId() + DIVISOR + projectSelected.getDescription());
         layoutListViewProjects.setVisibility(View.GONE);
 
-        adapterAddress = new AddressSelectionAdapter(getContext(), addresses);
+        adapterAddress = new AddressSelectionAdapter(addresses);
         listViewAddress.setAdapter(adapterAddress);
         listViewAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -175,7 +175,7 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
 
     @Override
     public void showProjectResults(List<Project> projectList) {
-        ProjectSelectionAdapter adapter = new ProjectSelectionAdapter(getContext(), projectList);
+        ProjectSelectionAdapter adapter = new ProjectSelectionAdapter(projectList);
         listViewProjects.setAdapter(adapter);
         layoutListViewProjects.setVisibility(View.VISIBLE);
 
@@ -190,20 +190,17 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
 
     private class ProjectSelectionAdapter extends BaseAdapter {
 
-        private LayoutInflater layoutInflater;
-
         private List<Project> items = new ArrayList<>();
 
-        private ProjectSelectionAdapter(Context context, List<Project> items) {
+        private ProjectSelectionAdapter(List<Project> items) {
             this.items = items;
-            this.layoutInflater = LayoutInflater.from(context);
         }
 
         @SuppressWarnings("unchecked")
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = layoutInflater.inflate(R.layout.projectselection_item, null);
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.projectselection_item, null);
                 convertView.setTag(new ViewHolder(convertView));
             }
             initializeViews(getItem(position), (ViewHolder) convertView.getTag());
@@ -241,20 +238,17 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
 
     private class AddressSelectionAdapter extends BaseAdapter {
 
-        private LayoutInflater layoutInflater;
-
         private List<String> items = new ArrayList<>();
 
-        private AddressSelectionAdapter(Context context, List<String> items) {
+        private AddressSelectionAdapter(List<String> items) {
             this.items = items;
-            this.layoutInflater = LayoutInflater.from(context);
         }
 
         @SuppressWarnings("unchecked")
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = layoutInflater.inflate(R.layout.projectselection_item, null);
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.projectselection_item, null);
                 convertView.setTag(new ViewHolder(convertView));
             }
             initializeViews(getItem(position), (ViewHolder) convertView.getTag());
