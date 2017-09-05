@@ -6,10 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import br.com.bg7.appvistoria.data.source.remote.ProjectService;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
-import br.com.bg7.appvistoria.projectselection.vo.Category;
-import br.com.bg7.appvistoria.projectselection.vo.Product;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 /**
@@ -27,12 +28,31 @@ public class StubProjectService implements ProjectService {
     @Override
     public void findByIdOrDescription(String idOrDescription, HttpCallback<List<Project>> callback) {
 
-        List<Project> listReturn = new ArrayList<>();
+        final List<Project> listReturn = new ArrayList<>();
         listReturn.add(project1);
         listReturn.add(project2);
         listReturn.add(project3);
         listReturn.add(project4);
         listReturn.add(project5);
+
+        callback.onResponse(new HttpResponse<List<Project>>() {
+            @Override
+            public boolean isSuccessful() {
+                return true;
+            }
+
+            @Nullable
+            @Override
+            public List<Project> body() {
+                return listReturn;
+            }
+
+            @Override
+            public int code() {
+                return 200;
+            }
+        });
+
     }
 
     /**
@@ -47,7 +67,7 @@ public class StubProjectService implements ProjectService {
     @Override
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void findAddressesForProject (Project project, HttpCallback<List<String>> callback) {
-        List<String> list = new ArrayList<>();
+        final List<String> list = new ArrayList<>();
 
         HashMultimap<Project, String> address = HashMultimap.create();
         address.put(project1, "Endereço 1 do projeto 1");
@@ -71,5 +91,23 @@ public class StubProjectService implements ProjectService {
                 list.add(entry.getValue());
             }
         }
+
+        callback.onResponse(new HttpResponse<List<String>>() {
+            @Override
+            public boolean isSuccessful() {
+                return true;
+            }
+
+            @Nullable
+            @Override
+            public List<String> body() {
+                return list;
+            }
+
+            @Override
+            public int code() {
+                return 200;
+            }
+        });
     }
 }
