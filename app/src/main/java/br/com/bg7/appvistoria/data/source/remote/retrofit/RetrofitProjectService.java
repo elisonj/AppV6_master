@@ -33,8 +33,8 @@ public class RetrofitProjectService implements br.com.bg7.appvistoria.data.sourc
 
     @Override
     public void findByIdOrDescription(String idOrDescription, final HttpCallback<List<Project>> callback) {
-        String token = KEY_TOKEN+Auth.token();
-        Call<br.com.bg7.appvistoria.data.source.remote.dto.Project>  call = projectService.findByIdOrDescription(token, SEARCH_KEY+idOrDescription);
+        String token = KEY_TOKEN + Auth.token();
+        Call<br.com.bg7.appvistoria.data.source.remote.dto.Project>  call = projectService.findByIdOrDescription(token, SEARCH_KEY + idOrDescription);
         RetrofitHttpCall<br.com.bg7.appvistoria.data.source.remote.dto.Project> httpCall = new RetrofitHttpCall<>(call);
 
         httpCall.enqueue(new HttpCallback<br.com.bg7.appvistoria.data.source.remote.dto.Project>() {

@@ -1,6 +1,7 @@
 package br.com.bg7.appvistoria.product;
 
 import br.com.bg7.appvistoria.data.source.remote.ProductService;
+import br.com.bg7.appvistoria.projectselection.vo.Category;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -25,6 +26,11 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
 
     @Override
     public void start() {
+
+    }
+
+    @Override
+    public void chooseQuantity(Category category, int quantity) {
 
     }
 }
