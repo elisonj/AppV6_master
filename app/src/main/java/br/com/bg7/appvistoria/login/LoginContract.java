@@ -21,6 +21,8 @@ public interface LoginContract {
         void showPasswordEmptyError();
         void showCannotLoginError();
         void showBadCredentialsError();
+        void showLoading();
+        void hideLoading();
     }
 
     interface Presenter extends BasePresenter {

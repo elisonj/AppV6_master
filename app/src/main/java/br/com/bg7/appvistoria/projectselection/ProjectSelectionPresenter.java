@@ -1,9 +1,13 @@
 package br.com.bg7.appvistoria.projectselection;
 
+import com.google.common.base.Strings;
+
 import java.util.List;
 
 import br.com.bg7.appvistoria.data.source.remote.ProjectService;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by: elison
@@ -16,8 +20,8 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
     private Project project = null;
 
     ProjectSelectionPresenter(ProjectService projectService, ProjectSelectionContract.View view) {
-        this.projectService = projectService;
-        projectServiceView = view;
+        this.projectService = checkNotNull(projectService);
+        projectServiceView = checkNotNull(view);
         projectServiceView.setPresenter(this);
     }
 
@@ -27,11 +31,17 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
 
     @Override
     public void search(String idOrDescription) {
+        if (Strings.isNullOrEmpty(idOrDescription) || Strings.isNullOrEmpty(idOrDescription.trim())) {
+            return;
+        }
+
         projectServiceView.showLoading();
         List<Project> projects = projectService.findByIdOrDescription(idOrDescription);
         projectServiceView.hideLoading();
-        projectServiceView.showProjectResults(projects);
 
+        if(projects.size() > 0) {
+            projectServiceView.showProjectResults(projects);
+        }
     }
 
     @Override

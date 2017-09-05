@@ -95,4 +95,13 @@ public class WorkOrderPresenterTest extends UserLoggedInTest {
 
         verify(workOrderView, never()).showInMap(workOrder.getAddress());
     }
+
+    @Test
+    public void shouldShowNewWorkOrderScreenWhenNoWorkOrdersLocally() {
+        workOrderRepository.clear();
+
+        workOrderPresenter.start();
+
+        verify(workOrderView).showNewWorkOrderScreen();
+    }
 }

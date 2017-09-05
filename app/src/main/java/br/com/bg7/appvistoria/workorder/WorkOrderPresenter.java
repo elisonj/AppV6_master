@@ -38,6 +38,11 @@ public class WorkOrderPresenter implements WorkOrderContract.Presenter{
         String language = config.getLanguageName();
 
         List<WorkOrder> workOrderList =  workOrderRepository.findAllOrderByStatus(language);
+        if (workOrderList.size() <= 0) {
+            workOrderView.showNewWorkOrderScreen();
+            return;
+        }
+
         workOrderView.showList(workOrderList, workOrderView.isMapAvailable());
     }
 

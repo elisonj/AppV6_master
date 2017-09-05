@@ -27,26 +27,27 @@ public class StubProjectService implements ProjectService {
     public List<Project> findByIdOrDescription(String idOrDescription) {
 
         List<Project> listReturn = new ArrayList<>();
-        List<Project> list = getData();
-
-        for(Project project: list) {
-            if(String.valueOf(project.getId()).toUpperCase().contains(idOrDescription.toUpperCase())
-                    || project.getDescription().toUpperCase().contains(idOrDescription.toUpperCase())) {
-                 listReturn.add(project);
-            }
-        }
+        listReturn.add(project1);
+        listReturn.add(project2);
+        listReturn.add(project3);
+        listReturn.add(project4);
+        listReturn.add(project5);
 
         return listReturn;
     }
 
+    /**
+     * Return addresses for the fixed projects
+     *
+     * SuppressWarnings because we don't care about the increasing
+     * size of the multi-map
+     *
+     * @param project the project to search for
+     * @return fixed list of addresses
+     */
     @Override
-    public List<String> findAddressesForProject(Project project) {
-        return getAddressData(project);
-    }
-
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private List<String> getAddressData(Project key) {
-
+    public List<String> findAddressesForProject(Project project) {
         List<String> list = new ArrayList<>();
 
         HashMultimap<Project, String> address = HashMultimap.create();
@@ -67,67 +68,11 @@ public class StubProjectService implements ProjectService {
         address.put(project5, "Endereço 3 do projeto 5");
 
         for(Map.Entry<Project, String> entry: address.entries()) {
-            if(entry.getKey().equals(key)) {
+            if(entry.getKey().equals(project)) {
                 list.add(entry.getValue());
             }
         }
 
         return list;
     }
-
-    private List<Project> getData() {
-        List<Project> list = new ArrayList<>();
-
-        Category category1 = new Category(1L, "Carros e Motos");
-        Category category2 = new Category(2L, "Caminhões e Ônibus");
-        Category category3 = new Category(3L, "Enbarcações e Aeronaves");
-        Category category4 = new Category(4L, "Imóveis");
-        Category category5 = new Category(5L, "Industrial, Máquinas e Equipamentos");
-
-        Product product1 = new Product(1L, "Uno", category1);
-        Product product2 = new Product(2L, "Pálio", category1);
-        Product product3 = new Product(3L, "Gol", category1);
-        Product product4 = new Product(4L, "Suzuki", category1);
-        Product product5 = new Product(5L, "4 quartos", category4);
-        Product product6 = new Product(6L, "Scania", category2);
-        Product product7 = new Product(7L, "Iate", category3);
-        Product product8 = new Product(8L, "Plaina industrial", category5);
-
-
-        Product product9 = new Product(9L, "Vectra", category1);
-        Product product10 = new Product(10L, "Corsa", category1);
-        Product product11 = new Product(11L, "Saveiro", category1);
-        Product product12 = new Product(12L, "Yamaha", category1);
-        Product product13 = new Product(13L, "Apartamento 2 quartos", category4);
-        Product product14 = new Product(14L, "Mercedes", category2);
-        Product product15 = new Product(15L, "Aeroplano", category3);
-        Product product16 = new Product(16L, "Serra circular", category5);
-
-        project1.addProduct(product1);
-        project1.addProduct(product3);
-        project1.addProduct(product5);
-        project2.addProduct(product2);
-        project2.addProduct(product4);
-        project2.addProduct(product6);
-        project3.addProduct(product7);
-        project3.addProduct(product8);
-        project3.addProduct(product9);
-        project4.addProduct(product10);
-        project4.addProduct(product11);
-        project4.addProduct(product12);
-        project5.addProduct(product13);
-        project5.addProduct(product14);
-        project5.addProduct(product15);
-        project1.addProduct(product16);
-
-        list.add(project1);
-        list.add(project2);
-        list.add(project3);
-        list.add(project4);
-        list.add(project5);
-
-        return list;
-
-    }
-
 }

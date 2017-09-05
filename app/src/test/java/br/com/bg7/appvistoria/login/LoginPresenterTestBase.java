@@ -14,7 +14,6 @@ import br.com.bg7.appvistoria.auth.RemoteLocalAuth;
 import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeAuthRepository;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeConfigRepository;
-import br.com.bg7.appvistoria.data.source.local.fake.FakeLanguageRepository;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeUserRepository;
 import br.com.bg7.appvistoria.data.source.remote.TokenService;
 import br.com.bg7.appvistoria.data.source.remote.UserService;
@@ -154,7 +153,18 @@ class LoginPresenterTestBase {
         verifySaveTokenAndPasswordAndShowMainScreen();
     }
 
-    private void verifyShowMainScreen() {
+    void verifyShowMainScreen() {
+        verify(loginView).hideLoading();
         verify(loginView).showMainScreen();
+    }
+
+    void verifyShowBadCredentials() {
+        verify(loginView).hideLoading();
+        verify(loginView).showBadCredentialsError();
+    }
+
+    void verifyShowCannotLogin() {
+        verify(loginView).hideLoading();
+        verify(loginView).showCannotLoginError();
     }
 }

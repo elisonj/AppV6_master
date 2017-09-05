@@ -3,7 +3,6 @@ package br.com.bg7.appvistoria.login;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -32,7 +31,8 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         callLogin();
 
         invokeUserService();
-        verify(loginView).showCannotLoginError();
+
+        verifyShowCannotLogin();
     }
 
     /**
@@ -45,6 +45,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         callLogin();
 
         invokeUserService();
+
         verifySaveTokenAndPasswordAndShowMainScreen();
     }
 
@@ -58,6 +59,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         callLogin();
 
         invokeUserService();
+
         verifySaveTokenAndShowMainScreen();
     }
 
@@ -72,7 +74,8 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         callLogin();
 
         invokeUserService();
-        verify(loginView).showCannotLoginError();
+
+        verifyShowCannotLogin();
     }
 
     /**
@@ -86,6 +89,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         callLogin();
 
         invokeUserService();
+
         verifySaveTokenAndPasswordAndShowMainScreen();
     }
 
@@ -100,6 +104,7 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         callLogin();
 
         invokeUserService();
+
         verifySaveTokenAndShowMainScreen();
     }
 
@@ -114,7 +119,8 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         callLogin();
 
         invokeUserService();
-        verify(loginView).showBadCredentialsError();
+
+        verifyShowBadCredentials();
     }
 
     /**
@@ -128,7 +134,8 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         callLogin();
 
         invokeUserService();
-        verify(loginView).showBadCredentialsError();
+
+        verifyShowBadCredentials();
     }
 
     /**
@@ -142,7 +149,8 @@ public class LoginPresenterUserServiceResponseFailureTest extends LoginPresenter
         callLogin();
 
         invokeUserService();
-        verify(loginView).showBadCredentialsError();
+
+        verifyShowBadCredentials();
     }
 
     private void setUpNullBody() {

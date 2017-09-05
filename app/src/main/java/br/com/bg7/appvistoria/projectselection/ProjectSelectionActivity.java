@@ -3,6 +3,7 @@ package br.com.bg7.appvistoria.projectselection;
 import android.os.Bundle;
 
 import br.com.bg7.appvistoria.BaseActivity;
+import br.com.bg7.appvistoria.data.servicelocator.ServiceLocator;
 import br.com.bg7.appvistoria.data.source.remote.stub.StubProjectService;
 
 /**
@@ -11,7 +12,7 @@ import br.com.bg7.appvistoria.data.source.remote.stub.StubProjectService;
  */
 public class ProjectSelectionActivity extends BaseActivity {
 
-    private final StubProjectService projectService = new StubProjectService();
+    private final ServiceLocator services = ServiceLocator.create(this, this);
     private ProjectSelectionPresenter projectSelectionPresenter;
 
     @Override
@@ -20,7 +21,7 @@ public class ProjectSelectionActivity extends BaseActivity {
 
         ProjectSelectionView view = new ProjectSelectionView(this);
 
-        projectSelectionPresenter = new ProjectSelectionPresenter(projectService, view);
+        projectSelectionPresenter = new ProjectSelectionPresenter(services.getProjectService(), view);
 
         setContentView(view);
     }

@@ -3,7 +3,6 @@ package br.com.bg7.appvistoria.login;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -31,7 +30,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         callLogin();
 
         invokeTokenService();
-        verify(loginView).showCannotLoginError();
+        verifyShowCannotLogin();
     }
 
     /**
@@ -44,7 +43,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         callLogin();
 
         invokeTokenService();
-        verify(loginView).showBadCredentialsError();
+        verifyShowBadCredentials();
     }
 
     /**
@@ -57,7 +56,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         callLogin();
 
         invokeTokenService();
-        verify(loginView).showMainScreen();
+        verifyShowMainScreen();
     }
 
     /**
@@ -71,7 +70,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         callLogin();
 
         invokeTokenService();
-        verify(loginView).showCannotLoginError();
+        verifyShowCannotLogin();
     }
 
     /**
@@ -85,7 +84,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         callLogin();
 
         invokeTokenService();
-        verify(loginView).showBadCredentialsError();
+        verifyShowBadCredentials();
     }
 
     /**
@@ -99,7 +98,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         callLogin();
 
         invokeTokenService();
-        verify(loginView).showMainScreen();
+        verifyShowMainScreen();
     }
 
     /**
@@ -113,7 +112,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         callLogin();
 
         invokeTokenService();
-        verify(loginView).showBadCredentialsError();
+        verifyShowBadCredentials();
     }
 
     /**
@@ -127,7 +126,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         callLogin();
 
         invokeTokenService();
-        verify(loginView).showBadCredentialsError();
+        verifyShowBadCredentials();
     }
 
     /**
@@ -141,7 +140,7 @@ public class LoginPresenterTokenServiceResponseFailureTest extends LoginPresente
         callLogin();
 
         invokeTokenService();
-        verify(loginView).showBadCredentialsError();
+        verifyShowBadCredentials();
     }
 
     private void setUpNullBody() {
