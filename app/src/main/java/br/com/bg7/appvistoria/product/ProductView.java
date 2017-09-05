@@ -34,11 +34,11 @@ class ProductView  extends ConstraintLayout {
 
     private void init() {
         inflate(getContext(), R.layout.activity_product, this);
-//        expListView = (ExpandableListView) findViewById(R.id.listview);
+        expListView = findViewById(R.id.listview);
 
         prepareListData();
 
-//        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+        listAdapter = new ExpandableListAdapter(getContext(), listDataHeader, listDataChild);
         expListView.setAdapter(listAdapter);
     }
 
@@ -115,13 +115,13 @@ class ProductView  extends ConstraintLayout {
             if (convertView == null) {
                 LayoutInflater infalInflater = (LayoutInflater) this.context
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//                convertView = infalInflater.inflate(R.layout.list_item, null);
+                convertView = infalInflater.inflate(R.layout.product_list_item, null);
             }
 
-//            TextView txtListChild = (TextView) convertView
-//                    .findViewById(R.id.lblListItem);
-//
-//            txtListChild.setText(childText);
+            TextView txtListChild = convertView
+                    .findViewById(R.id.category);
+
+            txtListChild.setText(childText);
             return convertView;
         }
 

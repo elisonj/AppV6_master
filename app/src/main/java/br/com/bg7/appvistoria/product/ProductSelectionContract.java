@@ -1,7 +1,11 @@
 package br.com.bg7.appvistoria.product;
 
+import java.util.List;
+
 import br.com.bg7.appvistoria.BasePresenter;
 import br.com.bg7.appvistoria.BaseView;
+import br.com.bg7.appvistoria.projectselection.vo.Category;
+import br.com.bg7.appvistoria.projectselection.vo.ProductSelection;
 
 /**
  * Created by: elison
@@ -9,10 +13,10 @@ import br.com.bg7.appvistoria.BaseView;
  */
 public interface ProductSelectionContract {
     interface View extends BaseView<ProductSelectionContract.Presenter> {
-
+        void showProducts(List<ProductSelection> productSelectionList);
     }
     interface Presenter extends BasePresenter {
-
+        void chooseQuantity(Category category, int quantity);
     }
 
 }
