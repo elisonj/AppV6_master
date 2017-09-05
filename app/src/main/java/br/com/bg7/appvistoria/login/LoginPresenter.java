@@ -39,14 +39,18 @@ public class LoginPresenter implements LoginContract.Presenter {
     public void login(String username, String password) {
         if (!checkInput(username, password)) return;
 
+        loginView.showLoading();
+
         Auth.attempt(username, password, loginView.isConnected(), new AuthCallback() {
             @Override
             public void onCannotLogin() {
+                loginView.hideLoading();
                 loginView.showCannotLoginError();
             }
 
             @Override
             public void onBadCredentials() {
+                loginView.hideLoading();
                 loginView.showBadCredentialsError();
             }
 
@@ -59,6 +63,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                     configRepository.save(config);
                 }
 
+                loginView.hideLoading();
                 loginView.showMainScreen();
             }
         });

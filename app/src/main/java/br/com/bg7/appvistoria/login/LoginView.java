@@ -50,7 +50,6 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
             @Override
             public void onClick(View view) {
                 loginPresenter.login(username.getText().toString(), password.getText().toString());
-                progress.show();
             }
         });
 
@@ -111,7 +110,6 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
 
     @Override
     public void showMainScreen() {
-        progress.hide();
         Intent intent = new Intent(getContext(), ConfigActivity.class);
         getContext().startActivity(intent);
     }
@@ -121,8 +119,17 @@ public class LoginView extends ConstraintLayout implements LoginContract.View {
         showError(getContext().getString(R.string.bad_credentials_error));
     }
 
-    private void showError(String message) {
+    @Override
+    public void showLoading() {
+        progress.show();
+    }
+
+    @Override
+    public void hideLoading() {
         progress.hide();
+    }
+
+    private void showError(String message) {
         AlertDialog dialog = new AlertDialog(getContext(), message);
         dialog.show();
     }

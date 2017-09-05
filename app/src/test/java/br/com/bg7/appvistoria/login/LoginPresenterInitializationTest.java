@@ -43,4 +43,11 @@ public class LoginPresenterInitializationTest extends LoginPresenterTestBase {
 
         verify(loginView).showMainScreen();
     }
+
+    @Test
+    public void shouldShowLoadingOnLogin() {
+        loginPresenter.login("user", "password");
+
+        verify(loginView).showLoading();
+    }
 }
