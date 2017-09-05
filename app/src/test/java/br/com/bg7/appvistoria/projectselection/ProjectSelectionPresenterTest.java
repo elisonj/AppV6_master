@@ -2,6 +2,8 @@ package br.com.bg7.appvistoria.projectselection;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -9,10 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.bg7.appvistoria.data.source.remote.ProjectService;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -43,6 +49,18 @@ public class ProjectSelectionPresenterTest {
     @Mock
     ProjectService projectService;
 
+    @Mock
+    HttpResponse<List<Project>> projectResponse;
+
+    @Mock
+    HttpResponse<List<String>> addressResponse;
+
+    @Captor
+    ArgumentCaptor<HttpCallback<List<Project>>> projectCallBackCaptor;
+
+    @Captor
+    ArgumentCaptor<HttpCallback<List<String>>> addressCallBackCaptor;
+
     private ProjectSelectionPresenter projectSelectionPresenter;
 
     @Before
@@ -51,8 +69,10 @@ public class ProjectSelectionPresenterTest {
 
         projectSelectionPresenter = new ProjectSelectionPresenter(projectService, projectSelectionView);
 
-        when(projectService.findByIdOrDescription(anyString())).thenReturn(allProjects);
-        when(projectService.findAddressesForProject(any(Project.class))).thenReturn(allAddresses);
+        when(projectResponse.body()).thenReturn(allProjects);
+        when(addressResponse.body()).thenReturn(allAddresses);
+        when(projectResponse.isSuccessful()).thenReturn(true);
+        when(addressResponse.isSuccessful()).thenReturn(true);
     }
 
     @Test
@@ -77,13 +97,13 @@ public class ProjectSelectionPresenterTest {
         projectSelectionPresenter.search("   ");
         projectSelectionPresenter.search(null);
 
-        verify(projectService, never()).findByIdOrDescription(anyString());
+        verify(projectService, never()).findByIdOrDescription(anyString(), projectCallBackCaptor.capture());
         verify(projectSelectionView, never()).showProjectResults(any(List.class));
     }
 
     @Test
     public void shouldNotShowListWhenSearchResultsIsEmpty() {
-        when(projectService.findByIdOrDescription(anyString())).thenReturn(new ArrayList<Project>());
+        when(projectResponse.body()).thenReturn(null);
 
         projectSelectionPresenter.search("xis");
 
@@ -94,9 +114,11 @@ public class ProjectSelectionPresenterTest {
     public void shouldShowListProjectsWhenSearch() {
         projectSelectionPresenter.search("xyz");
 
+        verify(projectService).findByIdOrDescription(matches("xyz"), projectCallBackCaptor.capture());
+        projectCallBackCaptor.getValue().onResponse(projectResponse);
+
         verifyLoadingShowAndHide();
 
-        verify(projectService).findByIdOrDescription("xyz");
         verify(projectSelectionView).showProjectResults(allProjects);
     }
 
@@ -106,8 +128,10 @@ public class ProjectSelectionPresenterTest {
 
         projectSelectionPresenter.selectProject(project);
 
+        verify(projectService).findAddressesForProject(eq(project), addressCallBackCaptor.capture());
+        addressCallBackCaptor.getValue().onResponse(addressResponse);
+
         verifyLoadingShowAndHide();
-        verify(projectService).findAddressesForProject(project);
         verify(projectSelectionView).showSelectedProject(project, allAddresses);
     }
 
@@ -139,4 +163,5 @@ public class ProjectSelectionPresenterTest {
         verify(projectSelectionView).showLoading();
         verify(projectSelectionView).hideLoading();
     }
+
 }
