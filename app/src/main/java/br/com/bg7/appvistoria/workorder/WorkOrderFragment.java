@@ -242,10 +242,6 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     @Override
     public void showNewWorkOrderScreen() {
-        openProjectSelection();
-    }
-
-    private void openProjectSelection() {
         Intent intent = new Intent(getActivity(), ProjectSelectionActivity.class);
         startActivity(intent);
     }
