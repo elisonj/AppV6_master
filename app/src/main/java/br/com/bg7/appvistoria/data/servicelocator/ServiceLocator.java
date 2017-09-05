@@ -32,6 +32,7 @@ public abstract class ServiceLocator {
         map = new HashMap<>();
 
         map.put("debug", AlwaysLoggedInServiceLocator.class);
+        map.put("debugWithLogin", ReleaseServiceLocator.class);
         map.put("release", ReleaseServiceLocator.class);
     }
 

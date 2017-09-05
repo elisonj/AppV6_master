@@ -23,11 +23,17 @@
             android:configChanges="orientation|locale">
 
         </activity>
+        <activity android:name=".projectselection.ProjectSelectionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar"
+            android:configChanges="orientation|locale">
+
+        </activity>
 
         <activity
             android:name=".login.LoginActivity"
             android:configChanges="orientation|locale"
-            android:theme="@style/Login"
+            android:theme="@style/NoActionBar"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

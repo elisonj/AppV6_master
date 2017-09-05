@@ -24,6 +24,7 @@ import java.util.List;
 import br.com.bg7.appvistoria.ConfirmDialog;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.WorkOrder;
+import br.com.bg7.appvistoria.projectselection.ProjectSelectionActivity;
 
 import static br.com.bg7.appvistoria.Constants.FONT_NAME_NUNITO_BOLD;
 import static br.com.bg7.appvistoria.Constants.FONT_NAME_NUNITO_REGULAR;
@@ -76,7 +77,6 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_workorder, container, false);
-
         nunito = Typeface.createFromAsset(getContext().getAssets(),FONT_NAME_NUNITO_REGULAR);
         roboto = Typeface.createFromAsset(getContext().getAssets(),FONT_NAME_ROBOTO_REGULAR);
         nunitoBold = Typeface.createFromAsset(getContext().getAssets(),FONT_NAME_NUNITO_BOLD);
@@ -123,7 +123,9 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
             adapter = new WorkOrderAdapter(list, showMapButtons);
             listView.setAdapter(adapter);
+            return;
         }
+        openProjectSelection();
     }
 
     @Override
@@ -244,7 +246,12 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
     @Override
     public void showNewWorkOrderScreen() {
+        openProjectSelection();
+    }
 
+    private void openProjectSelection() {
+        Intent intent = new Intent(getActivity(), ProjectSelectionActivity.class);
+        startActivity(intent);
     }
 
     @Override

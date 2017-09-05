@@ -27,7 +27,7 @@ public class OrmLiteWorkOrderRepository extends OrmLiteRepository<WorkOrder> imp
 
         List<WorkOrder> workOrderList = dao.queryForAll();
 
-        // TODO: Ver se dÃ¡ para ordernar pelo banco
+        // TODO: Ver se da para ordernar pelo banco
         Collections.sort(workOrderList, new Comparator<WorkOrder>() {
             @Override
             public int compare(WorkOrder workOrder, WorkOrder workOrder1) {

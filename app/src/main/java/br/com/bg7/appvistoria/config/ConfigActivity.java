@@ -39,12 +39,12 @@ public class ConfigActivity extends BaseActivity {
     private static final String SELECTED_MENU_ITEM_KEY = "SELECTED_MENU_ITEM_KEY";
     private static final int DEFAULT_SCREEN_MENU_ITEM_INDEX = 2;
 
+    private final ServiceLocator services = ServiceLocator.create(this, this);
+
     private int selectedItem = DEFAULT_SCREEN_MENU_ITEM_INDEX;
     private Menu menu = null;
     private Typeface nunito;
     private TypefaceSpan nunitoSpan = new TypefaceSpan(FONT_NAME_NUNITO_REGULAR);
-
-    private final ServiceLocator services = ServiceLocator.create(this, this);
 
     private String title = null;
 

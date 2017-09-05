@@ -9,6 +9,7 @@ import br.com.bg7.appvistoria.data.source.local.AuthRepository;
 import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
 import br.com.bg7.appvistoria.data.source.local.android.SharedPreferencesAuthRepository;
+import br.com.bg7.appvistoria.data.source.local.fake.FakeAuthRepository;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeConfigRepository;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeUserRepository;
 
@@ -37,8 +38,7 @@ class AlwaysLoggedInServiceLocator extends ReleaseServiceLocator {
     @Override
     public AuthRepository getAuthRepository() {
         try {
-            AuthRepository repository = new SharedPreferencesAuthRepository(context);
-            repository.clear();
+            AuthRepository repository = new FakeAuthRepository();
             repository.save(USER, "token");
 
             return repository;
