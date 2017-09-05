@@ -108,6 +108,10 @@ public class User {
     }
 
     public static User deserialize(String serializedUser) {
+        if (serializedUser == null) {
+            return null;
+        }
+
         String[] parts = serializedUser.split(SEPARATOR);
 
         try {
