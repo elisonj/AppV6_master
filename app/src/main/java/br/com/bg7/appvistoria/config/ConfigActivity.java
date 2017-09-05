@@ -42,6 +42,7 @@ public class ConfigActivity extends BaseActivity {
     private int selectedItem = DEFAULT_SCREEN_MENU_ITEM_INDEX;
     private Menu menu = null;
     private TypefaceSpan nunitoSpan = new TypefaceSpan(FONT_NAME_NUNITO_REGULAR);
+    private Typeface nunito;
 
     private final ServiceLocator services = ServiceLocator.create(this, this);
 
