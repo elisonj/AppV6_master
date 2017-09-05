@@ -6,7 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import br.com.bg7.appvistoria.data.source.remote.ProjectService;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
+import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
 import br.com.bg7.appvistoria.projectselection.vo.Category;
 import br.com.bg7.appvistoria.projectselection.vo.Product;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
@@ -23,10 +27,14 @@ public class ProjectServiceFake implements ProjectService {
     private Project project4 = new Project(4L, "Projeto 4");
     private Project project5 = new Project(5L, "Projeto 5");
 
-    @Override
-    public List<Project> findByIdOrDescription(String idOrDescription) {
 
-        List<Project> listReturn = new ArrayList<>();
+
+
+
+    @Override
+    public void findByIdOrDescription(String idOrDescription, HttpCallback<List<Project>> callback) {
+
+        final List<Project> listReturn = new ArrayList<>();
         List<Project> list = getData();
 
         for(Project project: list) {
@@ -36,12 +44,46 @@ public class ProjectServiceFake implements ProjectService {
             }
         }
 
-        return listReturn;
+        callback.onResponse(new HttpResponse<List<Project>>() {
+            @Override
+            public boolean isSuccessful() {
+                return true;
+            }
+
+            @Nullable
+            @Override
+            public List<Project> body() {
+                return listReturn;
+            }
+
+            @Override
+            public int code() {
+                return 200;
+            }
+        });
+
     }
 
     @Override
-    public List<String> findAddressesForProject(Project project) {
-        return getAddressData(project);
+    public void findAddressesForProject(final Project project, HttpCallback<List<String>> callback) {
+
+        callback.onResponse(new HttpResponse<List<String>>() {
+            @Override
+            public boolean isSuccessful() {
+                return true;
+            }
+
+            @Nullable
+            @Override
+            public List<String> body() {
+                return getAddressData(project);
+            }
+
+            @Override
+            public int code() {
+                return 200;
+            }
+        });
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
