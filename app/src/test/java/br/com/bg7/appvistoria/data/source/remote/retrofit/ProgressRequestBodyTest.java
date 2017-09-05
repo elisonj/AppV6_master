@@ -6,12 +6,18 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import br.com.bg7.appvistoria.data.source.remote.TestHttpProgressCallback;
 import okhttp3.MediaType;
 import okio.Buffer;
+
+import static br.com.bg7.appvistoria.data.source.remote.retrofit.Resources.FILE_0_TXT;
+import static br.com.bg7.appvistoria.data.source.remote.retrofit.Resources.FILE_1000_TXT;
+import static br.com.bg7.appvistoria.data.source.remote.retrofit.Resources.FILE_1_TXT;
+import static br.com.bg7.appvistoria.data.source.remote.retrofit.Resources.FILE_2048_TXT;
+import static br.com.bg7.appvistoria.data.source.remote.retrofit.Resources.FILE_3800_TXT;
+import static br.com.bg7.appvistoria.data.source.remote.retrofit.Resources.FILE_4096_TXT;
 
 
 /**
@@ -21,7 +27,7 @@ import okio.Buffer;
 public class ProgressRequestBodyTest {
 
     private static final int DEFAULT_BUFFER_SIZE = 1024;
-    private static final File DEFAULT_FILE = getFileFromPath("file2048.txt");
+    private static final File DEFAULT_FILE = FILE_2048_TXT;
 
     private int index = 0;
     private static final TestHttpProgressCallback EMPTY_LISTENER = new TestHttpProgressCallback() {
@@ -79,28 +85,22 @@ public class ProgressRequestBodyTest {
     public void shouldCallbackOnProgressUpdates() throws IOException {
         ArrayList<ProgressTestCase> testCases = new ArrayList<>();
 
-        testCases.add(new ProgressTestCase("file0.txt", new double[]{100.0}));
-        testCases.add(new ProgressTestCase("file1.txt", new double[]{0,100.0}));
-        testCases.add(new ProgressTestCase("file1000.txt", new double[]{0, 100.0}));
-        testCases.add(new ProgressTestCase("file2048.txt", new double[]{0, 50.0, 100.0}));
-        testCases.add(new ProgressTestCase("file4096.txt", new double[]{0, 25.0, 50.0, 75.0, 100.0}));
-        testCases.add(new ProgressTestCase("file3800.txt", new double[]{0, 26.95, 53.90, 80.84, 100.0}));
+        testCases.add(new ProgressTestCase(FILE_0_TXT, new double[]{100.0}));
+        testCases.add(new ProgressTestCase(FILE_1_TXT, new double[]{0,100.0}));
+        testCases.add(new ProgressTestCase(FILE_1000_TXT, new double[]{0, 100.0}));
+        testCases.add(new ProgressTestCase(FILE_2048_TXT, new double[]{0, 50.0, 100.0}));
+        testCases.add(new ProgressTestCase(FILE_4096_TXT, new double[]{0, 25.0, 50.0, 75.0, 100.0}));
+        testCases.add(new ProgressTestCase(FILE_3800_TXT, new double[]{0, 26.95, 53.90, 80.84, 100.0}));
 
         for (ProgressTestCase testCase : testCases) {
-            testFile(testCase.filename, testCase.expected);
+            testFile(testCase.file, testCase.expected);
         }
     }
 
-    private static File getFileFromPath(String filename) {
-        ClassLoader classLoader = ProgressRequestBodyTest.class.getClassLoader();
-        URL resource = classLoader.getResource(filename);
-        return new File(resource.getPath());
-    }
-
-    private void testFile(String filename, final double[] expectedPercentages) throws IOException {
+    private void testFile(File file, final double[] expectedPercentages) throws IOException {
         index = 0;
 
-        ProgressRequestBody body = new ProgressRequestBody(getFileFromPath(filename), DEFAULT_BUFFER_SIZE, new TestHttpProgressCallback() {
+        ProgressRequestBody body = new ProgressRequestBody(file, DEFAULT_BUFFER_SIZE, new TestHttpProgressCallback() {
             @Override
             public void onProgressUpdated(double percentage) {
                 Assert.assertEquals(expectedPercentages[index], percentage, 1e-2);
@@ -113,11 +113,11 @@ public class ProgressRequestBodyTest {
 
     private class ProgressTestCase {
         double[] expected;
-        String filename;
+        File file;
 
-        ProgressTestCase(String filename, double[] expected) {
+        ProgressTestCase(File file, double[] expected) {
             this.expected = expected;
-            this.filename = filename;
+            this.file = this.file;
         }
     }
 }
