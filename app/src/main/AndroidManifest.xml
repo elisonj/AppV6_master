@@ -18,6 +18,12 @@
         android:supportsRtl="true"
         tools:ignore="GoogleAppIndexingWarning">
 
+        <activity android:name=".product.ProductActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|locale">
+
+        </activity>
+
         <activity android:name=".config.ConfigActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|locale">

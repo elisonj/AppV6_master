@@ -15,4 +15,12 @@ public class Product {
         this.category = category;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
 }

@@ -1,5 +1,6 @@
 package br.com.bg7.appvistoria.projectselection.vo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Created by: elison
  * Date: 2017-08-31
  */
-public class Project {
+public class Project implements Serializable {
     private Long id;
     private String description;
     private List<Product> products = new ArrayList<>();
@@ -32,4 +33,10 @@ public class Project {
     public List<Product> getProducts() {
         return products;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return (id.doubleValue() == ((Project)obj).getId().doubleValue());
+    }
+
 }

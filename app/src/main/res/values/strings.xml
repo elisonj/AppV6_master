@@ -48,4 +48,7 @@
     <string name="full_address">Endereço completo</string>
     <string name="search">Busca</string>
     <string name="confirm_new_workorder">Deseja criar uma nova visita?</string>
+    <string name="available_item">disponível</string>
+    <string name="available_items">disponíveis</string>
+    <string name="actives">Ativos de </string>
 </resources>

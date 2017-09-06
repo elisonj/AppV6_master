@@ -17,25 +17,26 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_margin="10dp"
-            app:srcCompat="@drawable/ic_hide_info_in_progress" />
+            app:srcCompat="@drawable/category_car" />
 
         <TextView
             android:id="@+id/category"
             android:layout_width="0dp"
-            android:textStyle="bold"
             android:layout_height="wrap_content"
             android:layout_weight="0.93"
-            android:text="" />
-
+            android:textColor="#484d51"
+            android:textSize="16sp"
+            android:text=""
+            android:textStyle="bold" />
 
 
         <ImageView
             android:id="@+id/arrow_category"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="15dp"
+            android:layout_height="13dp"
             android:layout_margin="10dp"
             android:layout_weight="0.07"
-            app:srcCompat="@drawable/ic_hide_info_in_progress" />
+            app:srcCompat="@drawable/arrow_open_list" />
 
 
     </LinearLayout>
