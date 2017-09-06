@@ -26,6 +26,8 @@ public interface ProjectSelectionContract {
         void showLoading();
 
         void hideLoading();
+
+        void showProductSelectionScreen();
     }
 
     interface Presenter extends BasePresenter {
@@ -38,5 +40,7 @@ public interface ProjectSelectionContract {
         void projectFieldClicked();
 
         void addressFieldClicked();
+
+        void nextClicked();
     }
 }

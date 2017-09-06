@@ -65,6 +65,10 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
         projectServiceView.clearProjectField();
     }
 
+    @Override
+    public void nextClicked() {
+        projectServiceView.showProductSelectionScreen();
+    }
 
     private class ProjectSelectionCallback implements HttpCallback<List<Project>>
 

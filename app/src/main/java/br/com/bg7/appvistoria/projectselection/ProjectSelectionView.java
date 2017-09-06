@@ -2,6 +2,7 @@ package br.com.bg7.appvistoria.projectselection;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -21,10 +23,13 @@ import java.util.List;
 
 import br.com.bg7.appvistoria.ProgressDialog;
 import br.com.bg7.appvistoria.R;
+import br.com.bg7.appvistoria.product.ProductActivity;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 import static br.com.bg7.appvistoria.Constants.FONT_NAME_NUNITO_REGULAR;
 import static br.com.bg7.appvistoria.Constants.FONT_NAME_ROBOTO_REGULAR;
+import static br.com.bg7.appvistoria.product.ProductActivity.KEY_ADDRESS;
+import static br.com.bg7.appvistoria.product.ProductActivity.KEY_PROJECT_ID;
 
 /**
  * Created by: elison
@@ -45,6 +50,7 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
     private String address;
     private AddressSelectionAdapter adapterAddress = null;
     private ProgressDialog progress;
+    private Button buttonNext;
 
 
     public ProjectSelectionView(Context context) {
@@ -76,6 +82,7 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
         layoutListViewProjects = findViewById(R.id.list_layout);
         listViewAddress = findViewById(R.id.listView_address);
         layoutListViewAddress = findViewById(R.id.list_layout_address);
+        buttonNext = findViewById(R.id.button_next);
     }
 
     private void initializeListeners() {
@@ -101,6 +108,13 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
                 if (!hasFocus) {
                     projectSelectionPresenter.search(editIdProject.getText().toString());
                 }
+            }
+        });
+
+        buttonNext.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                projectSelectionPresenter.nextClicked();
             }
         });
     }
@@ -130,6 +144,14 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
     @Override
     public void showLoading() {
         progress.show();
+    }
+
+    @Override
+    public void showProductSelectionScreen() {
+        Intent intent = new Intent(getContext(), ProductActivity.class);
+        intent.putExtra(KEY_PROJECT_ID, project.getId());
+        intent.putExtra(KEY_ADDRESS, address);
+        getContext().startActivity(intent);
     }
 
     @Override
