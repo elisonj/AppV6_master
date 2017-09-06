@@ -149,7 +149,7 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
     @Override
     public void showProductSelectionScreen() {
         Intent intent = new Intent(getContext(), ProductActivity.class);
-        intent.putExtra(KEY_PROJECT_ID, project.getId());
+        intent.putExtra(KEY_PROJECT_ID, project);
         intent.putExtra(KEY_ADDRESS, address);
         getContext().startActivity(intent);
     }
