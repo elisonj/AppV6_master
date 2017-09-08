@@ -6,6 +6,7 @@
 
 
     <LinearLayout
+        android:id="@+id/linear_main"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:gravity="center_vertical"
@@ -17,6 +18,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_margin="10dp"
+            android:contentDescription="@string/ico_category"
             app:srcCompat="@drawable/category_car" />
 
         <TextView
@@ -36,6 +38,7 @@
             android:layout_height="13dp"
             android:layout_margin="10dp"
             android:layout_weight="0.07"
+            android:contentDescription="@string/ico_category"
             app:srcCompat="@drawable/arrow_open_list" />
 
 

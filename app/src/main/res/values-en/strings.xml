@@ -50,5 +50,10 @@
     <string name="confirm_new_workorder">Do you want to create a\nnew WorkOrder?</string>
     <string name="available_item">available</string>
     <string name="available_items">available</string>
-    <string name="actives">Actives of</string>
+    <string name="actives">Actives of ID </string>
+    <string name="spinner_hint">Select the quantity to inspect </string>
+    <string name="active_item">Active</string>
+    <string name="actives_item">Actives</string>
+    <string name="active_item_selected">%1$s! of %2$s to inspect</string>
+    <string name="ico_category">Category</string>
 </resources>

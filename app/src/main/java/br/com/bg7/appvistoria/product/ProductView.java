@@ -3,14 +3,19 @@ package br.com.bg7.appvistoria.product;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.piotrek.customspinner.CustomSpinner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +42,11 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<Category> listDataHeader = new ArrayList<>();
+
+
+    HashMap<Category, List<KeyValueItemList>> itemsSelected = new HashMap<>();
     HashMap<Category, List<KeyValueItemList>> listDataChild = new HashMap<>();
+
     private HashMap<Long, Drawable> drawableCategories = new HashMap<>();
 
     public ProductView(Context context) {
@@ -64,7 +73,7 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
     @Override
     public void showProducts(List<ProductSelection> productSelectionList) {
         listDataHeader.clear();
-        listDataChild.clear();;
+        listDataChild.clear();
 
         listAdapter = new ExpandableListAdapter(getContext(), productSelectionList);
         expListView.setAdapter(listAdapter);
@@ -75,6 +84,22 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
         productSelectionPresenter = checkNotNull(presenter);
     }
 
+    @Override
+    public void showSelectedQuantity(Category category, Product product, int quantity) {
+
+        List<KeyValueItemList> products = itemsSelected.get(category);
+
+        if(products == null) {
+            products = new ArrayList<>();
+        }
+        KeyValueItemList keyValueItemList = new KeyValueItemList(product, quantity);
+
+        keyValueItemList.setQuantity(quantity);
+        products.add(keyValueItemList);
+
+        itemsSelected.put(category, products);
+    }
+
     private class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         private Context context;
@@ -82,31 +107,14 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
         ExpandableListAdapter(Context context, List<ProductSelection>  productSelections ) {
             this.context = context;
 
-            listDataHeader = new ArrayList<Category>();
-            listDataChild = new HashMap<Category, List<KeyValueItemList>>();
+            listDataHeader = new ArrayList<>();
+            listDataChild = new HashMap<>();
 
-            extractProductSelectionsToAdapter(productSelections);
-        }
-
-        private void extractProductSelectionsToAdapter(List<ProductSelection> productSelections) {
-
-            for(ProductSelection  productSelection: productSelections) {
-                listDataHeader.add(productSelection.getCategory());
-
-                List<KeyValueItemList> list = new ArrayList<>();
-
-                for(Map.Entry<Product, Integer> entry : productSelection.getProducts().entrySet()) {
-                    KeyValueItemList item = new KeyValueItemList(entry.getKey(), entry.getValue());
-                    list.add(item);
-                }
-
-                listDataChild.put(productSelection.getCategory(), list);
-            }
-
+            extractProductQuantityToAdapter(productSelections);
         }
 
         @Override
-        public Object getChild(int groupPosition, int childPosition) {
+        public KeyValueItemList getChild(int groupPosition, int childPosition) {
             List<KeyValueItemList> keyValueItemLists = listDataChild.get(listDataHeader.get(groupPosition));
             return keyValueItemLists.get(childPosition);
         }
@@ -117,33 +125,169 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
         }
 
         @Override
-        public View getChildView(int groupPosition, final int childPosition,
+        public View getChildView(final int groupPosition, final int childPosition,
                                  boolean isLastChild, View convertView, ViewGroup parent) {
 
-            final KeyValueItemList childText = (KeyValueItemList) getChild(groupPosition, childPosition);
+            final KeyValueItemList childText = getChild(groupPosition, childPosition);
+            final boolean isSelected = isProductSelected(childText.getProduct(), groupPosition);
 
             if (convertView == null) {
-                LayoutInflater infalInflater = (LayoutInflater) this.context
-                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = infalInflater.inflate(R.layout.product_list_item, null);
             }
 
-            TextView txtListChild = convertView.findViewById(R.id.product);
-            TextView quantity = convertView.findViewById(R.id.quantity);
+            final LinearLayout linearMain = convertView.findViewById(R.id.linear_main);
+            linearMain.setBackgroundColor(getContext().getColor(R.color.item_default));
+            final TextView product = convertView.findViewById(R.id.product);
+            final TextView quantity = convertView.findViewById(R.id.quantity);
+            product.setTextColor(getContext().getColor(R.color.item_font_default));
+            quantity.setTextColor(getContext().getColor(R.color.item_font_default));
+            final LinearLayout linearQuantity = convertView.findViewById(R.id.linear_quantity);
+            final ImageView arrowItem = convertView.findViewById(R.id.arrow_item);
+            arrowItem.setImageDrawable(getResources().getDrawable(R.drawable.arrow_open_list, null));
+            final CustomSpinner spinner = convertView.findViewById(R.id.spinner);
+
+
+            String[] items = getInitialSpinnerValues(childText);
+
+            spinner.initializeStringValues(items, getContext().getString(R.string.spinner_hint));
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                          @Override
+                                          public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                                              if (!adapterView.getSelectedItem().equals(getContext().getString(R.string.spinner_hint))) {
+                                                  String spinnerItem = adapterView.getAdapter().getItem(position).toString();
+
+                                                  int firtsSpace = spinnerItem.indexOf(EMPTY_SPACE);
+                                                  String quantitySelected = spinnerItem.substring(0, firtsSpace);
+
+                                                  formatSelectedChild(quantitySelected, childText, linearMain, product, quantity, arrowItem);
+                                                  selectProduct(quantitySelected, groupPosition, childText);
+                                                  linearQuantity.setVisibility(View.GONE);
+                                                  arrowItem.setImageDrawable(getResources().getDrawable(R.drawable.arrow_open_white, null));
+                                              }
+                                          }
+
+                                          @Override
+                                          public void onNothingSelected(AdapterView<?> adapterView) {
+
+                                          }
+                                      });
+
+            linearMain.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    int openArrow = R.drawable.arrow_open_list;
+                    int closeArrow = R.drawable.arrow_close_list;
+
+                    if(isSelected) {
+                        openArrow = R.drawable.arrow_open_white;
+                        closeArrow = R.drawable.arrow_close_white;
+                    }
+
+                    if(linearQuantity.isShown()) {
+                        linearQuantity.setVisibility(View.GONE);
+                        arrowItem.setImageDrawable(getResources().getDrawable(openArrow, null));
+                        return;
+                    }
+                    linearQuantity.setVisibility(View.VISIBLE);
+                    arrowItem.setImageDrawable(getResources().getDrawable(closeArrow, null));
+                }
+            });
 
             String title = childText.getProduct().getType() + KEY_COLON;
+            product.setText(title);
+
+            if(isSelected) {
+                formatSelectedChild(String.valueOf(childText.getQuantity()), childText, linearMain, product, quantity, arrowItem);
+                showSelectedWhiteArrows(arrowItem, linearQuantity);
+
+                return convertView;
+            }
 
             if(childText.getQuantity() > 1) {
-                txtListChild.setText(title);
                 String available = childText.getQuantity() + EMPTY_SPACE + getContext().getString(R.string.available_items);
                 quantity.setText(available);
                 return convertView;
             }
 
-            txtListChild.setText(title);
             String available = childText.getQuantity() + EMPTY_SPACE + getContext().getString(R.string.available_item);
             quantity.setText(available);
             return convertView;
+        }
+
+        void showSelectedWhiteArrows(ImageView arrowItem, LinearLayout linearQuantity) {
+            if(linearQuantity.isShown()) {
+                arrowItem.setImageDrawable(getResources().getDrawable(R.drawable.arrow_close_white, null));
+                return;
+            }
+            arrowItem.setImageDrawable(getResources().getDrawable(R.drawable.arrow_open_white, null));
+        }
+
+        private boolean isProductSelected(Product product, int groupPosition) {
+            List<KeyValueItemList> keyValueItemLists = itemsSelected.get(getGroup(groupPosition));
+            if(keyValueItemLists == null) return false;
+
+            for(KeyValueItemList item: keyValueItemLists) {
+                if (item.getProduct().getId().equals(product.getId())) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void extractProductQuantityToAdapter(List<ProductSelection> productSelections) {
+
+            for(ProductSelection  productSelection: productSelections) {
+
+                if(!listDataHeader.contains(productSelection.getCategory())) {
+                    listDataHeader.add(productSelection.getCategory());
+                }
+
+                List<KeyValueItemList> list = listDataChild.get(productSelection.getCategory());
+
+                if(list == null) list =  new ArrayList<>();
+
+                for(Map.Entry<Product, Integer> entry : productSelection.getProducts().entrySet()) {
+                    KeyValueItemList item = new KeyValueItemList(entry.getKey(), entry.getValue());
+                    list.add(item);
+                }
+
+                listDataChild.put(productSelection.getCategory(), list);
+            }
+        }
+
+        @NonNull
+        private String formatSelectedChild(String quantitySelected, KeyValueItemList childText, LinearLayout linearMain, TextView product, TextView quantity, ImageView arrowItem) {
+            linearMain.setBackgroundColor(getResources().getColor(R.color.item_orange, null));
+            product.setTextColor(getResources().getColor(R.color.white, null));
+
+            String format = String.format(
+                    getResources().getString(R.string.active_item_selected),
+                    quantitySelected,
+                    String.valueOf(childText.getQuantity()));
+
+            quantity.setText(format);
+            quantity.setTextColor(getResources().getColor(R.color.white, null));
+            return quantitySelected;
+        }
+
+        private void selectProduct(String quantitySelected, int groupPosition, KeyValueItemList childText) {
+            productSelectionPresenter.chooseQuantity(getGroup(groupPosition), childText.getProduct(), Integer.parseInt(quantitySelected));
+        }
+
+        private String[] getInitialSpinnerValues(KeyValueItemList childText) {
+            String[] items = new String[childText.getQuantity()];
+
+
+            for(int cont = 1; cont <= childText.getQuantity(); cont++) {
+                if(cont == 1 ) {
+                    items[cont - 1] = String.valueOf(cont) + EMPTY_SPACE + getContext().getString(R.string.active_item);
+                    continue;
+                }
+                items[cont - 1] = String.valueOf(cont) + EMPTY_SPACE + getContext().getString(R.string.actives_item);
+            }
+            return items;
         }
 
         @Override
@@ -153,7 +297,7 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
         }
 
         @Override
-        public Object getGroup(int groupPosition) {
+        public Category getGroup(int groupPosition) {
             return listDataHeader.get(groupPosition);
         }
 
@@ -170,11 +314,10 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
         @Override
         public View getGroupView(int groupPosition, boolean isExpanded,
                                  View convertView, ViewGroup parent) {
-            Category headerTitle = (Category) getGroup(groupPosition);
+            Category headerTitle =  getGroup(groupPosition);
             if (convertView == null) {
-                LayoutInflater infalInflater = (LayoutInflater) this.context
-                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = infalInflater.inflate(R.layout.product_list_category, null);
+                LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.product_list_category, null);
             }
 
             TextView category = convertView.findViewById(R.id.category);
@@ -209,8 +352,12 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
             this.quantity = quantity;
         }
 
-        public Integer getQuantity() {
+        Integer getQuantity() {
             return quantity;
+        }
+
+        void setQuantity(Integer quantity) {
+            this.quantity = quantity;
         }
 
         public Product getProduct() {

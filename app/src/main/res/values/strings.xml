@@ -50,5 +50,10 @@
     <string name="confirm_new_workorder">Deseja criar uma nova visita?</string>
     <string name="available_item">disponível</string>
     <string name="available_items">disponíveis</string>
-    <string name="actives">Ativos de </string>
+    <string name="actives">Ativos de ID </string>
+    <string name="spinner_hint">Determine a quantidade a inspecionar </string>
+    <string name="active_item">Ativo</string>
+    <string name="actives_item">Ativos</string>
+    <string name="active_item_selected">%1$s de %2$s a inspecionar</string>
+    <string name="ico_category">Categoria</string>
 </resources>

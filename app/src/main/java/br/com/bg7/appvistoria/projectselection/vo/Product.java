@@ -19,6 +19,10 @@ public class Product {
         return type;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public Category getCategory() {
         return category;
     }

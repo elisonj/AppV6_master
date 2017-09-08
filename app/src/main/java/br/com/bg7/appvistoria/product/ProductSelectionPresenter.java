@@ -43,11 +43,13 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
 
                 List<Product> products = httpResponse.body();
 
-                List<ProductSelection> productSelections = new ArrayList<ProductSelection>();
+                if(products == null) return;
+
+                List<ProductSelection> productSelections = new ArrayList<>();
 
                 for(Product product: products) {
 
-                    HashMap<Product, Integer> hashMap = new HashMap<Product, Integer>();
+                    HashMap<Product, Integer> hashMap = new HashMap<>();
                     hashMap.put(product, 1);
 
                     ProductSelection productSelection = new ProductSelection(product.getCategory(), hashMap);
@@ -65,7 +67,7 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
     }
 
     @Override
-    public void chooseQuantity(Category category, int quantity) {
-
+    public void chooseQuantity(Category category, Product product, int quantity) {
+        productSelectionView.showSelectedQuantity(category, product, quantity);
     }
 }

@@ -92,4 +92,5 @@ dependencies {
     compile 'com.akexorcist:localizationactivity:1.1.2'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.1'
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.8'
+    compile 'com.github.piotrek1543:CustomSpinner:0.1'
 }
