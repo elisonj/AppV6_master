@@ -7,6 +7,7 @@ import br.com.bg7.appvistoria.BaseView;
 import br.com.bg7.appvistoria.projectselection.vo.Category;
 import br.com.bg7.appvistoria.projectselection.vo.Product;
 import br.com.bg7.appvistoria.projectselection.vo.ProductSelection;
+import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 /**
  * Created by: elison
@@ -16,9 +17,20 @@ public interface ProductSelectionContract {
     interface View extends BaseView<ProductSelectionContract.Presenter> {
         void showProducts(List<ProductSelection> productSelectionList);
         void showSelectedQuantity(Category category, Product product, int quantity);
+        void showConnectivityError();
+        void showConfirmation();
+        void hideConfirmation();
+        void showWorkOrderScreen();
+        void showProjectSelection(Project project, String address);
     }
     interface Presenter extends BasePresenter {
         void chooseQuantity(Category category, Product product,  int quantity);
+        void cancelClicked();
+        void createWorkOrderClicked();
+        void cancelCreateWorkOrderClicked();
+        void confirmCreateWorkOrderClicked();
+        void backClicked();
+        boolean isProductSelected(Product product, Category category);
     }
 
 }

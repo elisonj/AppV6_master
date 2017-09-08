@@ -29,7 +29,7 @@ import br.com.bg7.appvistoria.projectselection.vo.Project;
 import static br.com.bg7.appvistoria.Constants.FONT_NAME_NUNITO_REGULAR;
 import static br.com.bg7.appvistoria.Constants.FONT_NAME_ROBOTO_REGULAR;
 import static br.com.bg7.appvistoria.product.ProductActivity.KEY_ADDRESS;
-import static br.com.bg7.appvistoria.product.ProductActivity.KEY_PROJECT_ID;
+import static br.com.bg7.appvistoria.product.ProductActivity.KEY_PROJECT;
 
 /**
  * Created by: elison
@@ -149,7 +149,7 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
     @Override
     public void showProductSelectionScreen() {
         Intent intent = new Intent(getContext(), ProductActivity.class);
-        intent.putExtra(KEY_PROJECT_ID, project);
+        intent.putExtra(KEY_PROJECT, project);
         intent.putExtra(KEY_ADDRESS, address);
         getContext().startActivity(intent);
     }

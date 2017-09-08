@@ -1,8 +1,10 @@
 package br.com.bg7.appvistoria.product;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
@@ -22,11 +24,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.com.bg7.appvistoria.AlertDialog;
+import br.com.bg7.appvistoria.ConfirmDialog;
 import br.com.bg7.appvistoria.R;
+import br.com.bg7.appvistoria.projectselection.ProjectSelectionActivity;
 import br.com.bg7.appvistoria.projectselection.vo.Category;
 import br.com.bg7.appvistoria.projectselection.vo.Product;
 import br.com.bg7.appvistoria.projectselection.vo.ProductSelection;
+import br.com.bg7.appvistoria.projectselection.vo.Project;
 
+import static br.com.bg7.appvistoria.product.ProductActivity.KEY_ADDRESS;
+import static br.com.bg7.appvistoria.product.ProductActivity.KEY_PROJECT;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -42,12 +50,14 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<Category> listDataHeader = new ArrayList<>();
+    private ConfirmDialog confirmDialog;
 
-
-    HashMap<Category, List<KeyValueItemList>> itemsSelected = new HashMap<>();
-    HashMap<Category, List<KeyValueItemList>> listDataChild = new HashMap<>();
+    HashMap<Category, List<ProductSelectionItem>> listDataChild = new HashMap<>();
 
     private HashMap<Long, Drawable> drawableCategories = new HashMap<>();
+    private View linearBotton;
+    private View linearCancel;
+    private View linearConfirm;
 
     public ProductView(Context context) {
         super(context);
@@ -57,9 +67,28 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
     private void init() {
         inflate(getContext(), R.layout.activity_product, this);
         expListView = findViewById(R.id.listview);
+        linearBotton = findViewById(R.id.linear_botton);
+        linearCancel = findViewById(R.id.linear_cancel);
+        linearConfirm = findViewById(R.id.linear_confirm);
 
         populateCategoriesDrawable();
+        initializeListeners();
+    }
 
+    private void initializeListeners() {
+        linearCancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                productSelectionPresenter.cancelClicked();
+            }
+        });
+
+        linearConfirm.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                productSelectionPresenter.confirmCreateWorkOrderClicked();
+            }
+        });
     }
 
     private void populateCategoriesDrawable() {
@@ -71,9 +100,25 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
     }
 
     @Override
+    public void showConnectivityError() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        boolean isConnect = connectivityManager.getActiveNetworkInfo() != null
+                && connectivityManager.getActiveNetworkInfo().isAvailable()
+                && connectivityManager.getActiveNetworkInfo().isConnected();
+
+        if(!isConnect) {
+            AlertDialog dialog = new AlertDialog(getContext(), getContext().getString(R.string.cannot_create_workorder));
+            dialog.show();
+        }
+    }
+
+    @Override
     public void showProducts(List<ProductSelection> productSelectionList) {
         listDataHeader.clear();
         listDataChild.clear();
+
+        linearBotton.setVisibility(View.GONE);
 
         listAdapter = new ExpandableListAdapter(getContext(), productSelectionList);
         expListView.setAdapter(listAdapter);
@@ -86,18 +131,45 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
 
     @Override
     public void showSelectedQuantity(Category category, Product product, int quantity) {
+        linearBotton.setVisibility(View.VISIBLE);
+    }
 
-        List<KeyValueItemList> products = itemsSelected.get(category);
+    @Override
+    public void showProjectSelection(Project project, String address) {
+        Intent intent = new Intent(getContext(), ProjectSelectionActivity.class);
+        intent.putExtra(KEY_PROJECT, project);
+        intent.putExtra(KEY_ADDRESS, address);
+        getContext().startActivity(intent);
+    }
 
-        if(products == null) {
-            products = new ArrayList<>();
-        }
-        KeyValueItemList keyValueItemList = new KeyValueItemList(product, quantity);
+    @Override
+    public void showConfirmation() {
+        String message = getContext().getString(R.string.confirm_create_workorder);
+        confirmDialog = new ConfirmDialog(getContext(), message);
+        View.OnClickListener confirmListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                productSelectionPresenter.createWorkOrderClicked();
+            }
+        };
 
-        keyValueItemList.setQuantity(quantity);
-        products.add(keyValueItemList);
+        View.OnClickListener cancelListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                productSelectionPresenter.cancelCreateWorkOrderClicked();
+            }
+        };
+        confirmDialog.show(confirmListener, cancelListener);
+    }
 
-        itemsSelected.put(category, products);
+    @Override
+    public void hideConfirmation() {
+        confirmDialog.hide();
+    }
+
+    @Override
+    public void showWorkOrderScreen() {
+        confirmDialog.hide();
     }
 
     private class ExpandableListAdapter extends BaseExpandableListAdapter {
@@ -114,9 +186,9 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
         }
 
         @Override
-        public KeyValueItemList getChild(int groupPosition, int childPosition) {
-            List<KeyValueItemList> keyValueItemLists = listDataChild.get(listDataHeader.get(groupPosition));
-            return keyValueItemLists.get(childPosition);
+        public ProductSelectionItem getChild(int groupPosition, int childPosition) {
+            List<ProductSelectionItem> productSelectionItems = listDataChild.get(listDataHeader.get(groupPosition));
+            return productSelectionItems.get(childPosition);
         }
 
         @Override
@@ -128,8 +200,8 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
         public View getChildView(final int groupPosition, final int childPosition,
                                  boolean isLastChild, View convertView, ViewGroup parent) {
 
-            final KeyValueItemList childText = getChild(groupPosition, childPosition);
-            final boolean isSelected = isProductSelected(childText.getProduct(), groupPosition);
+            final ProductSelectionItem childText = getChild(groupPosition, childPosition);
+            final boolean isSelected = productSelectionPresenter.isProductSelected(childText.getProduct(), getGroup(groupPosition));
 
             if (convertView == null) {
                 LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -224,17 +296,7 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
             arrowItem.setImageDrawable(getResources().getDrawable(R.drawable.arrow_open_white, null));
         }
 
-        private boolean isProductSelected(Product product, int groupPosition) {
-            List<KeyValueItemList> keyValueItemLists = itemsSelected.get(getGroup(groupPosition));
-            if(keyValueItemLists == null) return false;
 
-            for(KeyValueItemList item: keyValueItemLists) {
-                if (item.getProduct().getId().equals(product.getId())) {
-                    return true;
-                }
-            }
-            return false;
-        }
 
         private void extractProductQuantityToAdapter(List<ProductSelection> productSelections) {
 
@@ -244,12 +306,12 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
                     listDataHeader.add(productSelection.getCategory());
                 }
 
-                List<KeyValueItemList> list = listDataChild.get(productSelection.getCategory());
+                List<ProductSelectionItem> list = listDataChild.get(productSelection.getCategory());
 
                 if(list == null) list =  new ArrayList<>();
 
                 for(Map.Entry<Product, Integer> entry : productSelection.getProducts().entrySet()) {
-                    KeyValueItemList item = new KeyValueItemList(entry.getKey(), entry.getValue());
+                    ProductSelectionItem item = new ProductSelectionItem(entry.getKey(), entry.getValue());
                     list.add(item);
                 }
 
@@ -258,7 +320,7 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
         }
 
         @NonNull
-        private String formatSelectedChild(String quantitySelected, KeyValueItemList childText, LinearLayout linearMain, TextView product, TextView quantity, ImageView arrowItem) {
+        private String formatSelectedChild(String quantitySelected, ProductSelectionItem childText, LinearLayout linearMain, TextView product, TextView quantity, ImageView arrowItem) {
             linearMain.setBackgroundColor(getResources().getColor(R.color.item_orange, null));
             product.setTextColor(getResources().getColor(R.color.white, null));
 
@@ -272,11 +334,11 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
             return quantitySelected;
         }
 
-        private void selectProduct(String quantitySelected, int groupPosition, KeyValueItemList childText) {
+        private void selectProduct(String quantitySelected, int groupPosition, ProductSelectionItem childText) {
             productSelectionPresenter.chooseQuantity(getGroup(groupPosition), childText.getProduct(), Integer.parseInt(quantitySelected));
         }
 
-        private String[] getInitialSpinnerValues(KeyValueItemList childText) {
+        private String[] getInitialSpinnerValues(ProductSelectionItem childText) {
             String[] items = new String[childText.getQuantity()];
 
 
@@ -343,26 +405,5 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
     }
 
 
-    private class KeyValueItemList {
-        private Product product;
-        private Integer quantity;
-
-        KeyValueItemList(Product product, Integer quantity) {
-            this.product = product;
-            this.quantity = quantity;
-        }
-
-        Integer getQuantity() {
-            return quantity;
-        }
-
-        void setQuantity(Integer quantity) {
-            this.quantity = quantity;
-        }
-
-        public Product getProduct() {
-            return product;
-        }
-    }
 
 }

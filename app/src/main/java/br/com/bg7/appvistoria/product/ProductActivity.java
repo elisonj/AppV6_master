@@ -18,7 +18,8 @@ import br.com.bg7.appvistoria.projectselection.vo.Project;
 public class ProductActivity extends BaseActivity {
 
     private static final String EMPTY_SPACE = " ";
-    public static final String KEY_PROJECT_ID = "project_id";
+
+    public static final String KEY_PROJECT = "project";
     public static final String KEY_ADDRESS = "address";
     private final ServiceLocator services = ServiceLocator.create(this, this);
     private ProductSelectionPresenter productSelectionPresenter;
@@ -31,10 +32,12 @@ public class ProductActivity extends BaseActivity {
 
         if(getIntent() != null && getIntent().getExtras() != null) {
             Intent intent = getIntent();
-            project = (Project) intent.getSerializableExtra(KEY_PROJECT_ID);
+            project = (Project) intent.getSerializableExtra(KEY_PROJECT);
             address = intent.getStringExtra(KEY_ADDRESS);
         }
 
+        ProductView view = new ProductView(this);
+        productSelectionPresenter = new ProductSelectionPresenter(services.getProductService(), view, project, address, services.getWorkOrderRepository());
 
         if(getSupportActionBar() != null) {
 
@@ -48,7 +51,7 @@ public class ProductActivity extends BaseActivity {
             btHome.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onBackPressed();
+                    productSelectionPresenter.backClicked();
                 }
             });
 
@@ -57,8 +60,6 @@ public class ProductActivity extends BaseActivity {
             getSupportActionBar().setCustomView(customView);
         }
 
-        ProductView view = new ProductView(this);
-        productSelectionPresenter = new ProductSelectionPresenter(services.getProductService(), view, project, address);
 
         setContentView(view);
     }
