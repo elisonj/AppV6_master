@@ -10,13 +10,14 @@ import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.piotrek.customspinner.CustomSpinner;
+import com.weiwangcn.betterspinner.library.BetterSpinner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -226,33 +227,28 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
             final LinearLayout linearQuantity = convertView.findViewById(R.id.linear_quantity);
             final ImageView arrowItem = convertView.findViewById(R.id.arrow_item);
             arrowItem.setImageDrawable(getResources().getDrawable(R.drawable.arrow_open_list, null));
-            final CustomSpinner spinner = convertView.findViewById(R.id.spinner);
+            final BetterSpinner spinner = convertView.findViewById(R.id.spinner);
 
 
-            String[] items = getInitialSpinnerValues(childText);
+            String[] initialSpinnerValues = getInitialSpinnerValues(childText);
+            ArrayAdapter<String> items = new ArrayAdapter<String>(getContext(), android.R.layout.simple_dropdown_item_1line, initialSpinnerValues);
+            spinner.setAdapter(items);
 
-            spinner.initializeStringValues(items, getContext().getString(R.string.spinner_hint));
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                          @Override
-                                          public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                                              if (!adapterView.getSelectedItem().equals(getContext().getString(R.string.spinner_hint))) {
-                                                  String spinnerItem = adapterView.getAdapter().getItem(position).toString();
+            spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                    String spinnerItem = adapterView.getAdapter().getItem(position).toString();
 
-                                                  int firtsSpace = spinnerItem.indexOf(EMPTY_SPACE);
-                                                  String quantitySelected = spinnerItem.substring(0, firtsSpace);
+                    int firtsSpace = spinnerItem.indexOf(EMPTY_SPACE);
+                    String quantitySelected = spinnerItem.substring(0, firtsSpace);
 
-                                                  formatSelectedChild(quantitySelected, childText, linearMain, product, quantity, arrowItem);
-                                                  selectProduct(quantitySelected, groupPosition, childText);
-                                                  linearQuantity.setVisibility(View.GONE);
-                                                  arrowItem.setImageDrawable(getResources().getDrawable(R.drawable.arrow_open_white, null));
-                                              }
-                                          }
+                    formatSelectedChild(quantitySelected, childText, linearMain, product, quantity, arrowItem);
+                    selectProduct(quantitySelected, groupPosition, childText);
+                    linearQuantity.setVisibility(View.GONE);
+                    arrowItem.setImageDrawable(getResources().getDrawable(R.drawable.arrow_open_white, null));
+                }
+            });
 
-                                          @Override
-                                          public void onNothingSelected(AdapterView<?> adapterView) {
-
-                                          }
-                                      });
 
             linearMain.setOnClickListener(new OnClickListener() {
                 @Override

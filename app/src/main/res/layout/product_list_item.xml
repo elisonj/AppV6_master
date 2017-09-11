@@ -57,8 +57,9 @@
         android:background="#e4e8eb"
         android:layout_height="80dp">
 
-        <com.piotrek.customspinner.CustomSpinner
+        <com.weiwangcn.betterspinner.library.BetterSpinner
             android:id="@+id/spinner"
+            android:hint="@string/spinner_hint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
