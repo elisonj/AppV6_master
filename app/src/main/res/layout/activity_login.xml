@@ -51,6 +51,7 @@
                     android:layout_marginStart="10dp"
                     android:textColorHint="@android:color/black"
                     android:hint="@string/user"
+                    android:text="unicornio"
                     android:inputType="textPersonName"/>
 
             </LinearLayout>
@@ -83,6 +84,7 @@
                     android:layout_marginStart="10dp"
                     android:textColorHint="@android:color/black"
                     android:hint="@string/password"
+                    android:text="unicornio"
                     android:inputType="textPassword" />
             </LinearLayout>
         </LinearLayout>

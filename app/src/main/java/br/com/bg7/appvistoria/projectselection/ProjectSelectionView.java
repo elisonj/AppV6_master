@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.constraint.ConstraintLayout;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,6 +109,17 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
                 if (!hasFocus) {
                     projectSelectionPresenter.search(editIdProject.getText().toString());
                 }
+            }
+        });
+
+        editIdProject.setOnKeyListener(new OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    projectSelectionPresenter.search(editIdProject.getText().toString());
+                    return true;
+                }
+                return false;
             }
         });
 

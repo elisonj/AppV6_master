@@ -111,6 +111,7 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
 
     @Override
     public void cancelClicked() {
+        itemsSelected.clear();
         productSelectionView.showProducts(productSelections);
     }
 
@@ -121,7 +122,6 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
         WorkOrder workOrder = new WorkOrder(project.getDescription(), summary, address);
 
         for(Map.Entry<Category, List<ProductSelectionItem>> entry : itemsSelected.entrySet()) {
-            Category category = entry.getKey();
             List<ProductSelectionItem> products = entry.getValue();
 
             summary = getSummaryByProductSelection(products);
@@ -129,9 +129,15 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
 
         workOrder.setSummary(summary);
 
-        workOrderRepository.save(workOrder);
+        List<WorkOrder> allOrderByAddress = workOrderRepository.findAllOrderByProjectAndAddress(workOrder.getName(), address);
 
-        productSelectionView.showWorkOrderScreen();
+        if(allOrderByAddress.size() == 0) {
+            workOrderRepository.save(workOrder);
+            productSelectionView.showWorkOrderScreen();
+            return;
+        }
+
+        productSelectionView.showCannotDuplicateWorkorderError();
     }
 
     private String getSummaryByProductSelection(List<ProductSelectionItem> products) {

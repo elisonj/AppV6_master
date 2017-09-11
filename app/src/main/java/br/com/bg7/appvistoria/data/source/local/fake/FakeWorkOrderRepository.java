@@ -29,6 +29,11 @@ public class FakeWorkOrderRepository extends FakeRepository<String, WorkOrder> i
     }
 
     @Override
+    public List<WorkOrder> findAllOrderByProjectAndAddress(String description, String address) {
+        return new ArrayList<>();
+    }
+
+    @Override
     String getKey(WorkOrder entity) {
         return entity.getName();
     }

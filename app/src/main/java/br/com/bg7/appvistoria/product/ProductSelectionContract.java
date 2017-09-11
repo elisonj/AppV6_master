@@ -20,6 +20,7 @@ public interface ProductSelectionContract {
         void showConnectivityError();
         void showConfirmation();
         void hideConfirmation();
+        void showCannotDuplicateWorkorderError();
         void showWorkOrderScreen();
         void showProjectSelection(Project project, String address);
     }

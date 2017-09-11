@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -168,8 +167,19 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
     }
 
     @Override
+    public void showCannotDuplicateWorkorderError() {
+        confirmDialog.hide();
+        showError(getContext().getString(R.string.cannot_duplicate_workorder));
+    }
+
+    @Override
     public void showWorkOrderScreen() {
         confirmDialog.hide();
+    }
+
+    private void showError(String message) {
+        AlertDialog dialog = new AlertDialog(getContext(), message);
+        dialog.show();
     }
 
     private class ExpandableListAdapter extends BaseExpandableListAdapter {
@@ -204,8 +214,7 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
             final boolean isSelected = productSelectionPresenter.isProductSelected(childText.getProduct(), getGroup(groupPosition));
 
             if (convertView == null) {
-                LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = infalInflater.inflate(R.layout.product_list_item, null);
+                convertView = inflate(context, R.layout.product_list_item, null);
             }
 
             final LinearLayout linearMain = convertView.findViewById(R.id.linear_main);
@@ -296,8 +305,6 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
             arrowItem.setImageDrawable(getResources().getDrawable(R.drawable.arrow_open_white, null));
         }
 
-
-
         private void extractProductQuantityToAdapter(List<ProductSelection> productSelections) {
 
             for(ProductSelection  productSelection: productSelections) {
@@ -378,8 +385,7 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
                                  View convertView, ViewGroup parent) {
             Category headerTitle =  getGroup(groupPosition);
             if (convertView == null) {
-                LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.product_list_category, null);
+                convertView = inflate(context, R.layout.product_list_category, null);
             }
 
             TextView category = convertView.findViewById(R.id.category);

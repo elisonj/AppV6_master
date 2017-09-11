@@ -37,4 +37,9 @@ public class OrmLiteWorkOrderRepository extends OrmLiteRepository<WorkOrder> imp
 
         return workOrderList;
     }
+
+    @Override
+    public List<WorkOrder> findAllOrderByProjectAndAddress(String description, String address) {
+        return null;
+    }
 }
