@@ -15,7 +15,7 @@ import br.com.bg7.appvistoria.data.source.local.WorkOrderRepository;
 public class FakeWorkOrderRepository extends FakeRepository<String, WorkOrder> implements WorkOrderRepository {
 
     @Override
-    public List<WorkOrder> findAllOrderByStatus(String language) {
+    public List<WorkOrder> findAllOrderByStatus(String status) {
         ArrayList<WorkOrder> workOrderList = new ArrayList<>(ENTITIES_BY_KEY.values());
 
         Collections.sort(workOrderList, new Comparator<WorkOrder>() {
@@ -30,7 +30,16 @@ public class FakeWorkOrderRepository extends FakeRepository<String, WorkOrder> i
 
     @Override
     public List<WorkOrder> findAllOrderByProjectAndAddress(String description, String address) {
-        return new ArrayList<>();
+        ArrayList<WorkOrder> workOrderList = new ArrayList<>(ENTITIES_BY_KEY.values());
+
+        Collections.sort(workOrderList, new Comparator<WorkOrder>() {
+            @Override
+            public int compare(WorkOrder workOrder, WorkOrder workOrder1) {
+                return workOrder.getName().compareTo(workOrder1.getName());
+            }
+        });
+
+        return  workOrderList;
     }
 
     @Override

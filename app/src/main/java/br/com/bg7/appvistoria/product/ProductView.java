@@ -176,6 +176,11 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
     @Override
     public void showWorkOrderScreen() {
         confirmDialog.hide();
+
+        //TODO:  Adicionar caminho da nova tela de Inspeções com a referencia da inspecao
+        Intent intent = new Intent(getContext(), ProjectSelectionActivity.class);
+        getContext().startActivity(intent);
+
     }
 
     private void showError(String message) {
@@ -231,7 +236,7 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
 
 
             String[] initialSpinnerValues = getInitialSpinnerValues(childText);
-            ArrayAdapter<String> items = new ArrayAdapter<String>(getContext(), android.R.layout.simple_dropdown_item_1line, initialSpinnerValues);
+            ArrayAdapter<String> items = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, initialSpinnerValues);
             spinner.setAdapter(items);
 
             spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {

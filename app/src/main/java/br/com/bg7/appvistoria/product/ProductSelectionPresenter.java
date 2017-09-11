@@ -32,14 +32,14 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
     private Project project;
     private String address;
     private List<ProductSelection> productSelections = new ArrayList<>();
-    HashMap<Category, List<ProductSelectionItem>> itemsSelected = new HashMap<>();
+    private HashMap<Category, List<ProductSelectionItem>> itemsSelected = new HashMap<>();
 
     ProductSelectionPresenter(ProductService productService, ProductSelectionContract.View productSelectionView, Project project, String address, WorkOrderRepository workOrderRepository ) {
         this.productSelectionView = checkNotNull(productSelectionView);
         this.productService = checkNotNull(productService);
-        this.project = project;
-        this.address = address;
-        this.workOrderRepository = workOrderRepository;
+        this.project = checkNotNull(project);
+        this.address = checkNotNull(address);
+        this.workOrderRepository = checkNotNull(workOrderRepository);
         this.productSelectionView.setPresenter(this);
     }
 
@@ -61,8 +61,10 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
 
                 for(Product product: products) {
 
+                    int countProducts = getQuantityProduct(product);
+
                     HashMap<Product, Integer> hashMap = new HashMap<>();
-                    hashMap.put(product, 1);
+                    hashMap.put(product, countProducts);
 
                     ProductSelection productSelection = new ProductSelection(product.getCategory(), hashMap);
                     productSelections.add(productSelection);
@@ -73,9 +75,31 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
 
             @Override
             public void onFailure(Throwable t) {
-
+                productSelectionView.showConnectivityError();
             }
         });
+    }
+
+    private int getQuantityProduct(Product product) {
+        int quantity = 0;
+
+        for (ProductSelection selection:  productSelections) {
+            if(!selection.getCategory().getName().equals(product.getCategory().getName())) continue;
+
+            quantity = getQuantityProductByHash(product, selection.getProducts()) + 1;
+        }
+        return quantity==0?1:quantity;
+    }
+
+    private int getQuantityProductByHash(Product product, HashMap<Product, Integer> products) {
+        for(Map.Entry<Product, Integer> entry : products.entrySet()) {
+            Product key = entry.getKey();
+
+            if(key.getType().equals(product.getType())) {
+                return entry.getValue();
+            }
+        }
+        return 0;
     }
 
     @Override
