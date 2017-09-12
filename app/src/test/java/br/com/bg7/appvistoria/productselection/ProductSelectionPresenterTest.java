@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
  * Created by: elison
  * Date: 2017-09-11
  */
-public class ProductSelectionTest {
+public class ProductSelectionPresenterTest {
 
     private final int QUANTITY_SELECTED = 2;
 
