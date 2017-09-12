@@ -36,9 +36,15 @@ public class RetrofitProjectServiceTest extends ServiceTest {
             @Override
             protected void verify(List<Project> value) {
                 Assert.assertEquals(3, value.size());
+
                 Assert.assertEquals(74L, (long) value.get(0).getId());
+                Assert.assertEquals("74 - Carros variados", value.get(0).getDescription());
+
                 Assert.assertEquals(88L, (long) value.get(1).getId());
+                Assert.assertEquals("88 - Carros e motos", value.get(1).getDescription());
+
                 Assert.assertEquals(76L, (long) value.get(2).getId());
+                Assert.assertEquals("76 - Apartamentos no Brooklin", value.get(2).getDescription());
             }
         });
 
