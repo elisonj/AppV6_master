@@ -33,7 +33,7 @@ public interface AuthRepository {
      *
      * @param user the user to log in
      * @param token the authentication token
-     * @throws IOException if the user cannet be saved
+     * @throws IOException if the user cannot be saved
      */
     void save(User user, String token) throws IOException;
 
