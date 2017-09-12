@@ -37,6 +37,8 @@ public class RetrofitProjectServiceTest extends ServiceTest {
             protected void verify(List<Project> value) {
                 Assert.assertEquals(3, value.size());
                 Assert.assertEquals(74L, (long) value.get(0).getId());
+                Assert.assertEquals(88L, (long) value.get(1).getId());
+                Assert.assertEquals(76L, (long) value.get(2).getId());
             }
         });
 
