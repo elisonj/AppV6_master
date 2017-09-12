@@ -34,7 +34,7 @@ public class RetrofitProjectService extends RetrofitLoggedInService<ProjectServi
             @Override
             public void onResponse(HttpResponse<br.com.bg7.appvistoria.data.source.remote.dto.Project> httpResponse) {
                 br.com.bg7.appvistoria.data.source.remote.dto.Project response = httpResponse.body();
-                List<Project> projects = br.com.bg7.appvistoria.data.source.remote.dto.Project.fromProjectResponse(response);
+                List<Project> projects = Project.fromProjectResponse(response);
                 callback.onResponse(new RetrofitProjectHttpResponse(projects, httpResponse.isSuccessful(), httpResponse.code()));
             }
 
