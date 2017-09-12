@@ -24,13 +24,13 @@ import java.util.List;
 
 import br.com.bg7.appvistoria.ProgressDialog;
 import br.com.bg7.appvistoria.R;
-import br.com.bg7.appvistoria.product.ProductActivity;
+import br.com.bg7.appvistoria.productselection.ProductActivity;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 import static br.com.bg7.appvistoria.Constants.FONT_NAME_NUNITO_REGULAR;
 import static br.com.bg7.appvistoria.Constants.FONT_NAME_ROBOTO_REGULAR;
-import static br.com.bg7.appvistoria.product.ProductActivity.KEY_ADDRESS;
-import static br.com.bg7.appvistoria.product.ProductActivity.KEY_PROJECT;
+import static br.com.bg7.appvistoria.productselection.ProductActivity.KEY_ADDRESS;
+import static br.com.bg7.appvistoria.productselection.ProductActivity.KEY_PROJECT;
 
 /**
  * Created by: elison

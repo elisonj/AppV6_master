@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.product;
+package br.com.bg7.appvistoria.productselection;
 
 import android.content.Intent;
 import android.os.Bundle;

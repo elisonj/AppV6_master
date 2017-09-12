@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.product;
+package br.com.bg7.appvistoria.productselection;
 
 import android.content.Context;
 import android.content.Intent;
@@ -33,8 +33,8 @@ import br.com.bg7.appvistoria.projectselection.vo.Product;
 import br.com.bg7.appvistoria.projectselection.vo.ProductSelection;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
-import static br.com.bg7.appvistoria.product.ProductActivity.KEY_ADDRESS;
-import static br.com.bg7.appvistoria.product.ProductActivity.KEY_PROJECT;
+import static br.com.bg7.appvistoria.productselection.ProductActivity.KEY_ADDRESS;
+import static br.com.bg7.appvistoria.productselection.ProductActivity.KEY_PROJECT;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**

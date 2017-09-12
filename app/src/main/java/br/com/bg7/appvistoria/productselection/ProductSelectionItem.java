@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.product;
+package br.com.bg7.appvistoria.productselection;
 
 import br.com.bg7.appvistoria.projectselection.vo.Product;
 

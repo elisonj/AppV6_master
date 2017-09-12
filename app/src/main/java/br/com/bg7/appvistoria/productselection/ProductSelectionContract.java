@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.product;
+package br.com.bg7.appvistoria.productselection;
 
 import java.util.List;
 
