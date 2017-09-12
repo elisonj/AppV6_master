@@ -36,7 +36,7 @@ import static br.com.bg7.appvistoria.product.ProductActivity.KEY_PROJECT;
  * Created by: elison
  * Date: 2017-08-30
  */
-public class ProjectSelectionView extends ConstraintLayout implements  ProjectSelectionContract.View {
+public class ProjectSelectionView extends ConstraintLayout implements ProjectSelectionContract.View {
 
     private static final String SEPARATOR = " | ";
 
@@ -47,8 +47,6 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
     private LinearLayout layoutListViewAddress;
     private EditText editIdProject;
     private EditText editAddress;
-    private Project project;
-    private String address;
     private AddressSelectionAdapter adapterAddress = null;
     private ProgressDialog progress;
     private Button buttonNext;
@@ -132,20 +130,29 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
     }
 
     @Override
-    public void showSelectedProject(Project projectSelected, List<String> addresses) {
-        editIdProject.setText(projectSelected.getId() + SEPARATOR + projectSelected.getDescription());
+    public void showSelectedProject(Project project) {
+        editIdProject.setText(project.getId() + SEPARATOR + project.getDescription());
         layoutListViewProjects.setVisibility(View.GONE);
+    }
 
+    @Override
+    public void showAddresses(List<String> addresses) {
         adapterAddress = new AddressSelectionAdapter(addresses);
         listViewAddress.setAdapter(adapterAddress);
         listViewAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                String address = ((AddressSelectionAdapter)adapterView.getAdapter()).getItem(position);
+                String address = ((AddressSelectionAdapter) adapterView.getAdapter()).getItem(position);
                 projectSelectionPresenter.selectAddress(address);
             }
         });
         layoutListViewAddress.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showSelectedAddress(Long projectId, String address) {
+        editAddress.setText(address);
+        layoutListViewAddress.setVisibility(View.GONE);
     }
 
     @Override
@@ -159,7 +166,7 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
     }
 
     @Override
-    public void showProductSelectionScreen() {
+    public void showProductSelectionScreen(Project project, String address) {
         Intent intent = new Intent(getContext(), ProductActivity.class);
         intent.putExtra(KEY_PROJECT, project);
         intent.putExtra(KEY_ADDRESS, address);
@@ -167,10 +174,14 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
     }
 
     @Override
+    public void showLoadErrorMessage() {
+        // TODO: Implementar mensagem de 'Nao foi possivel carregar os dados. Tente novamente.'
+    }
+
+    @Override
     public void clearProjectField() {
         editIdProject.setText("");
         editAddress.setText("");
-        project = null;
         adapterAddress = null;
     }
 
@@ -178,17 +189,10 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
     public void clearAddressField() {
         editAddress.setText("");
 
-        if(project != null && adapterAddress != null) {
+        if (adapterAddress != null) {
             listViewAddress.setAdapter(adapterAddress);
             layoutListViewAddress.setVisibility(View.VISIBLE);
         }
-    }
-
-    @Override
-    public void showProductSelection(Long projectId, String address) {
-        this.address = address;
-        editAddress.setText(address);
-        layoutListViewAddress.setVisibility(View.GONE);
     }
 
     @Override
@@ -205,8 +209,8 @@ public class ProjectSelectionView extends ConstraintLayout implements  ProjectSe
         listViewProjects.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                project = ((ProjectSelectionAdapter)adapterView.getAdapter()).getItem(position);
-                projectSelectionPresenter.selectProject(project);
+                Project clicked = ((ProjectSelectionAdapter) adapterView.getAdapter()).getItem(position);
+                projectSelectionPresenter.selectProject(clicked);
             }
         });
     }

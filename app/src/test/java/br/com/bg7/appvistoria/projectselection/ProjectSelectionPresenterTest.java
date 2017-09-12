@@ -132,7 +132,7 @@ public class ProjectSelectionPresenterTest {
         addressCallBackCaptor.getValue().onResponse(addressResponse);
 
         verifyLoadingShowAndHide();
-        verify(projectSelectionView).showSelectedProject(project, allAddresses);
+        verify(projectSelectionView).showSelectedProject(project);
     }
 
     @Test
@@ -143,7 +143,7 @@ public class ProjectSelectionPresenterTest {
 
         projectSelectionPresenter.selectAddress(address);
 
-        verify(projectSelectionView).showProductSelection(project.getId(), address);
+        verify(projectSelectionView).showSelectedAddress(project.getId(), address);
     }
 
     @Test

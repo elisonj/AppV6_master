@@ -15,9 +15,11 @@ public interface ProjectSelectionContract {
     interface View extends BaseView<Presenter> {
         void showProjectResults(List<Project> projectList);
 
-        void showSelectedProject(Project project, List<String> addresses);
+        void showSelectedProject(Project project);
 
-        void showProductSelection(Long projectId, String address);
+        void showAddresses(List<String> addresses);
+
+        void showSelectedAddress(Long projectId, String address);
 
         void clearProjectField();
 
@@ -27,7 +29,9 @@ public interface ProjectSelectionContract {
 
         void hideLoading();
 
-        void showProductSelectionScreen();
+        void showProductSelectionScreen(Project project, String address);
+
+        void showLoadErrorMessage();
     }
 
     interface Presenter extends BasePresenter {

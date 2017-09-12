@@ -38,18 +38,18 @@ public class Project implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        return (id.doubleValue() == ((Project)obj).getId().doubleValue());
+        return (id.doubleValue() == ((Project) obj).getId().doubleValue());
     }
 
     public static List<Project> fromProjectResponse(br.com.bg7.appvistoria.data.source.remote.dto.Project projectDto) {
 
-        List<Project> listProjects = new ArrayList<>();
-        if(projectDto == null) return listProjects;
+        List<Project> projects = new ArrayList<>();
 
-        for (Element element: projectDto.getElements()) {
-            Project project = new Project((long)element.getId(), element.getDescription());
-            listProjects.add(project);
+        for (Element element : projectDto.getElements()) {
+            Project project = new Project((long) element.getId(), element.getDescription());
+            projects.add(project);
         }
-        return listProjects;
+
+        return projects;
     }
 }
