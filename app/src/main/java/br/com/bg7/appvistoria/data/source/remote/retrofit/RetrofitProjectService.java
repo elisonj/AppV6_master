@@ -27,14 +27,18 @@ public class RetrofitProjectService extends RetrofitLoggedInService<ProjectServi
 
     @Override
     public void findByIdOrDescription(String idOrDescription, final HttpCallback<List<Project>> callback) {
-        Call<br.com.bg7.appvistoria.data.source.remote.dto.Project>  call = projectService.findByIdOrDescription(TOKEN, SEARCH_KEY + idOrDescription);
+        Call<br.com.bg7.appvistoria.data.source.remote.dto.Project> call = projectService.findByIdOrDescription(TOKEN, SEARCH_KEY + idOrDescription);
         RetrofitHttpCall<br.com.bg7.appvistoria.data.source.remote.dto.Project> httpCall = new RetrofitHttpCall<>(call);
 
         httpCall.enqueue(new HttpCallback<br.com.bg7.appvistoria.data.source.remote.dto.Project>() {
             @Override
             public void onResponse(HttpResponse<br.com.bg7.appvistoria.data.source.remote.dto.Project> httpResponse) {
-                br.com.bg7.appvistoria.data.source.remote.dto.Project response = httpResponse.body();
-                List<Project> projects = Project.fromProjectResponse(response);
+                if (httpResponse == null || !httpResponse.isSuccessful() || httpResponse.body() == null) {
+                    callback.onFailure(new BadResponseException(httpResponse));
+                    return;
+                }
+
+                List<Project> projects = Project.fromProjectResponse(httpResponse.body());
                 callback.onResponse(new RetrofitProjectHttpResponse(projects, httpResponse.isSuccessful(), httpResponse.code()));
             }
 

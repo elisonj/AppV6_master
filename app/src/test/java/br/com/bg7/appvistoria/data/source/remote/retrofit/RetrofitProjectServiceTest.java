@@ -8,7 +8,9 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.List;
 
+import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
+import okhttp3.mockwebserver.RecordedRequest;
 
 import static br.com.bg7.appvistoria.data.source.remote.retrofit.Resources.GET_COMMERCIAL_PROJECT_RESPONSE_JSON;
 
@@ -29,10 +31,20 @@ public class RetrofitProjectServiceTest extends ServiceTest {
     }
 
     @Test
-    public void shouldCallService() throws IOException, InterruptedException {
+    public void shouldCallServiceWithTheCorrectParameters() throws InterruptedException {
+        projectService.findByIdOrDescription("1234", new EmptyCallback<List<Project>>());
+
+        RecordedRequest request = mockWebServer.takeRequest();
+
+        Assert.assertEquals("/auction-lotting/commercial-project/?q=searchKey:1234", request.getPath());
+        Assert.assertEquals("GET", request.getMethod());
+    }
+
+    @Test
+    public void shouldConvertJsonToProjects() throws IOException, InterruptedException {
         setUpResponse(GET_COMMERCIAL_PROJECT_RESPONSE_JSON);
 
-        projectService.findByIdOrDescription("blah", new VerifyCallback<List<Project>>() {
+        projectService.findByIdOrDescription("blah", new VerifySuccessCallback<List<Project>>() {
             @Override
             protected void verify(List<Project> value) {
                 Assert.assertEquals(3, value.size());
@@ -47,6 +59,15 @@ public class RetrofitProjectServiceTest extends ServiceTest {
                 Assert.assertEquals("76 - Apartamentos no Brooklin", value.get(2).getDescription());
             }
         });
+
+        waitForServerToRespond();
+    }
+
+    @Test
+    public void shouldThrowOnFailure() throws InterruptedException {
+        setUpErrorResponse("ERROR");
+
+        projectService.findByIdOrDescription("blah", new VerifyFailureCallback<List<Project>>());
 
         waitForServerToRespond();
     }
