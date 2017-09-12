@@ -6,17 +6,17 @@ package br.com.bg7.appvistoria.projectselection.vo;
  */
 public class Product {
     private Long id;
-    private String type;
+    private String productType;
     private Category category;
 
-    public Product(Long id, String type, Category category) {
+    public Product(Long id, String productType, Category category) {
         this.id = id;
-        this.type = type;
+        this.productType = productType;
         this.category = category;
     }
 
-    public String getType() {
-        return type;
+    public String getProductType() {
+        return productType;
     }
 
     public Long getId() {
