@@ -36,7 +36,7 @@ public class ProductSelectionActivity extends BaseActivity {
             address = intent.getStringExtra(KEY_ADDRESS);
         }
 
-        ProductView view = new ProductView(this);
+        ProductSelectionView view = new ProductSelectionView(this);
         productSelectionPresenter = new ProductSelectionPresenter(services.getProductService(), view, project, address, services.getWorkOrderRepository());
 
         if(getSupportActionBar() != null) {

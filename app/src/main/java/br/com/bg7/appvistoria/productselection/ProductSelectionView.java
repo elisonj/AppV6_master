@@ -41,7 +41,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by: elison
  * Date: 2017-09-04
  */
-class ProductView  extends ConstraintLayout implements  ProductSelectionContract.View {
+class ProductSelectionView extends ConstraintLayout implements  ProductSelectionContract.View {
 
     private static final String KEY_COLON = ": ";
     private static final String EMPTY_SPACE = " ";
@@ -59,7 +59,7 @@ class ProductView  extends ConstraintLayout implements  ProductSelectionContract
     private View linearCancel;
     private View linearConfirm;
 
-    public ProductView(Context context) {
+    public ProductSelectionView(Context context) {
         super(context);
         init();
     }
