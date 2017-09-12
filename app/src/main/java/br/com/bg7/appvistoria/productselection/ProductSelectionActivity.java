@@ -37,7 +37,7 @@ public class ProductSelectionActivity extends BaseActivity {
         }
 
         ProductSelectionView view = new ProductSelectionView(this);
-        productSelectionPresenter = new ProductSelectionPresenter(services.getProductService(), view, project, address, services.getWorkOrderRepository());
+        productSelectionPresenter = new ProductSelectionPresenter(project, address, services.getProductService(), services.getWorkOrderRepository(), view);
 
         if(getSupportActionBar() != null) {
 

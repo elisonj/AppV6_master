@@ -34,12 +34,14 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
     private List<ProductSelection> productSelections = new ArrayList<>();
     private HashMap<Category, List<ProductSelectionItem>> itemsSelected = new HashMap<>();
 
-    ProductSelectionPresenter(ProductService productService, ProductSelectionContract.View productSelectionView, Project project, String address, WorkOrderRepository workOrderRepository ) {
-        this.productSelectionView = checkNotNull(productSelectionView);
-        this.productService = checkNotNull(productService);
+    ProductSelectionPresenter(Project project, String address, ProductService productService, WorkOrderRepository workOrderRepository, ProductSelectionContract.View productSelectionView) {
         this.project = checkNotNull(project);
         this.address = checkNotNull(address);
+
+        this.productService = checkNotNull(productService);
         this.workOrderRepository = checkNotNull(workOrderRepository);
+        this.productSelectionView = checkNotNull(productSelectionView);
+
         this.productSelectionView.setPresenter(this);
     }
 
@@ -49,17 +51,9 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
         productService.findByProjectAndAddress(project, address,  new HttpCallback<List<Product>>() {
             @Override
             public void onResponse(HttpResponse<List<Product>> httpResponse) {
-                if(httpResponse == null || httpResponse.body() == null) return;
-
-                itemsSelected.clear();
-
-                List<Product> products = httpResponse.body();
-
-                if(products == null) return;
-
                 productSelections = new ArrayList<>();
 
-                for(Product product: products) {
+                for(Product product: httpResponse.body()) {
 
                     int countProducts = getQuantityProduct(product);
 

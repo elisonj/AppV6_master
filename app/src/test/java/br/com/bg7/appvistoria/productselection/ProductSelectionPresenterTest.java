@@ -72,7 +72,7 @@ public class ProductSelectionPresenterTest {
 
         workOrderRepository.save(new InProgressWorkOrder("Projeto 1", "Resumo completo", ""));
 
-        productSelectionPresenter = new ProductSelectionPresenter(productService, productView, project, address, workOrderRepository);
+        productSelectionPresenter = new ProductSelectionPresenter(project, address, productService, workOrderRepository, productView);
 
         when(productResponse.body()).thenReturn(allProducts);
 
@@ -88,27 +88,27 @@ public class ProductSelectionPresenterTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullProductService() {
-        new ProductSelectionPresenter(null, productView, project, address, workOrderRepository);
+        new ProductSelectionPresenter(project, address, null, workOrderRepository, productView);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullView() {
-        new ProductSelectionPresenter(productService, null, project, address, workOrderRepository);
+        new ProductSelectionPresenter(project, address, productService, workOrderRepository, null);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullProject() {
-        new ProductSelectionPresenter(productService, productView, null, address, workOrderRepository);
+        new ProductSelectionPresenter(null, address, productService, workOrderRepository, productView);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullAddress() {
-        new ProductSelectionPresenter(productService, productView, project, null, workOrderRepository);
+        new ProductSelectionPresenter(project, null, productService, workOrderRepository, productView);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullRepository() {
-        new ProductSelectionPresenter(productService, productView, project, address, null);
+        new ProductSelectionPresenter(project, address, productService, null, productView);
     }
 
     @Test
