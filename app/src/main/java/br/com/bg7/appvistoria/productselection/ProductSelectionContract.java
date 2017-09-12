@@ -4,9 +4,9 @@ import java.util.List;
 
 import br.com.bg7.appvistoria.BasePresenter;
 import br.com.bg7.appvistoria.BaseView;
-import br.com.bg7.appvistoria.projectselection.vo.Category;
-import br.com.bg7.appvistoria.projectselection.vo.Product;
-import br.com.bg7.appvistoria.projectselection.vo.ProductSelection;
+import br.com.bg7.appvistoria.productselection.vo.Category;
+import br.com.bg7.appvistoria.productselection.vo.Product;
+import br.com.bg7.appvistoria.productselection.vo.ProductSelection;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 /**

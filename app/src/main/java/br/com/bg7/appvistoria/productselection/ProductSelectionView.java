@@ -28,9 +28,7 @@ import br.com.bg7.appvistoria.AlertDialog;
 import br.com.bg7.appvistoria.ConfirmDialog;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.projectselection.ProjectSelectionActivity;
-import br.com.bg7.appvistoria.projectselection.vo.Category;
-import br.com.bg7.appvistoria.projectselection.vo.Product;
-import br.com.bg7.appvistoria.projectselection.vo.ProductSelection;
+import br.com.bg7.appvistoria.productselection.vo.ProductSelection;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 import static br.com.bg7.appvistoria.productselection.ProductSelectionActivity.KEY_ADDRESS;
@@ -41,7 +39,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by: elison
  * Date: 2017-09-04
  */
-class ProductSelectionView extends ConstraintLayout implements  ProductSelectionContract.View {
+class ProductSelectionView extends ConstraintLayout implements ProductSelectionContract.View {
 
     private static final String KEY_COLON = ": ";
     private static final String EMPTY_SPACE = " ";
@@ -49,10 +47,10 @@ class ProductSelectionView extends ConstraintLayout implements  ProductSelection
     ProductSelectionContract.Presenter productSelectionPresenter;
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
-    List<Category> listDataHeader = new ArrayList<>();
+    List<String> listDataHeader = new ArrayList<>();
     private ConfirmDialog confirmDialog;
 
-    HashMap<Category, List<ProductSelectionItem>> listDataChild = new HashMap<>();
+    HashMap<String, HashMap<String, Integer>> listDataChild = new HashMap<>();
 
     private HashMap<Long, Drawable> drawableCategories = new HashMap<>();
     private View linearBotton;
@@ -107,7 +105,7 @@ class ProductSelectionView extends ConstraintLayout implements  ProductSelection
                 && connectivityManager.getActiveNetworkInfo().isAvailable()
                 && connectivityManager.getActiveNetworkInfo().isConnected();
 
-        if(!isConnect) {
+        if (!isConnect) {
             AlertDialog dialog = new AlertDialog(getContext(), getContext().getString(R.string.cannot_create_workorder));
             dialog.show();
         }
@@ -192,7 +190,7 @@ class ProductSelectionView extends ConstraintLayout implements  ProductSelection
 
         private Context context;
 
-        ExpandableListAdapter(Context context, List<ProductSelection>  productSelections ) {
+        ExpandableListAdapter(Context context, List<ProductSelection> productSelections) {
             this.context = context;
 
             listDataHeader = new ArrayList<>();
@@ -202,8 +200,8 @@ class ProductSelectionView extends ConstraintLayout implements  ProductSelection
         }
 
         @Override
-        public ProductSelectionItem getChild(int groupPosition, int childPosition) {
-            List<ProductSelectionItem> productSelectionItems = listDataChild.get(listDataHeader.get(groupPosition));
+        public HashMap<String, Integer> getChild(int groupPosition, int childPosition) {
+            HashMap<String, Integer> productSelectionItems = listDataChild.get(listDataHeader.get(groupPosition));
             return productSelectionItems.get(childPosition);
         }
 
@@ -262,12 +260,12 @@ class ProductSelectionView extends ConstraintLayout implements  ProductSelection
                     int openArrow = R.drawable.arrow_open_list;
                     int closeArrow = R.drawable.arrow_close_list;
 
-                    if(isSelected) {
+                    if (isSelected) {
                         openArrow = R.drawable.arrow_open_white;
                         closeArrow = R.drawable.arrow_close_white;
                     }
 
-                    if(linearQuantity.isShown()) {
+                    if (linearQuantity.isShown()) {
                         linearQuantity.setVisibility(View.GONE);
                         arrowItem.setImageDrawable(getResources().getDrawable(openArrow, null));
                         return;
@@ -277,17 +275,17 @@ class ProductSelectionView extends ConstraintLayout implements  ProductSelection
                 }
             });
 
-            String title = childText.getProduct().getType() + KEY_COLON;
+            String title = childText.getProduct().getProductType() + KEY_COLON;
             product.setText(title);
 
-            if(isSelected) {
+            if (isSelected) {
                 formatSelectedChild(String.valueOf(childText.getQuantity()), childText, linearMain, product, quantity, arrowItem);
                 showSelectedWhiteArrows(arrowItem, linearQuantity);
 
                 return convertView;
             }
 
-            if(childText.getQuantity() > 1) {
+            if (childText.getQuantity() > 1) {
                 String available = childText.getQuantity() + EMPTY_SPACE + getContext().getString(R.string.available_items);
                 quantity.setText(available);
                 return convertView;
@@ -299,7 +297,7 @@ class ProductSelectionView extends ConstraintLayout implements  ProductSelection
         }
 
         void showSelectedWhiteArrows(ImageView arrowItem, LinearLayout linearQuantity) {
-            if(linearQuantity.isShown()) {
+            if (linearQuantity.isShown()) {
                 arrowItem.setImageDrawable(getResources().getDrawable(R.drawable.arrow_close_white, null));
                 return;
             }
@@ -308,22 +306,21 @@ class ProductSelectionView extends ConstraintLayout implements  ProductSelection
 
         private void extractProductQuantityToAdapter(List<ProductSelection> productSelections) {
 
-            for(ProductSelection  productSelection: productSelections) {
+            for (ProductSelection productSelection : productSelections) {
 
-                if(!listDataHeader.contains(productSelection.getCategory())) {
-                    listDataHeader.add(productSelection.getCategory());
+                if (!listDataHeader.contains(productSelection.getProductType())) {
+                    listDataHeader.add(productSelection.getProductType());
                 }
 
-                List<ProductSelectionItem> list = listDataChild.get(productSelection.getCategory());
-
-                if(list == null) list =  new ArrayList<>();
-
-                for(Map.Entry<Product, Integer> entry : productSelection.getProducts().entrySet()) {
-                    ProductSelectionItem item = new ProductSelectionItem(entry.getKey(), entry.getValue());
-                    list.add(item);
+                if (!listDataChild.containsKey(productSelection.getProductType())) {
+                    listDataChild.put(productSelection.getProductType(), new HashMap<String, Integer>());
                 }
 
-                listDataChild.put(productSelection.getCategory(), list);
+                for (Map.Entry<String, Integer> entry : productSelection.getCategoryCounts().entrySet()) {
+                    if (!listDataChild.get(productSelection.getProductType()).containsKey(entry.getKey())) {
+                        listDataChild.get(productSelection.getProductType()).put(entry.getKey(), entry.getValue());
+                    }
+                }
             }
         }
 
@@ -350,8 +347,8 @@ class ProductSelectionView extends ConstraintLayout implements  ProductSelection
             String[] items = new String[childText.getQuantity()];
 
 
-            for(int cont = 1; cont <= childText.getQuantity(); cont++) {
-                if(cont == 1 ) {
+            for (int cont = 1; cont <= childText.getQuantity(); cont++) {
+                if (cont == 1) {
                     items[cont - 1] = String.valueOf(cont) + EMPTY_SPACE + getContext().getString(R.string.active_item);
                     continue;
                 }
@@ -367,7 +364,7 @@ class ProductSelectionView extends ConstraintLayout implements  ProductSelection
         }
 
         @Override
-        public Category getGroup(int groupPosition) {
+        public String getGroup(int groupPosition) {
             return listDataHeader.get(groupPosition);
         }
 
@@ -384,7 +381,7 @@ class ProductSelectionView extends ConstraintLayout implements  ProductSelection
         @Override
         public View getGroupView(int groupPosition, boolean isExpanded,
                                  View convertView, ViewGroup parent) {
-            Category headerTitle =  getGroup(groupPosition);
+            String headerTitle = getGroup(groupPosition);
             if (convertView == null) {
                 convertView = inflate(context, R.layout.product_list_category, null);
             }
@@ -392,10 +389,10 @@ class ProductSelectionView extends ConstraintLayout implements  ProductSelection
             TextView category = convertView.findViewById(R.id.category);
             ImageView imageCategory = convertView.findViewById(R.id.image_category);
 
-            imageCategory.setImageDrawable(drawableCategories.get((long)groupPosition+1));
+            imageCategory.setImageDrawable(drawableCategories.get((long) groupPosition + 1));
 
             category.setTypeface(null, Typeface.BOLD);
-            category.setText(headerTitle.getName());
+            category.setText(headerTitle);
 
             return convertView;
         }
@@ -410,7 +407,6 @@ class ProductSelectionView extends ConstraintLayout implements  ProductSelection
             return true;
         }
     }
-
 
 
 }

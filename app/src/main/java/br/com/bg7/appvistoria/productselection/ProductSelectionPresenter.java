@@ -10,9 +10,9 @@ import br.com.bg7.appvistoria.data.source.local.WorkOrderRepository;
 import br.com.bg7.appvistoria.data.source.remote.ProductService;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
-import br.com.bg7.appvistoria.projectselection.vo.Category;
-import br.com.bg7.appvistoria.projectselection.vo.Product;
-import br.com.bg7.appvistoria.projectselection.vo.ProductSelection;
+import br.com.bg7.appvistoria.productselection.vo.Category;
+import br.com.bg7.appvistoria.productselection.vo.Product;
+import br.com.bg7.appvistoria.productselection.vo.ProductSelection;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by: elison
  * Date: 2017-09-05
  */
-public class ProductSelectionPresenter  implements  ProductSelectionContract.Presenter {
+public class ProductSelectionPresenter implements ProductSelectionContract.Presenter {
 
     private final String EMPTY_SPACE = " ";
     private final String SEPARATOR = ", ";
@@ -32,7 +32,7 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
     private Project project;
     private String address;
     private List<ProductSelection> productSelections;
-    private HashMap<Category, List<ProductSelectionItem>> itemsSelected = new HashMap<>();
+    private HashMap<String, HashMap<String, Integer>> itemsSelected = new HashMap<>();
 
     ProductSelectionPresenter(Project project, String address, ProductService productService, WorkOrderRepository workOrderRepository, ProductSelectionContract.View productSelectionView) {
         this.project = checkNotNull(project);
@@ -48,7 +48,7 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
     @Override
     public void start() {
 
-        productService.findByProjectAndAddress(project, address,  new HttpCallback<List<Product>>() {
+        productService.findByProjectAndAddress(project, address, new HttpCallback<List<Product>>() {
             @Override
             public void onResponse(HttpResponse<List<Product>> httpResponse) {
                 productSelections = ProductSelection.fromProducts(httpResponse.body());
@@ -65,9 +65,9 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
     @Override
     public boolean isProductSelected(Product product, Category category) {
         List<ProductSelectionItem> productSelectionItems = itemsSelected.get(category);
-        if(productSelectionItems == null) return false;
+        if (productSelectionItems == null) return false;
 
-        for(ProductSelectionItem item: productSelectionItems) {
+        for (ProductSelectionItem item : productSelectionItems) {
             if (item.getProduct().getId().equals(product.getId())) {
                 return true;
             }
@@ -80,7 +80,7 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
 
         List<ProductSelectionItem> products = itemsSelected.get(category);
 
-        if(products == null) {
+        if (products == null) {
             products = new ArrayList<>();
         }
         ProductSelectionItem productSelectionItem = new ProductSelectionItem(product, quantity);
@@ -104,7 +104,7 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
 
         String summary = "";
 
-        for(Map.Entry<Category, List<ProductSelectionItem>> entry : itemsSelected.entrySet()) {
+        for (Map.Entry<Category, List<ProductSelectionItem>> entry : itemsSelected.entrySet()) {
             List<ProductSelectionItem> products = entry.getValue();
 
             summary = getSummaryByProductSelection(products);
@@ -114,7 +114,7 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
 
         List<WorkOrder> allOrderByAddress = workOrderRepository.findAllOrderByProjectAndAddress(workOrder.getName(), address);
 
-        if(allOrderByAddress.size() == 0) {
+        if (allOrderByAddress.size() == 0) {
             workOrderRepository.save(workOrder);
             productSelectionView.showWorkOrderScreen();
             return;
@@ -126,10 +126,10 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
     private String getSummaryByProductSelection(List<ProductSelectionItem> products) {
         String summary = "";
 
-        for(ProductSelectionItem item : products) {
+        for (ProductSelectionItem item : products) {
             summary += item.getQuantity() + EMPTY_SPACE + item.getProduct().getProductType() + SEPARATOR;
         }
-        if(products.size() > 0) {
+        if (products.size() > 0) {
             summary = summary.substring(0, summary.length() - 2);
         }
 

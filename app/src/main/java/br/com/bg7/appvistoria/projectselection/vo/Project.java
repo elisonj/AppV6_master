@@ -13,15 +13,10 @@ import br.com.bg7.appvistoria.data.source.remote.dto.Element;
 public class Project implements Serializable {
     private Long id;
     private String description;
-    private List<Product> products = new ArrayList<>();
 
     public Project(Long id, String description) {
         this.id = id;
         this.description = description;
-    }
-
-    public void addProduct(Product product) {
-        products.add(product);
     }
 
     public Long getId() {
@@ -30,10 +25,6 @@ public class Project implements Serializable {
 
     public String getDescription() {
         return description;
-    }
-
-    public List<Product> getProducts() {
-        return products;
     }
 
     @Override

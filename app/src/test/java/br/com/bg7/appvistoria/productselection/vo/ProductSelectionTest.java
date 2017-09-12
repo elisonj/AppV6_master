@@ -8,10 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import br.com.bg7.appvistoria.projectselection.vo.Category;
-import br.com.bg7.appvistoria.projectselection.vo.Product;
-import br.com.bg7.appvistoria.projectselection.vo.ProductSelection;
-
 /**
  * Created by: luciolucio
  * Date: 2017-09-12

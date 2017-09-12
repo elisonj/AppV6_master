@@ -15,9 +15,7 @@ import br.com.bg7.appvistoria.data.source.local.fake.FakeWorkOrderRepository;
 import br.com.bg7.appvistoria.data.source.remote.ProductService;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
-import br.com.bg7.appvistoria.projectselection.vo.Category;
-import br.com.bg7.appvistoria.projectselection.vo.Product;
-import br.com.bg7.appvistoria.projectselection.vo.ProductSelection;
+import br.com.bg7.appvistoria.productselection.vo.ProductSelection;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 import br.com.bg7.appvistoria.workorder.InProgressWorkOrder;
 

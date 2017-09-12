@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.projectselection.vo;
+package br.com.bg7.appvistoria.productselection.vo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
