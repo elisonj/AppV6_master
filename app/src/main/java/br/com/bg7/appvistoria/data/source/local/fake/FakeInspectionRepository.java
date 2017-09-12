@@ -3,6 +3,8 @@ package br.com.bg7.appvistoria.data.source.local.fake;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Maps;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -32,5 +34,10 @@ public class FakeInspectionRepository extends FakeRepository<SyncStatus, Inspect
         });
 
         return filtered.values();
+    }
+
+    @Override
+    public List<Inspection> findBySyncStatusNotNull() {
+        return new ArrayList<>();
     }
 }

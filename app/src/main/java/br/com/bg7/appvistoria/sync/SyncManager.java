@@ -17,7 +17,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Date: 2017-07-31
  */
 
-class SyncManager {
+public class SyncManager {
 
     private SyncManagerCallback callback;
     private LinkedBlockingQueue<Inspection> inspectionQueue = new LinkedBlockingQueue<>();
@@ -28,7 +28,7 @@ class SyncManager {
     private InspectionRepository inspectionRepository;
     private SyncExecutor syncExecutor;
 
-    SyncManager(
+    public SyncManager(
             InspectionRepository inspectionRepository,
             InspectionService inspectionService,
             PictureService pictureService,

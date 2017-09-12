@@ -5,7 +5,7 @@ package br.com.bg7.appvistoria.sync;
  * Date: 2017-07-31
  */
 
-interface SyncExecutor {
+public interface SyncExecutor {
     /**
      * Implementers must schedule the {@link Runnable} to run on a single separate thread
      * and keep running it periodically

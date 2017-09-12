@@ -9,9 +9,12 @@ import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.BuildConfig;
 import br.com.bg7.appvistoria.data.source.local.AuthRepository;
 import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
+import br.com.bg7.appvistoria.data.source.local.InspectionRepository;
 import br.com.bg7.appvistoria.data.source.local.LanguageRepository;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
 import br.com.bg7.appvistoria.data.source.local.WorkOrderRepository;
+import br.com.bg7.appvistoria.data.source.remote.InspectionService;
+import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.ProductService;
 import br.com.bg7.appvistoria.data.source.remote.ProjectService;
 import br.com.bg7.appvistoria.data.source.remote.TokenService;
@@ -68,9 +71,13 @@ public abstract class ServiceLocator {
     public abstract LanguageRepository getLanguageRepository();
     public abstract UserRepository getUserRepository();
     public abstract WorkOrderRepository getWorkOrderRepository();
+    public abstract InspectionRepository getInspectionRepository();
 
     public abstract TokenService getTokenService();
     public abstract UserService getUserService();
     public abstract ProjectService getProjectService();
     public abstract ProductService getProductService();
+    public abstract PictureService getPictureService();
+    public abstract InspectionService getInspectionService();
+
 }

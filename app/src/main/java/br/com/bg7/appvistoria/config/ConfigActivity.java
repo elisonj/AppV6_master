@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -20,9 +19,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import br.com.bg7.appvistoria.BaseActivity;
-import br.com.bg7.appvistoria.MainFragment;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.servicelocator.ServiceLocator;
+import br.com.bg7.appvistoria.sync.SyncExecutor;
+import br.com.bg7.appvistoria.sync.SyncManager;
+import br.com.bg7.appvistoria.syncinspection.SyncFragment;
+import br.com.bg7.appvistoria.syncinspection.SyncPresenter;
 import br.com.bg7.appvistoria.workorder.WorkOrderFragment;
 import br.com.bg7.appvistoria.workorder.WorkOrderPresenter;
 
@@ -45,6 +47,22 @@ public class ConfigActivity extends BaseActivity {
     private Menu menu = null;
     private Typeface nunito;
     private TypefaceSpan nunitoSpan = new TypefaceSpan(FONT_NAME_NUNITO_REGULAR);
+    SyncExecutor syncExecutor = new SyncExecutor() {
+        @Override
+        public void scheduleQueueUpdates(Runnable runnable) {
+
+        }
+
+        @Override
+        public void scheduleSyncLoop(Runnable runnable) {
+
+        }
+
+        @Override
+        public void executeSync(Runnable syncJob) {
+
+        }
+    };
 
     private String title = null;
 
@@ -163,8 +181,14 @@ public class ConfigActivity extends BaseActivity {
 
                 break;
             case R.id.menu_sync:
-                fragment = MainFragment.newInstance(getString(R.string.menu_sync),
-                        ContextCompat.getColor(this, R.color.color_sync));
+                SyncFragment syncFrag = new SyncFragment();
+                fragment = syncFrag;
+                fragment.setRetainInstance(true);
+
+                SyncManager syncManager = new SyncManager(services.getInspectionRepository(), services.getInspectionService(),
+                        services.getPictureService(), syncExecutor);
+                new SyncPresenter(services.getInspectionRepository(), syncManager, syncFrag);
+
                 configureSearchButton(false);
                 break;
 

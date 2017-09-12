@@ -55,6 +55,10 @@ public class Inspection {
         return pictureCollectionSource;
     }
 
+    public void setWorkOrder(WorkOrder workOrder) {
+        this.workOrder = workOrder;
+    }
+
     /**
      * Checks if syncing the product is allowed
      *
@@ -214,5 +218,13 @@ public class Inspection {
 
             syncStatus = SyncStatus.READY;
         }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public WorkOrder getWorkOrder() {
+        return workOrder;
     }
 }
