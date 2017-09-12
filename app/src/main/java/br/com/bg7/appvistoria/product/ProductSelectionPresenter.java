@@ -143,7 +143,6 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
     public void createWorkOrderClicked() {
 
         String summary = "";
-        WorkOrder workOrder = new WorkOrder(project.getDescription(), summary, address);
 
         for(Map.Entry<Category, List<ProductSelectionItem>> entry : itemsSelected.entrySet()) {
             List<ProductSelectionItem> products = entry.getValue();
@@ -151,7 +150,7 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
             summary = getSummaryByProductSelection(products);
         }
 
-        workOrder.setSummary(summary);
+        WorkOrder workOrder = new WorkOrder(project.getDescription(), summary, address);
 
         List<WorkOrder> allOrderByAddress = workOrderRepository.findAllOrderByProjectAndAddress(workOrder.getName(), address);
 

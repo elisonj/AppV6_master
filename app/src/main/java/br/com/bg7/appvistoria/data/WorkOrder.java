@@ -83,10 +83,6 @@ public class WorkOrder {
         return shortSummary;
     }
 
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
-
     public String getSummary() {
         return summary;
     }
