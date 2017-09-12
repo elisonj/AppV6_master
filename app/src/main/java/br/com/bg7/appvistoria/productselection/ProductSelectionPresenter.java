@@ -31,7 +31,7 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
     private ProductSelectionContract.View productSelectionView;
     private Project project;
     private String address;
-    private List<ProductSelection> productSelections = new ArrayList<>();
+    private List<ProductSelection> productSelections;
     private HashMap<Category, List<ProductSelectionItem>> itemsSelected = new HashMap<>();
 
     ProductSelectionPresenter(Project project, String address, ProductService productService, WorkOrderRepository workOrderRepository, ProductSelectionContract.View productSelectionView) {
@@ -51,19 +51,7 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
         productService.findByProjectAndAddress(project, address,  new HttpCallback<List<Product>>() {
             @Override
             public void onResponse(HttpResponse<List<Product>> httpResponse) {
-                productSelections = new ArrayList<>();
-
-                for(Product product: httpResponse.body()) {
-
-                    int countProducts = getQuantityProduct(product);
-
-                    HashMap<Product, Integer> hashMap = new HashMap<>();
-                    hashMap.put(product, countProducts);
-
-                    ProductSelection productSelection = new ProductSelection(product.getCategory(), hashMap);
-                    productSelections.add(productSelection);
-                }
-
+                productSelections = ProductSelection.fromProducts(httpResponse.body());
                 productSelectionView.showProducts(productSelections);
             }
 
@@ -72,28 +60,6 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
                 productSelectionView.showConnectivityError();
             }
         });
-    }
-
-    private int getQuantityProduct(Product product) {
-        int quantity = 0;
-
-        for (ProductSelection selection:  productSelections) {
-            if(!selection.getCategory().getName().equals(product.getCategory().getName())) continue;
-
-            quantity = getQuantityProductByHash(product, selection.getProducts()) + 1;
-        }
-        return quantity==0?1:quantity;
-    }
-
-    private int getQuantityProductByHash(Product product, HashMap<Product, Integer> products) {
-        for(Map.Entry<Product, Integer> entry : products.entrySet()) {
-            Product key = entry.getKey();
-
-            if(key.getType().equals(product.getType())) {
-                return entry.getValue();
-            }
-        }
-        return 0;
     }
 
     @Override
@@ -161,7 +127,7 @@ public class ProductSelectionPresenter  implements  ProductSelectionContract.Pre
         String summary = "";
 
         for(ProductSelectionItem item : products) {
-            summary += item.getQuantity() + EMPTY_SPACE + item.getProduct().getType() + SEPARATOR;
+            summary += item.getQuantity() + EMPTY_SPACE + item.getProduct().getProductType() + SEPARATOR;
         }
         if(products.size() > 0) {
             summary = summary.substring(0, summary.length() - 2);
