@@ -33,8 +33,8 @@ import br.com.bg7.appvistoria.projectselection.vo.Product;
 import br.com.bg7.appvistoria.projectselection.vo.ProductSelection;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
-import static br.com.bg7.appvistoria.productselection.ProductActivity.KEY_ADDRESS;
-import static br.com.bg7.appvistoria.productselection.ProductActivity.KEY_PROJECT;
+import static br.com.bg7.appvistoria.productselection.ProductSelectionActivity.KEY_ADDRESS;
+import static br.com.bg7.appvistoria.productselection.ProductSelectionActivity.KEY_PROJECT;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**

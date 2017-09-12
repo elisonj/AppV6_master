@@ -24,13 +24,13 @@ import java.util.List;
 
 import br.com.bg7.appvistoria.ProgressDialog;
 import br.com.bg7.appvistoria.R;
-import br.com.bg7.appvistoria.productselection.ProductActivity;
+import br.com.bg7.appvistoria.productselection.ProductSelectionActivity;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 import static br.com.bg7.appvistoria.Constants.FONT_NAME_NUNITO_REGULAR;
 import static br.com.bg7.appvistoria.Constants.FONT_NAME_ROBOTO_REGULAR;
-import static br.com.bg7.appvistoria.productselection.ProductActivity.KEY_ADDRESS;
-import static br.com.bg7.appvistoria.productselection.ProductActivity.KEY_PROJECT;
+import static br.com.bg7.appvistoria.productselection.ProductSelectionActivity.KEY_ADDRESS;
+import static br.com.bg7.appvistoria.productselection.ProductSelectionActivity.KEY_PROJECT;
 
 /**
  * Created by: elison
@@ -167,7 +167,7 @@ public class ProjectSelectionView extends ConstraintLayout implements ProjectSel
 
     @Override
     public void showProductSelectionScreen(Project project, String address) {
-        Intent intent = new Intent(getContext(), ProductActivity.class);
+        Intent intent = new Intent(getContext(), ProductSelectionActivity.class);
         intent.putExtra(KEY_PROJECT, project);
         intent.putExtra(KEY_ADDRESS, address);
         getContext().startActivity(intent);

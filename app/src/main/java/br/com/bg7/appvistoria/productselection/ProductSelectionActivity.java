@@ -15,7 +15,7 @@ import br.com.bg7.appvistoria.projectselection.vo.Project;
  * Created by: elison
  * Date: 2017-09-04
  */
-public class ProductActivity extends BaseActivity {
+public class ProductSelectionActivity extends BaseActivity {
 
     private static final String EMPTY_SPACE = " ";
 

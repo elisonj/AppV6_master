@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".productselection.ProductActivity"
+        <activity android:name=".productselection.ProductSelectionActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|locale">
 
