@@ -51,5 +51,6 @@ public class RetrofitProjectService extends RetrofitLoggedInService<ProjectServi
 
     @Override
     public void findAddressesForProject(Project project, HttpCallback<List<String>> callback) {
+        // TODO: Implementar chamada que retorna todos os enderecos relacionados a um projeto, quando a SB implementar
     }
 }
