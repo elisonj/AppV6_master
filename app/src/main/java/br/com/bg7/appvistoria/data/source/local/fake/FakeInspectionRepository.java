@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.source.local.InspectionRepository;
 import br.com.bg7.appvistoria.sync.SyncStatus;
+import br.com.bg7.appvistoria.syncinspection.InspectionStatus;
 
 /**
  * Created by: luciolucio
@@ -37,7 +38,7 @@ public class FakeInspectionRepository extends FakeRepository<SyncStatus, Inspect
     }
 
     @Override
-    public List<Inspection> findBySyncStatusNotNull() {
+    public List<Inspection> findBySyncStatus(InspectionStatus status) {
         return new ArrayList<>();
     }
 }

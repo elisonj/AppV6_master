@@ -30,7 +30,7 @@ public class SyncPresenter implements SyncContract.Presenter {
 
     @Override
     public void start() {
-        List<Inspection> inspectionsToReset = inspectionRepository.findBySyncStatusNotNull();
+        List<Inspection> inspectionsToReset = inspectionRepository.findBySyncStatus(InspectionStatus.COMPLETED);
         syncList = SyncList.fromInspections(inspectionsToReset);
         view.showInspections(syncList);
     }

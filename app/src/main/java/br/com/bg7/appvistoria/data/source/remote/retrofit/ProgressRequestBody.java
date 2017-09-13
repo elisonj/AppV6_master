@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 class ProgressRequestBody extends RequestBody {
 
-    private static final double MAX_PERCENTAGE = 100.0;
+    private static final int MAX_PERCENTAGE = 100;
     private static final MediaType MEDIA_TYPE = MediaType.parse("image/*");
     private int bufferSize;
 
@@ -57,7 +57,7 @@ class ProgressRequestBody extends RequestBody {
         try (FileInputStream in = new FileInputStream(file)) {
             int read;
             while ((read = in.read(buffer)) != -1) {
-                callback.onProgressUpdated(MAX_PERCENTAGE * uploaded / fileLength);
+                callback.onProgressUpdated(Math.round(MAX_PERCENTAGE * uploaded / fileLength));
                 uploaded += read;
                 sink.write(buffer, 0, read);
             }

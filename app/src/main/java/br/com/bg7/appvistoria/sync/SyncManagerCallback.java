@@ -38,13 +38,11 @@ public class SyncManagerCallback implements SyncCallback {
     /**
      * Notifies all subscribers of the consolidated inspection progress
      *
-     * TODO: Implementar o calculo de progresso geral da inspection
-     *
      * @param inspection The inspection being synced
      * @param progress A 0-100 number indicating percentage completed
      */
     @Override
-    public void onProgressUpdated(Inspection inspection, double progress) {
+    public void onProgressUpdated(Inspection inspection, Integer progress) {
         for (SyncCallback callback : subscribers) {
             callback.onProgressUpdated(inspection, progress);
         }

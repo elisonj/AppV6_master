@@ -39,13 +39,20 @@ class PictureCollection {
     }
 
     boolean allDone() {
-        int count = 0;
+        return quantityToSync() == 0;
+    }
 
+
+    int quantityToSync() {
+        int count = 0;
         for (Picture picture : pictures) {
             if (picture.getSyncStatus() != PictureSyncStatus.DONE) count++;
         }
+        return count;
+    }
 
-        return count == 0;
+    int getPicturesSize() {
+        return pictures.size();
     }
 
     @Nonnull

@@ -33,12 +33,12 @@ public class SyncList {
             detail.setProject(inspection.getWorkOrder().getName());
             detail.setDescription(inspection.getDescription());
 
-
             switch (inspection.getSyncStatus()) {
                 case READY:
                     listItemNotStarted.getInspections().add(detail);
                     break;
                 case INSPECTION_BEING_SYNCED:
+                    detail.setPercentage(inspection.getPercentageCompleted());
                     listItemInProgress.getInspections().add(detail);
                     break;
                 case FAILED:

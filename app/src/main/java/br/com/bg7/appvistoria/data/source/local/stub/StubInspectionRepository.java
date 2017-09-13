@@ -8,6 +8,7 @@ import br.com.bg7.appvistoria.data.StubInspection;
 import br.com.bg7.appvistoria.data.WorkOrder;
 import br.com.bg7.appvistoria.data.source.local.InspectionRepository;
 import br.com.bg7.appvistoria.sync.SyncStatus;
+import br.com.bg7.appvistoria.syncinspection.InspectionStatus;
 
 /**
  * Created by: elison
@@ -25,7 +26,7 @@ public class StubInspectionRepository  implements InspectionRepository {
     }
 
     @Override
-    public List<Inspection> findBySyncStatusNotNull() {
+    public List<Inspection> findBySyncStatus(InspectionStatus status) {
         return getInspectionData();
     }
 

@@ -17,6 +17,7 @@ import br.com.bg7.appvistoria.data.source.remote.http.HttpProgressCallback;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
 import br.com.bg7.appvistoria.sync.PictureSyncStatus;
 import br.com.bg7.appvistoria.sync.SyncStatus;
+import br.com.bg7.appvistoria.syncinspection.InspectionStatus;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -32,6 +33,9 @@ public class Inspection {
 
     @DatabaseField(index = true)
     SyncStatus syncStatus;
+
+    @DatabaseField(index = true)
+    InspectionStatus status;
 
     @DatabaseField(canBeNull = false)
     String description;
@@ -62,6 +66,14 @@ public class Inspection {
         return pictureCollectionSource;
     }
 
+    public int getPercentageCompleted() {
+        int picturesSize = pictureCollection().getPicturesSize();
+
+        int total = picturesSize + 1;
+        int synced = total - pictureCollection().quantityToSync();
+
+        return (synced / total) * 100;
+    }
 
     public void setWorkOrder(WorkOrder workOrder) {
         this.workOrder = workOrder;
@@ -120,7 +132,7 @@ public class Inspection {
         // TODO: Testar callbies
         pictureService.send(picture.getFile(), this, new HttpProgressCallback<PictureResponse>() {
             @Override
-            public void onProgressUpdated(double percentage) {
+            public void onProgressUpdated(Integer percentage) {
                 syncCallback.onProgressUpdated(Inspection.this, percentage);
             }
 
@@ -166,7 +178,7 @@ public class Inspection {
         syncStatus = SyncStatus.INSPECTION_BEING_SYNCED;
         inspectionService.send(this, new HttpProgressCallback<ProductResponse>() {
             @Override
-            public void onProgressUpdated(double percentage) {
+            public void onProgressUpdated(Integer percentage) {
                 syncCallback.onProgressUpdated(Inspection.this, percentage);
             }
 

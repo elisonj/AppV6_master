@@ -8,6 +8,6 @@ import br.com.bg7.appvistoria.data.Inspection;
  */
 public interface SyncCallback {
     void onSuccess(Inspection inspection);
-    void onProgressUpdated(Inspection inspection, double progress);
+    void onProgressUpdated(Inspection inspection, Integer progress);
     void onFailure(Inspection inspection, Throwable t);
 }

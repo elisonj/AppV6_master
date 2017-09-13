@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.sync.SyncStatus;
+import br.com.bg7.appvistoria.syncinspection.InspectionStatus;
 
 /**
  * Created by: luciolucio
@@ -12,5 +13,5 @@ import br.com.bg7.appvistoria.sync.SyncStatus;
 
 public interface InspectionRepository extends Repository<Inspection> {
     Iterable<Inspection> findBySyncStatus(SyncStatus status);
-    List<Inspection> findBySyncStatusNotNull();
+    List<Inspection> findBySyncStatus(InspectionStatus status);
 }
