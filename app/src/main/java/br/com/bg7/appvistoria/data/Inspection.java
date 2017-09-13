@@ -31,7 +31,10 @@ public class Inspection {
     private Long id;
 
     @DatabaseField(index = true)
-    private SyncStatus syncStatus;
+    SyncStatus syncStatus;
+
+    @DatabaseField(canBeNull = false)
+    String description;
 
     @ForeignCollectionField
     private Collection<Picture> pictures = new ArrayList<>();
@@ -47,6 +50,10 @@ public class Inspection {
         // used by ormlite
     }
 
+    public Inspection(String description) {
+        this.description = description;
+    }
+
     private PictureCollection pictureCollection() {
         if (pictureCollectionSource == null) {
             pictureCollectionSource = new PictureCollection(pictures);
@@ -54,6 +61,7 @@ public class Inspection {
 
         return pictureCollectionSource;
     }
+
 
     public void setWorkOrder(WorkOrder workOrder) {
         this.workOrder = workOrder;
@@ -226,5 +234,9 @@ public class Inspection {
 
     public WorkOrder getWorkOrder() {
         return workOrder;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

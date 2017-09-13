@@ -60,4 +60,9 @@
     <string name="confirm_create_workorder">Do you want to create a new WorkOrder\nwith the selected actives?</string>
     <string name="cannot_create_workorder">Failed to create Workorder.\nPlease try again later.</string>
     <string name="cannot_duplicate_workorder">Cannot create a workorder\n for the same address.</string>
+    <string name="inspection_item">INSPECTION</string>
+    <string name="sync_item">SYNCHRONIZE</string>
+    <string name="inspection_being_sync">Inspections synchronizing (%d)</string>
+    <string name="inspection_synced">Inspections synchronized (%d)</string>
+    <string name="inspection_error">Sync Error (%d)</string>
 </resources>

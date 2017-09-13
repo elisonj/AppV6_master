@@ -60,4 +60,10 @@
     <string name="confirm_create_workorder">Deseja criar uma nova visita\ncom os ativos selecionados?</string>
     <string name="cannot_create_workorder">Não foi possível criar a visita.\nPor favor, tente novamente mais tarde.</string>
     <string name="cannot_duplicate_workorder">Já existe uma visita criada\n para este endereço.</string>
+    <string name="inspection_item">INSPEÇÃO</string>
+    <string name="sync_item">SINCRONIZAR</string>
+    <string name="inspection_to_sync">Inspeções a sincronizar (%d)</string>
+    <string name="inspection_being_sync">Inspeções sincronizando (%d)</string>
+    <string name="inspection_synced">Inspeções sincronizadas (%d)</string>
+    <string name="inspection_error">Erros de sincronização (%d)</string>
 </resources>

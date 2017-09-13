@@ -6,16 +6,16 @@
 
     <LinearLayout
         android:id="@+id/linear_main"
-        android:background="@drawable/background_workorder_not_started"
+        android:background="@drawable/background_sync_item_in_progress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
         <LinearLayout
             android:layout_marginStart="15dp"
+            android:layout_marginTop="7dp"
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0.55"
             android:gravity="center_vertical"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -24,10 +24,13 @@
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="#434b4e"
+                android:textStyle="bold"
                 android:text="" />
 
             <TextView
                 android:id="@+id/project"
+                android:textColor="#72797f"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="" />
@@ -35,7 +38,8 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0.45"
+            android:layout_marginTop="7dp"
             android:gravity="center_vertical|end"
             android:layout_height="match_parent"
             android:orientation="horizontal">
@@ -50,15 +54,22 @@
 
                 <TextView
                     android:id="@+id/inspection"
+                    android:textSize="8sp"
+                    android:textStyle="bold"
+                    android:gravity="right"
+                    android:textColor="#4a4f53"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="" />
+                    android:text="@string/inspection_item" />
 
                 <TextView
                     android:id="@+id/status"
+                    android:textColor="#4a4f53"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="" />
+                    android:text="@string/sync_item" />
             </LinearLayout>
 
 

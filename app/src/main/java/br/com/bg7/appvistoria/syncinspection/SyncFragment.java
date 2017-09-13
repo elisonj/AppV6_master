@@ -2,6 +2,7 @@ package br.com.bg7.appvistoria.syncinspection;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import br.com.bg7.appvistoria.R;
@@ -31,8 +31,6 @@ public class SyncFragment extends Fragment implements SyncContract.View {
 
     private static final String EMPTY_SPACE = " ";
     private SyncContract.Presenter syncPresenter;
-    List<SyncListItem> listDataHeader = new ArrayList<>();
-    HashMap<SyncListItem, List<SyncListItemDetails>> listDataChild = new HashMap<>();
     private ExpandableListView expListView;
 
     @Override
@@ -52,7 +50,6 @@ public class SyncFragment extends Fragment implements SyncContract.View {
 
     private void initializeViewElements(View root) {
         expListView = root.findViewById(R.id.listview);
-
     }
 
     @Override
@@ -60,7 +57,6 @@ public class SyncFragment extends Fragment implements SyncContract.View {
         super.onResume();
         syncPresenter.start();
     }
-
 
     @Override
     public void setPresenter(SyncContract.Presenter presenter) {
@@ -73,27 +69,22 @@ public class SyncFragment extends Fragment implements SyncContract.View {
             //TODO: Exibir tela de nenhum elemento
             return;
         }
-        listDataHeader = syncList.getSyncListItens();
-
-        expListView.setAdapter(new ExpandableListAdapter(getContext(), listDataHeader));
-
+        expListView.setAdapter(new ExpandableListAdapter(getContext(), syncList.getSyncListItens()));
     }
-
-
-
-
 
     private class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         private Context context;
+        List<SyncListItem> listDataHeader = new ArrayList<>();
 
-        ExpandableListAdapter(Context context, List<SyncListItem> inspections ) {
+        ExpandableListAdapter(Context context, List<SyncListItem> list ) {
             this.context = context;
+            this.listDataHeader = list;
         }
 
         @Override
         public SyncListItemDetails getChild(int groupPosition, int childPosition) {
-            List<SyncListItemDetails> productSelectionItems = listDataChild.get(listDataHeader.get(groupPosition));
+            List<SyncListItemDetails> productSelectionItems = listDataHeader.get(groupPosition).getInspections();
             return productSelectionItems.get(childPosition);
         }
 
@@ -107,7 +98,6 @@ public class SyncFragment extends Fragment implements SyncContract.View {
                                  boolean isLastChild, View convertView, ViewGroup parent) {
 
             final SyncListItemDetails childText = getChild(groupPosition, childPosition);
-         //   final boolean isSelected = productSelectionPresenter.isProductSelected(childText.getProduct(), getGroup(groupPosition));
 
             if (convertView == null) {
                 convertView = inflate(context, R.layout.sync_list_item, null);
@@ -117,18 +107,30 @@ public class SyncFragment extends Fragment implements SyncContract.View {
             final TextView title = convertView.findViewById(R.id.title);
             final TextView project = convertView.findViewById(R.id.project);
 
-            title.setText(childText.getDescription());
+            Drawable background = getResources().getDrawable(R.drawable.background_sync_item_in_progress, null);
 
+            switch(getGroup(groupPosition).getStatus()) {
+                case COMPLETED:
+                    background = getResources().getDrawable(R.drawable.background_sync_item_completed, null);
+                    break;
+                case NOT_STARTED:
+                    background = getResources().getDrawable(R.drawable.background_sync_item_not_started, null);
+                    break;
+                case ERROR:
+                    background = getResources().getDrawable(R.drawable.background_sync_item_error, null);
+            }
+
+            linearMain.setBackground(background);
+
+            title.setText(childText.getDescription());
+            project.setText(childText.getProject());
 
             return convertView;
         }
 
-
-
         @Override
         public int getChildrenCount(int groupPosition) {
-            return listDataChild.get(listDataHeader.get(groupPosition))
-                    .size();
+            return listDataHeader.get(groupPosition).getInspections().size();
         }
 
         @Override
@@ -157,7 +159,23 @@ public class SyncFragment extends Fragment implements SyncContract.View {
             TextView category = convertView.findViewById(R.id.category);
 
             category.setTypeface(null, Typeface.BOLD);
-            category.setText(headerTitle.getStatus().toString());
+
+            String categoryName = getString(R.string.inspection_being_sync);
+
+            switch(headerTitle.getStatus()) {
+                case COMPLETED:
+                    categoryName = getString(R.string.inspection_synced);
+                    break;
+                case NOT_STARTED:
+                    categoryName = getString(R.string.inspection_to_sync);
+                    break;
+                case ERROR:
+                    categoryName = getString(R.string.inspection_error);
+            }
+
+            categoryName = String.format(categoryName, headerTitle.getCount());
+            category.setText(categoryName);
+
 
             return convertView;
         }

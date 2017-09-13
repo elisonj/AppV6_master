@@ -31,7 +31,7 @@ public class SyncList {
             SyncListItemDetails detail = new SyncListItemDetails();
             detail.setId(inspection.getId());
             detail.setProject(inspection.getWorkOrder().getName());
-            detail.setDescription(inspection.getWorkOrder().getSummary());
+            detail.setDescription(inspection.getDescription());
 
 
             switch (inspection.getSyncStatus()) {
@@ -57,8 +57,8 @@ public class SyncList {
 
         syncList.syncListItem.add(listItemNotStarted);
         syncList.syncListItem.add(listItemInProgress);
-        syncList.syncListItem.add(listItemError);
         syncList.syncListItem.add(listItemCompleted);
+        syncList.syncListItem.add(listItemError);
 
         return syncList;
     }

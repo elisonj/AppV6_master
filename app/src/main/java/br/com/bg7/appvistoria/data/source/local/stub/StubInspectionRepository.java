@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.bg7.appvistoria.data.Inspection;
+import br.com.bg7.appvistoria.data.StubInspection;
 import br.com.bg7.appvistoria.data.WorkOrder;
 import br.com.bg7.appvistoria.data.source.local.InspectionRepository;
 import br.com.bg7.appvistoria.sync.SyncStatus;
@@ -28,27 +29,27 @@ public class StubInspectionRepository  implements InspectionRepository {
         return getInspectionData();
     }
 
-    public List<Inspection> getInspectionData() {
+    private List<Inspection> getInspectionData() {
         List<Inspection> list = new ArrayList<>();
 
         WorkOrder workOrder = new WorkOrder("Name","Summary", "Address");
 
 
-        Inspection inspection1 = new Inspection();
+        StubInspection inspection1 = new StubInspection("FORD/BB51");
         inspection1.setWorkOrder(workOrder);
-        Inspection inspection2 = new Inspection();
+        StubInspection inspection2 = new StubInspection("FORD/BB51");
         inspection2.setWorkOrder(workOrder);
-        Inspection inspection3 = new Inspection();
+        StubInspection inspection3 = new StubInspection("FORD/BB51");
         inspection3.setWorkOrder(workOrder);
-        Inspection inspection4 = new Inspection();
+        StubInspection inspection4 = new StubInspection("FORD/BB51");
         inspection4.setWorkOrder(workOrder);
-        Inspection inspection5 = new Inspection();
+        StubInspection inspection5 = new StubInspection("FORD/BB51");
         inspection5.setWorkOrder(workOrder);
 
         inspection1.readyToSync();
-        inspection2.readyToSync();
-        inspection3.readyToSync();
-        inspection4.readyToSync();
+        inspection2.setStatus(SyncStatus.INSPECTION_BEING_SYNCED);
+        inspection3.setStatus(SyncStatus.FAILED);
+        inspection4.setStatus(SyncStatus.DONE);
         inspection5.readyToSync();
 
         list.add(inspection1);
