@@ -14,7 +14,6 @@
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme"
-        tools:replace="allowBackup, label"
         android:allowBackup="false"
         android:supportsRtl="true"
         tools:ignore="GoogleAppIndexingWarning">
