@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.syncinspection;
+package br.com.bg7.appvistoria.sync;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -18,9 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.bg7.appvistoria.R;
-import br.com.bg7.appvistoria.syncinspection.vo.SyncList;
-import br.com.bg7.appvistoria.syncinspection.vo.SyncListItem;
-import br.com.bg7.appvistoria.syncinspection.vo.SyncListItemDetails;
+import br.com.bg7.appvistoria.sync.vo.SyncList;
+import br.com.bg7.appvistoria.sync.vo.SyncListItem;
+import br.com.bg7.appvistoria.sync.vo.SyncListItemDetails;
 
 import static android.view.View.inflate;
 

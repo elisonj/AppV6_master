@@ -17,7 +17,7 @@ import br.com.bg7.appvistoria.data.source.remote.http.HttpProgressCallback;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
 import br.com.bg7.appvistoria.sync.PictureSyncStatus;
 import br.com.bg7.appvistoria.sync.SyncStatus;
-import br.com.bg7.appvistoria.syncinspection.InspectionStatus;
+import br.com.bg7.appvistoria.sync.InspectionStatus;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -250,5 +250,9 @@ public class Inspection {
 
     public String getDescription() {
         return description;
+    }
+
+    public InspectionStatus getStatus() {
+        return status;
     }
 }

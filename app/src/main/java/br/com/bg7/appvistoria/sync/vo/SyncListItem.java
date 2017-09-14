@@ -1,4 +1,6 @@
-package br.com.bg7.appvistoria.syncinspection.vo;
+package br.com.bg7.appvistoria.sync.vo;
+
+import com.google.common.base.Objects;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,5 +32,20 @@ public class SyncListItem {
 
     public Integer getCount() {
         return count;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SyncListItem that = (SyncListItem) o;
+        return status == that.status &&
+                Objects.equal(count, that.count) &&
+                Objects.equal(inspections, that.inspections);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(status, count, inspections);
     }
 }

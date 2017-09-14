@@ -23,8 +23,8 @@ import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.servicelocator.ServiceLocator;
 import br.com.bg7.appvistoria.sync.SyncExecutor;
 import br.com.bg7.appvistoria.sync.SyncManager;
-import br.com.bg7.appvistoria.syncinspection.SyncFragment;
-import br.com.bg7.appvistoria.syncinspection.SyncPresenter;
+import br.com.bg7.appvistoria.sync.SyncFragment;
+import br.com.bg7.appvistoria.sync.SyncPresenter;
 import br.com.bg7.appvistoria.workorder.WorkOrderFragment;
 import br.com.bg7.appvistoria.workorder.WorkOrderPresenter;
 

@@ -1,4 +1,6 @@
-package br.com.bg7.appvistoria.syncinspection.vo;
+package br.com.bg7.appvistoria.sync.vo;
+
+import com.google.common.base.Objects;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,7 @@ public class SyncList {
 
     public static SyncList fromInspections(List<Inspection> list) {
 
-        if(list.size() == 0) return null;
+        if(list == null || list.size() == 0) return null;
 
         SyncList syncList = new SyncList();
 
@@ -73,5 +75,22 @@ public class SyncList {
 
     public List<SyncListItem> getSyncListItens() {
         return syncListItem;
+    }
+
+    public void setSyncListItem(List<SyncListItem> syncListItem) {
+        this.syncListItem = syncListItem;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SyncList syncList = (SyncList) o;
+        return Objects.equal(syncListItem, syncList.syncListItem);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(syncListItem);
     }
 }

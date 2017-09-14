@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.syncinspection;
+package br.com.bg7.appvistoria.sync;
 
 import java.util.List;
 
@@ -7,8 +7,7 @@ import br.com.bg7.appvistoria.data.source.local.InspectionRepository;
 import br.com.bg7.appvistoria.data.source.remote.InspectionService;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
-import br.com.bg7.appvistoria.sync.SyncManager;
-import br.com.bg7.appvistoria.syncinspection.vo.SyncList;
+import br.com.bg7.appvistoria.sync.vo.SyncList;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -26,15 +25,20 @@ public class SyncPresenter implements SyncContract.Presenter {
     private PictureService pictureService;
     private InspectionService inspectionService;
 
+    Runnable updateQueue;
+
+    Runnable sync;
+
 
     public SyncPresenter(InspectionRepository inspectionRepository, SyncManager syncManager, SyncContract.View view,
                          PictureService pictureService, InspectionService inspectionService) {
         this.inspectionRepository = checkNotNull(inspectionRepository);
         this.syncManager = checkNotNull(syncManager);
         this.view = checkNotNull(view);
+        this.pictureService = checkNotNull(pictureService);
+        this.inspectionService = checkNotNull(inspectionService);
+
         this.view.setPresenter(this);
-        this.pictureService = pictureService;
-        this.inspectionService = inspectionService;
     }
 
     @Override
@@ -42,6 +46,8 @@ public class SyncPresenter implements SyncContract.Presenter {
         inspections = inspectionRepository.findBySyncStatus(InspectionStatus.COMPLETED);
         syncList = SyncList.fromInspections(inspections);
         view.showInspections(syncList);
+
+        syncManager.subscribe(callbackPicture);
     }
 
 
@@ -76,12 +82,15 @@ public class SyncPresenter implements SyncContract.Presenter {
 
         if(inspection.canSyncPictures()) {
             inspection.sync(pictureService, callbackPicture);
+            syncManager.subscribe(callbackPicture);
             return;
         }
         inspection.sync(inspectionService, callbackInspection);
+        syncManager.subscribe(callbackPicture);
+
     }
 
-    private SyncCallback callbackPicture = new SyncCallback() {
+        private SyncCallback callbackPicture = new SyncCallback() {
         @Override
         public void onSuccess(Inspection inspection) {
             inspection.sync(inspectionService, callbackInspection);

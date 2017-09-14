@@ -18,27 +18,27 @@ import br.com.bg7.appvistoria.sync.SyncStatus;
  * Date: 2017-07-31
  */
 
-public class FakeInspectionRepository extends FakeRepository<SyncStatus, Inspection> implements InspectionRepository {
+public class FakeInspectionSyncRepository extends FakeRepository<InspectionStatus, Inspection> implements InspectionRepository {
     @Override
-    SyncStatus getKey(Inspection entity) {
-        return entity.getSyncStatus();
+    InspectionStatus getKey(Inspection entity) {
+        return entity.getStatus();
     }
 
     @Override
     public Iterable<Inspection> findBySyncStatus(final SyncStatus status) {
-        Map<SyncStatus, Inspection> filtered = Maps.filterEntries(ENTITIES_BY_KEY, new Predicate<Map.Entry<SyncStatus, Inspection>>() {
-            @Override
-            public boolean apply(@Nullable Map.Entry<SyncStatus, Inspection> input) {
-                return input != null && input.getKey().equals(status);
-            }
-        });
-
-        return filtered.values();
+        return null;
     }
 
     @Override
     public List<Inspection> findBySyncStatus(final InspectionStatus status) {
-        return null;
-    }
+        Map<InspectionStatus, Inspection> filtered = Maps.filterEntries(ENTITIES_BY_KEY,
+                new Predicate<Map.Entry<InspectionStatus, Inspection>>() {
+            @Override
+            public boolean apply(@Nullable Map.Entry<InspectionStatus, Inspection> input) {
+                return input != null && input.getKey().equals(status);
+            }
+        });
 
+        return (List<Inspection> )filtered.values();
+    }
 }

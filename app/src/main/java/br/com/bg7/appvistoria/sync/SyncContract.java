@@ -1,8 +1,8 @@
-package br.com.bg7.appvistoria.syncinspection;
+package br.com.bg7.appvistoria.sync;
 
 import br.com.bg7.appvistoria.BasePresenter;
 import br.com.bg7.appvistoria.BaseView;
-import br.com.bg7.appvistoria.syncinspection.vo.SyncList;
+import br.com.bg7.appvistoria.sync.vo.SyncList;
 
 /**
  * Created by: elison

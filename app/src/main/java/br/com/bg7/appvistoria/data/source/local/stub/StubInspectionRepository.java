@@ -8,7 +8,7 @@ import br.com.bg7.appvistoria.data.StubInspection;
 import br.com.bg7.appvistoria.data.WorkOrder;
 import br.com.bg7.appvistoria.data.source.local.InspectionRepository;
 import br.com.bg7.appvistoria.sync.SyncStatus;
-import br.com.bg7.appvistoria.syncinspection.InspectionStatus;
+import br.com.bg7.appvistoria.sync.InspectionStatus;
 
 /**
  * Created by: elison

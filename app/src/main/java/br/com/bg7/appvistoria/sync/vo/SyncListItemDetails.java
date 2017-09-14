@@ -1,4 +1,6 @@
-package br.com.bg7.appvistoria.syncinspection.vo;
+package br.com.bg7.appvistoria.sync.vo;
+
+import com.google.common.base.Objects;
 
 /**
  * Created by: elison
@@ -40,5 +42,21 @@ public class SyncListItemDetails {
 
     public String getProject() {
         return project;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SyncListItemDetails that = (SyncListItemDetails) o;
+        return Objects.equal(id, that.id) &&
+                Objects.equal(description, that.description) &&
+                Objects.equal(project, that.project) &&
+                Objects.equal(percentage, that.percentage);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id, description, project, percentage);
     }
 }

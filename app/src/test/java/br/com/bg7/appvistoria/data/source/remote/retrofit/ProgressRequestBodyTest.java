@@ -32,7 +32,7 @@ public class ProgressRequestBodyTest {
     private int index = 0;
     private static final TestHttpProgressCallback EMPTY_LISTENER = new TestHttpProgressCallback() {
         @Override
-        public void onProgressUpdated(double percentage) {
+        public void onProgressUpdated(Integer percentage) {
         }
     };
 
@@ -102,7 +102,7 @@ public class ProgressRequestBodyTest {
 
         ProgressRequestBody body = new ProgressRequestBody(file, DEFAULT_BUFFER_SIZE, new TestHttpProgressCallback() {
             @Override
-            public void onProgressUpdated(double percentage) {
+            public void onProgressUpdated(Integer percentage) {
                 Assert.assertEquals(expectedPercentages[index], percentage, 1e-2);
                 index++;
             }

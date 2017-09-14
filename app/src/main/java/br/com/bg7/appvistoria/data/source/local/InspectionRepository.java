@@ -4,7 +4,7 @@ import java.util.List;
 
 import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.sync.SyncStatus;
-import br.com.bg7.appvistoria.syncinspection.InspectionStatus;
+import br.com.bg7.appvistoria.sync.InspectionStatus;
 
 /**
  * Created by: luciolucio

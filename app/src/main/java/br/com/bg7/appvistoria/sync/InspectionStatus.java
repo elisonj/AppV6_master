@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.syncinspection;
+package br.com.bg7.appvistoria.sync;
 
 /**
  * Created by: elison
