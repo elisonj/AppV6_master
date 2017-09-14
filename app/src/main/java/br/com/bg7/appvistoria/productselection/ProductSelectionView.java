@@ -2,13 +2,10 @@ package br.com.bg7.appvistoria.productselection;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.net.ConnectivityManager;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.ExpandableListView;
 
-import java.util.HashMap;
 import java.util.List;
 
 import br.com.bg7.appvistoria.AlertDialog;
@@ -71,16 +68,8 @@ class ProductSelectionView extends ConstraintLayout implements ProductSelectionC
 
     @Override
     public void showConnectivityError() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        boolean isConnect = connectivityManager.getActiveNetworkInfo() != null
-                && connectivityManager.getActiveNetworkInfo().isAvailable()
-                && connectivityManager.getActiveNetworkInfo().isConnected();
-
-        if (!isConnect) {
-            AlertDialog dialog = new AlertDialog(getContext(), getContext().getString(R.string.cannot_create_workorder));
-            dialog.show();
-        }
+        AlertDialog dialog = new AlertDialog(getContext(), getContext().getString(R.string.could_not_load_data_error));
+        dialog.show();
     }
 
     @Override

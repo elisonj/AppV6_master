@@ -58,6 +58,6 @@
     <string name="ico_category">Categoria</string>
     <string name="create_workorder">CRIAR VISITA</string>
     <string name="confirm_create_workorder">Deseja criar uma nova visita\ncom os ativos selecionados?</string>
-    <string name="cannot_create_workorder">Não foi possível criar a visita.\nPor favor, tente novamente mais tarde.</string>
+    <string name="could_not_load_data_error">Não foi possível carregar os dados.\nPor favor, tente novamente mais tarde.</string>
     <string name="cannot_duplicate_workorder">Já existe uma visita criada\n para este endereço.</string>
 </resources>
