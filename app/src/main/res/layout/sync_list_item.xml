@@ -46,6 +46,7 @@
 
 
             <LinearLayout
+                android:id="@+id/linear_properties"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="5dp"
@@ -56,7 +57,7 @@
                     android:id="@+id/inspection"
                     android:textSize="8sp"
                     android:textStyle="bold"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:textColor="#4a4f53"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -67,6 +68,7 @@
                     android:textColor="#4a4f53"
                     android:textStyle="bold"
                     android:textSize="12sp"
+                    android:gravity="end"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/sync_item" />

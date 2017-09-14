@@ -187,7 +187,7 @@ public class ConfigActivity extends BaseActivity {
 
                 SyncManager syncManager = new SyncManager(services.getInspectionRepository(), services.getInspectionService(),
                         services.getPictureService(), syncExecutor);
-                new SyncPresenter(services.getInspectionRepository(), syncManager, syncFrag);
+                new SyncPresenter(services.getInspectionRepository(), syncManager, syncFrag, services.getPictureService(), services.getInspectionService());
 
                 configureSearchButton(false);
                 break;

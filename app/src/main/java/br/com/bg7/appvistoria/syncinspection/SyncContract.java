@@ -11,10 +11,17 @@ import br.com.bg7.appvistoria.syncinspection.vo.SyncList;
 public interface SyncContract {
     interface View extends BaseView<Presenter> {
         void showInspections(SyncList syncList);
+        void showUnderNotStarted(Long inspectionId);
+        void showUnderInProgress(Long inspectionId);
+        void showUnderCompleted(Long inspectionId);
+        void showPercentage(Integer percentage, Long inspectionId);
+        void showUnderError(Long inspectionId);
+        void showSyncSuccessMessage();
+        void showSyncErrorMessage();
 
     }
     interface Presenter extends BasePresenter {
-//        void syncClicked(Long inspectionId);
-//        void retryClicked(Long inspectionId);
+        void syncClicked(Long inspectionId);
+        void retryClicked(Long inspectionId);
     }
 }

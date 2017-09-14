@@ -14,6 +14,9 @@ public class SyncList {
     private List<SyncListItem> syncListItem = new ArrayList<>();
 
     public static SyncList fromInspections(List<Inspection> list) {
+
+        if(list.size() == 0) return null;
+
         SyncList syncList = new SyncList();
 
         int countNotStarted = 0;
@@ -32,6 +35,11 @@ public class SyncList {
             detail.setId(inspection.getId());
             detail.setProject(inspection.getWorkOrder().getName());
             detail.setDescription(inspection.getDescription());
+
+            if(inspection.getSyncStatus() == null) {
+                listItemNotStarted.getInspections().add(detail);
+                continue;
+            }
 
             switch (inspection.getSyncStatus()) {
                 case READY:

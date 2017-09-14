@@ -65,4 +65,8 @@
     <string name="inspection_being_sync">Inspections synchronizing (%d)</string>
     <string name="inspection_synced">Inspections synchronized (%d)</string>
     <string name="inspection_error">Sync Error (%d)</string>
+    <string name="inspection_empty">No inspections in the\nsynchronize list</string>
+    <string name="sync_error">Sync Error.</string>
+    <string name="try_again">TRY AGAIN</string>
+    <string name="sync_success">Synchronize successful!</string>
 </resources>

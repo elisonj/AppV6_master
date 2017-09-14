@@ -66,4 +66,8 @@
     <string name="inspection_being_sync">Inspeções sincronizando (%d)</string>
     <string name="inspection_synced">Inspeções sincronizadas (%d)</string>
     <string name="inspection_error">Erros de sincronização (%d)</string>
+    <string name="inspection_empty">Não há inspeções\nna lista de sincronização</string>
+    <string name="sync_error">Erro de sincronização.</string>
+    <string name="try_again">TENTAR NOVAMENTE</string>
+    <string name="sync_success">Sincronização realizada com sucesso!</string>
 </resources>

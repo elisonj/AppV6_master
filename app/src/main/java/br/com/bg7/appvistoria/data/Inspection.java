@@ -29,7 +29,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class Inspection {
 
     @DatabaseField(generatedId = true)
-    private Long id;
+    Long id;
 
     @DatabaseField(index = true)
     SyncStatus syncStatus;

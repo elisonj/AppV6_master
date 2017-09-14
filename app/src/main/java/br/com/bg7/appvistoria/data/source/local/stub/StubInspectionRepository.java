@@ -15,6 +15,8 @@ import br.com.bg7.appvistoria.syncinspection.InspectionStatus;
  * Date: 2017-09-12
  */
 public class StubInspectionRepository  implements InspectionRepository {
+
+
     @Override
     public void save(Inspection entity) {
 
@@ -36,21 +38,21 @@ public class StubInspectionRepository  implements InspectionRepository {
         WorkOrder workOrder = new WorkOrder("Name","Summary", "Address");
 
 
-        StubInspection inspection1 = new StubInspection("FORD/BB51");
+        StubInspection inspection1 = new StubInspection(1L,"FORD/BB51");
         inspection1.setWorkOrder(workOrder);
-        StubInspection inspection2 = new StubInspection("FORD/BB51");
+        StubInspection inspection2 = new StubInspection(2L,"FORD/BB51");
         inspection2.setWorkOrder(workOrder);
-        StubInspection inspection3 = new StubInspection("FORD/BB51");
+        StubInspection inspection3 = new StubInspection(3L,"FORD/BB51");
         inspection3.setWorkOrder(workOrder);
-        StubInspection inspection4 = new StubInspection("FORD/BB51");
+        StubInspection inspection4 = new StubInspection(4L,"FORD/BB51");
         inspection4.setWorkOrder(workOrder);
-        StubInspection inspection5 = new StubInspection("FORD/BB51");
+        StubInspection inspection5 = new StubInspection(5L,"FORD/BB51");
         inspection5.setWorkOrder(workOrder);
 
         inspection1.readyToSync();
-        inspection2.setStatus(SyncStatus.INSPECTION_BEING_SYNCED);
-        inspection3.setStatus(SyncStatus.FAILED);
-        inspection4.setStatus(SyncStatus.DONE);
+        inspection2.setSyncStatus(SyncStatus.INSPECTION_BEING_SYNCED);
+        inspection3.setSyncStatus(SyncStatus.FAILED);
+        inspection4.setSyncStatus(SyncStatus.DONE);
         inspection5.readyToSync();
 
         list.add(inspection1);
@@ -61,5 +63,6 @@ public class StubInspectionRepository  implements InspectionRepository {
 
         return list;
     }
+
 
 }

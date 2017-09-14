@@ -18,8 +18,16 @@ public class SyncListItemDetails {
         this.id = id;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public void setPercentage(Integer percentage) {
         this.percentage = percentage;
+    }
+
+    public Integer getPercentage() {
+        return percentage;
     }
 
     public void setProject(String project) {

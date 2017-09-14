@@ -197,7 +197,7 @@ class InspectionTestBase {
         }
 
         @Override
-        public void onProgressUpdated(Inspection inspection, double progress) {
+        public void onProgressUpdated(Inspection inspection, Integer progress) {
 
         }
 

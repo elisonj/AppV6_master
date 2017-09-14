@@ -1,6 +1,7 @@
 package br.com.bg7.appvistoria.data;
 
 import br.com.bg7.appvistoria.sync.SyncStatus;
+import br.com.bg7.appvistoria.syncinspection.InspectionStatus;
 
 /**
  * Created by: elison
@@ -8,11 +9,13 @@ import br.com.bg7.appvistoria.sync.SyncStatus;
  */
 public class StubInspection extends Inspection {
 
-    public StubInspection(String description) {
+    public StubInspection(Long id, String description) {
+        this.id = id;
         this.description = description;
+        status = InspectionStatus.COMPLETED;
     }
 
-    public void setStatus(SyncStatus syncStatus) {
+    public void setSyncStatus(SyncStatus syncStatus) {
         this.syncStatus = syncStatus;
     }
 }
