@@ -65,12 +65,7 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
 
     @Override
     public void chooseQuantity(ProductSelectionItem item, int quantity) {
-
-        if (!selectedItems.containsKey(item)) {
-            selectedItems.put(item, 0);
-        }
-
-        selectedItems.put(item, selectedItems.get(item) + quantity);
+        selectedItems.put(item, quantity);
 
         productSelectionView.showSelectedQuantity(item, quantity);
     }
@@ -83,7 +78,17 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
 
     @Override
     public void createWorkOrderClicked() {
+        productSelectionView.showConfirmation();
+    }
 
+    @Override
+    public void cancelCreateWorkOrderClicked() {
+        productSelectionView.hideConfirmation();
+    }
+
+    @Override
+    public void confirmCreateWorkOrderClicked() {
+        // TODO: Criar de fato uma WorkOrder com os dados selecionados
         WorkOrder workOrder = new WorkOrder(project.getDescription(), address);
 
         List<WorkOrder> allOrderByAddress = workOrderRepository.findAllOrderByProjectAndAddress(workOrder.getName(), address);
@@ -95,16 +100,6 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
         }
 
         productSelectionView.showCannotDuplicateWorkorderError();
-    }
-
-    @Override
-    public void cancelCreateWorkOrderClicked() {
-        productSelectionView.hideConfirmation();
-    }
-
-    @Override
-    public void confirmCreateWorkOrderClicked() {
-        productSelectionView.showConfirmation();
     }
 
     @Override

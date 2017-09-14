@@ -61,7 +61,7 @@ class ProductSelectionView extends ConstraintLayout implements ProductSelectionC
         linearConfirm.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                productSelectionPresenter.confirmCreateWorkOrderClicked();
+                productSelectionPresenter.createWorkOrderClicked();
             }
         });
     }
@@ -105,7 +105,7 @@ class ProductSelectionView extends ConstraintLayout implements ProductSelectionC
         View.OnClickListener confirmListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                productSelectionPresenter.createWorkOrderClicked();
+                productSelectionPresenter.confirmCreateWorkOrderClicked();
             }
         };
 
