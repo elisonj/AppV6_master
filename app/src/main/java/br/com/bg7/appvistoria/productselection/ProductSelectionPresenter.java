@@ -60,7 +60,7 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
 
     @Override
     public boolean isItemSelected(ProductSelectionItem item) {
-        return false;
+        return selectedItems.containsKey(item);
     }
 
     @Override
