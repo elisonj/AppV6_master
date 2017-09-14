@@ -13,15 +13,15 @@ import br.com.bg7.appvistoria.data.source.local.WorkOrderRepository;
 
 public class StubWorkOrderRepository implements WorkOrderRepository {
 
-    private WorkOrder wo1 = new WorkOrder("Projeto 1", "- Carros: 50, motos: 30, caminhões: 20, vans: 13, empilhadeiras: 5, trator: 1", "Av. Colombo, 500 Maringá - PR");
-    private WorkOrder wo2 = new WorkOrder("Projeto 2", "-- Carros: 50, motos: 30, caminhões: 20, vans: 13, empilhadeiras: 5, trator: 1", "Av. Colombo, 501 Maringá - PR");
-    private WorkOrder wo3 = new WorkOrder("Projeto 3", "---- Carros: 50, motos: 30, caminhões: 20, vans: 13, empilhadeiras: 5, trator: 1", "Av. Colombo, 502 Maringá - PR");
-    private WorkOrder wo4 = new WorkOrder("Projeto 4", "----- Carros: 50, motos: 30, caminhões: 20, vans: 13, empilhadeiras: 5, trator: 1", "Av. Colombo, 503 Maringá - PR");
-    private WorkOrder wo5 = new WorkOrder("Projeto 5", "------ Carros: 50, motos: 30, caminhões: 20, vans: 13, empilhadeiras: 5, trator: 1", "Av. Colombo, 500 Maringá - PR");
-    private WorkOrder wo6 = new WorkOrder("Projeto 6", "------- Carros: 50, motos: 30, caminhões: 20, vans: 13, empilhadeiras: 5, trator: 1", "Av. Colombo, 501 Maringá - PR");
-    private WorkOrder wo7 = new WorkOrder("Projeto 7", "-------- Carros: 50, motos: 30, caminhões: 20, vans: 13, empilhadeiras: 5, trator: 1", "Av. Colombo, 502 Maringá - PR");
-    private WorkOrder wo8 = new WorkOrder("Projeto 8", "--------- Carros: 50, motos: 30, caminhões: 20, vans: 13, empilhadeiras: 5, trator: 1", "Av. Colombo, 503 Maringá - PR");
-    private WorkOrder wo9 = new WorkOrder("Projeto 9", "---------- Carros: 50, motos: 30, caminhões: 20, vans: 13, empilhadeiras: 5, trator: 1", "Av. Colombo, 500 Maringá - PR");
+    private WorkOrder wo1 = new WorkOrder("Projeto 1", "Av. Colombo, 500 Maringá - PR");
+    private WorkOrder wo2 = new WorkOrder("Projeto 2", "Av. Colombo, 501 Maringá - PR");
+    private WorkOrder wo3 = new WorkOrder("Projeto 3", "Av. Colombo, 502 Maringá - PR");
+    private WorkOrder wo4 = new WorkOrder("Projeto 4", "Av. Colombo, 503 Maringá - PR");
+    private WorkOrder wo5 = new WorkOrder("Projeto 5", "Av. Colombo, 500 Maringá - PR");
+    private WorkOrder wo6 = new WorkOrder("Projeto 6", "Av. Colombo, 501 Maringá - PR");
+    private WorkOrder wo7 = new WorkOrder("Projeto 7", "Av. Colombo, 502 Maringá - PR");
+    private WorkOrder wo8 = new WorkOrder("Projeto 8", "Av. Colombo, 503 Maringá - PR");
+    private WorkOrder wo9 = new WorkOrder("Projeto 9", "Av. Colombo, 500 Maringá - PR");
 
 
     @Override

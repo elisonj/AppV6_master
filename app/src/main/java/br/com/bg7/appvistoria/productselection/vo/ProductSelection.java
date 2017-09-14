@@ -5,53 +5,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.com.bg7.appvistoria.productselection.ProductSelectionHeader;
+
 /**
  * Created by: elison
  * Date: 2017-08-31
  */
 public class ProductSelection {
-    private String productType;
-    private HashMap<String, Integer> categoryCounts;
+    private ProductSelectionHeader header;
+    private List<ProductSelectionItem> items;
 
-    public String getProductType() {
-        return productType;
+    public ProductSelectionHeader getHeader() {
+        return header;
     }
 
-    public HashMap<String, Integer> getCategoryCounts() {
-        return categoryCounts;
+    public List<ProductSelectionItem> getItems() {
+        return items;
     }
 
     public static List<ProductSelection> fromProducts(List<Product> products) {
-        HashMap<String, HashMap<String, Integer>> results = new HashMap<>();
+        ArrayList<ProductSelection> results = new ArrayList<>();
 
         for (Product product : products) {
             String productType = product.getProductType();
             String category = product.getCategory().getName();
-
-            if (!results.containsKey(productType)) {
-                results.put(productType, new HashMap<String, Integer>());
-            }
-
-            HashMap<String, Integer> dataForProductType = results.get(productType);
-
-            if (!dataForProductType.containsKey(category)) {
-                dataForProductType.put(category, 0);
-            }
-
-            dataForProductType.put(
-                    category,
-                    dataForProductType.get(category) + 1
-            );
-        }
-
-        ArrayList<ProductSelection> finalList = new ArrayList<>();
-
-        for (Map.Entry<String, HashMap<String, Integer>> entry : results.entrySet()) {
-            ProductSelection productSelection = new ProductSelection();
-            productSelection.productType = entry.getKey();
-            productSelection.categoryCounts = entry.getValue();
-
-            finalList.add(productSelection);
         }
 
         return finalList;

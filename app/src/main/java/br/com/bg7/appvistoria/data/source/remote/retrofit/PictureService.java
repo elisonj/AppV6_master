@@ -19,6 +19,5 @@ interface PictureService {
     @Multipart
     @POST("/upload")
     Call<PictureResponse> send(File attachment, @Part MultipartBody.Part file,
-                               Inspection inspection,
                                HttpProgressCallback httpProgressCallback);
 }

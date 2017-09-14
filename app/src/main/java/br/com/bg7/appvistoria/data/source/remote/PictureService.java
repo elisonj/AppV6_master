@@ -12,6 +12,5 @@ import br.com.bg7.appvistoria.data.source.remote.http.HttpProgressCallback;
  */
 public interface PictureService {
     void send(File attachment,
-              Inspection inspection,
               HttpProgressCallback<PictureResponse> callback);
 }

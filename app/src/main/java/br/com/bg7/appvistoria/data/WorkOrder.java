@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Locale;
 
 import br.com.bg7.appvistoria.BuildConfig;
+import br.com.bg7.appvistoria.productselection.vo.ProductSelectionItem;
 import br.com.bg7.appvistoria.workorder.WorkOrderStatus;
 
 /**
@@ -37,8 +38,9 @@ public class WorkOrder {
     @DatabaseField(canBeNull = false)
     private String name;
 
+    // TODO: Implementar summary assim que tiver os dados das inspecoes
     @DatabaseField(canBeNull = false)
-    private String summary;
+    private String summary = "";
 
     @DatabaseField(index = true, canBeNull = false)
     private WorkOrderStatus status;
@@ -62,9 +64,8 @@ public class WorkOrder {
     // TODO: Verificar se precisamos mesmo ter esse método público - WorkOrder
     public WorkOrder() {}
 
-    public WorkOrder(String name, String summary, String address) {
+    public WorkOrder(String name, String address) {
         this.name = name;
-        this.summary = summary;
         this.address = address;
         this.status = WorkOrderStatus.NOT_STARTED;
         this.endAt = DateTime.now();
@@ -84,6 +85,18 @@ public class WorkOrder {
     }
 
     public String getSummary() {
+        String EMPTY_SPACE = " ";
+        String SEPARATOR = ", ";
+
+        String summary = "";
+
+        for (ProductSelectionItem item : products) {
+            summary += item.getCount() + EMPTY_SPACE + item.getTitle() + SEPARATOR;
+        }
+        if (products.size() > 0) {
+            summary = summary.substring(0, summary.length() - 2);
+        }
+
         return summary;
     }
 

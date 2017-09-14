@@ -92,7 +92,7 @@ public class WorkOrderTest {
     private void testSummary(String actual, String expected) {
         int maxSummarySize = 40;
 
-        WorkOrder workOrder = new WorkOrder("Projeto", actual, "");
+        WorkOrder workOrder = new WorkOrder("Projeto", "");
         Assert.assertEquals(expected, workOrder.getShortSummary(maxSummarySize));
     }
 
