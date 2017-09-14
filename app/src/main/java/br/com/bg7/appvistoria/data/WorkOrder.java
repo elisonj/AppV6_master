@@ -38,7 +38,6 @@ public class WorkOrder {
     @DatabaseField(canBeNull = false)
     private String name;
 
-    // TODO: Implementar summary assim que tiver os dados das inspecoes
     @DatabaseField(canBeNull = false)
     private String summary = "";
 
@@ -84,20 +83,9 @@ public class WorkOrder {
         return shortSummary;
     }
 
+    // TODO: Implementar summary assim que tiver os dados das inspecoes
     public String getSummary() {
-        String EMPTY_SPACE = " ";
-        String SEPARATOR = ", ";
-
-        String summary = "";
-
-        for (ProductSelectionItem item : products) {
-            summary += item.getCount() + EMPTY_SPACE + item.getTitle() + SEPARATOR;
-        }
-        if (products.size() > 0) {
-            summary = summary.substring(0, summary.length() - 2);
-        }
-
-        return summary;
+        return "";
     }
 
     public WorkOrderStatus getStatus() {

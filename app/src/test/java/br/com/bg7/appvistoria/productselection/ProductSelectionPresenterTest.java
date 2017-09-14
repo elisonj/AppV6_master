@@ -15,6 +15,8 @@ import br.com.bg7.appvistoria.data.source.local.fake.FakeWorkOrderRepository;
 import br.com.bg7.appvistoria.data.source.remote.ProductService;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
+import br.com.bg7.appvistoria.productselection.vo.Category;
+import br.com.bg7.appvistoria.productselection.vo.Product;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelection;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 import br.com.bg7.appvistoria.workorder.InProgressWorkOrder;
@@ -29,20 +31,10 @@ import static org.mockito.Mockito.when;
  */
 public class ProductSelectionPresenterTest {
 
-    private final int QUANTITY_SELECTED = 2;
-
-    private Category category1 = new Category(1L, "Carros e Motos");
-    private Category category2 = new Category(2L, "Caminhões e Ônibus");
-    private Category category3 = new Category(3L, "Enbarcações e Aeronaves");
-    private Product product1 = new Product(1L, "Carros", category1);
+    private Category carros = new Category(1L, "Carros");
 
     private ArrayList<Product> allProducts = new ArrayList<Product>() {{
-        add(new Product(1L, "Carros", category1));
-        add(new Product(2L, "Motos", category1));
-        add(new Product(3L, "Partes e Peças", category1));
-        add(new Product(4L, "Caminhões", category2));
-        add(new Product(5L, "Embarcações", category3));
-        add(new Product(6L, "Aeroplano", category3));
+        add(new Product(1L, 17L, "Carros & Motos", carros));
     }};
 
     private Project project = new Project(1L, "Projeto 1");
@@ -126,13 +118,6 @@ public class ProductSelectionPresenterTest {
         productCallBackCaptor.getValue().onFailure(new Throwable());
 
         verify(productView).showConnectivityError();
-    }
-
-    @Test
-    public void shouldShowSelectedQuantityWhenChooseQuantity() {
-        productSelectionPresenter.chooseQuantity(category1, product1, QUANTITY_SELECTED);
-
-        verify(productView).showSelectedQuantity(category1, product1, QUANTITY_SELECTED);
     }
 
     @Test

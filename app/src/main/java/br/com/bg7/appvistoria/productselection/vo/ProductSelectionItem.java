@@ -11,6 +11,14 @@ public class ProductSelectionItem {
     private String title;
     private int count;
 
+    public ProductSelectionItem(String title) {
+        this.title = title;
+    }
+
+    public void addItem() {
+        count++;
+    }
+
     public String getTitle() {
         return title;
     }

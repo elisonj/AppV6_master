@@ -21,7 +21,7 @@ public class Product {
         return productType;
     }
 
-    public Long getProducTypeId() {
+    public Long getProductTypeId() {
         return producTypeId;
     }
 
