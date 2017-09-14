@@ -9,14 +9,11 @@ import com.google.common.base.Objects;
 
 public class ProductSelectionItem {
     private String title;
-    private int count;
+    private int count = 0;
 
-    public ProductSelectionItem(String title) {
+    public ProductSelectionItem(String title, int count) {
         this.title = title;
-    }
-
-    public void addItem() {
-        count++;
+        this.count = count;
     }
 
     public String getTitle() {

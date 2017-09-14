@@ -25,27 +25,37 @@ public class ProductSelection {
 
     public static List<ProductSelection> fromProducts(List<Product> products) {
         ArrayList<ProductSelection> finalList = new ArrayList<>();
-        HashMap<ProductSelectionHeader, List<ProductSelectionItem>> map = new HashMap<>();
+        HashMap<ProductSelectionHeader, HashMap<String, Integer>> map = new HashMap<>();
 
         for (Product product : products) {
             String productType = product.getProductType();
             String category = product.getCategory().getName();
 
             ProductSelectionHeader header = new ProductSelectionHeader(product.getProductTypeId(), productType);
-            ProductSelectionItem item = new ProductSelectionItem(category);
 
             if (!map.containsKey(header)) {
-                map.put(header, new ArrayList<ProductSelectionItem>());
+                map.put(header, new HashMap<String, Integer>());
             }
 
-            map.get(header).add(item);
+            if (!map.get(header).containsKey(category)) {
+                map.get(header).put(category, 0);
+            }
+
+            map.get(header).put(category, map.get(header).get(category) + 1);
         }
 
-        for (Map.Entry<ProductSelectionHeader, List<ProductSelectionItem>> entry : map.entrySet()) {
+        for (Map.Entry<ProductSelectionHeader, HashMap<String, Integer>> entry : map.entrySet()) {
             ProductSelection selection = new ProductSelection();
+            ArrayList<ProductSelectionItem> items = new ArrayList<>();
+
+            for (Map.Entry<String, Integer> categoryEntry : entry.getValue().entrySet()) {
+                ProductSelectionItem item = new ProductSelectionItem(categoryEntry.getKey(), categoryEntry.getValue());
+
+                items.add(item);
+            }
 
             selection.header = entry.getKey();
-            selection.items = entry.getValue();
+            selection.items = items;
 
             finalList.add(selection);
         }

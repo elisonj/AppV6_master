@@ -29,7 +29,7 @@ public class ProductSelectionTest {
         Category category1 = new Category(1L, "c1");
 
         final Product product1 = new Product(1L, 17L, productType1, category1);
-        final Product product2 = new Product(2L, 18L, productType1, category1);
+        final Product product2 = new Product(2L, 17L, productType1, category1);
 
         ArrayList<Product> productList = new ArrayList<Product>() {{
             add(product1);
