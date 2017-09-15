@@ -33,7 +33,7 @@ public class StubInspectionRepository  implements InspectionRepository {
     }
 
     private List<Inspection> getInspectionData() {
-        List<Inspection> list = new ArrayList<>();
+        ArrayList<Inspection> list = new ArrayList<>();
 
         WorkOrder workOrder = new WorkOrder("Name","Summary", "Address");
 
