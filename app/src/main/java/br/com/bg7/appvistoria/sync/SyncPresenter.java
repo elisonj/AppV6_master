@@ -51,7 +51,7 @@ public class SyncPresenter implements SyncContract.Presenter {
 
     @Override
     public void start() {
-        inspections = Lists.newArrayList(inspectionRepository.findByStatus(InspectionStatus.COMPLETED));
+        inspections = inspectionRepository.findByStatus(InspectionStatus.COMPLETED);
         view.showInspections(SyncList.fromInspections(inspections));
 
         syncManager.subscribe(callback);
