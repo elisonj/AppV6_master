@@ -19,8 +19,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class SyncPresenter implements SyncContract.Presenter {
 
-    Runnable updateQueue;
-    Runnable sync;
     private InspectionRepository inspectionRepository;
     private SyncManager syncManager;
     private SyncContract.View view;
