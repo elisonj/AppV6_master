@@ -20,7 +20,6 @@ import br.com.bg7.appvistoria.sync.vo.SyncList;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by: elison
@@ -40,16 +39,16 @@ public class SyncPresenterTest {
     @Mock
     PictureService pictureService;
 
-    SyncList syncList;
-
     @Captor
     ArgumentCaptor<SyncCallback> syncCallbackCaptor;
 
     @Mock
     SyncExecutor syncExecutor;
 
+    private FakeInspectionSyncRepository fakeInspectionRepository = new FakeInspectionSyncRepository();
 
-    FakeInspectionSyncRepository fakeInspectionRepository = new FakeInspectionSyncRepository();
+
+    private SyncList syncList;
 
     private SyncPresenter syncPresenter;
     private SyncList syncListObject;
@@ -71,8 +70,6 @@ public class SyncPresenterTest {
 
         syncPresenter.start();
         verify(syncManager).subscribe(syncCallbackCaptor.capture());
-//        syncListObject = getSyncList();
-
     }
 
     @Test(expected = NullPointerException.class)
@@ -106,10 +103,9 @@ public class SyncPresenterTest {
 
     @Test
     public void shouldShowErrorMessageWhenFailSync() {
-        // TODO: Usar o callback para testar
-        syncCallbackCaptor.getValue().onFailure(null, null);
+        syncCallbackCaptor.getValue().onFailure(listInspections.get(0), new Throwable());
+        verify(syncView).showSyncErrorMessage();
     }
-
 
     @Test
     public void shouldShowSyncSuccessWhenSyncClickedAndSyncOk() {
@@ -117,14 +113,18 @@ public class SyncPresenterTest {
         Inspection inspection = listInspections.get(0);
 
         syncPresenter.syncClicked(inspection.getId());
+        syncCallbackCaptor.getValue().onSuccess(listInspections.get(0));
 
         verify(syncView).showUnderInProgress(listInspections.get(0).getId());
         verify(syncView).showUnderCompleted(listInspections.get(0).getId());
+
     }
 
     @Test
     public void shouldShowUnderNotStartedWhenRetryCicked() {
+        syncPresenter.retryClicked(listInspections.get(0).getId());
 
+        verify(syncView).showUnderNotStarted(listInspections.get(0).getId());
     }
 
     @Test
@@ -136,12 +136,14 @@ public class SyncPresenterTest {
 
     @Test
     public void shouldShowUnderErrorWhenFailSync() {
-
+        syncCallbackCaptor.getValue().onFailure(listInspections.get(0), new Throwable());
+        verify(syncView).showUnderError(listInspections.get(0).getId());
     }
 
     @Test
-    public void shouldShowUnderCompletedWhenSyncAll() {
-
+    public void shouldShowUnderCompletedWhenSync() {
+        syncCallbackCaptor.getValue().onSuccess(listInspections.get(0));
+        verify(syncView).showSyncSuccessMessage();
     }
 
     private void populateRepository() {
