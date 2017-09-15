@@ -1,7 +1,8 @@
 package br.com.bg7.appvistoria.sync;
 
-import com.google.common.collect.Lists;
+import android.annotation.SuppressLint;
 
+import java.util.HashMap;
 import java.util.List;
 
 import br.com.bg7.appvistoria.data.Inspection;
@@ -20,7 +21,10 @@ public class SyncPresenter implements SyncContract.Presenter {
     private InspectionRepository inspectionRepository;
     private SyncManager syncManager;
     private SyncContract.View view;
-    private List<Inspection> inspections;
+
+    // Esse lint sugere uso de uma classe no SDK Android, que nao usamos no presenter
+    @SuppressLint("UseSparseArrays")
+    private HashMap<Long, Inspection> inspections = new HashMap<>();
 
     private SyncCallback callback = new SyncCallback() {
         @Override
@@ -51,15 +55,19 @@ public class SyncPresenter implements SyncContract.Presenter {
 
     @Override
     public void start() {
-        inspections = inspectionRepository.findByStatus(InspectionStatus.COMPLETED);
-        view.showInspections(SyncList.fromInspections(inspections));
+        List<Inspection> inspectionsFromRepository = inspectionRepository.findByStatus(InspectionStatus.COMPLETED);
+        for (Inspection inspection : inspectionsFromRepository) {
+            inspections.put(inspection.getId(), inspection);
+        }
+
+        view.showInspections(SyncList.fromInspections(inspectionsFromRepository));
 
         syncManager.subscribe(callback);
     }
 
     @Override
     public void syncClicked(Long inspectionId) {
-        Inspection inspection = getInspectionById(inspectionId);
+        Inspection inspection = inspections.get(inspectionId);
         if (inspection == null) return;
 
         inspection.readyToSync();
@@ -69,20 +77,12 @@ public class SyncPresenter implements SyncContract.Presenter {
 
     @Override
     public void retryClicked(Long inspectionId) {
-        Inspection inspection = getInspectionById(inspectionId);
+        Inspection inspection = inspections.get(inspectionId);
+
         if (inspection != null) {
             inspection.reset();
             inspectionRepository.save(inspection);
             view.showUnderNotStarted(inspectionId);
         }
-    }
-
-    private Inspection getInspectionById(Long inspectionId) {
-        for (Inspection inspection : inspections) {
-            if (inspection.getId().equals(inspectionId)) {
-                return inspection;
-            }
-        }
-        return null;
     }
 }
