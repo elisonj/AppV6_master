@@ -55,7 +55,18 @@ public class SyncPresenter implements SyncContract.Presenter {
 
     @Override
     public void syncClicked(Long inspectionId) {
-       trySyncInspection(getInspectionById(inspectionId));
+        Inspection inspection = getInspectionById(inspectionId);
+        if(inspection == null) return;
+
+        view.showUnderInProgress(inspection.getId());
+
+        if(inspection.canSyncPictures()) {
+            syncManager.subscribe(callbackPicture);
+            inspection.sync(pictureService, callbackPicture);
+            return;
+        }
+        syncManager.subscribe(callbackPicture);
+        inspection.sync(inspectionService, callbackInspection);
     }
 
     @Override
@@ -76,21 +87,6 @@ public class SyncPresenter implements SyncContract.Presenter {
         return null;
     }
 
-
-    private void trySyncInspection(Inspection inspection) {
-        if(inspection == null) return;
-
-        view.showUnderInProgress(inspection.getId());
-
-        if(inspection.canSyncPictures()) {
-            syncManager.subscribe(callbackPicture);
-            inspection.sync(pictureService, callbackPicture);
-            return;
-        }
-        syncManager.subscribe(callbackPicture);
-        inspection.sync(inspectionService, callbackInspection);
-
-    }
 
         private SyncCallback callbackPicture = new SyncCallback() {
         @Override
