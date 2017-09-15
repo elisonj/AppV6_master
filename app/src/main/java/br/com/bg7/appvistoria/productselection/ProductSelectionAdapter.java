@@ -74,7 +74,7 @@ class ProductSelectionAdapter extends BaseExpandableListAdapter {
         final boolean isSelected = presenter.isItemSelected(item);
 
         if (convertView == null) {
-            convertView = View.inflate(context, R.layout.product_list_item, null);
+            convertView = View.inflate(context, R.layout.product_selection_item, null);
         }
 
         final LinearLayout linearMain = convertView.findViewById(R.id.linear_main);
@@ -218,13 +218,13 @@ class ProductSelectionAdapter extends BaseExpandableListAdapter {
                              View convertView, ViewGroup parent) {
         ProductSelectionHeader header = getGroup(groupPosition);
         if (convertView == null) {
-            convertView = View.inflate(context, R.layout.product_list_category, null);
+            convertView = View.inflate(context, R.layout.product_selection_header, null);
         }
 
         TextView category = convertView.findViewById(R.id.category);
         ImageView imageCategory = convertView.findViewById(R.id.image_category);
 
-        imageCategory.setImageDrawable(header.getDrawable());
+        imageCategory.setImageDrawable(header.getDrawable(context));
 
         category.setTypeface(null, Typeface.BOLD);
         category.setText(header.getTitle());

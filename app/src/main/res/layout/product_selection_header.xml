@@ -19,7 +19,7 @@
             android:layout_height="30dp"
             android:layout_margin="10dp"
             android:contentDescription="@string/ico_category"
-            app:srcCompat="@drawable/category_car" />
+            app:srcCompat="@drawable/product_type_10" />
 
         <TextView
             android:id="@+id/category"

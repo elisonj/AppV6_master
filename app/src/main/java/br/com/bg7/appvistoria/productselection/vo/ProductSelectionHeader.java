@@ -1,5 +1,6 @@
 package br.com.bg7.appvistoria.productselection.vo;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 
 import com.google.common.base.Objects;
@@ -11,11 +12,11 @@ import com.google.common.base.Objects;
 
 public class ProductSelectionHeader {
 
-    private long id;
+    private Long id;
     private String title;
     private Drawable drawable;
 
-    public ProductSelectionHeader(long id, String title) {
+    public ProductSelectionHeader(Long id, String title) {
         this.id = id;
         this.title = title;
     }
@@ -28,8 +29,11 @@ public class ProductSelectionHeader {
         return title;
     }
 
-    public Drawable getDrawable() {
-        return drawable;
+    // TODO: Falta a categoria 24: Artes, Decoração & Colecionismo
+    public Drawable getDrawable(Context context) {
+        int id = context.getResources().getIdentifier("product_type_" + this.id.toString(), "drawable", context.getPackageName());
+
+        return context.getDrawable(id);
     }
 
     @Override
@@ -37,7 +41,7 @@ public class ProductSelectionHeader {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductSelectionHeader that = (ProductSelectionHeader) o;
-        return id == that.id &&
+        return Objects.equal(id, that.id) &&
                 Objects.equal(title, that.title);
     }
 
