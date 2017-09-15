@@ -57,9 +57,7 @@ public class SyncPresenterTest {
         syncPresenter  = new SyncPresenter(
                 fakeInspectionRepository,
                 syncManager,
-                syncView,
-                pictureService,
-                inspectionService);
+                syncView);
 
         populateRepository();
 
@@ -76,9 +74,7 @@ public class SyncPresenterTest {
         syncPresenter  = new SyncPresenter(
                 null,
                 syncManager,
-                syncView,
-                pictureService,
-                inspectionService);
+                syncView);
     }
 
     @Test(expected = NullPointerException.class)
@@ -86,9 +82,7 @@ public class SyncPresenterTest {
         syncPresenter  = new SyncPresenter(
                 fakeInspectionRepository,
                 null,
-                syncView,
-                pictureService,
-                inspectionService);
+                syncView);
     }
 
     @Test(expected = NullPointerException.class)
@@ -96,32 +90,8 @@ public class SyncPresenterTest {
         syncPresenter  = new SyncPresenter(
                 fakeInspectionRepository,
                 syncManager,
-                null,
-                pictureService,
-                inspectionService);
-    }
-
-
-    @Test(expected = NullPointerException.class)
-    public void shouldNotAcceptNullPictureService() {
-        syncPresenter  = new SyncPresenter(
-                fakeInspectionRepository,
-                syncManager,
-                syncView,
-                null,
-                inspectionService);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void shouldNotAcceptNullInspectionService() {
-        syncPresenter  = new SyncPresenter(
-                fakeInspectionRepository,
-                syncManager,
-                syncView,
-                pictureService,
                 null);
     }
-
 
     @Test
     public void shouldShowInspectionsWhenStart() {
