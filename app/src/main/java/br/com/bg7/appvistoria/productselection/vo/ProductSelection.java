@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import br.com.bg7.appvistoria.productselection.ProductSelectionHeader;
-
 /**
  * Created by: elison
  * Date: 2017-08-31

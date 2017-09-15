@@ -20,6 +20,7 @@ import java.util.List;
 
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelection;
+import br.com.bg7.appvistoria.productselection.vo.ProductSelectionHeader;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelectionItem;
 
 /**

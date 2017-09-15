@@ -7,8 +7,6 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.bg7.appvistoria.productselection.ProductSelectionHeader;
-
 /**
  * Created by: luciolucio
  * Date: 2017-09-12

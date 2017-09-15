@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.productselection;
+package br.com.bg7.appvistoria.productselection.vo;
 
 import android.graphics.drawable.Drawable;
 
