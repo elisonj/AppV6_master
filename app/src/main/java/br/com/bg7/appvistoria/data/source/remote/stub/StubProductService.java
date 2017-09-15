@@ -19,13 +19,19 @@ import br.com.bg7.appvistoria.projectselection.vo.Project;
  */
 public class StubProductService implements ProductService {
 
-    private static final ProductType CARROS_E_MOTOS = new ProductType(17L, "Carros & Motos");
+    private static final ProductType CARROS_E_MOTOS = new ProductType(10L, "Carros & Motos");
+    private static final ProductType CAMINHOES_E_ONIBUS = new ProductType(11L, "Caminhões & Ônibus");
+    private static final ProductType IMOVEIS = new ProductType(13L, "Imóveis");
 
     private static final Category CARROS = new Category("Carros", CARROS_E_MOTOS);
     private static final Category MOTOS = new Category("Motos", CARROS_E_MOTOS);
 
-    private Product product1 = new Product(1L, CARROS);
-    private Product product2 = new Product(2L, MOTOS);
+    private static final Category CAMINHOES = new Category("Caminhões", CAMINHOES_E_ONIBUS);
+    private static final Category ONIBUS = new Category("Ônibus", CAMINHOES_E_ONIBUS);
+    private static final Category VANS = new Category("Vans", CAMINHOES_E_ONIBUS);
+
+    private static final Category RESIDENCIAL = new Category("Residencial", IMOVEIS);
+    private static final Category COMERCIAL = new Category("Comercial", IMOVEIS);
 
     @Override
     public void findByProjectAndAddress(Project project, String address, HttpCallback<List<Product>> callback) {
@@ -40,8 +46,27 @@ public class StubProductService implements ProductService {
             @Override
             public List<Product> body() {
                 return new ArrayList<Product>() {{
-                    add(product1);
-                    add(product2);
+                    add(new Product(1L, CARROS));
+                    add(new Product(2L, CARROS));
+                    add(new Product(3L, CARROS));
+                    add(new Product(4L, CARROS));
+                    add(new Product(5L, MOTOS));
+                    add(new Product(6L, CAMINHOES));
+                    add(new Product(7L, CAMINHOES));
+                    add(new Product(8L, VANS));
+                    add(new Product(9L, ONIBUS));
+                    add(new Product(10L, ONIBUS));
+                    add(new Product(11L, COMERCIAL));
+                    add(new Product(12L, COMERCIAL));
+                    add(new Product(13L, COMERCIAL));
+                    add(new Product(14L, COMERCIAL));
+                    add(new Product(15L, COMERCIAL));
+                    add(new Product(16L, COMERCIAL));
+                    add(new Product(17L, RESIDENCIAL));
+                    add(new Product(18L, RESIDENCIAL));
+                    add(new Product(19L, RESIDENCIAL));
+                    add(new Product(20L, RESIDENCIAL));
+                    add(new Product(21L, RESIDENCIAL));
                 }};
             }
 
