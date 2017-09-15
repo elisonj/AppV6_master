@@ -1,23 +1,21 @@
 package br.com.bg7.appvistoria.sync;
 
+import com.google.common.collect.Lists;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.StubInspection;
 import br.com.bg7.appvistoria.data.WorkOrder;
-import br.com.bg7.appvistoria.data.source.local.fake.FakeInspectionRepository;
+import br.com.bg7.appvistoria.data.source.local.fake.FakeInspectionSyncRepository;
 import br.com.bg7.appvistoria.data.source.remote.InspectionService;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.sync.vo.SyncList;
-import br.com.bg7.appvistoria.sync.vo.SyncListItem;
-import br.com.bg7.appvistoria.sync.vo.SyncListItemDetails;
-import br.com.bg7.appvistoria.sync.vo.SyncListStatus;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -46,10 +44,11 @@ public class SyncPresenterTest {
     SyncExecutor syncExecutor;
 
 
-    FakeInspectionRepository fakeInspectionRepository = new FakeInspectionRepository();
+    FakeInspectionSyncRepository fakeInspectionRepository = new FakeInspectionSyncRepository();
 
     private SyncPresenter syncPresenter;
     private SyncList syncListObject;
+    private List<Inspection> listInspections;
 
     @Before
     public void setUp() {
@@ -64,7 +63,11 @@ public class SyncPresenterTest {
 
         populateRepository();
 
-        syncListObject = getSyncList();
+        listInspections = Lists.newArrayList(fakeInspectionRepository.findBySyncStatus(InspectionStatus.COMPLETED));
+        syncList = SyncList.fromInspections(listInspections);
+
+        syncPresenter.start();
+//        syncListObject = getSyncList();
 
     }
 
@@ -122,14 +125,47 @@ public class SyncPresenterTest {
 
     @Test
     public void shouldShowInspectionsWhenStart() {
-        List<Inspection> list = fakeInspectionRepository.findBySyncStatus(InspectionStatus.COMPLETED);
-
-        syncList = SyncList.fromInspections(list);
-
-        syncPresenter.start();
         verify(syncView).showInspections(eq(syncList));
     }
 
+    @Test
+    public void shouldShowErrorMessageWhenFailSync() {
+
+    }
+
+
+    @Test
+    public void shouldShowSyncSuccessWhenSyncClickedAndSyncOk() {
+
+        Inspection inspection = listInspections.get(0);
+
+        syncPresenter.syncClicked(inspection.getId());
+
+        verify(syncView).showUnderInProgress(listInspections.get(0).getId());
+        verify(syncView).showUnderCompleted(listInspections.get(0).getId());
+    }
+
+    @Test
+    public void shouldShowUnderNotStartedWhenRetryCicked() {
+
+    }
+
+    @Test
+    public void shouldShowUnderInProgressWhenSyncClicked() {
+        syncPresenter.syncClicked(listInspections.get(0).getId());
+
+        verify(syncView).showUnderInProgress(listInspections.get(0).getId());
+    }
+
+    @Test
+    public void shouldShowUnderErrorWhenFailSync() {
+
+    }
+
+    @Test
+    public void shouldShowUnderCompletedWhenSyncAll() {
+
+    }
 
     private void populateRepository() {
         WorkOrder workOrder = new WorkOrder("Name","Summary", "Address");
@@ -157,69 +193,4 @@ public class SyncPresenterTest {
         fakeInspectionRepository.save(inspection4);
         fakeInspectionRepository.save(inspection5);
     }
-
-
-    private SyncList getSyncList() {
-
-        SyncList syncList = new SyncList();
-
-        List<SyncListItem> syncListItem = new ArrayList<>();
-
-        SyncListItem listItemNotStarted = new SyncListItem(SyncListStatus.NOT_STARTED);
-        SyncListItem listItemInProgress = new SyncListItem(SyncListStatus.IN_PROGRESS);
-        SyncListItem listItemError = new SyncListItem(SyncListStatus.ERROR);
-        SyncListItem listItemCompleted = new SyncListItem(SyncListStatus.COMPLETED);
-
-        List<SyncListItemDetails> detailNotStarted = new ArrayList<>();
-        List<SyncListItemDetails> detailInProgress = new ArrayList<>();
-        List<SyncListItemDetails> detailItemError = new ArrayList<>();
-        List<SyncListItemDetails> detailItemCompleted = new ArrayList<>();
-
-        SyncListItemDetails detail1 = new SyncListItemDetails();
-        detail1.setDescription("Description 1");
-        detail1.setProject("Project 1");
-        detail1.setId(1L);
-
-        SyncListItemDetails detail2 = new SyncListItemDetails();
-        detail2.setDescription("Description 2");
-        detail2.setProject("Project 2");
-        detail2.setId(2L);
-
-        SyncListItemDetails detail3 = new SyncListItemDetails();
-        detail3.setDescription("Description 3");
-        detail3.setProject("Project 3");
-        detail3.setId(3L);
-
-        SyncListItemDetails detail4 = new SyncListItemDetails();
-        detail4.setDescription("Description 4");
-        detail4.setProject("Project 4");
-        detail4.setId(4L);
-
-        SyncListItemDetails detail5 = new SyncListItemDetails();
-        detail5.setDescription("Description 5");
-        detail5.setProject("Project 5");
-        detail5.setId(5L);
-
-        detailNotStarted.add(detail1);
-        detailNotStarted.add(detail2);
-        detailInProgress.add(detail3);
-        detailItemError.add(detail4);
-        detailItemCompleted.add(detail5);
-
-        listItemNotStarted.setCount(listItemNotStarted.getInspections().size());
-        listItemInProgress.setCount(listItemInProgress.getInspections().size());
-        listItemError.setCount(listItemError.getInspections().size());
-        listItemCompleted.setCount(listItemCompleted.getInspections().size());
-
-        syncListItem.add(listItemNotStarted);
-        syncListItem.add(listItemInProgress);
-        syncListItem.add(listItemCompleted);
-        syncListItem.add(listItemError);
-
-        syncList.setSyncListItem(syncListItem);
-
-        return syncList;
-    }
-
-
 }

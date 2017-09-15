@@ -18,4 +18,6 @@ public class StubInspection extends Inspection {
     public void setSyncStatus(SyncStatus syncStatus) {
         this.syncStatus = syncStatus;
     }
+
+
 }

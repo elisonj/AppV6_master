@@ -1,10 +1,8 @@
 package br.com.bg7.appvistoria.data.source.local;
 
-import java.util.List;
-
 import br.com.bg7.appvistoria.data.Inspection;
-import br.com.bg7.appvistoria.sync.SyncStatus;
 import br.com.bg7.appvistoria.sync.InspectionStatus;
+import br.com.bg7.appvistoria.sync.SyncStatus;
 
 /**
  * Created by: luciolucio
@@ -13,5 +11,5 @@ import br.com.bg7.appvistoria.sync.InspectionStatus;
 
 public interface InspectionRepository extends Repository<Inspection> {
     Iterable<Inspection> findBySyncStatus(SyncStatus status);
-    List<Inspection> findBySyncStatus(InspectionStatus status);
+    Iterable<Inspection> findBySyncStatus(InspectionStatus status);
 }

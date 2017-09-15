@@ -3,7 +3,6 @@ package br.com.bg7.appvistoria.data.source.local.fake;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Maps;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -30,7 +29,7 @@ public class FakeInspectionSyncRepository extends FakeRepository<InspectionStatu
     }
 
     @Override
-    public List<Inspection> findBySyncStatus(final InspectionStatus status) {
+    public Iterable<Inspection> findBySyncStatus(final InspectionStatus status) {
         Map<InspectionStatus, Inspection> filtered = Maps.filterEntries(ENTITIES_BY_KEY,
                 new Predicate<Map.Entry<InspectionStatus, Inspection>>() {
             @Override
@@ -39,6 +38,6 @@ public class FakeInspectionSyncRepository extends FakeRepository<InspectionStatu
             }
         });
 
-        return (List<Inspection> )filtered.values();
+        return filtered.values();
     }
 }

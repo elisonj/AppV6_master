@@ -1,5 +1,7 @@
 package br.com.bg7.appvistoria.sync;
 
+import com.google.common.collect.Lists;
+
 import java.util.List;
 
 import br.com.bg7.appvistoria.data.Inspection;
@@ -43,7 +45,7 @@ public class SyncPresenter implements SyncContract.Presenter {
 
     @Override
     public void start() {
-        inspections = inspectionRepository.findBySyncStatus(InspectionStatus.COMPLETED);
+        inspections = Lists.newArrayList(inspectionRepository.findBySyncStatus(InspectionStatus.COMPLETED));
         syncList = SyncList.fromInspections(inspections);
         view.showInspections(syncList);
 
@@ -81,12 +83,12 @@ public class SyncPresenter implements SyncContract.Presenter {
         view.showUnderInProgress(inspection.getId());
 
         if(inspection.canSyncPictures()) {
-            inspection.sync(pictureService, callbackPicture);
             syncManager.subscribe(callbackPicture);
+            inspection.sync(pictureService, callbackPicture);
             return;
         }
-        inspection.sync(inspectionService, callbackInspection);
         syncManager.subscribe(callbackPicture);
+        inspection.sync(inspectionService, callbackInspection);
 
     }
 
