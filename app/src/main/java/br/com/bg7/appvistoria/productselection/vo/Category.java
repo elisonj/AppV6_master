@@ -5,15 +5,23 @@ package br.com.bg7.appvistoria.productselection.vo;
  * Date: 2017-08-31
  */
 public class Category {
-    private Long id;
     private String name;
+    private ProductType productType;
 
-    public Category(Long id, String name) {
-        this.id = id;
+    public Category(String name, ProductType productType) {
         this.name = name;
+        this.productType = productType;
     }
 
     public String getName() {
         return name;
+    }
+
+    String getProductTypeName() {
+        return productType.getName();
+    }
+
+    Long getProductTypeId() {
+        return productType.getId();
     }
 }

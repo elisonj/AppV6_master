@@ -13,6 +13,15 @@ import java.util.List;
  */
 
 public class ProductSelectionTest {
+
+    private static final ProductType CARROS_E_MOTOS = new ProductType(17L, "Carros & Motos");
+    private static final ProductType IMOVEIS = new ProductType(18L, "Imoveis");
+
+    private static final Category CARROS = new Category("Carros", CARROS_E_MOTOS);
+    private static final Category MOTOS = new Category("Motos", CARROS_E_MOTOS);
+
+    private static final Category RESIDENCIAL = new Category("Residencial", IMOVEIS);
+
     @Test
     public void shouldCreateEmptyList() {
         ArrayList<Product> productList = new ArrayList<>();
@@ -23,11 +32,8 @@ public class ProductSelectionTest {
 
     @Test
     public void shouldCreateListWithOneProductTypeAndTwoProductsSameCategory() {
-        String productType1 = "p1";
-        Category category1 = new Category(1L, "c1");
-
-        final Product product1 = new Product(1L, 17L, productType1, category1);
-        final Product product2 = new Product(2L, 17L, productType1, category1);
+        final Product product1 = new Product(1L, CARROS);
+        final Product product2 = new Product(2L, CARROS);
 
         ArrayList<Product> productList = new ArrayList<Product>() {{
             add(product1);
@@ -42,22 +48,17 @@ public class ProductSelectionTest {
         ProductSelectionHeader header = selection.getHeader();
         ProductSelectionItem item = selection.getItems().get(0);
 
-        Assert.assertEquals("p1", header.getTitle());
-        Assert.assertEquals("c1", item.getTitle());
+        Assert.assertEquals("Carros & Motos", header.getTitle());
+        Assert.assertEquals("Carros", item.getTitle());
         Assert.assertEquals(2, item.getCount());
     }
 
     @Test
     public void shouldCreateListWithTwoProductTypesAndTwoCategories() {
-        String productType1 = "p1";
-        String productType2 = "p2";
-        Category category1 = new Category(1L, "c1");
-        Category category2 = new Category(2L, "c2");
-
-        final Product product1 = new Product(1L, 17L, productType1, category1);
-        final Product product2 = new Product(2L, 18L, productType2, category2);
-        final Product product3 = new Product(3L, 18L, productType2, category1);
-        final Product product4 = new Product(4L, 18L, productType2, category1);
+        final Product product1 = new Product(1L, RESIDENCIAL);
+        final Product product2 = new Product(2L, MOTOS);
+        final Product product3 = new Product(3L, CARROS);
+        final Product product4 = new Product(4L, CARROS);
 
         ArrayList<Product> productList = new ArrayList<Product>() {{
             add(product1);
@@ -68,26 +69,26 @@ public class ProductSelectionTest {
 
         List<ProductSelection> productSelectionList = ProductSelection.fromProducts(productList);
         Assert.assertEquals(2, productSelectionList.size());
-        Assert.assertEquals(1, productSelectionList.get(0).getItems().size());
-        Assert.assertEquals(2, productSelectionList.get(1).getItems().size());
+        Assert.assertEquals(2, productSelectionList.get(0).getItems().size());
+        Assert.assertEquals(1, productSelectionList.get(1).getItems().size());
 
         ProductSelection selection1 = productSelectionList.get(0);
         ProductSelectionHeader header1 = selection1.getHeader();
         ProductSelectionItem item11 = selection1.getItems().get(0);
+        ProductSelectionItem item12 = selection1.getItems().get(1);
 
         ProductSelection selection2 = productSelectionList.get(1);
         ProductSelectionHeader header2 = selection2.getHeader();
         ProductSelectionItem item21 = selection2.getItems().get(0);
-        ProductSelectionItem item22 = selection2.getItems().get(1);
 
-        Assert.assertEquals("p1", header1.getTitle());
-        Assert.assertEquals("c1", item11.getTitle());
-        Assert.assertEquals(1, item11.getCount());
+        Assert.assertEquals("Imoveis", header2.getTitle());
+        Assert.assertEquals("Residencial", item21.getTitle());
+        Assert.assertEquals(1, item21.getCount());
 
-        Assert.assertEquals("p2", header2.getTitle());
-        Assert.assertEquals("c1", item21.getTitle());
-        Assert.assertEquals(2, item21.getCount());
-        Assert.assertEquals("c2", item22.getTitle());
-        Assert.assertEquals(1, item22.getCount());
+        Assert.assertEquals("Carros & Motos", header1.getTitle());
+        Assert.assertEquals("Carros", item11.getTitle());
+        Assert.assertEquals(2, item11.getCount());
+        Assert.assertEquals("Motos", item12.getTitle());
+        Assert.assertEquals(1, item12.getCount());
     }
 }
