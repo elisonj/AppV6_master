@@ -11,5 +11,5 @@ import br.com.bg7.appvistoria.sync.SyncStatus;
 
 public interface InspectionRepository extends Repository<Inspection> {
     Iterable<Inspection> findBySyncStatus(SyncStatus status);
-    Iterable<Inspection> findBySyncStatus(InspectionStatus status);
+    Iterable<Inspection> findByStatus(InspectionStatus status);
 }

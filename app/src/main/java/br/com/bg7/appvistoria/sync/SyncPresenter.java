@@ -6,8 +6,6 @@ import java.util.List;
 
 import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.source.local.InspectionRepository;
-import br.com.bg7.appvistoria.data.source.remote.InspectionService;
-import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
 import br.com.bg7.appvistoria.sync.vo.SyncList;
 
@@ -53,7 +51,7 @@ public class SyncPresenter implements SyncContract.Presenter {
 
     @Override
     public void start() {
-        inspections = Lists.newArrayList(inspectionRepository.findBySyncStatus(InspectionStatus.COMPLETED));
+        inspections = Lists.newArrayList(inspectionRepository.findByStatus(InspectionStatus.COMPLETED));
         view.showInspections(SyncList.fromInspections(inspections));
 
         syncManager.subscribe(callback);

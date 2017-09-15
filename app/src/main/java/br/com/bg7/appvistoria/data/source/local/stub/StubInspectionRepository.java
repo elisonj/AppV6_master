@@ -28,7 +28,7 @@ public class StubInspectionRepository  implements InspectionRepository {
     }
 
     @Override
-    public List<Inspection> findBySyncStatus(InspectionStatus status) {
+    public List<Inspection> findByStatus(InspectionStatus status) {
         return getInspectionData();
     }
 

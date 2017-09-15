@@ -63,7 +63,7 @@ public class SyncPresenterTest {
 
         populateRepository();
 
-        listInspections = Lists.newArrayList(fakeInspectionRepository.findBySyncStatus(InspectionStatus.COMPLETED));
+        listInspections = Lists.newArrayList(fakeInspectionRepository.findByStatus(InspectionStatus.COMPLETED));
         syncList = SyncList.fromInspections(listInspections);
 
         syncPresenter.start();

@@ -29,7 +29,7 @@ public class FakeInspectionSyncRepository extends FakeRepository<InspectionStatu
     }
 
     @Override
-    public Iterable<Inspection> findBySyncStatus(final InspectionStatus status) {
+    public Iterable<Inspection> findByStatus(final InspectionStatus status) {
         Map<InspectionStatus, Inspection> filtered = Maps.filterEntries(ENTITIES_BY_KEY,
                 new Predicate<Map.Entry<InspectionStatus, Inspection>>() {
             @Override

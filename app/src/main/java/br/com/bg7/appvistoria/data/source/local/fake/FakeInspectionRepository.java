@@ -37,7 +37,7 @@ public class FakeInspectionRepository extends FakeRepository<SyncStatus, Inspect
     }
 
     @Override
-    public List<Inspection> findBySyncStatus(final InspectionStatus status) {
+    public List<Inspection> findByStatus(final InspectionStatus status) {
         return null;
     }
 
