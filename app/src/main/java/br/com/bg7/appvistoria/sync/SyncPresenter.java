@@ -23,10 +23,8 @@ public class SyncPresenter implements SyncContract.Presenter {
     private SyncManager syncManager;
     private SyncContract.View view;
     private List<Inspection> inspections;
-    private PictureService pictureService;
-    private InspectionService inspectionService;
 
-    private SyncCallback callbackInspection = new SyncCallback() {
+    private SyncCallback callback = new SyncCallback() {
         @Override
         public void onSuccess(Inspection inspection) {
             view.showUnderCompleted(inspection.getId());
@@ -45,32 +43,10 @@ public class SyncPresenter implements SyncContract.Presenter {
         }
     };
 
-    private SyncCallback callbackPicture = new SyncCallback() {
-        @Override
-        public void onSuccess(Inspection inspection) {
-            inspection.sync(inspectionService, callbackInspection);
-            view.showUnderInProgress(inspection.getId());
-        }
-
-        @Override
-        public void onProgressUpdated(Inspection inspection, Integer progress) {
-            view.showPercentage(inspection.getPercentageCompleted(), inspection.getId());
-        }
-
-        @Override
-        public void onFailure(Inspection inspection, Throwable t) {
-            view.showUnderError(inspection.getId());
-            view.showSyncErrorMessage();
-        }
-    };
-
-    public SyncPresenter(InspectionRepository inspectionRepository, SyncManager syncManager, SyncContract.View view,
-                         PictureService pictureService, InspectionService inspectionService) {
+    public SyncPresenter(InspectionRepository inspectionRepository, SyncManager syncManager, SyncContract.View view) {
         this.inspectionRepository = checkNotNull(inspectionRepository);
         this.syncManager = checkNotNull(syncManager);
         this.view = checkNotNull(view);
-        this.pictureService = checkNotNull(pictureService);
-        this.inspectionService = checkNotNull(inspectionService);
 
         this.view.setPresenter(this);
     }
@@ -80,7 +56,7 @@ public class SyncPresenter implements SyncContract.Presenter {
         inspections = Lists.newArrayList(inspectionRepository.findBySyncStatus(InspectionStatus.COMPLETED));
         view.showInspections(SyncList.fromInspections(inspections));
 
-        syncManager.subscribe(callbackPicture);
+        syncManager.subscribe(callback);
     }
 
     @Override
@@ -88,15 +64,9 @@ public class SyncPresenter implements SyncContract.Presenter {
         Inspection inspection = getInspectionById(inspectionId);
         if (inspection == null) return;
 
+        inspection.readyToSync();
+        inspectionRepository.save(inspection);
         view.showUnderInProgress(inspection.getId());
-
-        if (inspection.canSyncPictures()) {
-            syncManager.subscribe(callbackPicture);
-            inspection.sync(pictureService, callbackPicture);
-            return;
-        }
-        syncManager.subscribe(callbackPicture);
-        inspection.sync(inspectionService, callbackInspection);
     }
 
     @Override
@@ -104,6 +74,7 @@ public class SyncPresenter implements SyncContract.Presenter {
         Inspection inspection = getInspectionById(inspectionId);
         if (inspection != null) {
             inspection.reset();
+            inspectionRepository.save(inspection);
             view.showUnderNotStarted(inspectionId);
         }
     }
