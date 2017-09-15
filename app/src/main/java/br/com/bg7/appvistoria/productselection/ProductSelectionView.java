@@ -31,7 +31,7 @@ class ProductSelectionView extends ConstraintLayout implements ProductSelectionC
     ExpandableListView expListView;
     private ConfirmDialog confirmDialog;
 
-    private View linearBotton;
+    private View linearBottom;
     private View linearCancel;
     private View linearConfirm;
 
@@ -43,7 +43,7 @@ class ProductSelectionView extends ConstraintLayout implements ProductSelectionC
     private void init() {
         inflate(getContext(), R.layout.activity_product, this);
         expListView = findViewById(R.id.listview);
-        linearBotton = findViewById(R.id.linear_botton);
+        linearBottom = findViewById(R.id.linear_bottom);
         linearCancel = findViewById(R.id.linear_cancel);
         linearConfirm = findViewById(R.id.linear_confirm);
 
@@ -74,7 +74,7 @@ class ProductSelectionView extends ConstraintLayout implements ProductSelectionC
 
     @Override
     public void showProducts(List<ProductSelection> productSelectionList) {
-        linearBotton.setVisibility(View.GONE);
+        linearBottom.setVisibility(View.GONE);
 
         listAdapter = new ProductSelectionAdapter(getContext(), productSelectionList, productSelectionPresenter);
         expListView.setAdapter(listAdapter);
@@ -87,7 +87,7 @@ class ProductSelectionView extends ConstraintLayout implements ProductSelectionC
 
     @Override
     public void showSelectedQuantity(ProductSelectionItem item, int quantity) {
-        linearBotton.setVisibility(View.VISIBLE);
+        linearBottom.setVisibility(View.VISIBLE);
     }
 
     @Override
