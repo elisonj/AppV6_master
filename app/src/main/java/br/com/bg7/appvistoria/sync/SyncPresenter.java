@@ -19,6 +19,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class SyncPresenter implements SyncContract.Presenter {
 
+    Runnable updateQueue;
+    Runnable sync;
     private InspectionRepository inspectionRepository;
     private SyncManager syncManager;
     private SyncContract.View view;
@@ -27,10 +29,43 @@ public class SyncPresenter implements SyncContract.Presenter {
     private PictureService pictureService;
     private InspectionService inspectionService;
 
-    Runnable updateQueue;
+    private SyncCallback callbackInspection = new SyncCallback() {
+        @Override
+        public void onSuccess(Inspection inspection) {
+            view.showUnderCompleted(inspection.getId());
+            view.showSyncSuccessMessage();
+        }
 
-    Runnable sync;
+        @Override
+        public void onProgressUpdated(Inspection inspection, Integer progress) {
+            view.showPercentage(inspection.getPercentageCompleted(), inspection.getId());
+        }
 
+        @Override
+        public void onFailure(Inspection inspection, Throwable t) {
+            view.showUnderError(inspection.getId());
+            view.showSyncErrorMessage();
+        }
+    };
+
+    private SyncCallback callbackPicture = new SyncCallback() {
+        @Override
+        public void onSuccess(Inspection inspection) {
+            inspection.sync(inspectionService, callbackInspection);
+            view.showUnderInProgress(inspection.getId());
+        }
+
+        @Override
+        public void onProgressUpdated(Inspection inspection, Integer progress) {
+            view.showPercentage(inspection.getPercentageCompleted(), inspection.getId());
+        }
+
+        @Override
+        public void onFailure(Inspection inspection, Throwable t) {
+            view.showUnderError(inspection.getId());
+            view.showSyncErrorMessage();
+        }
+    };
 
     public SyncPresenter(InspectionRepository inspectionRepository, SyncManager syncManager, SyncContract.View view,
                          PictureService pictureService, InspectionService inspectionService) {
@@ -52,15 +87,14 @@ public class SyncPresenter implements SyncContract.Presenter {
         syncManager.subscribe(callbackPicture);
     }
 
-
     @Override
     public void syncClicked(Long inspectionId) {
         Inspection inspection = getInspectionById(inspectionId);
-        if(inspection == null) return;
+        if (inspection == null) return;
 
         view.showUnderInProgress(inspection.getId());
 
-        if(inspection.canSyncPictures()) {
+        if (inspection.canSyncPictures()) {
             syncManager.subscribe(callbackPicture);
             inspection.sync(pictureService, callbackPicture);
             return;
@@ -72,58 +106,18 @@ public class SyncPresenter implements SyncContract.Presenter {
     @Override
     public void retryClicked(Long inspectionId) {
         Inspection inspection = getInspectionById(inspectionId);
-        if(inspection != null) {
+        if (inspection != null) {
             inspection.reset();
             view.showUnderNotStarted(inspectionId);
         }
     }
 
     private Inspection getInspectionById(Long inspectionId) {
-        for(Inspection inspection: inspections) {
-            if(inspection.getId().equals(inspectionId)) {
+        for (Inspection inspection : inspections) {
+            if (inspection.getId().equals(inspectionId)) {
                 return inspection;
             }
         }
         return null;
     }
-
-
-        private SyncCallback callbackPicture = new SyncCallback() {
-        @Override
-        public void onSuccess(Inspection inspection) {
-            inspection.sync(inspectionService, callbackInspection);
-            view.showUnderInProgress(inspection.getId());
-        }
-
-        @Override
-        public void onProgressUpdated(Inspection inspection, Integer progress) {
-            view.showPercentage(inspection.getPercentageCompleted(), inspection.getId());
-        }
-
-        @Override
-        public void onFailure(Inspection inspection, Throwable t) {
-            view.showUnderError(inspection.getId());
-            view.showSyncErrorMessage();
-        }
-    };
-
-    private SyncCallback callbackInspection = new SyncCallback() {
-        @Override
-        public void onSuccess(Inspection inspection) {
-            view.showUnderCompleted(inspection.getId());
-            view.showSyncSuccessMessage();
-        }
-
-        @Override
-        public void onProgressUpdated(Inspection inspection, Integer progress) {
-            view.showPercentage(inspection.getPercentageCompleted(), inspection.getId());
-        }
-
-        @Override
-        public void onFailure(Inspection inspection, Throwable t) {
-            view.showUnderError(inspection.getId());
-            view.showSyncErrorMessage();
-        }
-    };
-
 }
