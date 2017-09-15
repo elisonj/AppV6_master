@@ -1,9 +1,9 @@
 package br.com.bg7.appvistoria.sync;
 
-import com.google.common.collect.Lists;
-
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -15,10 +15,12 @@ import br.com.bg7.appvistoria.data.WorkOrder;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeInspectionSyncRepository;
 import br.com.bg7.appvistoria.data.source.remote.InspectionService;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
+import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
 import br.com.bg7.appvistoria.sync.vo.SyncList;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by: elison
@@ -39,6 +41,9 @@ public class SyncPresenterTest {
     PictureService pictureService;
 
     SyncList syncList;
+
+    @Captor
+    ArgumentCaptor<SyncCallback> syncCallbackCaptor;
 
     @Mock
     SyncExecutor syncExecutor;
@@ -65,6 +70,7 @@ public class SyncPresenterTest {
         syncList = SyncList.fromInspections(listInspections);
 
         syncPresenter.start();
+        verify(syncManager).subscribe(syncCallbackCaptor.capture());
 //        syncListObject = getSyncList();
 
     }
@@ -100,7 +106,8 @@ public class SyncPresenterTest {
 
     @Test
     public void shouldShowErrorMessageWhenFailSync() {
-
+        // TODO: Usar o callback para testar
+        syncCallbackCaptor.getValue().onFailure(null, null);
     }
 
 
