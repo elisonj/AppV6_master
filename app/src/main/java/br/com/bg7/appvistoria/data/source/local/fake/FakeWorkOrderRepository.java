@@ -29,7 +29,7 @@ public class FakeWorkOrderRepository extends FakeRepository<String, WorkOrder> i
     }
 
     @Override
-    public List<WorkOrder> findAllOrderByProjectAndAddress(String description, String address) {
+    public List<WorkOrder> findAllByProjectAndAddress(String description, String address) {
         ArrayList<WorkOrder> workOrderList = new ArrayList<>(ENTITIES_BY_KEY.values());
 
         Collections.sort(workOrderList, new Comparator<WorkOrder>() {

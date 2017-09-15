@@ -91,7 +91,7 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
         // TODO: Criar de fato uma WorkOrder com os dados selecionados
         WorkOrder workOrder = new WorkOrder(project.getDescription(), address);
 
-        List<WorkOrder> allOrderByAddress = workOrderRepository.findAllOrderByProjectAndAddress(workOrder.getName(), address);
+        List<WorkOrder> allOrderByAddress = workOrderRepository.findAllByProjectAndAddress(workOrder.getName(), address);
 
         if (allOrderByAddress.size() == 0) {
             workOrderRepository.save(workOrder);

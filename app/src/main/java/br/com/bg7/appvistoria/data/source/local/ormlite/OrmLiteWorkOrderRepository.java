@@ -39,7 +39,7 @@ public class OrmLiteWorkOrderRepository extends OrmLiteRepository<WorkOrder> imp
     }
 
     @Override
-    public List<WorkOrder> findAllOrderByProjectAndAddress(String description, String address) {
+    public List<WorkOrder> findAllByProjectAndAddress(String description, String address) {
         return null;
     }
 }

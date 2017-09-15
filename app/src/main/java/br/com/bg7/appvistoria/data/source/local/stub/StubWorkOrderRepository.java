@@ -35,7 +35,7 @@ public class StubWorkOrderRepository implements WorkOrderRepository {
     }
 
     @Override
-    public List<WorkOrder> findAllOrderByProjectAndAddress(String description, String address) {
+    public List<WorkOrder> findAllByProjectAndAddress(String description, String address) {
         List<WorkOrder> list = getAllData();
 
         for(WorkOrder workOrder: list) {
