@@ -24,7 +24,6 @@ public class SyncPresenter implements SyncContract.Presenter {
     private InspectionRepository inspectionRepository;
     private SyncManager syncManager;
     private SyncContract.View view;
-    private SyncList syncList;
     private List<Inspection> inspections;
     private PictureService pictureService;
     private InspectionService inspectionService;
@@ -81,8 +80,7 @@ public class SyncPresenter implements SyncContract.Presenter {
     @Override
     public void start() {
         inspections = Lists.newArrayList(inspectionRepository.findBySyncStatus(InspectionStatus.COMPLETED));
-        syncList = SyncList.fromInspections(inspections);
-        view.showInspections(syncList);
+        view.showInspections(SyncList.fromInspections(inspections));
 
         syncManager.subscribe(callbackPicture);
     }
