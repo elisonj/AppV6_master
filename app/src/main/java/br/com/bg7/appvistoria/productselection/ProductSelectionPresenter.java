@@ -51,7 +51,6 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
                 productSelections = ProductSelection.fromProducts(httpResponse.body());
                 productSelectionView.showProducts(productSelections);
             }
-
             @Override
             public void onFailure(Throwable t) {
                 productSelectionView.showConnectivityError();

@@ -50,7 +50,7 @@
     <string name="confirm_new_workorder">Do you want to create a\nnew WorkOrder?</string>
     <string name="available_item">available</string>
     <string name="available_items">available</string>
-    <string name="actives">Actives of ID </string>
+    <string name="product_selection_title_format">Products for ID %d</string>
     <string name="spinner_hint">Select the quantity to inspect </string>
     <string name="active_item">Active</string>
     <string name="actives_item">Actives</string>

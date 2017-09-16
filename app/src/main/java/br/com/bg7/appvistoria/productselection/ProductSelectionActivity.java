@@ -22,8 +22,6 @@ import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
  */
 public class ProductSelectionActivity extends BaseActivity {
 
-    private static final String EMPTY_SPACE = " ";
-
     private final ServiceLocator services = ServiceLocator.create(this, this);
     private ProductSelectionPresenter productSelectionPresenter;
 
@@ -38,14 +36,14 @@ public class ProductSelectionActivity extends BaseActivity {
         ProductSelectionView view = new ProductSelectionView(this);
         productSelectionPresenter = new ProductSelectionPresenter(project, location, services.getProductService(), services.getWorkOrderRepository(), view);
 
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
 
-            String actives = getString(R.string.actives) + EMPTY_SPACE + project.getId();
+            String productSelectionTitle = String.format(getString(R.string.product_selection_title_format), project.getId());
 
             View customView = getLayoutInflater().inflate(R.layout.action_bar, null);
             TextView title = customView.findViewById(R.id.title);
             ImageView btBack = customView.findViewById(R.id.bt_back);
-            title.setText(actives);
+            title.setText(productSelectionTitle);
 
             btBack.setOnClickListener(new View.OnClickListener() {
                 @Override
