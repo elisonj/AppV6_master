@@ -18,7 +18,7 @@ import br.com.bg7.appvistoria.projectselection.vo.Project;
 public interface ProductSelectionContract {
 
     interface View extends BaseView<ProductSelectionContract.Presenter> {
-        void showProducts(List<ProductSelection> productSelectionList);
+        void showProducts(List<Product> productSelectionList);
 
         void showConnectivityError();
 

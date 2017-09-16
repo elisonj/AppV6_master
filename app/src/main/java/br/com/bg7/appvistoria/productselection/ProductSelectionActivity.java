@@ -50,7 +50,7 @@ public class ProductSelectionActivity extends BaseActivity {
     }
 
     private void initializeViewElements(Long projectId, ActionBar actionBar) {
-        String productSelectionTitle = String.format(getString(R.string.product_selection_title_format), projectId);
+        String productSelectionTitle = getString(R.string.product_selection_title_format, projectId);
 
         View actionBarView = getLayoutInflater().inflate(R.layout.action_bar, null);
         TextView title = actionBarView.findViewById(R.id.title);

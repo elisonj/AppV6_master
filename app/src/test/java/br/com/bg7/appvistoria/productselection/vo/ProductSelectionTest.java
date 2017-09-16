@@ -25,7 +25,7 @@ public class ProductSelectionTest {
     @Test
     public void shouldCreateEmptyList() {
         ArrayList<Product> productList = new ArrayList<>();
-        List<ProductSelection> productSelectionList = ProductSelection.fromProducts(productList);
+        List<ProductSelection> productSelectionList = ProductSelection.fromProducts(null, productList);
 
         Assert.assertEquals(0, productSelectionList.size());
     }
@@ -40,7 +40,7 @@ public class ProductSelectionTest {
             add(product2);
         }};
 
-        List<ProductSelection> productSelectionList = ProductSelection.fromProducts(productList);
+        List<ProductSelection> productSelectionList = ProductSelection.fromProducts(null, productList);
         Assert.assertEquals(1, productSelectionList.size());
         Assert.assertEquals(1, productSelectionList.get(0).getItems().size());
 
@@ -49,7 +49,7 @@ public class ProductSelectionTest {
         ProductSelectionItem item = selection.getItems().get(0);
 
         Assert.assertEquals("Carros & Motos", header.getTitle());
-        Assert.assertEquals("Carros", item.getTitle());
+        Assert.assertEquals("Carros", item.getCategory());
         Assert.assertEquals(2, item.getCount());
     }
 
@@ -67,7 +67,7 @@ public class ProductSelectionTest {
             add(product4);
         }};
 
-        List<ProductSelection> productSelectionList = ProductSelection.fromProducts(productList);
+        List<ProductSelection> productSelectionList = ProductSelection.fromProducts(null, productList);
         Assert.assertEquals(2, productSelectionList.size());
         Assert.assertEquals(2, productSelectionList.get(0).getItems().size());
         Assert.assertEquals(1, productSelectionList.get(1).getItems().size());
@@ -82,13 +82,13 @@ public class ProductSelectionTest {
         ProductSelectionItem item21 = selection2.getItems().get(0);
 
         Assert.assertEquals("Imoveis", header2.getTitle());
-        Assert.assertEquals("Residencial", item21.getTitle());
+        Assert.assertEquals("Residencial", item21.getCategory());
         Assert.assertEquals(1, item21.getCount());
 
         Assert.assertEquals("Carros & Motos", header1.getTitle());
-        Assert.assertEquals("Carros", item11.getTitle());
+        Assert.assertEquals("Carros", item11.getCategory());
         Assert.assertEquals(2, item11.getCount());
-        Assert.assertEquals("Motos", item12.getTitle());
+        Assert.assertEquals("Motos", item12.getCategory());
         Assert.assertEquals(1, item12.getCount());
     }
 }

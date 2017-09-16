@@ -50,11 +50,11 @@
     <string name="confirm_new_workorder">Do you want to create a\nnew WorkOrder?</string>
     <string name="available_item">available</string>
     <string name="available_items">available</string>
-    <string name="product_selection_title_format">Products for ID %d</string>
+    <string name="product_selection_title_format">Products for ID %1$d</string>
     <string name="spinner_hint">Select the quantity to inspect </string>
-    <string name="active_item">Active</string>
-    <string name="actives_item">Actives</string>
-    <string name="active_item_selected">%1$s! of %2$s to inspect</string>
+    <string name="product_selection_item_single_format">%1$d product</string>
+    <string name="product_selection_item_multiple_format">%1$d products</string>
+    <string name="product_selection_summary_format">%1$d of %2$d to inspect</string>
     <string name="ico_category">Category</string>
     <string name="create_workorder">CREATE WORKORDER</string>
     <string name="confirm_create_workorder">Do you want to create a new WorkOrder\nwith the selected actives?</string>

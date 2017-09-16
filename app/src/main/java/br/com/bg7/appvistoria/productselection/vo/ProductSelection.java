@@ -1,5 +1,7 @@
 package br.com.bg7.appvistoria.productselection.vo;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +23,7 @@ public class ProductSelection {
         return items;
     }
 
-    public static List<ProductSelection> fromProducts(List<Product> products) {
+    public static List<ProductSelection> fromProducts(Context context, List<Product> products) {
         ArrayList<ProductSelection> finalList = new ArrayList<>();
         HashMap<ProductSelectionHeader, HashMap<String, Integer>> map = new HashMap<>();
 
@@ -47,7 +49,7 @@ public class ProductSelection {
             ArrayList<ProductSelectionItem> items = new ArrayList<>();
 
             for (Map.Entry<String, Integer> categoryEntry : entry.getValue().entrySet()) {
-                ProductSelectionItem item = new ProductSelectionItem(categoryEntry.getKey(), categoryEntry.getValue());
+                ProductSelectionItem item = new ProductSelectionItem(context, categoryEntry.getKey(), categoryEntry.getValue());
 
                 items.add(item);
             }

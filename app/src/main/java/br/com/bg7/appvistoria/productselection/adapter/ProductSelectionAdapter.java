@@ -4,14 +4,11 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.weiwangcn.betterspinner.library.BetterSpinner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +19,8 @@ import br.com.bg7.appvistoria.productselection.ProductSelectionContract;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelection;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelectionHeader;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelectionItem;
+import br.com.bg7.appvistoria.productselection.vo.ProductSelectionItemQuantity;
+import me.srodrigo.androidhintspinner.HintSpinner;
 
 /**
  * Created by: luciolucio
@@ -29,12 +28,10 @@ import br.com.bg7.appvistoria.productselection.vo.ProductSelectionItem;
  */
 public class ProductSelectionAdapter extends BaseExpandableListAdapter {
 
-    private ArrayList<ProductSelectionHeader> headers = new ArrayList<>();
-    private HashMap<ProductSelectionHeader, List<ProductSelectionItem>> items;
-
     private static final String COLON_SEPARATOR = ": ";
     private static final String EMPTY_SPACE = " ";
-
+    private ArrayList<ProductSelectionHeader> headers = new ArrayList<>();
+    private HashMap<ProductSelectionHeader, List<ProductSelectionItem>> items;
     private Context context;
     private ProductSelectionContract.Presenter presenter;
 
@@ -109,7 +106,6 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
         final ProductSelectionItem item = getChild(groupPosition, childPosition);
-        final boolean isSelected = item.getCount() > 0;
 
         if (convertView == null) {
             convertView = View.inflate(context, R.layout.product_selection_item, null);
@@ -118,35 +114,35 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
         final LinearLayout productTypeHeader = convertView.findViewById(R.id.product_type_header);
         productTypeHeader.setBackgroundColor(context.getColor(R.color.item_default));
 
-        final TextView product = convertView.findViewById(R.id.product);
-        final TextView quantity = convertView.findViewById(R.id.quantity);
-        product.setTextColor(context.getColor(R.color.item_font_default));
-        quantity.setTextColor(context.getColor(R.color.item_font_default));
-        final LinearLayout linearQuantity = convertView.findViewById(R.id.linear_quantity);
-        final ImageView arrowItem = convertView.findViewById(R.id.arrow_item);
+        final TextView productType = convertView.findViewById(R.id.product_type);
+        productType.setTextColor(context.getColor(R.color.item_font_default));
+
+        final TextView productTypeQuantty = convertView.findViewById(R.id.product_type_quantity);
+        productTypeQuantty.setTextColor(context.getColor(R.color.item_font_default));
+
+        final ImageView arrowItem = convertView.findViewById(R.id.arrow);
         arrowItem.setImageDrawable(context.getResources().getDrawable(R.drawable.arrow_open_list, null));
-        final BetterSpinner spinner = convertView.findViewById(R.id.spinner);
 
+        final LinearLayout quantitySelectionItem = convertView.findViewById(R.id.quantity_selection_item);
+        final Spinner spinner = convertView.findViewById(R.id.spinner);
+        HintSpinner<ProductSelectionItemQuantity> hintSpinner = new HintSpinner<>(
+                spinner,
+                new ProductSelectionItemQuantityAdapter(context, item),
+                new HintSpinner.Callback<ProductSelectionItemQuantity>() {
+                    @Override
+                    public void onItemSelected(int position, ProductSelectionItemQuantity itemAtPosition) {
+                        Integer quantitySelected = itemAtPosition.getQuantity();
+                        itemAtPosition.select(quantitySelected);
 
-        String[] initialSpinnerValues = getInitialSpinnerValues(item);
-        ArrayAdapter<String> items = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, initialSpinnerValues);
-        spinner.setAdapter(items);
-
-        spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String spinnerItem = adapterView.getAdapter().getItem(position).toString();
-
-                int firtsSpace = spinnerItem.indexOf(EMPTY_SPACE);
-                String quantitySelected = spinnerItem.substring(0, firtsSpace);
-
-                formatSelectedChild(quantitySelected, item, productTypeHeader, product, quantity);
-                selectProduct(item, quantitySelected);
-                linearQuantity.setVisibility(View.GONE);
-                arrowItem.setImageDrawable(context.getResources().getDrawable(R.drawable.arrow_open_white, null));
-            }
-        });
-
+                        formatSelectedChild(quantitySelected, item, productTypeHeader, productType, productTypeQuantty);
+                        presenter.chooseQuantity(item, quantitySelected);
+                        quantitySelectionItem.setVisibility(View.GONE);
+                        arrowItem.setImageDrawable(context.getResources().getDrawable(R.drawable.arrow_open_white, null));
+                    }
+                }
+        );
+        hintSpinner.init();
+        hintSpinner.selectHint();
 
         productTypeHeader.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,39 +151,39 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
                 int openArrow = R.drawable.arrow_open_list;
                 int closeArrow = R.drawable.arrow_close_list;
 
-                if (isSelected) {
+                if (item.isSelected()) {
                     openArrow = R.drawable.arrow_open_white;
                     closeArrow = R.drawable.arrow_close_white;
                 }
 
-                if (linearQuantity.isShown()) {
-                    linearQuantity.setVisibility(View.GONE);
+                if (quantitySelectionItem.isShown()) {
+                    quantitySelectionItem.setVisibility(View.GONE);
                     arrowItem.setImageDrawable(context.getResources().getDrawable(openArrow, null));
                     return;
                 }
-                linearQuantity.setVisibility(View.VISIBLE);
+                quantitySelectionItem.setVisibility(View.VISIBLE);
                 arrowItem.setImageDrawable(context.getResources().getDrawable(closeArrow, null));
             }
         });
 
-        String title = item.getTitle() + COLON_SEPARATOR;
-        product.setText(title);
+        String title = item.getCategory() + COLON_SEPARATOR;
+        productType.setText(title);
 
-        if (isSelected) {
-            formatSelectedChild(String.valueOf(item.getCount()), item, productTypeHeader, product, quantity);
-            showSelectedWhiteArrows(arrowItem, linearQuantity);
+        if (item.isSelected()) {
+            formatSelectedChild(item.getSelectedQuantity(), item, productTypeHeader, productType, productTypeQuantty);
+            showSelectedWhiteArrows(arrowItem, quantitySelectionItem);
 
             return convertView;
         }
 
         if (item.getCount() > 1) {
             String available = item.getCount() + EMPTY_SPACE + context.getString(R.string.available_items);
-            quantity.setText(available);
+            productTypeQuantty.setText(available);
             return convertView;
         }
 
         String available = item.getCount() + EMPTY_SPACE + context.getString(R.string.available_item);
-        quantity.setText(available);
+        productTypeQuantty.setText(available);
         return convertView;
     }
 
@@ -204,35 +200,17 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
         arrowItem.setImageDrawable(context.getResources().getDrawable(R.drawable.arrow_open_white, null));
     }
 
-    private String formatSelectedChild(String quantitySelected, ProductSelectionItem item, LinearLayout productTypeHeader, TextView product, TextView quantity) {
-        productTypeHeader.setBackgroundColor(context.getResources().getColor(R.color.item_orange, null));
-        product.setTextColor(context.getResources().getColor(R.color.white, null));
+    private Integer formatSelectedChild(Integer quantitySelected, ProductSelectionItem item, LinearLayout productTypeHeader, TextView product, TextView quantity) {
+        productTypeHeader.setBackgroundColor(context.getColor(R.color.item_orange));
+        product.setTextColor(context.getColor(R.color.white));
 
-        String format = String.format(
-                context.getResources().getString(R.string.active_item_selected),
+        String format = context.getString(R.string.product_selection_summary_format,
                 quantitySelected,
-                String.valueOf(item.getCount()));
+                item.getCount());
 
         quantity.setText(format);
-        quantity.setTextColor(context.getResources().getColor(R.color.white, null));
+        quantity.setTextColor(context.getColor(R.color.white));
+
         return quantitySelected;
-    }
-
-    private void selectProduct(ProductSelectionItem item, String quantitySelected) {
-        presenter.chooseQuantity(item, Integer.parseInt(quantitySelected));
-    }
-
-    private String[] getInitialSpinnerValues(ProductSelectionItem item) {
-        String[] items = new String[item.getCount()];
-
-
-        for (int cont = 1; cont <= item.getCount(); cont++) {
-            if (cont == 1) {
-                items[cont - 1] = String.valueOf(cont) + EMPTY_SPACE + context.getString(R.string.active_item);
-                continue;
-            }
-            items[cont - 1] = String.valueOf(cont) + EMPTY_SPACE + context.getString(R.string.actives_item);
-        }
-        return items;
     }
 }

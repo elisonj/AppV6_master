@@ -12,6 +12,7 @@ import br.com.bg7.appvistoria.AlertDialog;
 import br.com.bg7.appvistoria.ConfirmDialog;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.productselection.adapter.ProductSelectionAdapter;
+import br.com.bg7.appvistoria.productselection.vo.Product;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelection;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelectionItem;
 import br.com.bg7.appvistoria.projectselection.ProjectSelectionActivity;
@@ -25,7 +26,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 class ProductSelectionView extends ConstraintLayout implements ProductSelectionContract.View {
 
     ProductSelectionContract.Presenter productSelectionPresenter;
-    ProductSelectionAdapter listAdapter;
     private ConfirmDialog confirmDialog;
 
     private ExpandableListView productList;
@@ -81,8 +81,9 @@ class ProductSelectionView extends ConstraintLayout implements ProductSelectionC
     }
 
     @Override
-    public void showProducts(List<ProductSelection> productSelectionList) {
-        listAdapter = new ProductSelectionAdapter(getContext(), productSelectionList, productSelectionPresenter);
+    public void showProducts(List<Product> products) {
+        List<ProductSelection> productSelectionList = ProductSelection.fromProducts(getContext(), products);
+        ProductSelectionAdapter listAdapter = new ProductSelectionAdapter(getContext(), productSelectionList, productSelectionPresenter);
         productList.setAdapter(listAdapter);
     }
 

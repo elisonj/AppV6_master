@@ -28,7 +28,7 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
     private ProductSelectionContract.View productSelectionView;
     private Project project;
     private Location location;
-    private List<ProductSelection> productSelections;
+    private List<Product> products;
     private HashMap<ProductSelectionItem, Integer> selectedItems = new HashMap<>();
 
     ProductSelectionPresenter(Project project, Location location, ProductService productService, WorkOrderRepository workOrderRepository, ProductSelectionContract.View productSelectionView) {
@@ -48,8 +48,8 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
         productService.findByProjectAndLocation(project, location, new HttpCallback<List<Product>>() {
             @Override
             public void onResponse(HttpResponse<List<Product>> httpResponse) {
-                productSelections = ProductSelection.fromProducts(httpResponse.body());
-                productSelectionView.showProducts(productSelections);
+                products = httpResponse.body();
+                productSelectionView.showProducts(products);
             }
             @Override
             public void onFailure(Throwable t) {
@@ -69,7 +69,7 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
     public void cancelClicked() {
         selectedItems.clear();
         productSelectionView.hideButtons();
-        productSelectionView.showProducts(productSelections);
+        productSelectionView.showProducts(products);
     }
 
     @Override
