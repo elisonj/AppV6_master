@@ -47,10 +47,10 @@ public class ProductSelectionActivity extends BaseActivity {
 
             View customView = getLayoutInflater().inflate(R.layout.action_bar, null);
             TextView title = customView.findViewById(R.id.title);
-            ImageView btHome = customView.findViewById(R.id.bt_home);
+            ImageView btBack = customView.findViewById(R.id.bt_back);
             title.setText(actives);
 
-            btHome.setOnClickListener(new View.OnClickListener() {
+            btBack.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     productSelectionPresenter.backClicked();
