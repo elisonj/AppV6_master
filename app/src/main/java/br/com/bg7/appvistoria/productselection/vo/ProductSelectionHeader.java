@@ -23,10 +23,6 @@ public class ProductSelectionHeader {
         this.title = title;
     }
 
-    public long getId() {
-        return id;
-    }
-
     public String getTitle() {
         return title;
     }
