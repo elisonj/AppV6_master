@@ -2,6 +2,7 @@ package br.com.bg7.appvistoria.productselection;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,6 +26,8 @@ public class ProductSelectionActivity extends BaseActivity {
     private final ServiceLocator services = ServiceLocator.create(this, this);
     private ProductSelectionPresenter productSelectionPresenter;
 
+    ImageView btBack;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,29 +39,36 @@ public class ProductSelectionActivity extends BaseActivity {
         ProductSelectionView view = new ProductSelectionView(this);
         productSelectionPresenter = new ProductSelectionPresenter(project, location, services.getProductService(), services.getWorkOrderRepository(), view);
 
-        if (getSupportActionBar() != null) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            initializeViewElements(project.getId(), actionBar);
 
-            String productSelectionTitle = String.format(getString(R.string.product_selection_title_format), project.getId());
-
-            View customView = getLayoutInflater().inflate(R.layout.action_bar, null);
-            TextView title = customView.findViewById(R.id.title);
-            ImageView btBack = customView.findViewById(R.id.bt_back);
-            title.setText(productSelectionTitle);
-
-            btBack.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    productSelectionPresenter.backClicked();
-                }
-            });
-
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-            getSupportActionBar().setDisplayShowCustomEnabled(true);
-            getSupportActionBar().setCustomView(customView);
+            initializeListeners();
         }
 
-
         setContentView(view);
+    }
+
+    private void initializeViewElements(Long projectId, ActionBar actionBar) {
+        String productSelectionTitle = String.format(getString(R.string.product_selection_title_format), projectId);
+
+        View actionBarView = getLayoutInflater().inflate(R.layout.action_bar, null);
+        TextView title = actionBarView.findViewById(R.id.title);
+        btBack = actionBarView.findViewById(R.id.bt_back);
+        title.setText(productSelectionTitle);
+
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(actionBarView);
+    }
+
+    private void initializeListeners() {
+        btBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                productSelectionPresenter.backClicked();
+            }
+        });
     }
 
     @Override
@@ -66,5 +76,4 @@ public class ProductSelectionActivity extends BaseActivity {
         super.onResume();
         productSelectionPresenter.start();
     }
-
 }
