@@ -78,8 +78,9 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
             convertView = View.inflate(context, R.layout.product_selection_item, null);
         }
 
-        final LinearLayout linearMain = convertView.findViewById(R.id.linear_main);
-        linearMain.setBackgroundColor(context.getColor(R.color.item_default));
+        final LinearLayout productTypeHeader = convertView.findViewById(R.id.product_type_header);
+        productTypeHeader.setBackgroundColor(context.getColor(R.color.item_default));
+
         final TextView product = convertView.findViewById(R.id.product);
         final TextView quantity = convertView.findViewById(R.id.quantity);
         product.setTextColor(context.getColor(R.color.item_font_default));
@@ -102,7 +103,7 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
                 int firtsSpace = spinnerItem.indexOf(EMPTY_SPACE);
                 String quantitySelected = spinnerItem.substring(0, firtsSpace);
 
-                formatSelectedChild(quantitySelected, item, linearMain, product, quantity, arrowItem);
+                formatSelectedChild(quantitySelected, item, productTypeHeader, product, quantity, arrowItem);
                 selectProduct(item, quantitySelected);
                 linearQuantity.setVisibility(View.GONE);
                 arrowItem.setImageDrawable(context.getResources().getDrawable(R.drawable.arrow_open_white, null));
@@ -110,7 +111,7 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
         });
 
 
-        linearMain.setOnClickListener(new View.OnClickListener() {
+        productTypeHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -136,7 +137,7 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
         product.setText(title);
 
         if (isSelected) {
-            formatSelectedChild(String.valueOf(item.getCount()), item, linearMain, product, quantity, arrowItem);
+            formatSelectedChild(String.valueOf(item.getCount()), item, productTypeHeader, product, quantity, arrowItem);
             showSelectedWhiteArrows(arrowItem, linearQuantity);
 
             return convertView;
@@ -162,8 +163,8 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
     }
 
     @NonNull
-    private String formatSelectedChild(String quantitySelected, ProductSelectionItem item, LinearLayout linearMain, TextView product, TextView quantity, ImageView arrowItem) {
-        linearMain.setBackgroundColor(context.getResources().getColor(R.color.item_orange, null));
+    private String formatSelectedChild(String quantitySelected, ProductSelectionItem item, LinearLayout productTypeHeader, TextView product, TextView quantity, ImageView arrowItem) {
+        productTypeHeader.setBackgroundColor(context.getResources().getColor(R.color.item_orange, null));
         product.setTextColor(context.getResources().getColor(R.color.white, null));
 
         String format = String.format(
@@ -222,13 +223,12 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
             convertView = View.inflate(context, R.layout.product_selection_header, null);
         }
 
-        TextView category = convertView.findViewById(R.id.category);
-        ImageView imageCategory = convertView.findViewById(R.id.image_category);
+        TextView productTypeText = convertView.findViewById(R.id.product_type_text);
+        productTypeText.setTypeface(null, Typeface.BOLD);
+        productTypeText.setText(header.getTitle());
 
-        imageCategory.setImageDrawable(header.getDrawable(context));
-
-        category.setTypeface(null, Typeface.BOLD);
-        category.setText(header.getTitle());
+        ImageView productTypeImage = convertView.findViewById(R.id.product_type_image);
+        productTypeImage.setImageDrawable(header.getDrawable(context));
 
         return convertView;
     }
