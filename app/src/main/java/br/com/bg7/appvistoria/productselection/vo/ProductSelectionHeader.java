@@ -5,6 +5,8 @@ import android.graphics.drawable.Drawable;
 
 import com.google.common.base.Objects;
 
+import java.util.HashMap;
+
 /**
  * Created by: luciolucio
  * Date: 2017-09-14
@@ -14,9 +16,9 @@ public class ProductSelectionHeader {
 
     private Long id;
     private String title;
-    private Drawable drawable;
+    private static HashMap<Long, Drawable> drawables = new HashMap<>();
 
-    public ProductSelectionHeader(Long id, String title) {
+    ProductSelectionHeader(Long id, String title) {
         this.id = id;
         this.title = title;
     }
@@ -31,9 +33,13 @@ public class ProductSelectionHeader {
 
     // TODO: Falta a categoria 24: Artes, Decoração & Colecionismo
     public Drawable getDrawable(Context context) {
-        int id = context.getResources().getIdentifier("product_type_" + this.id.toString(), "drawable", context.getPackageName());
+        if (!drawables.containsKey(this.id)) {
+            int id = context.getResources().getIdentifier("product_type_" + this.id.toString(), "drawable", context.getPackageName());
 
-        return context.getDrawable(id);
+            drawables.put(this.id, context.getDrawable(id));
+        }
+
+        return drawables.get(this.id);
     }
 
     @Override
