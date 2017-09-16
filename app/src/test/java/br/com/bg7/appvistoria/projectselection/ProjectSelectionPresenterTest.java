@@ -38,7 +38,7 @@ public class ProjectSelectionPresenterTest {
         add(new Project(5L, "Projeto 5"));
     }};
 
-    private ArrayList<Location> allAddresses = new ArrayList<Location>() {{
+    private ArrayList<Location> allLocations = new ArrayList<Location>() {{
         add(new Location(1L, "Endereço 1"));
         add(new Location(2L, "Endereço 2"));
         add(new Location(3L, "Endereço 3"));
@@ -54,13 +54,13 @@ public class ProjectSelectionPresenterTest {
     HttpResponse<List<Project>> projectResponse;
 
     @Mock
-    HttpResponse<List<Location>> addressResponse;
+    HttpResponse<List<Location>> locationResponse;
 
     @Captor
     ArgumentCaptor<HttpCallback<List<Project>>> projectCallBackCaptor;
 
     @Captor
-    ArgumentCaptor<HttpCallback<List<Location>>> addressCallBackCaptor;
+    ArgumentCaptor<HttpCallback<List<Location>>> locationCallBackCaptor;
 
     private ProjectSelectionPresenter projectSelectionPresenter;
 
@@ -71,9 +71,9 @@ public class ProjectSelectionPresenterTest {
         projectSelectionPresenter = new ProjectSelectionPresenter(projectService, projectSelectionView);
 
         when(projectResponse.body()).thenReturn(allProjects);
-        when(addressResponse.body()).thenReturn(allAddresses);
+        when(locationResponse.body()).thenReturn(allLocations);
         when(projectResponse.isSuccessful()).thenReturn(true);
-        when(addressResponse.isSuccessful()).thenReturn(true);
+        when(locationResponse.isSuccessful()).thenReturn(true);
     }
 
     @Test
@@ -129,28 +129,28 @@ public class ProjectSelectionPresenterTest {
 
         projectSelectionPresenter.selectProject(project);
 
-        verify(projectService).findLocationsForProject(eq(project), addressCallBackCaptor.capture());
-        addressCallBackCaptor.getValue().onResponse(addressResponse);
+        verify(projectService).findLocationsForProject(eq(project), locationCallBackCaptor.capture());
+        locationCallBackCaptor.getValue().onResponse(locationResponse);
 
         verifyLoadingShowAndHide();
         verify(projectSelectionView).showSelectedProject(project);
     }
 
     @Test
-    public void shouldShowSelectProjectWhenAddressClicked() {
+    public void shouldShowSelectProjectWhenLocationClicked() {
         Project project = allProjects.get(0);
-        Location address = allAddresses.get(0);
+        Location location = allLocations.get(0);
         projectSelectionPresenter.selectProject(project);
 
-        projectSelectionPresenter.selectAddress(address);
+        projectSelectionPresenter.selectLocation(location);
 
-        verify(projectSelectionView).showSelectedAddress(project.getId(), address);
+        verify(projectSelectionView).showSelectedLocation(project.getId(), location);
     }
 
     @Test
-    public void shouldCleanAddressFieldWhenAddresFieldClicked() {
-        projectSelectionPresenter.addressFieldClicked();
-        verify(projectSelectionView).clearAddressField();
+    public void shouldCleanLocationFieldWhenAddresFieldClicked() {
+        projectSelectionPresenter.locationFieldClicked();
+        verify(projectSelectionView).clearLocationField();
     }
 
     @Test

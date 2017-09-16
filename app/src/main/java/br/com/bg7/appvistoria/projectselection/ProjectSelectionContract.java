@@ -18,19 +18,19 @@ public interface ProjectSelectionContract {
 
         void showSelectedProject(Project project);
 
-        void showAddresses(List<Location> addresses);
+        void showLocations(List<Location> locations);
 
-        void showSelectedAddress(Long projectId, Location address);
+        void showSelectedLocation(Long projectId, Location location);
 
         void clearProjectField();
 
-        void clearAddressField();
+        void clearLocationField();
 
         void showLoading();
 
         void hideLoading();
 
-        void showProductSelectionScreen(Project project, Location address);
+        void showProductSelectionScreen(Project project, Location location);
 
         void showLoadErrorMessage();
     }
@@ -40,11 +40,11 @@ public interface ProjectSelectionContract {
 
         void selectProject(Project project);
 
-        void selectAddress(Location address);
+        void selectLocation(Location location);
 
         void projectFieldClicked();
 
-        void addressFieldClicked();
+        void locationFieldClicked();
 
         void nextClicked();
     }

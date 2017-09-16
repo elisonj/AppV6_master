@@ -21,7 +21,7 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
     private ProjectService projectService;
     private ProjectSelectionContract.View projectServiceView;
     private Project project;
-    private Location address;
+    private Location location;
 
     ProjectSelectionPresenter(ProjectService projectService, ProjectSelectionContract.View view) {
         this.projectService = checkNotNull(projectService);
@@ -49,34 +49,34 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
 
         projectServiceView.showSelectedProject(project);
         projectServiceView.showLoading();
-        projectService.findLocationsForProject(project, new FindAddressesCallback());
+        projectService.findLocationsForProject(project, new FindLocationsCallback());
     }
 
     @Override
-    public void selectAddress(Location address) {
-        this.address = address;
+    public void selectLocation(Location location) {
+        this.location = location;
 
-        projectServiceView.showSelectedAddress(project.getId(), address);
+        projectServiceView.showSelectedLocation(project.getId(), location);
     }
 
     @Override
-    public void addressFieldClicked() {
-        this.address = null;
-        projectServiceView.clearAddressField();
+    public void locationFieldClicked() {
+        this.location = null;
+        projectServiceView.clearLocationField();
     }
 
     @Override
     public void projectFieldClicked()
     {
-        this.address = null;
+        this.location = null;
         this.project = null;
         projectServiceView.clearProjectField();
     }
 
     @Override
     public void nextClicked() {
-        if (project != null && address != null) {
-            projectServiceView.showProductSelectionScreen(project, address);
+        if (project != null && location != null) {
+            projectServiceView.showProductSelectionScreen(project, location);
         }
     }
 
@@ -96,12 +96,12 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
         }
     }
 
-    private class FindAddressesCallback implements HttpCallback<List<Location>>
+    private class FindLocationsCallback implements HttpCallback<List<Location>>
     {
         @Override
         public void onResponse(HttpResponse<List<Location>> httpResponse) {
-            List<Location> addresses = httpResponse.body();
-            projectServiceView.showAddresses(addresses);
+            List<Location> locations = httpResponse.body();
+            projectServiceView.showLocations(locations);
             projectServiceView.hideLoading();
         }
 

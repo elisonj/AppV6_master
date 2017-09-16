@@ -26,7 +26,7 @@ public class ProductSelectionActivity extends BaseActivity {
     private final ServiceLocator services = ServiceLocator.create(this, this);
     private ProductSelectionPresenter productSelectionPresenter;
     private Project project;
-    private Location address;
+    private Location location;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,11 +35,11 @@ public class ProductSelectionActivity extends BaseActivity {
         if(getIntent() != null && getIntent().getExtras() != null) {
             Intent intent = getIntent();
             project = (Project) intent.getSerializableExtra(INTENT_EXTRA_PROJECT_KEY);
-            address = (Location) intent.getSerializableExtra(INTENT_EXTRA_LOCATION_KEY);
+            location = (Location) intent.getSerializableExtra(INTENT_EXTRA_LOCATION_KEY);
         }
 
         ProductSelectionView view = new ProductSelectionView(this);
-        productSelectionPresenter = new ProductSelectionPresenter(project, address, services.getProductService(), services.getWorkOrderRepository(), view);
+        productSelectionPresenter = new ProductSelectionPresenter(project, location, services.getProductService(), services.getWorkOrderRepository(), view);
 
         if(getSupportActionBar() != null) {
 

@@ -27,13 +27,13 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
 
     private ProductSelectionContract.View productSelectionView;
     private Project project;
-    private Location address;
+    private Location location;
     private List<ProductSelection> productSelections;
     private HashMap<ProductSelectionItem, Integer> selectedItems = new HashMap<>();
 
-    ProductSelectionPresenter(Project project, Location address, ProductService productService, WorkOrderRepository workOrderRepository, ProductSelectionContract.View productSelectionView) {
+    ProductSelectionPresenter(Project project, Location location, ProductService productService, WorkOrderRepository workOrderRepository, ProductSelectionContract.View productSelectionView) {
         this.project = checkNotNull(project);
-        this.address = checkNotNull(address);
+        this.location = checkNotNull(location);
 
         this.productService = checkNotNull(productService);
         this.workOrderRepository = checkNotNull(workOrderRepository);
@@ -45,7 +45,7 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
     @Override
     public void start() {
 
-        productService.findByProjectAndLocation(project, address, new HttpCallback<List<Product>>() {
+        productService.findByProjectAndLocation(project, location, new HttpCallback<List<Product>>() {
             @Override
             public void onResponse(HttpResponse<List<Product>> httpResponse) {
                 productSelections = ProductSelection.fromProducts(httpResponse.body());
@@ -90,11 +90,11 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
     @Override
     public void confirmCreateWorkOrderClicked() {
         // TODO: Criar de fato uma WorkOrder com os dados selecionados
-        WorkOrder workOrder = new WorkOrder(project.getDescription(), address.getAddress());
+        WorkOrder workOrder = new WorkOrder(project.getDescription(), location.getAddress());
 
-        List<WorkOrder> allOrderByAddress = workOrderRepository.findAllByProjectAndAddress(workOrder.getName(), address.getAddress());
+        List<WorkOrder> existingWorkOrders = workOrderRepository.findAllByProjectAndAddress(workOrder.getName(), location.getAddress());
 
-        if (allOrderByAddress.size() == 0) {
+        if (existingWorkOrders.size() == 0) {
             workOrderRepository.save(workOrder);
             productSelectionView.showWorkOrderScreen();
             return;
@@ -105,6 +105,6 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
 
     @Override
     public void backClicked() {
-        productSelectionView.showProjectSelection(project, address);
+        productSelectionView.showProjectSelection(project, location);
     }
 }

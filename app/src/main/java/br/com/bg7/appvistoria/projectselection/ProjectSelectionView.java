@@ -92,7 +92,7 @@ public class ProjectSelectionView extends ConstraintLayout implements ProjectSel
         editAddress.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                projectSelectionPresenter.addressFieldClicked();
+                projectSelectionPresenter.locationFieldClicked();
             }
         });
 
@@ -132,22 +132,22 @@ public class ProjectSelectionView extends ConstraintLayout implements ProjectSel
     }
 
     @Override
-    public void showAddresses(List<Location> addresses) {
-        adapterAddress = new AddressSelectionAdapter(addresses, getContext());
+    public void showLocations(List<Location> locations) {
+        adapterAddress = new AddressSelectionAdapter(locations, getContext());
         listViewAddress.setAdapter(adapterAddress);
         listViewAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Location address = ((AddressSelectionAdapter) adapterView.getAdapter()).getItem(position);
-                projectSelectionPresenter.selectAddress(address);
+                projectSelectionPresenter.selectLocation(address);
             }
         });
         layoutListViewAddress.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void showSelectedAddress(Long projectId, Location address) {
-        editAddress.setText(address.getAddress());
+    public void showSelectedLocation(Long projectId, Location location) {
+        editAddress.setText(location.getAddress());
         layoutListViewAddress.setVisibility(View.GONE);
     }
 
@@ -162,10 +162,10 @@ public class ProjectSelectionView extends ConstraintLayout implements ProjectSel
     }
 
     @Override
-    public void showProductSelectionScreen(Project project, Location address) {
+    public void showProductSelectionScreen(Project project, Location location) {
         Intent intent = new Intent(getContext(), ProductSelectionActivity.class);
         intent.putExtra(INTENT_EXTRA_PROJECT_KEY, project);
-        intent.putExtra(INTENT_EXTRA_LOCATION_KEY, address);
+        intent.putExtra(INTENT_EXTRA_LOCATION_KEY, location);
         getContext().startActivity(intent);
     }
 
@@ -182,7 +182,7 @@ public class ProjectSelectionView extends ConstraintLayout implements ProjectSel
     }
 
     @Override
-    public void clearAddressField() {
+    public void clearLocationField() {
         editAddress.setText("");
 
         if (adapterAddress != null) {
