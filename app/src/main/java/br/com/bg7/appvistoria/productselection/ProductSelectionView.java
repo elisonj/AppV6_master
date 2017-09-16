@@ -93,10 +93,10 @@ class ProductSelectionView extends ConstraintLayout implements ProductSelectionC
     }
 
     @Override
-    public void showProjectSelection(Project project, Location address) {
+    public void showProjectSelection(Project project, Location location) {
         Intent intent = new Intent(getContext(), ProjectSelectionActivity.class);
         intent.putExtra(INTENT_EXTRA_PROJECT_KEY, project);
-        intent.putExtra(INTENT_EXTRA_LOCATION_KEY, address);
+        intent.putExtra(INTENT_EXTRA_LOCATION_KEY, location);
         getContext().startActivity(intent);
     }
 
