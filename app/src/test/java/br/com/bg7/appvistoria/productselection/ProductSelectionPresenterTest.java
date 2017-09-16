@@ -148,11 +148,4 @@ public class ProductSelectionPresenterTest {
         productSelectionPresenter.createWorkOrderClicked();
         verify(productView).showWorkOrderScreen();
     }
-
-    @Test
-    public void shoulShowCannotDuplicateWorkorderErrorWhenProjectAndLocationExists() {
-        productSelectionPresenter.createWorkOrderClicked();
-
-        verify(productView).showCannotDuplicateWorkorderError();
-    }
 }
