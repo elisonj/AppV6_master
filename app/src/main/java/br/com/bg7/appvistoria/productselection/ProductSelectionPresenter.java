@@ -73,7 +73,6 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
     @Override
     public void cancelClicked() {
         selectedItems.clear();
-        productSelectionView.hideButtons();
         productSelectionView.showProducts(productSelections);
     }
 
@@ -94,13 +93,15 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
 
         List<WorkOrder> existingWorkOrders = workOrderRepository.findAllByProjectAndAddress(workOrder.getName(), location.getAddress());
 
-        if (existingWorkOrders.size() == 0) {
-            workOrderRepository.save(workOrder);
-            productSelectionView.showWorkOrderScreen();
+        productSelectionView.hideConfirmation();
+
+        if (existingWorkOrders.size() != 0) {
+            productSelectionView.showCannotDuplicateWorkorderError();
             return;
         }
 
-        productSelectionView.showCannotDuplicateWorkorderError();
+        workOrderRepository.save(workOrder);
+        productSelectionView.showWorkOrderScreen();
     }
 
     @Override
