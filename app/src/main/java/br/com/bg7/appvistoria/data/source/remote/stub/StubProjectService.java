@@ -78,7 +78,7 @@ public class StubProjectService implements ProjectService {
     }
 
     @Override
-    public void findAddressesForProject (final Project project, HttpCallback<List<Location>> callback) {
+    public void findLocationsForProject(final Project project, HttpCallback<List<Location>> callback) {
 
         callback.onResponse(new HttpResponse<List<Location>>() {
             @Override

@@ -49,7 +49,7 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
 
         projectServiceView.showSelectedProject(project);
         projectServiceView.showLoading();
-        projectService.findAddressesForProject(project, new FindAddressesCallback());
+        projectService.findLocationsForProject(project, new FindAddressesCallback());
     }
 
     @Override

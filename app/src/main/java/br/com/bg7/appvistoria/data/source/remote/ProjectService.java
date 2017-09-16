@@ -12,5 +12,5 @@ import br.com.bg7.appvistoria.projectselection.vo.Project;
  */
 public interface ProjectService {
     void findByIdOrDescription(String idOrDescription, HttpCallback<List<Project>> callback);
-    void findAddressesForProject(Project project, HttpCallback<List<Location>> callback);
+    void findLocationsForProject(Project project, HttpCallback<List<Location>> callback);
 }

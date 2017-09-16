@@ -129,7 +129,7 @@ public class ProjectSelectionPresenterTest {
 
         projectSelectionPresenter.selectProject(project);
 
-        verify(projectService).findAddressesForProject(eq(project), addressCallBackCaptor.capture());
+        verify(projectService).findLocationsForProject(eq(project), addressCallBackCaptor.capture());
         addressCallBackCaptor.getValue().onResponse(addressResponse);
 
         verifyLoadingShowAndHide();
