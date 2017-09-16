@@ -128,7 +128,7 @@ public class ProductSelectionPresenterTest {
     @Test
     public void shouldShowProjectSelectionWhenBackIsClicked() {
         productSelectionPresenter.backClicked();
-        verify(productView).showProjectSelection(eq(project), eq(location));
+        verify(productView).showProjectSelection();
     }
 
     @Test

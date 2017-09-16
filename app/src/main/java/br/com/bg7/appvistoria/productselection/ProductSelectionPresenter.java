@@ -104,6 +104,6 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
 
     @Override
     public void backClicked() {
-        productSelectionView.showProjectSelection(project, location);
+        productSelectionView.showProjectSelection();
     }
 }

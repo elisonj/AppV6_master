@@ -24,7 +24,7 @@ public interface ProductSelectionContract {
         void hideConfirmation();
         void showCannotDuplicateWorkorderError();
         void showWorkOrderScreen();
-        void showProjectSelection(Project project, Location location);
+        void showProjectSelection();
     }
     interface Presenter extends BasePresenter {
         void chooseQuantity(ProductSelectionItem item,  int quantity);
