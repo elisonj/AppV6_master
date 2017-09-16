@@ -18,52 +18,14 @@ import br.com.bg7.appvistoria.projectselection.vo.Location;
  * Created by: luciolucio
  * Date: 2017-09-16
  */
-public class AddressSelectionAdapter extends BaseAdapter {
-
-    private List<Location> items;
-    private Context context;
+public class AddressSelectionAdapter extends SelectionAdapter<Location> {
 
     public AddressSelectionAdapter(List<Location> items, Context context) {
-        this.items = items;
-        this.context = context;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.projectselection_item, null);
-            convertView.setTag(new ViewHolder(convertView));
-        }
-        initializeViews(getItem(position), (ViewHolder) convertView.getTag());
-        return convertView;
-    }
-
-    private void initializeViews(Location item, ViewHolder holder) {
-        holder.title.setText(item.getAddress());
+        super(items, context);
     }
 
     @Override
-    public Location getItem(int position) {
-        return items.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public int getCount() {
-        return items.size();
-    }
-
-    private class ViewHolder {
-
-        TextView title;
-
-        private ViewHolder(View view) {
-            title = view.findViewById(R.id.title);
-        }
+    String getText(Location item) {
+        return item.getAddress();
     }
 }
