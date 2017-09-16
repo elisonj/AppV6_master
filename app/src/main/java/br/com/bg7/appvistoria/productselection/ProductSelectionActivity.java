@@ -14,6 +14,7 @@ import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 import static br.com.bg7.appvistoria.Constants.INTENT_EXTRA_LOCATION_KEY;
 import static br.com.bg7.appvistoria.Constants.INTENT_EXTRA_PROJECT_KEY;
+import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
 
 /**
  * Created by: elison
@@ -25,18 +26,14 @@ public class ProductSelectionActivity extends BaseActivity {
 
     private final ServiceLocator services = ServiceLocator.create(this, this);
     private ProductSelectionPresenter productSelectionPresenter;
-    private Project project;
-    private Location location;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(getIntent() != null && getIntent().getExtras() != null) {
-            Intent intent = getIntent();
-            project = (Project) intent.getSerializableExtra(INTENT_EXTRA_PROJECT_KEY);
-            location = (Location) intent.getSerializableExtra(INTENT_EXTRA_LOCATION_KEY);
-        }
+        Intent intent = checkNotNull(getIntent());
+        Project project = (Project) checkNotNull(intent.getSerializableExtra(INTENT_EXTRA_PROJECT_KEY));
+        Location location = (Location) checkNotNull(intent.getSerializableExtra(INTENT_EXTRA_LOCATION_KEY));
 
         ProductSelectionView view = new ProductSelectionView(this);
         productSelectionPresenter = new ProductSelectionPresenter(project, location, services.getProductService(), services.getWorkOrderRepository(), view);
