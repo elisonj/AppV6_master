@@ -109,7 +109,7 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
         final ProductSelectionItem item = getChild(groupPosition, childPosition);
-        final boolean isSelected = presenter.isItemSelected(item);
+        final boolean isSelected = item.getCount() > 0;
 
         if (convertView == null) {
             convertView = View.inflate(context, R.layout.product_selection_item, null);

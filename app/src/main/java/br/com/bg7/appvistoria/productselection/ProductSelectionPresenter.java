@@ -59,11 +59,6 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
     }
 
     @Override
-    public boolean isItemSelected(ProductSelectionItem item) {
-        return selectedItems.containsKey(item);
-    }
-
-    @Override
     public void chooseQuantity(ProductSelectionItem item, int quantity) {
         selectedItems.put(item, quantity);
 
@@ -97,7 +92,7 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
         productSelectionView.hideConfirmation();
 
         if (existingWorkOrders.size() != 0) {
-            productSelectionView.showCannotDuplicateWorkorderError();
+            // TODO: Perguntar ao usuario se quer adicionar na WO existente
             return;
         }
 

@@ -30,8 +30,6 @@ public interface ProductSelectionContract {
 
         void hideConfirmation();
 
-        void showCannotDuplicateWorkorderError();
-
         void showWorkOrderScreen();
 
         void showProjectSelection();
@@ -49,7 +47,5 @@ public interface ProductSelectionContract {
         void confirmCreateWorkOrderClicked();
 
         void backClicked();
-
-        boolean isItemSelected(ProductSelectionItem product);
     }
 }

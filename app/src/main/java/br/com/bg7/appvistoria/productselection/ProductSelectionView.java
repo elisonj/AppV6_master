@@ -123,20 +123,10 @@ class ProductSelectionView extends ConstraintLayout implements ProductSelectionC
     }
 
     @Override
-    public void showCannotDuplicateWorkorderError() {
-        showError(getContext().getString(R.string.cannot_duplicate_workorder));
-    }
-
-    @Override
     public void showWorkOrderScreen() {
         //TODO:  Adicionar caminho da nova tela de Inspeções com a referencia da inspecao
         Intent intent = new Intent(getContext(), ProjectSelectionActivity.class);
         getContext().startActivity(intent);
 
-    }
-
-    private void showError(String message) {
-        AlertDialog dialog = new AlertDialog(getContext(), message);
-        dialog.show();
     }
 }
