@@ -67,12 +67,13 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
     public void chooseQuantity(ProductSelectionItem item, int quantity) {
         selectedItems.put(item, quantity);
 
-        productSelectionView.showSelectedQuantity(item, quantity);
+        productSelectionView.showButtons();
     }
 
     @Override
     public void cancelClicked() {
         selectedItems.clear();
+        productSelectionView.hideButtons();
         productSelectionView.showProducts(productSelections);
     }
 

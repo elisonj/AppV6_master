@@ -71,21 +71,24 @@ class ProductSelectionView extends ConstraintLayout implements ProductSelectionC
     }
 
     @Override
-    public void showProducts(List<ProductSelection> productSelectionList) {
-        buttons.setVisibility(View.GONE);
+    public void showButtons() {
+        buttons.setVisibility(View.VISIBLE);
+    }
 
+    @Override
+    public void hideButtons() {
+        buttons.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showProducts(List<ProductSelection> productSelectionList) {
         listAdapter = new ProductSelectionAdapter(getContext(), productSelectionList, productSelectionPresenter);
-        productList.setAdapter(listAdapter);
+        productList.setAdapter(listAdapter);g
     }
 
     @Override
     public void setPresenter(ProductSelectionContract.Presenter presenter) {
         productSelectionPresenter = checkNotNull(presenter);
-    }
-
-    @Override
-    public void showSelectedQuantity(ProductSelectionItem item, int quantity) {
-        buttons.setVisibility(View.VISIBLE);
     }
 
     @Override

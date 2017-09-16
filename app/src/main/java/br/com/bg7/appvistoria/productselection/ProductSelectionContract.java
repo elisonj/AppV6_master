@@ -16,24 +16,40 @@ import br.com.bg7.appvistoria.projectselection.vo.Project;
  * Date: 2017-09-05
  */
 public interface ProductSelectionContract {
+
     interface View extends BaseView<ProductSelectionContract.Presenter> {
         void showProducts(List<ProductSelection> productSelectionList);
-        void showSelectedQuantity(ProductSelectionItem item, int quantity);
+
         void showConnectivityError();
+
+        void showButtons();
+
+        void hideButtons();
+
         void showConfirmation();
+
         void hideConfirmation();
+
         void showCannotDuplicateWorkorderError();
+
         void showWorkOrderScreen();
+
         void showProjectSelection();
     }
+
     interface Presenter extends BasePresenter {
         void chooseQuantity(ProductSelectionItem item,  int quantity);
+
         void cancelClicked();
+
         void createWorkOrderClicked();
+
         void cancelCreateWorkOrderClicked();
+
         void confirmCreateWorkOrderClicked();
+
         void backClicked();
+
         boolean isItemSelected(ProductSelectionItem product);
     }
-
 }
