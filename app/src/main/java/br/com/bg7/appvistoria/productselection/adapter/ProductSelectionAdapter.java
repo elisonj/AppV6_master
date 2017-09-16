@@ -2,7 +2,6 @@ package br.com.bg7.appvistoria.productselection.adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -43,11 +42,6 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
         this.context = context;
         this.presenter = presenter;
 
-        populateData(productSelections);
-    }
-
-    private void populateData(List<ProductSelection> productSelections) {
-
         headers = new ArrayList<>();
         items = new HashMap<>();
 
@@ -58,13 +52,56 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
+    public int getGroupCount() {
+        return headers.size();
+    }
+
+    @Override
+    public int getChildrenCount(int groupPosition) {
+        return this.items.get(this.headers.get(groupPosition)).size();
+    }
+
+    @Override
+    public ProductSelectionHeader getGroup(int groupPosition) {
+        return headers.get(groupPosition);
+    }
+
+    @Override
     public ProductSelectionItem getChild(int groupPosition, int childPosition) {
         return items.get(headers.get(groupPosition)).get(childPosition);
     }
 
     @Override
+    public long getGroupId(int groupPosition) {
+        return groupPosition;
+    }
+
+    @Override
     public long getChildId(int groupPosition, int childPosition) {
         return childPosition;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return false;
+    }
+
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded,
+                             View convertView, ViewGroup parent) {
+        ProductSelectionHeader header = getGroup(groupPosition);
+        if (convertView == null) {
+            convertView = View.inflate(context, R.layout.product_selection_header, null);
+        }
+
+        TextView productTypeText = convertView.findViewById(R.id.product_type_text);
+        productTypeText.setTypeface(null, Typeface.BOLD);
+        productTypeText.setText(header.getTitle());
+
+        ImageView productTypeImage = convertView.findViewById(R.id.product_type_image);
+        productTypeImage.setImageDrawable(header.getDrawable(context));
+
+        return convertView;
     }
 
     @Override
@@ -103,7 +140,7 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
                 int firtsSpace = spinnerItem.indexOf(EMPTY_SPACE);
                 String quantitySelected = spinnerItem.substring(0, firtsSpace);
 
-                formatSelectedChild(quantitySelected, item, productTypeHeader, product, quantity, arrowItem);
+                formatSelectedChild(quantitySelected, item, productTypeHeader, product, quantity);
                 selectProduct(item, quantitySelected);
                 linearQuantity.setVisibility(View.GONE);
                 arrowItem.setImageDrawable(context.getResources().getDrawable(R.drawable.arrow_open_white, null));
@@ -137,7 +174,7 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
         product.setText(title);
 
         if (isSelected) {
-            formatSelectedChild(String.valueOf(item.getCount()), item, productTypeHeader, product, quantity, arrowItem);
+            formatSelectedChild(String.valueOf(item.getCount()), item, productTypeHeader, product, quantity);
             showSelectedWhiteArrows(arrowItem, linearQuantity);
 
             return convertView;
@@ -154,6 +191,11 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return true;
+    }
+
     private void showSelectedWhiteArrows(ImageView arrowItem, LinearLayout linearQuantity) {
         if (linearQuantity.isShown()) {
             arrowItem.setImageDrawable(context.getResources().getDrawable(R.drawable.arrow_close_white, null));
@@ -162,8 +204,7 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
         arrowItem.setImageDrawable(context.getResources().getDrawable(R.drawable.arrow_open_white, null));
     }
 
-    @NonNull
-    private String formatSelectedChild(String quantitySelected, ProductSelectionItem item, LinearLayout productTypeHeader, TextView product, TextView quantity, ImageView arrowItem) {
+    private String formatSelectedChild(String quantitySelected, ProductSelectionItem item, LinearLayout productTypeHeader, TextView product, TextView quantity) {
         productTypeHeader.setBackgroundColor(context.getResources().getColor(R.color.item_orange, null));
         product.setTextColor(context.getResources().getColor(R.color.white, null));
 
@@ -193,53 +234,5 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
             items[cont - 1] = String.valueOf(cont) + EMPTY_SPACE + context.getString(R.string.actives_item);
         }
         return items;
-    }
-
-    @Override
-    public int getChildrenCount(int groupPosition) {
-        return this.items.get(this.headers.get(groupPosition)).size();
-    }
-
-    @Override
-    public ProductSelectionHeader getGroup(int groupPosition) {
-        return headers.get(groupPosition);
-    }
-
-    @Override
-    public int getGroupCount() {
-        return headers.size();
-    }
-
-    @Override
-    public long getGroupId(int groupPosition) {
-        return groupPosition;
-    }
-
-    @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
-        ProductSelectionHeader header = getGroup(groupPosition);
-        if (convertView == null) {
-            convertView = View.inflate(context, R.layout.product_selection_header, null);
-        }
-
-        TextView productTypeText = convertView.findViewById(R.id.product_type_text);
-        productTypeText.setTypeface(null, Typeface.BOLD);
-        productTypeText.setText(header.getTitle());
-
-        ImageView productTypeImage = convertView.findViewById(R.id.product_type_image);
-        productTypeImage.setImageDrawable(header.getDrawable(context));
-
-        return convertView;
-    }
-
-    @Override
-    public boolean hasStableIds() {
-        return false;
-    }
-
-    @Override
-    public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return true;
     }
 }
