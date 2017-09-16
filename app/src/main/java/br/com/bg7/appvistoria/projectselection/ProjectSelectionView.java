@@ -6,11 +6,8 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.constraint.ConstraintLayout;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -19,26 +16,26 @@ import android.widget.TextView;
 
 import com.google.common.base.Preconditions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.com.bg7.appvistoria.ProgressDialog;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.productselection.ProductSelectionActivity;
+import br.com.bg7.appvistoria.projectselection.adapter.AddressSelectionAdapter;
+import br.com.bg7.appvistoria.projectselection.adapter.ProjectSelectionAdapter;
+import br.com.bg7.appvistoria.projectselection.vo.Location;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 import static br.com.bg7.appvistoria.Constants.FONT_NAME_NUNITO_REGULAR;
 import static br.com.bg7.appvistoria.Constants.FONT_NAME_ROBOTO_REGULAR;
-import static br.com.bg7.appvistoria.productselection.ProductSelectionActivity.KEY_ADDRESS;
-import static br.com.bg7.appvistoria.productselection.ProductSelectionActivity.KEY_PROJECT;
+import static br.com.bg7.appvistoria.Constants.INTENT_EXTRA_LOCATION_KEY;
+import static br.com.bg7.appvistoria.Constants.INTENT_EXTRA_PROJECT_KEY;
 
 /**
  * Created by: elison
  * Date: 2017-08-30
  */
 public class ProjectSelectionView extends ConstraintLayout implements ProjectSelectionContract.View {
-
-    private static final String SEPARATOR = " | ";
 
     private ProjectSelectionContract.Presenter projectSelectionPresenter;
     private ListView listViewProjects;
@@ -50,7 +47,6 @@ public class ProjectSelectionView extends ConstraintLayout implements ProjectSel
     private AddressSelectionAdapter adapterAddress = null;
     private ProgressDialog progress;
     private Button buttonNext;
-
 
     public ProjectSelectionView(Context context) {
         super(context);
@@ -131,18 +127,18 @@ public class ProjectSelectionView extends ConstraintLayout implements ProjectSel
 
     @Override
     public void showSelectedProject(Project project) {
-        editIdProject.setText(project.getId() + SEPARATOR + project.getDescription());
+        editIdProject.setText(project.getDescription());
         layoutListViewProjects.setVisibility(View.GONE);
     }
 
     @Override
-    public void showAddresses(List<String> addresses) {
-        adapterAddress = new AddressSelectionAdapter(addresses);
+    public void showAddresses(List<Location> addresses) {
+        adapterAddress = new AddressSelectionAdapter(addresses, getContext());
         listViewAddress.setAdapter(adapterAddress);
         listViewAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                String address = ((AddressSelectionAdapter) adapterView.getAdapter()).getItem(position);
+                Location address = ((AddressSelectionAdapter) adapterView.getAdapter()).getItem(position);
                 projectSelectionPresenter.selectAddress(address);
             }
         });
@@ -150,8 +146,8 @@ public class ProjectSelectionView extends ConstraintLayout implements ProjectSel
     }
 
     @Override
-    public void showSelectedAddress(Long projectId, String address) {
-        editAddress.setText(address);
+    public void showSelectedAddress(Long projectId, Location address) {
+        editAddress.setText(address.getAddress());
         layoutListViewAddress.setVisibility(View.GONE);
     }
 
@@ -166,10 +162,10 @@ public class ProjectSelectionView extends ConstraintLayout implements ProjectSel
     }
 
     @Override
-    public void showProductSelectionScreen(Project project, String address) {
+    public void showProductSelectionScreen(Project project, Location address) {
         Intent intent = new Intent(getContext(), ProductSelectionActivity.class);
-        intent.putExtra(KEY_PROJECT, project);
-        intent.putExtra(KEY_ADDRESS, address);
+        intent.putExtra(INTENT_EXTRA_PROJECT_KEY, project);
+        intent.putExtra(INTENT_EXTRA_LOCATION_KEY, address);
         getContext().startActivity(intent);
     }
 
@@ -202,7 +198,7 @@ public class ProjectSelectionView extends ConstraintLayout implements ProjectSel
 
     @Override
     public void showProjectResults(List<Project> projectList) {
-        ProjectSelectionAdapter adapter = new ProjectSelectionAdapter(projectList);
+        ProjectSelectionAdapter adapter = new ProjectSelectionAdapter(projectList, getContext());
         listViewProjects.setAdapter(adapter);
         layoutListViewProjects.setVisibility(View.VISIBLE);
 
@@ -214,102 +210,4 @@ public class ProjectSelectionView extends ConstraintLayout implements ProjectSel
             }
         });
     }
-
-    private class ProjectSelectionAdapter extends BaseAdapter {
-
-        private List<Project> items = new ArrayList<>();
-
-        private ProjectSelectionAdapter(List<Project> items) {
-            this.items = items;
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.projectselection_item, null);
-                convertView.setTag(new ViewHolder(convertView));
-            }
-            initializeViews(getItem(position), (ViewHolder) convertView.getTag());
-            return convertView;
-        }
-
-        private void initializeViews(Project item, ViewHolder holder) {
-            holder.title.setText(item.getId() + SEPARATOR + item.getDescription());
-        }
-
-        @Override
-        public Project getItem(int position) {
-            return items.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public int getCount() {
-            return items.size();
-        }
-
-        private class ViewHolder {
-
-            TextView title;
-
-            private ViewHolder(View view) {
-                title = view.findViewById(R.id.title);
-            }
-        }
-    }
-
-    private class AddressSelectionAdapter extends BaseAdapter {
-
-        private List<String> items = new ArrayList<>();
-
-        private AddressSelectionAdapter(List<String> items) {
-            this.items = items;
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.projectselection_item, null);
-                convertView.setTag(new ViewHolder(convertView));
-            }
-            initializeViews(getItem(position), (ViewHolder) convertView.getTag());
-            return convertView;
-        }
-
-        private void initializeViews(String item, ViewHolder holder) {
-            holder.title.setText(item);
-        }
-
-        @Override
-        public String getItem(int position) {
-            return items.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public int getCount() {
-            return items.size();
-        }
-
-        private class ViewHolder {
-
-            TextView title;
-
-            private ViewHolder(View view) {
-                title = view.findViewById(R.id.title);
-            }
-        }
-    }
-
-
 }

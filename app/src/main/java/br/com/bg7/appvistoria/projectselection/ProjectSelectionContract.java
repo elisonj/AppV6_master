@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.com.bg7.appvistoria.BasePresenter;
 import br.com.bg7.appvistoria.BaseView;
+import br.com.bg7.appvistoria.projectselection.vo.Location;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 /**
@@ -17,9 +18,9 @@ public interface ProjectSelectionContract {
 
         void showSelectedProject(Project project);
 
-        void showAddresses(List<String> addresses);
+        void showAddresses(List<Location> addresses);
 
-        void showSelectedAddress(Long projectId, String address);
+        void showSelectedAddress(Long projectId, Location address);
 
         void clearProjectField();
 
@@ -29,7 +30,7 @@ public interface ProjectSelectionContract {
 
         void hideLoading();
 
-        void showProductSelectionScreen(Project project, String address);
+        void showProductSelectionScreen(Project project, Location address);
 
         void showLoadErrorMessage();
     }
@@ -39,7 +40,7 @@ public interface ProjectSelectionContract {
 
         void selectProject(Project project);
 
-        void selectAddress(String address);
+        void selectAddress(Location address);
 
         void projectFieldClicked();
 

@@ -11,6 +11,7 @@ import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
 import br.com.bg7.appvistoria.productselection.vo.Product;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelection;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelectionItem;
+import br.com.bg7.appvistoria.projectselection.vo.Location;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -26,11 +27,11 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
 
     private ProductSelectionContract.View productSelectionView;
     private Project project;
-    private String address;
+    private Location address;
     private List<ProductSelection> productSelections;
     private HashMap<ProductSelectionItem, Integer> selectedItems = new HashMap<>();
 
-    ProductSelectionPresenter(Project project, String address, ProductService productService, WorkOrderRepository workOrderRepository, ProductSelectionContract.View productSelectionView) {
+    ProductSelectionPresenter(Project project, Location address, ProductService productService, WorkOrderRepository workOrderRepository, ProductSelectionContract.View productSelectionView) {
         this.project = checkNotNull(project);
         this.address = checkNotNull(address);
 
@@ -44,7 +45,7 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
     @Override
     public void start() {
 
-        productService.findByProjectAndAddress(project, address, new HttpCallback<List<Product>>() {
+        productService.findByProjectAndLocation(project, address, new HttpCallback<List<Product>>() {
             @Override
             public void onResponse(HttpResponse<List<Product>> httpResponse) {
                 productSelections = ProductSelection.fromProducts(httpResponse.body());
@@ -89,9 +90,9 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
     @Override
     public void confirmCreateWorkOrderClicked() {
         // TODO: Criar de fato uma WorkOrder com os dados selecionados
-        WorkOrder workOrder = new WorkOrder(project.getDescription(), address);
+        WorkOrder workOrder = new WorkOrder(project.getDescription(), address.getAddress());
 
-        List<WorkOrder> allOrderByAddress = workOrderRepository.findAllByProjectAndAddress(workOrder.getName(), address);
+        List<WorkOrder> allOrderByAddress = workOrderRepository.findAllByProjectAndAddress(workOrder.getName(), address.getAddress());
 
         if (allOrderByAddress.size() == 0) {
             workOrderRepository.save(workOrder);

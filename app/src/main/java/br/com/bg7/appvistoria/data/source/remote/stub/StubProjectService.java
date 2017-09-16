@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 import br.com.bg7.appvistoria.data.source.remote.ProjectService;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
+import br.com.bg7.appvistoria.projectselection.vo.Location;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 /**
@@ -66,33 +67,33 @@ public class StubProjectService implements ProjectService {
      */
     @Override
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void findAddressesForProject (Project project, HttpCallback<List<String>> callback) {
-        final List<String> list = new ArrayList<>();
+    public void findAddressesForProject (Project project, HttpCallback<List<Location>> callback) {
+        final List<Location> list = new ArrayList<>();
 
-        HashMultimap<Project, String> address = HashMultimap.create();
-        address.put(project1, "Endereço 1 do projeto 1");
-        address.put(project1, "Endereço 2 do projeto 1");
-        address.put(project1, "Endereço 3 do projeto 1");
-        address.put(project2, "Endereço 1 do projeto 2");
-        address.put(project2, "Endereço 2 do projeto 2");
-        address.put(project2, "Endereço 3 do projeto 2");
-        address.put(project3, "Endereço 1 do projeto 3");
-        address.put(project3, "Endereço 2 do projeto 3");
-        address.put(project3, "Endereço 3 do projeto 3");
-        address.put(project4, "Endereço 1 do projeto 4");
-        address.put(project4, "Endereço 2 do projeto 4");
-        address.put(project4, "Endereço 3 do projeto 4");
-        address.put(project5, "Endereço 1 do projeto 5");
-        address.put(project5, "Endereço 2 do projeto 5");
-        address.put(project5, "Endereço 3 do projeto 5");
+        HashMultimap<Project, Location> address = HashMultimap.create();
+        address.put(project1, new Location(11L, "Endereço 1 do projeto 1"));
+        address.put(project1, new Location(21L, "Endereço 2 do projeto 1"));
+        address.put(project1, new Location(31L, "Endereço 3 do projeto 1"));
+        address.put(project2, new Location(12L, "Endereço 1 do projeto 2"));
+        address.put(project2, new Location(22L, "Endereço 2 do projeto 2"));
+        address.put(project2, new Location(32L, "Endereço 3 do projeto 2"));
+        address.put(project3, new Location(13L, "Endereço 1 do projeto 3"));
+        address.put(project3, new Location(23L, "Endereço 2 do projeto 3"));
+        address.put(project3, new Location(33L, "Endereço 3 do projeto 3"));
+        address.put(project4, new Location(14L, "Endereço 1 do projeto 4"));
+        address.put(project4, new Location(24L, "Endereço 2 do projeto 4"));
+        address.put(project4, new Location(34L, "Endereço 3 do projeto 4"));
+        address.put(project5, new Location(15L, "Endereço 1 do projeto 5"));
+        address.put(project5, new Location(25L, "Endereço 2 do projeto 5"));
+        address.put(project5, new Location(35L, "Endereço 3 do projeto 5"));
 
-        for(Map.Entry<Project, String> entry: address.entries()) {
+        for(Map.Entry<Project, Location> entry: address.entries()) {
             if(entry.getKey().equals(project)) {
                 list.add(entry.getValue());
             }
         }
 
-        callback.onResponse(new HttpResponse<List<String>>() {
+        callback.onResponse(new HttpResponse<List<Location>>() {
             @Override
             public boolean isSuccessful() {
                 return true;
@@ -100,7 +101,7 @@ public class StubProjectService implements ProjectService {
 
             @Nullable
             @Override
-            public List<String> body() {
+            public List<Location> body() {
                 return list;
             }
 

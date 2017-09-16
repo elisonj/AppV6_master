@@ -3,6 +3,7 @@ package br.com.bg7.appvistoria.data.source.remote;
 import java.util.List;
 
 import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
+import br.com.bg7.appvistoria.projectselection.vo.Location;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 /**
@@ -11,5 +12,5 @@ import br.com.bg7.appvistoria.projectselection.vo.Project;
  */
 public interface ProjectService {
     void findByIdOrDescription(String idOrDescription, HttpCallback<List<Project>> callback);
-    void findAddressesForProject(Project project, HttpCallback<List<String>> callback);
+    void findAddressesForProject(Project project, HttpCallback<List<Location>> callback);
 }

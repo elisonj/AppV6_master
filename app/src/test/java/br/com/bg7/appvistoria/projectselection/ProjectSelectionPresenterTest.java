@@ -13,6 +13,7 @@ import java.util.List;
 import br.com.bg7.appvistoria.data.source.remote.ProjectService;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
+import br.com.bg7.appvistoria.projectselection.vo.Location;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -37,10 +38,10 @@ public class ProjectSelectionPresenterTest {
         add(new Project(5L, "Projeto 5"));
     }};
 
-    private ArrayList<String> allAddresses = new ArrayList<String>() {{
-        add("Endereço 1");
-        add("Endereço 2");
-        add("Endereço 3");
+    private ArrayList<Location> allAddresses = new ArrayList<Location>() {{
+        add(new Location(1L, "Endereço 1"));
+        add(new Location(2L, "Endereço 2"));
+        add(new Location(3L, "Endereço 3"));
     }};
 
     @Mock
@@ -53,13 +54,13 @@ public class ProjectSelectionPresenterTest {
     HttpResponse<List<Project>> projectResponse;
 
     @Mock
-    HttpResponse<List<String>> addressResponse;
+    HttpResponse<List<Location>> addressResponse;
 
     @Captor
     ArgumentCaptor<HttpCallback<List<Project>>> projectCallBackCaptor;
 
     @Captor
-    ArgumentCaptor<HttpCallback<List<String>>> addressCallBackCaptor;
+    ArgumentCaptor<HttpCallback<List<Location>>> addressCallBackCaptor;
 
     private ProjectSelectionPresenter projectSelectionPresenter;
 
@@ -138,7 +139,7 @@ public class ProjectSelectionPresenterTest {
     @Test
     public void shouldShowSelectProjectWhenAddressClicked() {
         Project project = allProjects.get(0);
-        String address = allAddresses.get(0);
+        Location address = allAddresses.get(0);
         projectSelectionPresenter.selectProject(project);
 
         projectSelectionPresenter.selectAddress(address);

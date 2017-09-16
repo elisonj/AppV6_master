@@ -1,4 +1,4 @@
-package br.com.bg7.appvistoria.productselection;
+package br.com.bg7.appvistoria.productselection.adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import br.com.bg7.appvistoria.R;
+import br.com.bg7.appvistoria.productselection.ProductSelectionContract;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelection;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelectionHeader;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelectionItem;
@@ -27,7 +28,7 @@ import br.com.bg7.appvistoria.productselection.vo.ProductSelectionItem;
  * Created by: luciolucio
  * Date: 2017-09-13
  */
-class ProductSelectionAdapter extends BaseExpandableListAdapter {
+public class ProductSelectionAdapter extends BaseExpandableListAdapter {
 
     private ArrayList<ProductSelectionHeader> headers = new ArrayList<>();
     private HashMap<ProductSelectionHeader, List<ProductSelectionItem>> items;
@@ -38,7 +39,7 @@ class ProductSelectionAdapter extends BaseExpandableListAdapter {
     private Context context;
     private ProductSelectionContract.Presenter presenter;
 
-    ProductSelectionAdapter(Context context, List<ProductSelection> productSelections, ProductSelectionContract.Presenter presenter) {
+    public ProductSelectionAdapter(Context context, List<ProductSelection> productSelections, ProductSelectionContract.Presenter presenter) {
         this.context = context;
         this.presenter = presenter;
 

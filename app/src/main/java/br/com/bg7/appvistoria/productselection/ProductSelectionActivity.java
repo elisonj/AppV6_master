@@ -9,7 +9,11 @@ import android.widget.TextView;
 import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.data.servicelocator.ServiceLocator;
+import br.com.bg7.appvistoria.projectselection.vo.Location;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
+
+import static br.com.bg7.appvistoria.Constants.INTENT_EXTRA_LOCATION_KEY;
+import static br.com.bg7.appvistoria.Constants.INTENT_EXTRA_PROJECT_KEY;
 
 /**
  * Created by: elison
@@ -19,12 +23,10 @@ public class ProductSelectionActivity extends BaseActivity {
 
     private static final String EMPTY_SPACE = " ";
 
-    public static final String KEY_PROJECT = "project";
-    public static final String KEY_ADDRESS = "address";
     private final ServiceLocator services = ServiceLocator.create(this, this);
     private ProductSelectionPresenter productSelectionPresenter;
     private Project project;
-    private String address;
+    private Location address;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,8 +34,8 @@ public class ProductSelectionActivity extends BaseActivity {
 
         if(getIntent() != null && getIntent().getExtras() != null) {
             Intent intent = getIntent();
-            project = (Project) intent.getSerializableExtra(KEY_PROJECT);
-            address = intent.getStringExtra(KEY_ADDRESS);
+            project = (Project) intent.getSerializableExtra(INTENT_EXTRA_PROJECT_KEY);
+            address = (Location) intent.getSerializableExtra(INTENT_EXTRA_LOCATION_KEY);
         }
 
         ProductSelectionView view = new ProductSelectionView(this);

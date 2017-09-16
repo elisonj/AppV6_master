@@ -11,13 +11,15 @@ import java.util.List;
 import br.com.bg7.appvistoria.AlertDialog;
 import br.com.bg7.appvistoria.ConfirmDialog;
 import br.com.bg7.appvistoria.R;
+import br.com.bg7.appvistoria.productselection.adapter.ProductSelectionAdapter;
+import br.com.bg7.appvistoria.productselection.vo.ProductSelection;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelectionItem;
 import br.com.bg7.appvistoria.projectselection.ProjectSelectionActivity;
-import br.com.bg7.appvistoria.productselection.vo.ProductSelection;
+import br.com.bg7.appvistoria.projectselection.vo.Location;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
-import static br.com.bg7.appvistoria.productselection.ProductSelectionActivity.KEY_ADDRESS;
-import static br.com.bg7.appvistoria.productselection.ProductSelectionActivity.KEY_PROJECT;
+import static br.com.bg7.appvistoria.Constants.INTENT_EXTRA_LOCATION_KEY;
+import static br.com.bg7.appvistoria.Constants.INTENT_EXTRA_PROJECT_KEY;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -91,10 +93,10 @@ class ProductSelectionView extends ConstraintLayout implements ProductSelectionC
     }
 
     @Override
-    public void showProjectSelection(Project project, String address) {
+    public void showProjectSelection(Project project, Location address) {
         Intent intent = new Intent(getContext(), ProjectSelectionActivity.class);
-        intent.putExtra(KEY_PROJECT, project);
-        intent.putExtra(KEY_ADDRESS, address);
+        intent.putExtra(INTENT_EXTRA_PROJECT_KEY, project);
+        intent.putExtra(INTENT_EXTRA_LOCATION_KEY, address);
         getContext().startActivity(intent);
     }
 

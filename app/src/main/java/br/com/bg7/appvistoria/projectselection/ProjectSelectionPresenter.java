@@ -7,6 +7,7 @@ import java.util.List;
 import br.com.bg7.appvistoria.data.source.remote.ProjectService;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
+import br.com.bg7.appvistoria.projectselection.vo.Location;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -20,7 +21,7 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
     private ProjectService projectService;
     private ProjectSelectionContract.View projectServiceView;
     private Project project;
-    private String address;
+    private Location address;
 
     ProjectSelectionPresenter(ProjectService projectService, ProjectSelectionContract.View view) {
         this.projectService = checkNotNull(projectService);
@@ -52,7 +53,7 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
     }
 
     @Override
-    public void selectAddress(String address) {
+    public void selectAddress(Location address) {
         this.address = address;
 
         projectServiceView.showSelectedAddress(project.getId(), address);
@@ -95,11 +96,11 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
         }
     }
 
-    private class FindAddressesCallback implements HttpCallback<List<String>>
+    private class FindAddressesCallback implements HttpCallback<List<Location>>
     {
         @Override
-        public void onResponse(HttpResponse<List<String>> httpResponse) {
-            List<String> addresses = httpResponse.body();
+        public void onResponse(HttpResponse<List<Location>> httpResponse) {
+            List<Location> addresses = httpResponse.body();
             projectServiceView.showAddresses(addresses);
             projectServiceView.hideLoading();
         }

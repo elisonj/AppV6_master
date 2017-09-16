@@ -20,6 +20,7 @@ import br.com.bg7.appvistoria.productselection.vo.Category;
 import br.com.bg7.appvistoria.productselection.vo.Product;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelection;
 import br.com.bg7.appvistoria.productselection.vo.ProductType;
+import br.com.bg7.appvistoria.projectselection.vo.Location;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 import br.com.bg7.appvistoria.workorder.InProgressWorkOrder;
 
@@ -42,7 +43,7 @@ public class ProductSelectionPresenterTest {
     }};
 
     private Project project = new Project(1L, "Projeto 1");
-    private String address = "Endereço 1";
+    private Location address = new Location(1L, "Endereço 1");
 
     private FakeWorkOrderRepository workOrderRepository = new FakeWorkOrderRepository();
 
@@ -108,7 +109,7 @@ public class ProductSelectionPresenterTest {
     @Test
     public void shouldShowListProductsWhenStart() {
 
-        verify(productService).findByProjectAndAddress(eq(project), eq(address), productCallBackCaptor.capture());
+        verify(productService).findByProjectAndLocation(eq(project), eq(address), productCallBackCaptor.capture());
         productCallBackCaptor.getValue().onResponse(productResponse);
 
         verify(productView).showProducts(ArgumentMatchers.<List<ProductSelection>>any());
@@ -118,7 +119,7 @@ public class ProductSelectionPresenterTest {
     public void shouldSHowNoConnectionErrorWhenIsNotSuccessful() {
         when(productResponse.isSuccessful()).thenReturn(false);
 
-        verify(productService).findByProjectAndAddress(eq(project), eq(address), productCallBackCaptor.capture());
+        verify(productService).findByProjectAndLocation(eq(project), eq(address), productCallBackCaptor.capture());
         productCallBackCaptor.getValue().onFailure(new Throwable());
 
         verify(productView).showConnectivityError();

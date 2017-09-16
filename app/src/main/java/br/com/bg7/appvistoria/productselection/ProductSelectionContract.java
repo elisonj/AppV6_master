@@ -8,6 +8,7 @@ import br.com.bg7.appvistoria.productselection.vo.Category;
 import br.com.bg7.appvistoria.productselection.vo.Product;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelection;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelectionItem;
+import br.com.bg7.appvistoria.projectselection.vo.Location;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 /**
@@ -23,7 +24,7 @@ public interface ProductSelectionContract {
         void hideConfirmation();
         void showCannotDuplicateWorkorderError();
         void showWorkOrderScreen();
-        void showProjectSelection(Project project, String address);
+        void showProjectSelection(Project project, Location address);
     }
     interface Presenter extends BasePresenter {
         void chooseQuantity(ProductSelectionItem item,  int quantity);

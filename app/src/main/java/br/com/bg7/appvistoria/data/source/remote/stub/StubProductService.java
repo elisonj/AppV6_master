@@ -11,6 +11,7 @@ import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
 import br.com.bg7.appvistoria.productselection.vo.Category;
 import br.com.bg7.appvistoria.productselection.vo.Product;
 import br.com.bg7.appvistoria.productselection.vo.ProductType;
+import br.com.bg7.appvistoria.projectselection.vo.Location;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 /**
@@ -34,7 +35,7 @@ public class StubProductService implements ProductService {
     private static final Category COMERCIAL = new Category("Comercial", IMOVEIS);
 
     @Override
-    public void findByProjectAndAddress(Project project, String address, HttpCallback<List<Product>> callback) {
+    public void findByProjectAndLocation(Project project, Location location, HttpCallback<List<Product>> callback) {
 
         callback.onResponse(new HttpResponse<List<Product>>() {
             @Override

@@ -6,6 +6,7 @@ import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
 import br.com.bg7.appvistoria.data.source.remote.retrofit.http.RetrofitHttpCall;
 import br.com.bg7.appvistoria.data.source.remote.retrofit.http.RetrofitProjectHttpResponse;
+import br.com.bg7.appvistoria.projectselection.vo.Location;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 import retrofit2.Call;
 
@@ -50,7 +51,7 @@ public class RetrofitProjectService extends RetrofitLoggedInService<ProjectServi
     }
 
     @Override
-    public void findAddressesForProject(Project project, HttpCallback<List<String>> callback) {
+    public void findAddressesForProject(Project project, HttpCallback<List<Location>> callback) {
         // TODO: Implementar chamada que retorna todos os enderecos relacionados a um projeto, quando a SB implementar
     }
 }
