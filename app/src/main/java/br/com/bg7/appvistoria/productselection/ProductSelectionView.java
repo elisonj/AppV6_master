@@ -83,7 +83,7 @@ class ProductSelectionView extends ConstraintLayout implements ProductSelectionC
     @Override
     public void showProducts(List<ProductSelection> productSelectionList) {
         listAdapter = new ProductSelectionAdapter(getContext(), productSelectionList, productSelectionPresenter);
-        productList.setAdapter(listAdapter);g
+        productList.setAdapter(listAdapter);
     }
 
     @Override
