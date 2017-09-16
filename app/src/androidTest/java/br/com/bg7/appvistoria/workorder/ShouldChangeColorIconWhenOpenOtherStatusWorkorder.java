@@ -52,17 +52,17 @@ public class ShouldChangeColorIconWhenOpenOtherStatusWorkorder extends Workorder
 
 
         DataInteraction dataInteraction = onData(withItemValue("PROJETO 1"))
-                .inAdapterView(withId(R.id.listview));
+                .inAdapterView(withId(R.id.product_list));
         dataInteraction.onChildView(withId(R.id.more_info)).perform(click());
         dataInteraction.onChildView(withId(R.id.image_more_info)).check(matches(withDrawable(R.drawable.ic_hide_info_in_progress)));
 
         DataInteraction dataInteraction2 = onData(withItemValue("PROJETO 4"))
-                .inAdapterView(withId(R.id.listview));
+                .inAdapterView(withId(R.id.product_list));
         dataInteraction2.onChildView(withId(R.id.more_info)).perform(click());
         dataInteraction2.onChildView(withId(R.id.image_more_info)).check(matches(withDrawable(R.drawable.ic_hide_info_completed)));
 
         DataInteraction dataInteraction3 = onData(withItemValue("PROJETO 7"))
-                .inAdapterView(withId(R.id.listview));
+                .inAdapterView(withId(R.id.product_list));
         dataInteraction3.onChildView(withId(R.id.more_info)).perform(click());
         dataInteraction3.onChildView(withId(R.id.image_more_info)).check(matches(withDrawable(R.drawable.ic_hide_info_not_started)));
 

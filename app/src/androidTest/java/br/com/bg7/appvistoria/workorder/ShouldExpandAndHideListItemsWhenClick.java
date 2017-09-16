@@ -53,14 +53,14 @@ public class ShouldExpandAndHideListItemsWhenClick extends WorkorderBaseMatcher 
 
 
         DataInteraction dataInteraction = onData(withItemValue("PROJETO 1"))
-                .inAdapterView(withId(R.id.listview));
+                .inAdapterView(withId(R.id.product_list));
 
         dataInteraction.onChildView(withId(R.id.more_info)).perform(click());
 
 
 
         DataInteraction dataInteraction2 = onData(withItemValue("PROJETO 2"))
-                .inAdapterView(withId(R.id.listview));
+                .inAdapterView(withId(R.id.product_list));
 
         dataInteraction2.onChildView(withId(R.id.more_info)).perform(click());
 

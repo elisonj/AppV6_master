@@ -50,7 +50,7 @@ public class ShouldCancelMapDialogWhenClickInCancel extends WorkorderBaseMatcher
 
 
         DataInteraction dataInteraction = onData(withItemValue("PROJETO 1"))
-                .inAdapterView(withId(R.id.listview));
+                .inAdapterView(withId(R.id.product_list));
 
         dataInteraction.onChildView(withId(R.id.more_info)).perform(click());
         dataInteraction.onChildView(withId(R.id.bt_maps)).perform(click());

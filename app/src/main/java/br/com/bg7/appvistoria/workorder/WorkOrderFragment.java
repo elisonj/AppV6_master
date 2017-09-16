@@ -88,7 +88,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     }
 
     private void initializeViewElements(View root) {
-        listView = root.findViewById(R.id.listview);
+        listView = root.findViewById(R.id.product_list);
         emptyLayout = root.findViewById(R.id.empty_layout);
         floatingActionButton = root.findViewById(R.id.floatingActionButton);
         openMapConfirmDialog = new ConfirmDialog(getContext(), getString(R.string.confirm_open_maps));

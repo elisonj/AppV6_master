@@ -10,7 +10,7 @@
 
     <ListView
         android:visibility="gone"
-        android:id="@+id/listview"
+        android:id="@+id/product_list"
         android:divider="@null"
         android:dividerHeight="0dp"
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
         android:src="@drawable/float_button"
         app:layout_anchorGravity="bottom|right|end"
         app:backgroundTint="#f05f2a"
-        app:layout_anchor="@id/listview" />
+        app:layout_anchor="@id/product_list" />
 
     <LinearLayout
         android:id="@+id/empty_layout"

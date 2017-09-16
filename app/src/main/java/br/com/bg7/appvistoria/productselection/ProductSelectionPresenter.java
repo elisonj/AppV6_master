@@ -73,6 +73,7 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
     @Override
     public void cancelClicked() {
         selectedItems.clear();
+        productSelectionView.hideButtons();
         productSelectionView.showProducts(productSelections);
     }
 

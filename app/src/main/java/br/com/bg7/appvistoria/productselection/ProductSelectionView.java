@@ -15,11 +15,7 @@ import br.com.bg7.appvistoria.productselection.adapter.ProductSelectionAdapter;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelection;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelectionItem;
 import br.com.bg7.appvistoria.projectselection.ProjectSelectionActivity;
-import br.com.bg7.appvistoria.projectselection.vo.Location;
-import br.com.bg7.appvistoria.projectselection.vo.Project;
 
-import static br.com.bg7.appvistoria.Constants.INTENT_EXTRA_LOCATION_KEY;
-import static br.com.bg7.appvistoria.Constants.INTENT_EXTRA_PROJECT_KEY;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -30,12 +26,12 @@ class ProductSelectionView extends ConstraintLayout implements ProductSelectionC
 
     ProductSelectionContract.Presenter productSelectionPresenter;
     ProductSelectionAdapter listAdapter;
-    ExpandableListView expListView;
     private ConfirmDialog confirmDialog;
 
-    private View linearBottom;
-    private View linearCancel;
-    private View linearConfirm;
+    private ExpandableListView productList;
+    private View buttons;
+    private View cancelButton;
+    private View confirmButton;
 
     public ProductSelectionView(Context context) {
         super(context);
@@ -44,23 +40,23 @@ class ProductSelectionView extends ConstraintLayout implements ProductSelectionC
 
     private void init() {
         inflate(getContext(), R.layout.activity_product, this);
-        expListView = findViewById(R.id.listview);
-        linearBottom = findViewById(R.id.linear_bottom);
-        linearCancel = findViewById(R.id.linear_cancel);
-        linearConfirm = findViewById(R.id.linear_confirm);
+        productList = findViewById(R.id.product_list);
+        buttons = findViewById(R.id.buttons);
+        cancelButton = findViewById(R.id.cancel_button);
+        confirmButton = findViewById(R.id.confirm_button);
 
         initializeListeners();
     }
 
     private void initializeListeners() {
-        linearCancel.setOnClickListener(new OnClickListener() {
+        cancelButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 productSelectionPresenter.cancelClicked();
             }
         });
 
-        linearConfirm.setOnClickListener(new OnClickListener() {
+        confirmButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 productSelectionPresenter.createWorkOrderClicked();
@@ -76,10 +72,10 @@ class ProductSelectionView extends ConstraintLayout implements ProductSelectionC
 
     @Override
     public void showProducts(List<ProductSelection> productSelectionList) {
-        linearBottom.setVisibility(View.GONE);
+        buttons.setVisibility(View.GONE);
 
         listAdapter = new ProductSelectionAdapter(getContext(), productSelectionList, productSelectionPresenter);
-        expListView.setAdapter(listAdapter);
+        productList.setAdapter(listAdapter);
     }
 
     @Override
@@ -89,7 +85,7 @@ class ProductSelectionView extends ConstraintLayout implements ProductSelectionC
 
     @Override
     public void showSelectedQuantity(ProductSelectionItem item, int quantity) {
-        linearBottom.setVisibility(View.VISIBLE);
+        buttons.setVisibility(View.VISIBLE);
     }
 
     @Override
