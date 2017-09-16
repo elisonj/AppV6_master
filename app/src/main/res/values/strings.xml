@@ -42,7 +42,7 @@
     <string name="next">PRÓXIMO</string>
     <string name="required">Campo obrigatório</string>
     <string name="ico_idproject">icon id projeto</string>
-    <string name="ico_address">icon endereço</string>
+    <string name="ico_location">icon endereço</string>
     <string name="ico_loading">Loading</string>
     <string name="id_project">ID e/ou Projeto</string>
     <string name="full_address">Endereço completo</string>

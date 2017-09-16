@@ -18,9 +18,9 @@ import br.com.bg7.appvistoria.projectselection.vo.Location;
  * Created by: luciolucio
  * Date: 2017-09-16
  */
-public class AddressSelectionAdapter extends SelectionAdapter<Location> {
+public class LocationSelectionAdapter extends SelectionAdapter<Location> {
 
-    public AddressSelectionAdapter(List<Location> items, Context context) {
+    public LocationSelectionAdapter(List<Location> items, Context context) {
         super(items, context);
     }
 

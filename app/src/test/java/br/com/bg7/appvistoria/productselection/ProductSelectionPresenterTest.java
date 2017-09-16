@@ -43,7 +43,7 @@ public class ProductSelectionPresenterTest {
     }};
 
     private Project project = new Project(1L, "Projeto 1");
-    private Location address = new Location(1L, "Endereço 1");
+    private Location location = new Location(1L, "Endereço 1");
 
     private FakeWorkOrderRepository workOrderRepository = new FakeWorkOrderRepository();
 
@@ -67,7 +67,7 @@ public class ProductSelectionPresenterTest {
 
         workOrderRepository.save(new InProgressWorkOrder("Projeto 1", "Resumo completo", ""));
 
-        productSelectionPresenter = new ProductSelectionPresenter(project, address, productService, workOrderRepository, productView);
+        productSelectionPresenter = new ProductSelectionPresenter(project, location, productService, workOrderRepository, productView);
 
         when(productResponse.body()).thenReturn(allProducts);
 
@@ -83,33 +83,33 @@ public class ProductSelectionPresenterTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullProductService() {
-        new ProductSelectionPresenter(project, address, null, workOrderRepository, productView);
+        new ProductSelectionPresenter(project, location, null, workOrderRepository, productView);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullView() {
-        new ProductSelectionPresenter(project, address, productService, workOrderRepository, null);
+        new ProductSelectionPresenter(project, location, productService, workOrderRepository, null);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullProject() {
-        new ProductSelectionPresenter(null, address, productService, workOrderRepository, productView);
+        new ProductSelectionPresenter(null, location, productService, workOrderRepository, productView);
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldNotAcceptNullAddress() {
+    public void shouldNotAcceptNullLocation() {
         new ProductSelectionPresenter(project, null, productService, workOrderRepository, productView);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullRepository() {
-        new ProductSelectionPresenter(project, address, productService, null, productView);
+        new ProductSelectionPresenter(project, location, productService, null, productView);
     }
 
     @Test
     public void shouldShowListProductsWhenStart() {
 
-        verify(productService).findByProjectAndLocation(eq(project), eq(address), productCallBackCaptor.capture());
+        verify(productService).findByProjectAndLocation(eq(project), eq(location), productCallBackCaptor.capture());
         productCallBackCaptor.getValue().onResponse(productResponse);
 
         verify(productView).showProducts(ArgumentMatchers.<List<ProductSelection>>any());
@@ -119,7 +119,7 @@ public class ProductSelectionPresenterTest {
     public void shouldSHowNoConnectionErrorWhenIsNotSuccessful() {
         when(productResponse.isSuccessful()).thenReturn(false);
 
-        verify(productService).findByProjectAndLocation(eq(project), eq(address), productCallBackCaptor.capture());
+        verify(productService).findByProjectAndLocation(eq(project), eq(location), productCallBackCaptor.capture());
         productCallBackCaptor.getValue().onFailure(new Throwable());
 
         verify(productView).showConnectivityError();
@@ -128,7 +128,7 @@ public class ProductSelectionPresenterTest {
     @Test
     public void shouldShowProjectSelectionWhenBackIsClicked() {
         productSelectionPresenter.backClicked();
-        verify(productView).showProjectSelection(eq(project), eq(address));
+        verify(productView).showProjectSelection(eq(project), eq(location));
     }
 
     @Test
@@ -150,7 +150,7 @@ public class ProductSelectionPresenterTest {
     }
 
     @Test
-    public void shoulShowCannotDuplicateWorkorderErrorWhenProjectAndAddressExists() {
+    public void shoulShowCannotDuplicateWorkorderErrorWhenProjectAndLocationExists() {
         productSelectionPresenter.createWorkOrderClicked();
 
         verify(productView).showCannotDuplicateWorkorderError();

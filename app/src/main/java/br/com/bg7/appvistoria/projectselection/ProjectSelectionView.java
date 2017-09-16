@@ -21,7 +21,7 @@ import java.util.List;
 import br.com.bg7.appvistoria.ProgressDialog;
 import br.com.bg7.appvistoria.R;
 import br.com.bg7.appvistoria.productselection.ProductSelectionActivity;
-import br.com.bg7.appvistoria.projectselection.adapter.AddressSelectionAdapter;
+import br.com.bg7.appvistoria.projectselection.adapter.LocationSelectionAdapter;
 import br.com.bg7.appvistoria.projectselection.adapter.ProjectSelectionAdapter;
 import br.com.bg7.appvistoria.projectselection.vo.Location;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
@@ -39,12 +39,12 @@ public class ProjectSelectionView extends ConstraintLayout implements ProjectSel
 
     private ProjectSelectionContract.Presenter projectSelectionPresenter;
     private ListView listViewProjects;
-    private ListView listViewAddress;
+    private ListView listViewLocation;
     private LinearLayout layoutListViewProjects;
-    private LinearLayout layoutListViewAddress;
-    private EditText editIdProject;
-    private EditText editAddress;
-    private AddressSelectionAdapter adapterAddress = null;
+    private LinearLayout layoutListViewLocation;
+    private EditText editProject;
+    private EditText editLocation;
+    private LocationSelectionAdapter adapterLocation = null;
     private ProgressDialog progress;
     private Button buttonNext;
 
@@ -66,8 +66,8 @@ public class ProjectSelectionView extends ConstraintLayout implements ProjectSel
         Typeface roboto = Typeface.createFromAsset(getContext().getAssets(), FONT_NAME_ROBOTO_REGULAR);
         Typeface nunitoRegular = Typeface.createFromAsset(getContext().getAssets(), FONT_NAME_NUNITO_REGULAR);
 
-        editIdProject = findViewById(R.id.editText_idproject);
-        editAddress = findViewById(R.id.editText_address);
+        editProject = findViewById(R.id.editText_idproject);
+        editLocation = findViewById(R.id.editText_location);
 
         TextView title = findViewById(R.id.title);
         TextView subtitle = findViewById(R.id.subtitle);
@@ -75,42 +75,42 @@ public class ProjectSelectionView extends ConstraintLayout implements ProjectSel
         title.setTypeface(nunitoRegular);
         listViewProjects = findViewById(R.id.listView_project);
         layoutListViewProjects = findViewById(R.id.list_layout);
-        listViewAddress = findViewById(R.id.listView_address);
-        layoutListViewAddress = findViewById(R.id.list_layout_address);
+        listViewLocation = findViewById(R.id.listView_location);
+        layoutListViewLocation = findViewById(R.id.list_layout_location);
         buttonNext = findViewById(R.id.button_next);
     }
 
     private void initializeListeners() {
 
-        editIdProject.setOnClickListener(new OnClickListener() {
+        editProject.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 projectSelectionPresenter.projectFieldClicked();
             }
         });
 
-        editAddress.setOnClickListener(new OnClickListener() {
+        editLocation.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 projectSelectionPresenter.locationFieldClicked();
             }
         });
 
-        editIdProject.setOnFocusChangeListener(new OnFocusChangeListener() {
+        editProject.setOnFocusChangeListener(new OnFocusChangeListener() {
 
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    projectSelectionPresenter.search(editIdProject.getText().toString());
+                    projectSelectionPresenter.search(editProject.getText().toString());
                 }
             }
         });
 
-        editIdProject.setOnKeyListener(new OnKeyListener() {
+        editProject.setOnKeyListener(new OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    projectSelectionPresenter.search(editIdProject.getText().toString());
+                    projectSelectionPresenter.search(editProject.getText().toString());
                     return true;
                 }
                 return false;
@@ -127,28 +127,28 @@ public class ProjectSelectionView extends ConstraintLayout implements ProjectSel
 
     @Override
     public void showSelectedProject(Project project) {
-        editIdProject.setText(project.getDescription());
+        editProject.setText(project.getDescription());
         layoutListViewProjects.setVisibility(View.GONE);
     }
 
     @Override
     public void showLocations(List<Location> locations) {
-        adapterAddress = new AddressSelectionAdapter(locations, getContext());
-        listViewAddress.setAdapter(adapterAddress);
-        listViewAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        adapterLocation = new LocationSelectionAdapter(locations, getContext());
+        listViewLocation.setAdapter(adapterLocation);
+        listViewLocation.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Location address = ((AddressSelectionAdapter) adapterView.getAdapter()).getItem(position);
-                projectSelectionPresenter.selectLocation(address);
+                Location location = ((LocationSelectionAdapter) adapterView.getAdapter()).getItem(position);
+                projectSelectionPresenter.selectLocation(location);
             }
         });
-        layoutListViewAddress.setVisibility(View.VISIBLE);
+        layoutListViewLocation.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showSelectedLocation(Long projectId, Location location) {
-        editAddress.setText(location.getAddress());
-        layoutListViewAddress.setVisibility(View.GONE);
+        editLocation.setText(location.getAddress());
+        layoutListViewLocation.setVisibility(View.GONE);
     }
 
     @Override
@@ -176,18 +176,18 @@ public class ProjectSelectionView extends ConstraintLayout implements ProjectSel
 
     @Override
     public void clearProjectField() {
-        editIdProject.setText("");
-        editAddress.setText("");
-        adapterAddress = null;
+        editProject.setText("");
+        editLocation.setText("");
+        adapterLocation = null;
     }
 
     @Override
     public void clearLocationField() {
-        editAddress.setText("");
+        editLocation.setText("");
 
-        if (adapterAddress != null) {
-            listViewAddress.setAdapter(adapterAddress);
-            layoutListViewAddress.setVisibility(View.VISIBLE);
+        if (adapterLocation != null) {
+            listViewLocation.setAdapter(adapterLocation);
+            layoutListViewLocation.setVisibility(View.VISIBLE);
         }
     }
 
