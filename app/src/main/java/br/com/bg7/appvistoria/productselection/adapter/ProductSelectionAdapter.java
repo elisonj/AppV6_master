@@ -95,7 +95,7 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
         productTypeText.setText(header.getTitle());
 
         ImageView productTypeImage = convertView.findViewById(R.id.product_type_image);
-        productTypeImage.setImageDrawable(header.getDrawable(context));
+        productTypeImage.setImageDrawable(header.getImage(context));
 
         return convertView;
     }

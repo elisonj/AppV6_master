@@ -28,7 +28,7 @@ public class ProductSelectionHeader {
     }
 
     // TODO: Falta a categoria 24: Artes, Decoração & Colecionismo
-    public Drawable getDrawable(Context context) {
+    public Drawable getImage(Context context) {
         if (!drawables.containsKey(this.id)) {
             int id = context.getResources().getIdentifier("product_type_" + this.id.toString(), "drawable", context.getPackageName());
 
