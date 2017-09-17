@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -12,18 +11,18 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.bg7.appvistoria.data.WorkOrderCategory;
+import br.com.bg7.appvistoria.data.WorkOrderProduct;
+import br.com.bg7.appvistoria.data.WorkOrderProductType;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeWorkOrderRepository;
 import br.com.bg7.appvistoria.data.source.remote.ProductService;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
-import br.com.bg7.appvistoria.productselection.vo.Category;
-import br.com.bg7.appvistoria.productselection.vo.Product;
-import br.com.bg7.appvistoria.productselection.vo.ProductSelection;
-import br.com.bg7.appvistoria.productselection.vo.ProductType;
 import br.com.bg7.appvistoria.projectselection.vo.Location;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 import br.com.bg7.appvistoria.workorder.InProgressWorkOrder;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -35,11 +34,11 @@ import static org.mockito.Mockito.when;
 @Ignore("Necessario corrigir o presenter primeiro")
 public class ProductSelectionPresenterTest {
 
-    private static final ProductType CARROS_E_MOTOS = new ProductType(17L, "Carros & Motos");
-    private static final Category CARROS = new Category("Carros", CARROS_E_MOTOS);
+    private static final WorkOrderProductType CARROS_E_MOTOS = new WorkOrderProductType(17L, "Carros & Motos");
+    private static final WorkOrderCategory CARROS = new WorkOrderCategory("Carros", CARROS_E_MOTOS);
 
-    private ArrayList<Product> allProducts = new ArrayList<Product>() {{
-        add(new Product(1L, CARROS));
+    private ArrayList<WorkOrderProduct> allProducts = new ArrayList<WorkOrderProduct>() {{
+        add(new WorkOrderProduct(CARROS));
     }};
 
     private Project project = new Project(1L, "Projeto 1");
@@ -54,10 +53,10 @@ public class ProductSelectionPresenterTest {
     ProductService productService;
 
     @Mock
-    HttpResponse<List<Product>> productResponse;
+    HttpResponse<List<WorkOrderProduct>> productResponse;
 
     @Captor
-    ArgumentCaptor<HttpCallback<List<Product>>> productCallBackCaptor;
+    ArgumentCaptor<HttpCallback<List<WorkOrderProduct>>> productCallBackCaptor;
 
     private ProductSelectionPresenter productSelectionPresenter;
 
@@ -112,7 +111,7 @@ public class ProductSelectionPresenterTest {
         verify(productService).findByProjectAndLocation(eq(project), eq(location), productCallBackCaptor.capture());
         productCallBackCaptor.getValue().onResponse(productResponse);
 
-        verify(productView).showProducts(ArgumentMatchers.<List<ProductSelection>>any());
+        verify(productView).showProducts(any(List.class));
     }
 
     @Test

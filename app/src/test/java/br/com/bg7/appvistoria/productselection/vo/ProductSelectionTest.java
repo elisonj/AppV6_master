@@ -14,17 +14,17 @@ import java.util.List;
 
 public class ProductSelectionTest {
 
-    private static final ProductType CARROS_E_MOTOS = new ProductType(17L, "Carros & Motos");
-    private static final ProductType IMOVEIS = new ProductType(18L, "Imoveis");
+    private static final WorkOrderProductType CARROS_E_MOTOS = new WorkOrderProductType(17L, "Carros & Motos");
+    private static final WorkOrderProductType IMOVEIS = new WorkOrderProductType(18L, "Imoveis");
 
-    private static final Category CARROS = new Category("Carros", CARROS_E_MOTOS);
-    private static final Category MOTOS = new Category("Motos", CARROS_E_MOTOS);
+    private static final WorkOrderCategory CARROS = new WorkOrderCategory("Carros", CARROS_E_MOTOS);
+    private static final WorkOrderCategory MOTOS = new WorkOrderCategory("Motos", CARROS_E_MOTOS);
 
-    private static final Category RESIDENCIAL = new Category("Residencial", IMOVEIS);
+    private static final WorkOrderCategory RESIDENCIAL = new WorkOrderCategory("Residencial", IMOVEIS);
 
     @Test
     public void shouldCreateEmptyList() {
-        ArrayList<Product> productList = new ArrayList<>();
+        ArrayList<WorkOrderProduct> productList = new ArrayList<>();
         List<ProductSelection> productSelectionList = ProductSelection.fromProducts(null, productList);
 
         Assert.assertEquals(0, productSelectionList.size());
@@ -32,10 +32,10 @@ public class ProductSelectionTest {
 
     @Test
     public void shouldCreateListWithOneProductTypeAndTwoProductsSameCategory() {
-        final Product product1 = new Product(1L, CARROS);
-        final Product product2 = new Product(2L, CARROS);
+        final WorkOrderProduct product1 = new WorkOrderProduct(1L, CARROS);
+        final WorkOrderProduct product2 = new WorkOrderProduct(2L, CARROS);
 
-        ArrayList<Product> productList = new ArrayList<Product>() {{
+        ArrayList<WorkOrderProduct> productList = new ArrayList<WorkOrderProduct>() {{
             add(product1);
             add(product2);
         }};
@@ -55,12 +55,12 @@ public class ProductSelectionTest {
 
     @Test
     public void shouldCreateListWithTwoProductTypesAndTwoCategories() {
-        final Product product1 = new Product(1L, RESIDENCIAL);
-        final Product product2 = new Product(2L, MOTOS);
-        final Product product3 = new Product(3L, CARROS);
-        final Product product4 = new Product(4L, CARROS);
+        final WorkOrderProduct product1 = new WorkOrderProduct(1L, RESIDENCIAL);
+        final WorkOrderProduct product2 = new WorkOrderProduct(2L, MOTOS);
+        final WorkOrderProduct product3 = new WorkOrderProduct(3L, CARROS);
+        final WorkOrderProduct product4 = new WorkOrderProduct(4L, CARROS);
 
-        ArrayList<Product> productList = new ArrayList<Product>() {{
+        ArrayList<WorkOrderProduct> productList = new ArrayList<WorkOrderProduct>() {{
             add(product1);
             add(product2);
             add(product3);

@@ -5,12 +5,12 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import br.com.bg7.appvistoria.data.WorkOrderCategory;
+import br.com.bg7.appvistoria.data.WorkOrderProduct;
+import br.com.bg7.appvistoria.data.WorkOrderProductType;
 import br.com.bg7.appvistoria.data.source.remote.ProductService;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
-import br.com.bg7.appvistoria.productselection.vo.Category;
-import br.com.bg7.appvistoria.productselection.vo.Product;
-import br.com.bg7.appvistoria.productselection.vo.ProductType;
 import br.com.bg7.appvistoria.projectselection.vo.Location;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
@@ -20,24 +20,24 @@ import br.com.bg7.appvistoria.projectselection.vo.Project;
  */
 public class StubProductService implements ProductService {
 
-    private static final ProductType CARROS_E_MOTOS = new ProductType(10L, "Carros & Motos");
-    private static final ProductType CAMINHOES_E_ONIBUS = new ProductType(11L, "Caminhões & Ônibus");
-    private static final ProductType IMOVEIS = new ProductType(13L, "Imóveis");
+    private static final WorkOrderProductType CARROS_E_MOTOS = new WorkOrderProductType(10L, "Carros & Motos");
+    private static final WorkOrderProductType CAMINHOES_E_ONIBUS = new WorkOrderProductType(11L, "Caminhões & Ônibus");
+    private static final WorkOrderProductType IMOVEIS = new WorkOrderProductType(13L, "Imóveis");
 
-    private static final Category CARROS = new Category("Carros", CARROS_E_MOTOS);
-    private static final Category MOTOS = new Category("Motos", CARROS_E_MOTOS);
+    private static final WorkOrderCategory CARROS = new WorkOrderCategory("Carros", CARROS_E_MOTOS);
+    private static final WorkOrderCategory MOTOS = new WorkOrderCategory("Motos", CARROS_E_MOTOS);
 
-    private static final Category CAMINHOES = new Category("Caminhões", CAMINHOES_E_ONIBUS);
-    private static final Category ONIBUS = new Category("Ônibus", CAMINHOES_E_ONIBUS);
-    private static final Category VANS = new Category("Vans", CAMINHOES_E_ONIBUS);
+    private static final WorkOrderCategory CAMINHOES = new WorkOrderCategory("Caminhões", CAMINHOES_E_ONIBUS);
+    private static final WorkOrderCategory ONIBUS = new WorkOrderCategory("Ônibus", CAMINHOES_E_ONIBUS);
+    private static final WorkOrderCategory VANS = new WorkOrderCategory("Vans", CAMINHOES_E_ONIBUS);
 
-    private static final Category RESIDENCIAL = new Category("Residencial", IMOVEIS);
-    private static final Category COMERCIAL = new Category("Comercial", IMOVEIS);
+    private static final WorkOrderCategory RESIDENCIAL = new WorkOrderCategory("Residencial", IMOVEIS);
+    private static final WorkOrderCategory COMERCIAL = new WorkOrderCategory("Comercial", IMOVEIS);
 
     @Override
-    public void findByProjectAndLocation(Project project, Location location, HttpCallback<List<Product>> callback) {
+    public void findByProjectAndLocation(Project project, Location location, HttpCallback<List<WorkOrderProduct>> callback) {
 
-        callback.onResponse(new HttpResponse<List<Product>>() {
+        callback.onResponse(new HttpResponse<List<WorkOrderProduct>>() {
             @Override
             public boolean isSuccessful() {
                 return true;
@@ -45,29 +45,29 @@ public class StubProductService implements ProductService {
 
             @Nullable
             @Override
-            public List<Product> body() {
-                return new ArrayList<Product>() {{
-                    add(new Product(1L, CARROS));
-                    add(new Product(2L, CARROS));
-                    add(new Product(3L, CARROS));
-                    add(new Product(4L, CARROS));
-                    add(new Product(5L, MOTOS));
-                    add(new Product(6L, CAMINHOES));
-                    add(new Product(7L, CAMINHOES));
-                    add(new Product(8L, VANS));
-                    add(new Product(9L, ONIBUS));
-                    add(new Product(10L, ONIBUS));
-                    add(new Product(11L, COMERCIAL));
-                    add(new Product(12L, COMERCIAL));
-                    add(new Product(13L, COMERCIAL));
-                    add(new Product(14L, COMERCIAL));
-                    add(new Product(15L, COMERCIAL));
-                    add(new Product(16L, COMERCIAL));
-                    add(new Product(17L, RESIDENCIAL));
-                    add(new Product(18L, RESIDENCIAL));
-                    add(new Product(19L, RESIDENCIAL));
-                    add(new Product(20L, RESIDENCIAL));
-                    add(new Product(21L, RESIDENCIAL));
+            public List<WorkOrderProduct> body() {
+                return new ArrayList<WorkOrderProduct>() {{
+                    add(new WorkOrderProduct(CARROS));
+                    add(new WorkOrderProduct(CARROS));
+                    add(new WorkOrderProduct(CARROS));
+                    add(new WorkOrderProduct(CARROS));
+                    add(new WorkOrderProduct(MOTOS));
+                    add(new WorkOrderProduct(CAMINHOES));
+                    add(new WorkOrderProduct(CAMINHOES));
+                    add(new WorkOrderProduct(VANS));
+                    add(new WorkOrderProduct(ONIBUS));
+                    add(new WorkOrderProduct(ONIBUS));
+                    add(new WorkOrderProduct(COMERCIAL));
+                    add(new WorkOrderProduct(COMERCIAL));
+                    add(new WorkOrderProduct(COMERCIAL));
+                    add(new WorkOrderProduct(COMERCIAL));
+                    add(new WorkOrderProduct(COMERCIAL));
+                    add(new WorkOrderProduct(COMERCIAL));
+                    add(new WorkOrderProduct(RESIDENCIAL));
+                    add(new WorkOrderProduct(RESIDENCIAL));
+                    add(new WorkOrderProduct(RESIDENCIAL));
+                    add(new WorkOrderProduct(RESIDENCIAL));
+                    add(new WorkOrderProduct(RESIDENCIAL));
                 }};
             }
 

@@ -11,10 +11,9 @@ import java.util.List;
 import br.com.bg7.appvistoria.AlertDialog;
 import br.com.bg7.appvistoria.ConfirmDialog;
 import br.com.bg7.appvistoria.R;
+import br.com.bg7.appvistoria.data.WorkOrderProduct;
 import br.com.bg7.appvistoria.productselection.adapter.ProductSelectionAdapter;
-import br.com.bg7.appvistoria.productselection.vo.Product;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelection;
-import br.com.bg7.appvistoria.productselection.vo.ProductSelectionItem;
 import br.com.bg7.appvistoria.projectselection.ProjectSelectionActivity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -81,7 +80,7 @@ class ProductSelectionView extends ConstraintLayout implements ProductSelectionC
     }
 
     @Override
-    public void showProducts(List<Product> products) {
+    public void showProducts(List<WorkOrderProduct> products) {
         List<ProductSelection> productSelectionList = ProductSelection.fromProducts(getContext(), products);
         ProductSelectionAdapter listAdapter = new ProductSelectionAdapter(getContext(), productSelectionList, productSelectionPresenter);
         productList.setAdapter(listAdapter);

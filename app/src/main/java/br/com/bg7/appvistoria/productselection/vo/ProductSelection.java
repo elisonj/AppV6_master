@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.com.bg7.appvistoria.data.WorkOrderProduct;
+
 /**
  * Created by: elison
  * Date: 2017-08-31
@@ -23,11 +25,11 @@ public class ProductSelection {
         return categories;
     }
 
-    public static List<ProductSelection> fromProducts(Context context, List<Product> products) {
+    public static List<ProductSelection> fromProducts(Context context, List<WorkOrderProduct> products) {
         ArrayList<ProductSelection> finalList = new ArrayList<>();
         HashMap<ProductSelectionHeader, HashMap<String, Integer>> map = new HashMap<>();
 
-        for (Product product : products) {
+        for (WorkOrderProduct product : products) {
             String productType = product.getProductType();
             String category = product.getCategory().getName();
 

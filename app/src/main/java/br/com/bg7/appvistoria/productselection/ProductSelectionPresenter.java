@@ -7,12 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import br.com.bg7.appvistoria.data.WorkOrder;
+import br.com.bg7.appvistoria.data.WorkOrderProduct;
 import br.com.bg7.appvistoria.data.source.local.WorkOrderRepository;
 import br.com.bg7.appvistoria.data.source.remote.ProductService;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
-import br.com.bg7.appvistoria.productselection.vo.Product;
-import br.com.bg7.appvistoria.productselection.vo.ProductSelection;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelectionItem;
 import br.com.bg7.appvistoria.projectselection.vo.Location;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
@@ -33,7 +32,7 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
     private ProductSelectionContract.View productSelectionView;
     private Project project;
     private Location location;
-    private List<Product> products;
+    private List<WorkOrderProduct> products;
     private HashMap<ProductSelectionItem, Integer> selectedItems = new HashMap<>();
 
     ProductSelectionPresenter(Project project, Location location, ProductService productService, WorkOrderRepository workOrderRepository, ProductSelectionContract.View productSelectionView) {
@@ -50,9 +49,9 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
     @Override
     public void start() {
 
-        productService.findByProjectAndLocation(project, location, new HttpCallback<List<Product>>() {
+        productService.findByProjectAndLocation(project, location, new HttpCallback<List<WorkOrderProduct>>() {
             @Override
-            public void onResponse(HttpResponse<List<Product>> httpResponse) {
+            public void onResponse(HttpResponse<List<WorkOrderProduct>> httpResponse) {
                 products = httpResponse.body();
                 productSelectionView.showProducts(products);
             }

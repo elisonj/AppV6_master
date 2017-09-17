@@ -4,12 +4,8 @@ import java.util.List;
 
 import br.com.bg7.appvistoria.BasePresenter;
 import br.com.bg7.appvistoria.BaseView;
-import br.com.bg7.appvistoria.productselection.vo.Category;
-import br.com.bg7.appvistoria.productselection.vo.Product;
-import br.com.bg7.appvistoria.productselection.vo.ProductSelection;
+import br.com.bg7.appvistoria.data.WorkOrderProduct;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelectionItem;
-import br.com.bg7.appvistoria.projectselection.vo.Location;
-import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 /**
  * Created by: elison
@@ -18,7 +14,7 @@ import br.com.bg7.appvistoria.projectselection.vo.Project;
 public interface ProductSelectionContract {
 
     interface View extends BaseView<ProductSelectionContract.Presenter> {
-        void showProducts(List<Product> productSelectionList);
+        void showProducts(List<WorkOrderProduct> productSelectionList);
 
         void showConnectivityError();
 

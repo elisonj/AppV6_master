@@ -13,6 +13,9 @@ import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.Picture;
 import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.WorkOrder;
+import br.com.bg7.appvistoria.data.WorkOrderCategory;
+import br.com.bg7.appvistoria.data.WorkOrderProduct;
+import br.com.bg7.appvistoria.data.WorkOrderProductType;
 import br.com.bg7.appvistoria.data.source.local.ormlite.DatabaseHelper;
 
 /**
@@ -23,19 +26,9 @@ public abstract class BaseActivity extends LocalizationActivity {
 
     private DatabaseHelper databaseHelper = null;
 
-    public RuntimeExceptionDao<User, Long> getUserDao() {
-        return getHelper().getUserDao();
-    }
-
     public RuntimeExceptionDao<Config, Long> getConfigDao() {
         return getHelper().getConfigDao();
     }
-
-
-    public RuntimeExceptionDao<WorkOrder, Long> getWorkOrderDao() {
-        return getHelper().getWorkOrderDao();
-    }
-
 
     public RuntimeExceptionDao<Inspection, Long> getInspectionDao() {
         return getHelper().getInspectionDao();
@@ -43,6 +36,26 @@ public abstract class BaseActivity extends LocalizationActivity {
 
     public RuntimeExceptionDao<Picture, Long> getPictureDao() {
         return getHelper().getPictureDao();
+    }
+
+    public RuntimeExceptionDao<User, Long> getUserDao() {
+        return getHelper().getUserDao();
+    }
+
+    public RuntimeExceptionDao<WorkOrder, Long> getWorkOrderDao() {
+        return getHelper().getWorkOrderDao();
+    }
+
+    public RuntimeExceptionDao<WorkOrderCategory, Long> getWorkOrderCategoryDao() {
+        return getHelper().getWorkOrderCategoryDao();
+    }
+
+    public RuntimeExceptionDao<WorkOrderProduct, Long> getWorkOrderProductDao() {
+        return getHelper().getWorkOrderProductDao();
+    }
+
+    public RuntimeExceptionDao<WorkOrderProductType, Long> getWorkOrderProductTypeDao() {
+        return getHelper().getWorkOrderProductTypeDao();
     }
 
     private DatabaseHelper getHelper() {

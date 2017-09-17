@@ -20,6 +20,9 @@ import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.Picture;
 import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.WorkOrder;
+import br.com.bg7.appvistoria.data.WorkOrderCategory;
+import br.com.bg7.appvistoria.data.WorkOrderProduct;
+import br.com.bg7.appvistoria.data.WorkOrderProductType;
 
 /**
  * Created by: luciolucio
@@ -40,6 +43,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private RuntimeExceptionDao<Picture, Long> pictureDao = null;
     private RuntimeExceptionDao<User, Long> userDao = null;
     private RuntimeExceptionDao<WorkOrder, Long> workOrderDao = null;
+    private RuntimeExceptionDao<WorkOrderCategory, Long> workOrderCategoryDao = null;
+    private RuntimeExceptionDao<WorkOrderProduct, Long> workOrderProductDao = null;
+    private RuntimeExceptionDao<WorkOrderProductType, Long> workOrderProductTypeDao = null;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION, R.raw.ormlite_config);
@@ -58,6 +64,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, Picture.class);
             TableUtils.createTable(connectionSource, User.class);
             TableUtils.createTable(connectionSource, WorkOrder.class);
+            TableUtils.createTable(connectionSource, WorkOrderCategory.class);
+            TableUtils.createTable(connectionSource, WorkOrderProduct.class);
+            TableUtils.createTable(connectionSource, WorkOrderProductType.class);
         } catch (SQLException exception) {
             LOG.error("Can't create database", exception);
             throw new RuntimeException(exception);
@@ -105,6 +114,21 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return getDao(workOrderDao, WorkOrder.class);
     }
 
+    public RuntimeExceptionDao<WorkOrderCategory, Long> getWorkOrderCategoryDao() {
+        //noinspection unchecked
+        return getDao(workOrderCategoryDao, WorkOrderCategory.class);
+    }
+
+    public RuntimeExceptionDao<WorkOrderProduct, Long> getWorkOrderProductDao() {
+        //noinspection unchecked
+        return getDao(workOrderProductDao, WorkOrderProduct.class);
+    }
+
+    public RuntimeExceptionDao<WorkOrderProductType, Long> getWorkOrderProductTypeDao() {
+        //noinspection unchecked
+        return getDao(workOrderProductTypeDao, WorkOrderProductType.class);
+    }
+
     /**
      * Close the database connections and clear any cached DAOs.
      */
@@ -116,6 +140,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         pictureDao = null;
         userDao = null;
         workOrderDao = null;
+        workOrderCategoryDao = null;
+        workOrderProductDao = null;
+        workOrderProductTypeDao = null;
     }
 
     private RuntimeExceptionDao getDao(RuntimeExceptionDao dao, Class clazz) {
