@@ -117,7 +117,7 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
 
         configureCategoryOnClick(item, categoryHeader, viewItems);
 
-        String categoryHeaderText = context.getString(R.string.product_selection_category_header_format, item.getCategory());
+        String categoryHeaderText = context.getString(R.string.product_selection_category_header_format, item.getCategory().getName());
         category.setText(categoryHeaderText);
 
         if (item.isSelected()) {
