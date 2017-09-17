@@ -22,14 +22,14 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/product_type"
+                android:id="@+id/category"
                 android:textColor="#484d51"
                 android:layout_marginStart="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:id="@+id/product_type_quantity"
+                android:id="@+id/category_quantity"
                 android:textColor="#484d51"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
