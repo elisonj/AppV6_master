@@ -7,6 +7,10 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.bg7.appvistoria.data.WorkOrderCategory;
+import br.com.bg7.appvistoria.data.WorkOrderProduct;
+import br.com.bg7.appvistoria.data.WorkOrderProductType;
+
 /**
  * Created by: luciolucio
  * Date: 2017-09-12
@@ -32,8 +36,8 @@ public class ProductSelectionTest {
 
     @Test
     public void shouldCreateListWithOneProductTypeAndTwoProductsSameCategory() {
-        final WorkOrderProduct product1 = new WorkOrderProduct(1L, CARROS);
-        final WorkOrderProduct product2 = new WorkOrderProduct(2L, CARROS);
+        final WorkOrderProduct product1 = new WorkOrderProduct(CARROS);
+        final WorkOrderProduct product2 = new WorkOrderProduct(CARROS);
 
         ArrayList<WorkOrderProduct> productList = new ArrayList<WorkOrderProduct>() {{
             add(product1);
@@ -55,10 +59,10 @@ public class ProductSelectionTest {
 
     @Test
     public void shouldCreateListWithTwoProductTypesAndTwoCategories() {
-        final WorkOrderProduct product1 = new WorkOrderProduct(1L, RESIDENCIAL);
-        final WorkOrderProduct product2 = new WorkOrderProduct(2L, MOTOS);
-        final WorkOrderProduct product3 = new WorkOrderProduct(3L, CARROS);
-        final WorkOrderProduct product4 = new WorkOrderProduct(4L, CARROS);
+        final WorkOrderProduct product1 = new WorkOrderProduct(RESIDENCIAL);
+        final WorkOrderProduct product2 = new WorkOrderProduct(MOTOS);
+        final WorkOrderProduct product3 = new WorkOrderProduct(CARROS);
+        final WorkOrderProduct product4 = new WorkOrderProduct(CARROS);
 
         ArrayList<WorkOrderProduct> productList = new ArrayList<WorkOrderProduct>() {{
             add(product1);
