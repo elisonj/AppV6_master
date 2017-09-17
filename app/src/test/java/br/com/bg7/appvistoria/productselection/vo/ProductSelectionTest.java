@@ -42,11 +42,11 @@ public class ProductSelectionTest {
 
         List<ProductSelection> productSelectionList = ProductSelection.fromProducts(null, productList);
         Assert.assertEquals(1, productSelectionList.size());
-        Assert.assertEquals(1, productSelectionList.get(0).getItems().size());
+        Assert.assertEquals(1, productSelectionList.get(0).getCategories().size());
 
         ProductSelection selection = productSelectionList.get(0);
-        ProductSelectionHeader header = selection.getHeader();
-        ProductSelectionItem item = selection.getItems().get(0);
+        ProductSelectionHeader header = selection.getProductType();
+        ProductSelectionItem item = selection.getCategories().get(0);
 
         Assert.assertEquals("Carros & Motos", header.getTitle());
         Assert.assertEquals("Carros", item.getCategory());
@@ -69,17 +69,17 @@ public class ProductSelectionTest {
 
         List<ProductSelection> productSelectionList = ProductSelection.fromProducts(null, productList);
         Assert.assertEquals(2, productSelectionList.size());
-        Assert.assertEquals(2, productSelectionList.get(0).getItems().size());
-        Assert.assertEquals(1, productSelectionList.get(1).getItems().size());
+        Assert.assertEquals(2, productSelectionList.get(0).getCategories().size());
+        Assert.assertEquals(1, productSelectionList.get(1).getCategories().size());
 
         ProductSelection selection1 = productSelectionList.get(0);
-        ProductSelectionHeader header1 = selection1.getHeader();
-        ProductSelectionItem item11 = selection1.getItems().get(0);
-        ProductSelectionItem item12 = selection1.getItems().get(1);
+        ProductSelectionHeader header1 = selection1.getProductType();
+        ProductSelectionItem item11 = selection1.getCategories().get(0);
+        ProductSelectionItem item12 = selection1.getCategories().get(1);
 
         ProductSelection selection2 = productSelectionList.get(1);
-        ProductSelectionHeader header2 = selection2.getHeader();
-        ProductSelectionItem item21 = selection2.getItems().get(0);
+        ProductSelectionHeader header2 = selection2.getProductType();
+        ProductSelectionItem item21 = selection2.getCategories().get(0);
 
         Assert.assertEquals("Imoveis", header2.getTitle());
         Assert.assertEquals("Residencial", item21.getCategory());

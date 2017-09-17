@@ -12,15 +12,15 @@ import java.util.Map;
  * Date: 2017-08-31
  */
 public class ProductSelection {
-    private ProductSelectionHeader header;
-    private List<ProductSelectionItem> items;
+    private ProductSelectionHeader productType;
+    private List<ProductSelectionItem> categories;
 
-    public ProductSelectionHeader getHeader() {
-        return header;
+    public ProductSelectionHeader getProductType() {
+        return productType;
     }
 
-    public List<ProductSelectionItem> getItems() {
-        return items;
+    public List<ProductSelectionItem> getCategories() {
+        return categories;
     }
 
     public static List<ProductSelection> fromProducts(Context context, List<Product> products) {
@@ -54,8 +54,8 @@ public class ProductSelection {
                 items.add(item);
             }
 
-            selection.header = entry.getKey();
-            selection.items = items;
+            selection.productType = entry.getKey();
+            selection.categories = items;
 
             finalList.add(selection);
         }

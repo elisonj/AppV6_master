@@ -29,8 +29,8 @@ import me.srodrigo.androidhintspinner.HintSpinner;
  */
 public class ProductSelectionAdapter extends BaseExpandableListAdapter {
 
-    private ArrayList<ProductSelectionHeader> headers = new ArrayList<>();
-    private HashMap<ProductSelectionHeader, List<ProductSelectionItem>> items;
+    private ArrayList<ProductSelectionHeader> productTypes = new ArrayList<>();
+    private HashMap<ProductSelectionHeader, List<ProductSelectionItem>> categories;
     private Context context;
     private ProductSelectionContract.Presenter presenter;
     private HashMap<ProductSelectionItem, ViewItems> viewItems = new HashMap<>();
@@ -39,33 +39,33 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
         this.context = context;
         this.presenter = presenter;
 
-        headers = new ArrayList<>();
-        items = new HashMap<>();
+        productTypes = new ArrayList<>();
+        categories = new HashMap<>();
 
         for (ProductSelection productSelection : productSelections) {
-            headers.add(productSelection.getHeader());
-            items.put(productSelection.getHeader(), productSelection.getItems());
+            productTypes.add(productSelection.getProductType());
+            categories.put(productSelection.getProductType(), productSelection.getCategories());
         }
     }
 
     @Override
     public int getGroupCount() {
-        return headers.size();
+        return productTypes.size();
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.items.get(this.headers.get(groupPosition)).size();
+        return this.categories.get(this.productTypes.get(groupPosition)).size();
     }
 
     @Override
     public ProductSelectionHeader getGroup(int groupPosition) {
-        return headers.get(groupPosition);
+        return productTypes.get(groupPosition);
     }
 
     @Override
     public ProductSelectionItem getChild(int groupPosition, int childPosition) {
-        return items.get(headers.get(groupPosition)).get(childPosition);
+        return categories.get(productTypes.get(groupPosition)).get(childPosition);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
                              View convertView, ViewGroup parent) {
         ProductSelectionHeader header = getGroup(groupPosition);
         if (convertView == null) {
-            convertView = View.inflate(context, R.layout.product_selection_header, null);
+            convertView = View.inflate(context, R.layout.product_selection_product_type, null);
         }
 
         TextView productTypeText = convertView.findViewById(R.id.product_type_text);
@@ -222,7 +222,7 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
 
         ViewItems invoke() {
             if (convertView == null) {
-                convertView = View.inflate(context, R.layout.product_selection_item, null);
+                convertView = View.inflate(context, R.layout.product_selection_category, null);
             }
 
             categoryHeader = convertView.findViewById(R.id.category_header);
