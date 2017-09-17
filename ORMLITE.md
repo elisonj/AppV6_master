@@ -17,7 +17,7 @@ This file **must** be generated **manually** every time there are new entities f
 3. Save and execute the run configuration
 4. Once you see output similar to the lines below, you are done
 
-> `Writing configurations to /code/vistoria/app/src/main/./res/raw/ormlite-config.txt`
+> `Writing configurations to app/src/main/./res/raw/ormlite-config.txt`
 >
 > `Wrote config for class br.com.bg7.appvistoria.data.Config`
 >
