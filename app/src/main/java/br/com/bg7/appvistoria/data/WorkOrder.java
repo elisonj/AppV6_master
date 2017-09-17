@@ -69,7 +69,7 @@ public class WorkOrder {
     @ForeignCollectionField
     private Collection<Inspection> inspections = new ArrayList<>();
 
-    @ForeignCollectionField
+    @ForeignCollectionField(eager = true)
     private Collection<WorkOrderProduct> products = new ArrayList<>();
 
     @SuppressWarnings("unused")
