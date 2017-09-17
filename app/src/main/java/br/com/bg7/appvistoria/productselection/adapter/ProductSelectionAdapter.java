@@ -249,7 +249,7 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
 
             this.spinner = new HintSpinner<>(
                     spinner,
-                    new HintAdapter<>(context, context.getString(R.string.spinner_hint), item.getQuantities()),
+                    new HintAdapter<>(context, context.getString(R.string.product_selection_select_quantity), item.getQuantities()),
                     new HintSpinner.Callback<ProductSelectionItemQuantity>() {
                         @Override
                         public void onItemSelected(int position, ProductSelectionItemQuantity itemAtPosition) {
