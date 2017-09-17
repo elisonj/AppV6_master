@@ -55,7 +55,7 @@
     <string name="product_selection_item_single_format">%1$d product</string>
     <string name="product_selection_item_multiple_format">%1$d products</string>
     <string name="product_selection_summary_format">%1$d of %2$d to inspect</string>
-    <string name="product_selection_category_header_format">%1$s:</string>
+    <string name="product_selection_category_header_format">%1$s: </string>
     <string name="ico_category">Category</string>
     <string name="create_workorder">CREATE WORKORDER</string>
     <string name="confirm_create_workorder">Do you want to create a new WorkOrder\nwith the selected actives?</string>

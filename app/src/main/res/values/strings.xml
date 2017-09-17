@@ -55,7 +55,7 @@
     <string name="product_selection_item_single_format">%1$d ativo</string>
     <string name="product_selection_item_multiple_format">%1$d ativos</string>
     <string name="product_selection_summary_format">%1$d de %2$d a inspecionar</string>
-    <string name="product_selection_category_header_format">%1$s:</string>
+    <string name="product_selection_category_header_format">%1$s: </string>
     <string name="ico_category">Categoria</string>
     <string name="create_workorder">CRIAR VISITA</string>
     <string name="confirm_create_workorder">Deseja criar uma nova visita\ncom os ativos selecionados?</string>

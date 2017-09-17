@@ -107,26 +107,26 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
         final ProductSelectionItem item = getChild(groupPosition, childPosition);
 
         ViewItems viewItems = getViewItems(convertView, item);
-        LinearLayout productTypeHeader = viewItems.getProductTypeHeader();
-        final LinearLayout quantitySelectionItem = viewItems.getQuantitySelectionItem();
-        final ImageView arrowItem = viewItems.getArrowItem();
-        TextView category = viewItems.getCategory();
-        TextView categoryQuantity = viewItems.getCategoryQuantity();
-        convertView = viewItems.getConvertView();
+        LinearLayout categoryHeader = viewItems.categoryHeader;
+        final LinearLayout quantitySelectionItem = viewItems.quantitySelectionItem;
+        final ImageView arrowItem = viewItems.arrowItem;
+        TextView category = viewItems.category;
+        TextView categoryQuantity = viewItems.categoryQuantity;
+        convertView = viewItems.convertView;
 
-        configureHeaderOnClick(item, productTypeHeader, viewItems);
+        configureCategoryOnClick(item, categoryHeader, viewItems);
 
         String categoryHeaderText = context.getString(R.string.product_selection_category_header_format, item.getCategory());
         category.setText(categoryHeaderText);
 
         if (item.isSelected()) {
-            formatSelectedChild(item.getSelectedQuantity(), item, productTypeHeader, category, categoryQuantity);
+            formatSelectedChild(item.getSelectedQuantity(), item, categoryHeader, category, categoryQuantity);
             showSelectedWhiteArrows(arrowItem, quantitySelectionItem);
 
             return convertView;
         }
 
-        formatAvailableItems(item, categoryQuantity);
+        formatAvailableCategories(item, categoryQuantity);
 
         return convertView;
     }
@@ -146,7 +146,7 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
         }
     }
 
-    private void formatAvailableItems(ProductSelectionItem item, TextView categoryQuantity) {
+    private void formatAvailableCategories(ProductSelectionItem item, TextView categoryQuantity) {
         String availableItems = context.getString(R.string.product_selection_available_items_single_format, item.getCount());
 
         if (item.getCount() > 1) {
@@ -156,11 +156,8 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
         categoryQuantity.setText(availableItems);
     }
 
-    private void configureHeaderOnClick(final ProductSelectionItem item, LinearLayout productTypeHeader, ViewItems viewItems) {
-        final LinearLayout quantitySelectionItem = viewItems.quantitySelectionItem;
-        final ImageView arrowItem = viewItems.arrowItem;
-
-        productTypeHeader.setOnClickListener(new View.OnClickListener() {
+    private void configureCategoryOnClick(final ProductSelectionItem item, LinearLayout categoryHeader, final ViewItems viewItems) {
+        categoryHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -172,15 +169,14 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
                     closeArrow = R.drawable.arrow_close_white;
                 }
 
-                if (quantitySelectionItem.isShown()) {
-                    quantitySelectionItem.setVisibility(View.GONE);
-                    arrowItem.setImageDrawable(context.getResources().getDrawable(openArrow, null));
+                if (viewItems.quantitySelectionItem.isShown()) {
+                    viewItems.quantitySelectionItem.setVisibility(View.GONE);
+                    viewItems.arrowItem.setImageDrawable(context.getResources().getDrawable(openArrow, null));
+                    return;
                 }
 
-                if (!quantitySelectionItem.isShown()) {
-                    quantitySelectionItem.setVisibility(View.VISIBLE);
-                    arrowItem.setImageDrawable(context.getResources().getDrawable(closeArrow, null));
-                }
+                viewItems.quantitySelectionItem.setVisibility(View.VISIBLE);
+                viewItems.arrowItem.setImageDrawable(context.getResources().getDrawable(closeArrow, null));
             }
         });
     }
@@ -194,8 +190,8 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
         return viewItems.get(item);
     }
 
-    private Integer formatSelectedChild(Integer quantitySelected, ProductSelectionItem item, LinearLayout productTypeHeader, TextView product, TextView quantity) {
-        productTypeHeader.setBackgroundColor(context.getColor(R.color.item_orange));
+    private Integer formatSelectedChild(Integer quantitySelected, ProductSelectionItem item, LinearLayout categoryHeader, TextView product, TextView quantity) {
+        categoryHeader.setBackgroundColor(context.getColor(R.color.item_orange));
         product.setTextColor(context.getColor(R.color.white));
 
         String format = context.getString(R.string.product_selection_summary_format,
@@ -211,49 +207,25 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
     private class ViewItems {
         private final ProductSelectionItem item;
         private View convertView;
-        private LinearLayout productTypeHeader;
+        private LinearLayout categoryHeader;
         private TextView category;
         private TextView categoryQuantity;
         private ImageView arrowItem;
         private LinearLayout quantitySelectionItem;
         private HintSpinner<ProductSelectionItemQuantity> spinner;
 
-        public ViewItems(View convertView, ProductSelectionItem item) {
+        ViewItems(View convertView, ProductSelectionItem item) {
             this.convertView = convertView;
             this.item = item;
         }
 
-        public View getConvertView() {
-            return convertView;
-        }
-
-        public LinearLayout getProductTypeHeader() {
-            return productTypeHeader;
-        }
-
-        public TextView getCategory() {
-            return category;
-        }
-
-        public TextView getCategoryQuantity() {
-            return categoryQuantity;
-        }
-
-        public ImageView getArrowItem() {
-            return arrowItem;
-        }
-
-        public LinearLayout getQuantitySelectionItem() {
-            return quantitySelectionItem;
-        }
-
-        public ViewItems invoke() {
+        ViewItems invoke() {
             if (convertView == null) {
                 convertView = View.inflate(context, R.layout.product_selection_item, null);
             }
 
-            productTypeHeader = convertView.findViewById(R.id.product_type_header);
-            productTypeHeader.setBackgroundColor(context.getColor(R.color.item_default));
+            categoryHeader = convertView.findViewById(R.id.category_header);
+            categoryHeader.setBackgroundColor(context.getColor(R.color.item_default));
 
             category = convertView.findViewById(R.id.category);
             category.setTextColor(context.getColor(R.color.item_font_default));
@@ -283,7 +255,7 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
                             Integer quantitySelected = itemAtPosition.getQuantity();
                             itemAtPosition.select(quantitySelected);
 
-                            formatSelectedChild(quantitySelected, item, productTypeHeader, category, categoryQuantity);
+                            formatSelectedChild(quantitySelected, item, categoryHeader, category, categoryQuantity);
                             presenter.chooseQuantity(item, quantitySelected);
                             quantitySelectionItem.setVisibility(View.GONE);
                             arrowItem.setImageDrawable(context.getResources().getDrawable(R.drawable.arrow_open_white, null));
