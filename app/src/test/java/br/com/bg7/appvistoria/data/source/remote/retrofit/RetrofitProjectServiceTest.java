@@ -8,7 +8,6 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.List;
 
-import br.com.bg7.appvistoria.data.source.remote.dto.Token;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 import okhttp3.mockwebserver.RecordedRequest;
 
