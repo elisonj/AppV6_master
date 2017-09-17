@@ -1,5 +1,5 @@
 #
-# generated on 2017/09/17 01:39:32
+# generated on 2017/09/17 03:47:35
 #
 # --table-start--
 dataClass=br.com.bg7.appvistoria.data.Config
@@ -125,11 +125,11 @@ fieldName=address
 canBeNull=false
 # --field-end--
 # --field-start--
-fieldName=externalId
-canBeNull=false
+fieldName=inspections
+foreignCollection=true
 # --field-end--
 # --field-start--
-fieldName=inspections
+fieldName=products
 foreignCollection=true
 # --field-end--
 # --table-fields-end--
@@ -165,6 +165,11 @@ generatedId=true
 # --field-end--
 # --field-start--
 fieldName=category
+canBeNull=false
+foreign=true
+# --field-end--
+# --field-start--
+fieldName=workOrder
 canBeNull=false
 foreign=true
 # --field-end--

@@ -18,6 +18,9 @@ public class WorkOrderProduct {
     @DatabaseField(canBeNull = false, foreign = true)
     private WorkOrderCategory category;
 
+    @DatabaseField(canBeNull = false, foreign = true)
+    private WorkOrder workOrder;
+
     public WorkOrderProduct(WorkOrderCategory category) {
         this.category = category;
     }

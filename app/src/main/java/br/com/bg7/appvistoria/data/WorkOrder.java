@@ -50,11 +50,11 @@ public class WorkOrder {
     @DatabaseField(canBeNull = false)
     private String address;
 
-    @DatabaseField(canBeNull = false)
-    private Long externalId;
-
     @ForeignCollectionField
     private Collection<Inspection> inspections = new ArrayList<>();
+
+    @ForeignCollectionField
+    private Collection<WorkOrderProduct> products = new ArrayList<>();
 
     /**
      * Default constructor used by ormlite
@@ -143,12 +143,11 @@ public class WorkOrder {
                 status == workOrder.status &&
                 Objects.equal(endAt, workOrder.endAt) &&
                 Objects.equal(address, workOrder.address) &&
-                Objects.equal(externalId, workOrder.externalId) &&
                 Objects.equal(inspections, workOrder.inspections);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(shortSummarySize, shortSummary, id, name, summary, status, endAt, address, externalId, inspections);
+        return Objects.hashCode(shortSummarySize, shortSummary, id, name, summary, status, endAt, address, inspections);
     }
 }
