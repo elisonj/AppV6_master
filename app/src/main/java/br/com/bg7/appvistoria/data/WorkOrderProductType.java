@@ -22,6 +22,11 @@ public class WorkOrderProductType {
     @DatabaseField(canBeNull = false, foreign = true)
     private String name;
 
+    @SuppressWarnings("unused")
+    WorkOrderProductType() {
+        // used by ormlite
+    }
+
     public WorkOrderProductType(Long externalId, String name) {
         this.externalId = externalId;
         this.name = name;

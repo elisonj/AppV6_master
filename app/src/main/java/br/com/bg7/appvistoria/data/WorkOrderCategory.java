@@ -22,6 +22,11 @@ public class WorkOrderCategory {
     @DatabaseField(canBeNull = false, foreign = true)
     private WorkOrderProductType productType;
 
+    @SuppressWarnings("unused")
+    WorkOrderCategory() {
+        // used by ormlite
+    }
+
     public WorkOrderCategory(String name, WorkOrderProductType productType) {
         this.name = name;
         this.productType = productType;
