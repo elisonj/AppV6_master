@@ -7,8 +7,15 @@ package br.com.bg7.appvistoria.data;
 
 class TestableWorkOrder extends WorkOrder {
 
+    private String summary;
+
     TestableWorkOrder(String name, String address, String summary) {
         super(name, address);
         this.summary = summary;
+    }
+
+    @Override
+    protected String ellipsizeShortSummary(String summary, int maxSize) {
+        return super.ellipsizeShortSummary(this.summary, maxSize);
     }
 }

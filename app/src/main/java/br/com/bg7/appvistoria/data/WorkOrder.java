@@ -27,16 +27,22 @@ public class WorkOrder {
     private final static String ELLIPSIS = "...";
     private final static int ELLIPSIS_SIZE = ELLIPSIS.length();
     private final static String SEPARATOR = ",";
-    // TODO: Voltar isso para privado
+
     @DatabaseField(canBeNull = false)
-    String summary = "";
-    boolean summaryIsDirty = true;
+    private String summary = "";
+
+    private boolean summaryIsDirty = true;
+
     private int shortSummarySize = -1;
+
     private String shortSummary;
+
     @DatabaseField(generatedId = true)
     private Long id;
+
     @DatabaseField(canBeNull = false)
     private String name;
+
     @DatabaseField(index = true, canBeNull = false)
     private WorkOrderStatus status;
 
@@ -67,7 +73,7 @@ public class WorkOrder {
         this.endAt = DateTime.now();
     }
 
-    public void addProduct(WorkOrderProduct product) {
+    void addProduct(WorkOrderProduct product) {
         products.add(product);
         summaryIsDirty = true;
     }
@@ -79,7 +85,7 @@ public class WorkOrder {
     public String getShortSummary(int maxSize) {
         if (maxSize != shortSummarySize || summaryIsDirty) {
             shortSummarySize = maxSize;
-            shortSummary = ellipsizeShortSummary(maxSize);
+            shortSummary = ellipsizeShortSummary(summary, maxSize);
         }
 
         return shortSummary;
@@ -116,7 +122,7 @@ public class WorkOrder {
         return address;
     }
 
-    private String ellipsizeShortSummary(int maxSize) {
+    protected String ellipsizeShortSummary(String summary, int maxSize) {
         if (summary.length() <= maxSize) {
             return summary;
         }
