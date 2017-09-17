@@ -12,10 +12,10 @@ import br.com.bg7.appvistoria.data.source.local.WorkOrderRepository;
  * Created by: elison
  * Date: 2017-08-17
  */
-public class FakeWorkOrderRepository extends FakeRepository<String, WorkOrder> implements WorkOrderRepository {
+public class FakeWorkOrderRepository extends FakeRepository<Long, WorkOrder> implements WorkOrderRepository {
 
     @Override
-    public List<WorkOrder> findAllOrderByStatus(String status) {
+    public List<WorkOrder> findAllOrderByStatus() {
         ArrayList<WorkOrder> workOrderList = new ArrayList<>(ENTITIES_BY_KEY.values());
 
         Collections.sort(workOrderList, new Comparator<WorkOrder>() {
@@ -29,21 +29,12 @@ public class FakeWorkOrderRepository extends FakeRepository<String, WorkOrder> i
     }
 
     @Override
-    public List<WorkOrder> findAllByProjectAndAddress(String description, String address) {
-        ArrayList<WorkOrder> workOrderList = new ArrayList<>(ENTITIES_BY_KEY.values());
-
-        Collections.sort(workOrderList, new Comparator<WorkOrder>() {
-            @Override
-            public int compare(WorkOrder workOrder, WorkOrder workOrder1) {
-                return workOrder.getName().compareTo(workOrder1.getName());
-            }
-        });
-
-        return  workOrderList;
+    public WorkOrder findByProjectAndLocation(Long projectId, Long locationId) {
+        return ENTITIES_BY_KEY.get(projectId);
     }
 
     @Override
-    String getKey(WorkOrder entity) {
-        return entity.getName();
+    Long getKey(WorkOrder entity) {
+        return entity.getProjectId();
     }
 }

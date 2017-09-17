@@ -4,6 +4,9 @@ import junit.framework.Assert;
 
 import java.util.ArrayList;
 
+import static br.com.bg7.appvistoria.data.TestableSummaryWorkOrder.LOCATION;
+import static br.com.bg7.appvistoria.data.TestableSummaryWorkOrder.PROJECT;
+
 /**
  * Created by: luciolucio
  * Date: 2017-09-17
@@ -30,7 +33,7 @@ class WorkOrderSummaryTestCase {
     }
 
     void run() {
-        WorkOrder workOrder = new WorkOrder("WO", "");
+        WorkOrder workOrder = new WorkOrder(PROJECT, LOCATION, new ArrayList<WorkOrderProduct>());
         for (WorkOrderProduct product : this.products) {
             workOrder.addProduct(product);
         }

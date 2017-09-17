@@ -1,5 +1,6 @@
 package br.com.bg7.appvistoria.data;
 
+import com.google.common.base.Objects;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -30,11 +31,22 @@ public class WorkOrderCategory {
         return name;
     }
 
-    String getProductTypeName() {
-        return productType.getName();
+    WorkOrderProductType getProductType() {
+        return productType;
     }
 
-    Long getProductTypeId() {
-        return productType.getExternalId();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WorkOrderCategory that = (WorkOrderCategory) o;
+        return Objects.equal(id, that.id) &&
+                Objects.equal(name, that.name) &&
+                Objects.equal(productType, that.productType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id, name, productType);
     }
 }

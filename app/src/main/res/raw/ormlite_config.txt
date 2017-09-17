@@ -1,5 +1,5 @@
 #
-# generated on 2017/09/17 03:47:35
+# generated on 2017/09/17 06:33:03
 #
 # --table-start--
 dataClass=br.com.bg7.appvistoria.data.Config
@@ -104,11 +104,12 @@ fieldName=id
 generatedId=true
 # --field-end--
 # --field-start--
-fieldName=name
+fieldName=projectId
+columnName=projectId
 canBeNull=false
 # --field-end--
 # --field-start--
-fieldName=summary
+fieldName=projectDescription
 canBeNull=false
 # --field-end--
 # --field-start--
@@ -118,6 +119,11 @@ indexName=workorders_status_idx
 # --field-end--
 # --field-start--
 fieldName=endAt
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=locationId
+columnName=locationId
 canBeNull=false
 # --field-end--
 # --field-start--

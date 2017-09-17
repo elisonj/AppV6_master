@@ -32,7 +32,7 @@ public interface ProductSelectionContract {
     }
 
     interface Presenter extends BasePresenter {
-        void chooseQuantity(ProductSelectionItem item,  int quantity);
+        void quantitySelected(ProductSelectionItem item, Integer quantity);
 
         void cancelClicked();
 

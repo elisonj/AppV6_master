@@ -392,7 +392,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
              resetHolder(holder);
 
-             holder.name.setText(item.getName());
+             holder.name.setText(item.getProjectDescription());
              holder.shortSummary.setText(item.getShortSummary(MAX_SHORT_SUMMARY_SIZE));
              holder.date.setText(item.getEndAt(((LocalizationActivity)getActivity()).getLocale()));
              holder.status.setText(item.getStatus().toString());

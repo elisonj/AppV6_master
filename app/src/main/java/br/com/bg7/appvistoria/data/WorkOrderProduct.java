@@ -25,12 +25,8 @@ public class WorkOrderProduct {
         this.category = category;
     }
 
-    public String getProductType() {
-        return category.getProductTypeName();
-    }
-
-    public Long getProductTypeId() {
-        return category.getProductTypeId();
+    public WorkOrderProductType getProductType() {
+        return category.getProductType();
     }
 
     public WorkOrderCategory getCategory() {

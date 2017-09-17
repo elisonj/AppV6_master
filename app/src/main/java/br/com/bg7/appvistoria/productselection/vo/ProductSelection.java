@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.com.bg7.appvistoria.data.WorkOrderCategory;
 import br.com.bg7.appvistoria.data.WorkOrderProduct;
+import br.com.bg7.appvistoria.data.WorkOrderProductType;
 
 /**
  * Created by: elison
@@ -27,16 +29,16 @@ public class ProductSelection {
 
     public static List<ProductSelection> fromProducts(Context context, List<WorkOrderProduct> products) {
         ArrayList<ProductSelection> finalList = new ArrayList<>();
-        HashMap<ProductSelectionHeader, HashMap<String, Integer>> map = new HashMap<>();
+        HashMap<ProductSelectionHeader, HashMap<WorkOrderCategory, Integer>> map = new HashMap<>();
 
         for (WorkOrderProduct product : products) {
-            String productType = product.getProductType();
-            String category = product.getCategory().getName();
+            WorkOrderProductType productType = product.getProductType();
+            WorkOrderCategory category = product.getCategory();
 
-            ProductSelectionHeader header = new ProductSelectionHeader(product.getProductTypeId(), productType);
+            ProductSelectionHeader header = new ProductSelectionHeader(productType);
 
             if (!map.containsKey(header)) {
-                map.put(header, new HashMap<String, Integer>());
+                map.put(header, new HashMap<WorkOrderCategory, Integer>());
             }
 
             if (!map.get(header).containsKey(category)) {
@@ -46,11 +48,11 @@ public class ProductSelection {
             map.get(header).put(category, map.get(header).get(category) + 1);
         }
 
-        for (Map.Entry<ProductSelectionHeader, HashMap<String, Integer>> entry : map.entrySet()) {
+        for (Map.Entry<ProductSelectionHeader, HashMap<WorkOrderCategory, Integer>> entry : map.entrySet()) {
             ProductSelection selection = new ProductSelection();
             ArrayList<ProductSelectionItem> items = new ArrayList<>();
 
-            for (Map.Entry<String, Integer> categoryEntry : entry.getValue().entrySet()) {
+            for (Map.Entry<WorkOrderCategory, Integer> categoryEntry : entry.getValue().entrySet()) {
                 ProductSelectionItem item = new ProductSelectionItem(context, categoryEntry.getKey(), categoryEntry.getValue());
 
                 items.add(item);

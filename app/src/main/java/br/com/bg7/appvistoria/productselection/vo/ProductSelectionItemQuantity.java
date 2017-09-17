@@ -11,12 +11,10 @@ import br.com.bg7.appvistoria.R;
 
 public class ProductSelectionItemQuantity {
     private Context context;
-    private ProductSelectionItem item;
     private int quantity;
 
-    ProductSelectionItemQuantity(Context context, int quantity, ProductSelectionItem item) {
+    ProductSelectionItemQuantity(Context context, int quantity) {
         this.context = context;
-        this.item = item;
         this.quantity = quantity;
     }
 
@@ -31,9 +29,5 @@ public class ProductSelectionItemQuantity {
 
     public int getQuantity() {
         return quantity;
-    }
-
-    public void select(int quantity) {
-        item.select(quantity);
     }
 }

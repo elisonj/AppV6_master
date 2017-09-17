@@ -254,12 +254,12 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
                         @Override
                         public void onItemSelected(int position, ProductSelectionItemQuantity itemAtPosition) {
                             Integer quantitySelected = itemAtPosition.getQuantity();
-                            itemAtPosition.select(quantitySelected);
 
                             formatSelectedChild(quantitySelected, item, categoryHeader, category, categoryQuantity);
-                            presenter.chooseQuantity(item, quantitySelected);
                             quantitySelectionItem.setVisibility(View.GONE);
                             arrowItem.setImageDrawable(context.getResources().getDrawable(R.drawable.arrow_open_white, null));
+
+                            presenter.quantitySelected(item, quantitySelected);
                         }
                     }
             );

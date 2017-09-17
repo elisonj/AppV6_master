@@ -10,12 +10,11 @@ import static br.com.bg7.appvistoria.data.TestableSummaryWorkOrder.PROJECT;
 
 /**
  * Created by: luciolucio
- * Date: 2017-08-22
+ * Date: 2017-09-17
  */
 
- class CompletedWorkOrder extends WorkOrder {
-     CompletedWorkOrder() {
+class NotStartedWorkOrder extends WorkOrder {
+    NotStartedWorkOrder() {
         super(PROJECT, LOCATION, new ArrayList<WorkOrderProduct>());
-        this.finish();
     }
 }

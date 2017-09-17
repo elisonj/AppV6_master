@@ -53,7 +53,7 @@ public class ProductSelectionTest {
         ProductSelectionItem item = selection.getCategories().get(0);
 
         Assert.assertEquals("Carros & Motos", header.getTitle());
-        Assert.assertEquals("Carros", item.getCategory());
+        Assert.assertEquals("Carros", item.getCategory().getName());
         Assert.assertEquals(2, item.getCount());
     }
 
@@ -86,13 +86,13 @@ public class ProductSelectionTest {
         ProductSelectionItem item21 = selection2.getCategories().get(0);
 
         Assert.assertEquals("Imoveis", header2.getTitle());
-        Assert.assertEquals("Residencial", item21.getCategory());
+        Assert.assertEquals("Residencial", item21.getCategory().getName());
         Assert.assertEquals(1, item21.getCount());
 
         Assert.assertEquals("Carros & Motos", header1.getTitle());
-        Assert.assertEquals("Carros", item11.getCategory());
-        Assert.assertEquals(2, item11.getCount());
-        Assert.assertEquals("Motos", item12.getCategory());
-        Assert.assertEquals(1, item12.getCount());
+        Assert.assertEquals("Motos", item11.getCategory().getName());
+        Assert.assertEquals(1, item11.getCount());
+        Assert.assertEquals("Carros", item12.getCategory().getName());
+        Assert.assertEquals(2, item12.getCount());
     }
 }

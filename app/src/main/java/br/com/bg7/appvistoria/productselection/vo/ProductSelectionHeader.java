@@ -7,6 +7,8 @@ import com.google.common.base.Objects;
 
 import java.util.HashMap;
 
+import br.com.bg7.appvistoria.data.WorkOrderProductType;
+
 /**
  * Created by: luciolucio
  * Date: 2017-09-14
@@ -14,28 +16,28 @@ import java.util.HashMap;
 
 public class ProductSelectionHeader {
 
-    private Long id;
-    private String title;
+    private WorkOrderProductType productType;
     private static HashMap<Long, Drawable> drawables = new HashMap<>();
 
-    ProductSelectionHeader(Long id, String title) {
-        this.id = id;
-        this.title = title;
+    ProductSelectionHeader(WorkOrderProductType productType) {
+        this.productType = productType;
     }
 
     public String getTitle() {
-        return title;
+        return productType.getName();
     }
 
     // TODO: Falta a categoria 24: Artes, Decoração & Colecionismo
     public Drawable getImage(Context context) {
-        if (!drawables.containsKey(this.id)) {
-            int id = context.getResources().getIdentifier("product_type_" + this.id.toString(), "drawable", context.getPackageName());
+        Long externalId = productType.getExternalId();
 
-            drawables.put(this.id, context.getDrawable(id));
+        if (!drawables.containsKey(externalId)) {
+            int id = context.getResources().getIdentifier("product_type_" + externalId.toString(), "drawable", context.getPackageName());
+
+            drawables.put(externalId, context.getDrawable(id));
         }
 
-        return drawables.get(this.id);
+        return drawables.get(externalId);
     }
 
     @Override
@@ -43,12 +45,11 @@ public class ProductSelectionHeader {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductSelectionHeader that = (ProductSelectionHeader) o;
-        return Objects.equal(id, that.id) &&
-                Objects.equal(title, that.title);
+        return Objects.equal(productType, that.productType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, title);
+        return Objects.hashCode(productType);
     }
 }

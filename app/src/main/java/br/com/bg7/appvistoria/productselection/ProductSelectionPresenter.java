@@ -3,7 +3,8 @@ package br.com.bg7.appvistoria.productselection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import br.com.bg7.appvistoria.data.WorkOrder;
@@ -33,7 +34,7 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
     private Project project;
     private Location location;
     private List<WorkOrderProduct> products;
-    private HashMap<ProductSelectionItem, Integer> selectedItems = new HashMap<>();
+    private HashSet<ProductSelectionItem> selectedItems = new HashSet<>();
 
     ProductSelectionPresenter(Project project, Location location, ProductService productService, WorkOrderRepository workOrderRepository, ProductSelectionContract.View productSelectionView) {
         this.project = checkNotNull(project);
@@ -64,8 +65,9 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
     }
 
     @Override
-    public void chooseQuantity(ProductSelectionItem item, int quantity) {
-        selectedItems.put(item, quantity);
+    public void quantitySelected(ProductSelectionItem item, Integer quantity) {
+        item.select(quantity);
+        selectedItems.add(item);
 
         productSelectionView.showButtons();
     }
@@ -89,19 +91,17 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
 
     @Override
     public void confirmCreateWorkOrderClicked() {
-        // TODO: Criar de fato uma WorkOrder com os dados selecionados
-        WorkOrder workOrder = new WorkOrder(project.getDescription(), location.getAddress());
+        ArrayList<WorkOrderProduct> selectedProducts = new ArrayList<>();
 
-        List<WorkOrder> existingWorkOrders = workOrderRepository.findAllByProjectAndAddress(workOrder.getName(), location.getAddress());
+        for (ProductSelectionItem item : selectedItems) {
+            selectedProducts.addAll(item.getSelectedProducts());
+        }
+        WorkOrder workOrder = new WorkOrder(project, location, selectedProducts);
+        workOrderRepository.save(workOrder);
+
+        // TODO: Adicionar na existente
 
         productSelectionView.hideConfirmation();
-
-        if (existingWorkOrders.size() != 0) {
-            // TODO: Perguntar ao usuario se quer adicionar na WO existente
-            return;
-        }
-
-        workOrderRepository.save(workOrder);
         productSelectionView.showWorkOrderScreen();
     }
 
