@@ -39,7 +39,7 @@ public class WorkOrder {
     private String name;
 
     @DatabaseField(canBeNull = false)
-    private String summary = "";
+    String summary = "";
 
     @DatabaseField(index = true, canBeNull = false)
     private WorkOrderStatus status;

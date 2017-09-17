@@ -5,7 +5,6 @@ import junit.framework.Assert;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -41,70 +40,65 @@ public class WorkOrderTest {
     }
 
     @Test
-    @Ignore(value = "Ignoring because summaries are not implemented yet")
     public void shouldCropShortSummaries() {
 
-        ArrayList<SummaryTestCase> testCases = new ArrayList<>();
-        testCases.add(new SummaryTestCase(
+        int maxSummarySize = 40;
+
+        ArrayList<ShortSummaryTestCase> testCases = new ArrayList<>();
+        testCases.add(new ShortSummaryTestCase(
                 "Carros: 50, motos: 30, caminhões: 20",
                 "Carros: 50, motos: 30, caminhões: 20"));
-        testCases.add(new SummaryTestCase(
+        testCases.add(new ShortSummaryTestCase(
                 "Carros: 500, motos: 300, caminhões: 230",
                 "Carros: 500, motos: 300, caminhões: 230"));
-        testCases.add(new SummaryTestCase(
+        testCases.add(new ShortSummaryTestCase(
                 "Carros: 500, motos: 300, caminhões: 2305",
                 "Carros: 500, motos: 300, caminhões: 2305"));
-        testCases.add(new SummaryTestCase(
+        testCases.add(new ShortSummaryTestCase(
                 "Carros: 500, motos: 300, caminhões: 23057",
                 "Carros: 500, motos: 300..."));
-        testCases.add(new SummaryTestCase(
+        testCases.add(new ShortSummaryTestCase(
                 "Carros: 500, motos: 300, caminhões: 230, vans: 13",
                 "Carros: 500, motos: 300..."));
-        testCases.add(new SummaryTestCase(
+        testCases.add(new ShortSummaryTestCase(
                 "Carros: 500, motos: 300, caminhões: 23, vans: 13",
                 "Carros: 500, motos: 300..."));
-        testCases.add(new SummaryTestCase(
+        testCases.add(new ShortSummaryTestCase(
                 "Carros: 500, motos: 300, caminhões: 2, vans: 13",
                 "Carros: 500, motos: 300, caminhões: 2..."));
-        testCases.add(new SummaryTestCase(
+        testCases.add(new ShortSummaryTestCase(
                 "Carros: 500, motos: 300, caminhões: 2305, vans: 13",
                 "Carros: 500, motos: 300..."));
-        testCases.add(new SummaryTestCase(
+        testCases.add(new ShortSummaryTestCase(
                 "Carros: 500, motos: 300, caminhões: 23057, vans: 13",
                 "Carros: 500, motos: 300..."));
-        testCases.add(new SummaryTestCase(
+        testCases.add(new ShortSummaryTestCase(
                 "Carros: 50, motos: 30, caminhões: 20, vans: 13, empilhadeiras: 5, trator: 1",
                 "Carros: 50, motos: 30, caminhões: 20..."));
-        testCases.add(new SummaryTestCase(
+        testCases.add(new ShortSummaryTestCase(
                 "Motos: 300, caminhões: 200, trator: 14567",
                 "Motos: 300, caminhões: 200..."));
-        testCases.add(new SummaryTestCase(
+        testCases.add(new ShortSummaryTestCase(
                 "Motos: 30023, trator: 14567, caminhões: 200",
                 "Motos: 30023, trator: 14567..."));
-        testCases.add(new SummaryTestCase(
+        testCases.add(new ShortSummaryTestCase(
                 "Motos: 30023, trator: 14567, vans: 1333, caminhões: 200",
                 "Motos: 30023, trator: 14567..."));
 
 
-        for (SummaryTestCase testCase: testCases) {
-            testSummary(testCase.actual, testCase.expected);
+        for (ShortSummaryTestCase testCase: testCases) {
+            WorkOrder workOrder = new TestableWorkOrder("Projeto", "", testCase.fullSummary);
+            Assert.assertEquals(testCase.shortSummary, workOrder.getShortSummary(maxSummarySize));
         }
     }
 
-    private void testSummary(String actual, String expected) {
-        int maxSummarySize = 40;
+    private class ShortSummaryTestCase {
+        String fullSummary;
+        String shortSummary;
 
-        WorkOrder workOrder = new WorkOrder("Projeto", "");
-        Assert.assertEquals(expected, workOrder.getShortSummary(maxSummarySize));
-    }
-
-    private class SummaryTestCase {
-        String actual;
-        String expected;
-
-        SummaryTestCase(String actual, String expected) {
-            this.actual = actual;
-            this.expected = expected;
+        ShortSummaryTestCase(String fullSummary, String shortSummary) {
+            this.fullSummary = fullSummary;
+            this.shortSummary = shortSummary;
         }
     }
 }
