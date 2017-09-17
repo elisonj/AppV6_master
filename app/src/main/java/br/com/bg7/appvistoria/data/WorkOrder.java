@@ -24,23 +24,19 @@ import br.com.bg7.appvistoria.workorder.WorkOrderStatus;
 @DatabaseTable(tableName = "workorders")
 public class WorkOrder {
 
-    private int shortSummarySize = -1;
-
     private final static String ELLIPSIS = "...";
     private final static int ELLIPSIS_SIZE = ELLIPSIS.length();
     private final static String SEPARATOR = ",";
-
-    private String shortSummary;
-
-    @DatabaseField(generatedId = true)
-    private Long id;
-
-    @DatabaseField(canBeNull = false)
-    private String name;
-
+    // TODO: Voltar isso para privado
     @DatabaseField(canBeNull = false)
     String summary = "";
-
+    boolean summaryIsDirty = true;
+    private int shortSummarySize = -1;
+    private String shortSummary;
+    @DatabaseField(generatedId = true)
+    private Long id;
+    @DatabaseField(canBeNull = false)
+    private String name;
     @DatabaseField(index = true, canBeNull = false)
     private WorkOrderStatus status;
 
@@ -61,7 +57,8 @@ public class WorkOrder {
      */
     @SuppressWarnings("unused")
     // TODO: Verificar se precisamos mesmo ter esse método público - WorkOrder
-    public WorkOrder() {}
+    public WorkOrder() {
+    }
 
     public WorkOrder(String name, String address) {
         this.name = name;
@@ -70,12 +67,17 @@ public class WorkOrder {
         this.endAt = DateTime.now();
     }
 
+    public void addProduct(WorkOrderProduct product) {
+        products.add(product);
+        summaryIsDirty = true;
+    }
+
     public String getName() {
         return name;
     }
 
     public String getShortSummary(int maxSize) {
-        if (maxSize != shortSummarySize) {
+        if (maxSize != shortSummarySize || summaryIsDirty) {
             shortSummarySize = maxSize;
             shortSummary = ellipsizeShortSummary(maxSize);
         }
@@ -83,7 +85,6 @@ public class WorkOrder {
         return shortSummary;
     }
 
-    // TODO: Implementar summary assim que tiver os dados das inspecoes
     public String getSummary() {
         return "";
     }
