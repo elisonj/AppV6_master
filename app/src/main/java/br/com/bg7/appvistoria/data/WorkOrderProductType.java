@@ -19,7 +19,7 @@ public class WorkOrderProductType {
     @DatabaseField(canBeNull = false)
     private Long externalId;
 
-    @DatabaseField(canBeNull = false, foreign = true)
+    @DatabaseField(canBeNull = false)
     private String name;
 
     @SuppressWarnings("unused")
