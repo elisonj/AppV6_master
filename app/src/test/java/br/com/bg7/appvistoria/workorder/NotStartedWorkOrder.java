@@ -15,6 +15,6 @@ import static br.com.bg7.appvistoria.data.TestableSummaryWorkOrder.PROJECT;
 
 class NotStartedWorkOrder extends WorkOrder {
     NotStartedWorkOrder() {
-        super(PROJECT, LOCATION, new ArrayList<WorkOrderProduct>());
+        super(PROJECT, LOCATION);
     }
 }

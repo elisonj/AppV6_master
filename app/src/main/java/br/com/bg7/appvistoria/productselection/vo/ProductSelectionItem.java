@@ -7,6 +7,7 @@ import com.google.common.base.Objects;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.bg7.appvistoria.data.WorkOrder;
 import br.com.bg7.appvistoria.data.WorkOrderCategory;
 import br.com.bg7.appvistoria.data.WorkOrderProduct;
 
@@ -61,11 +62,11 @@ public class ProductSelectionItem {
         return selected;
     }
 
-    public List<WorkOrderProduct> getSelectedProducts() {
+    public List<WorkOrderProduct> getSelectedProducts(WorkOrder workOrder) {
         ArrayList<WorkOrderProduct> products = new ArrayList<>();
 
         for (int i = 0; i < selected; i++) {
-            products.add(new WorkOrderProduct(category));
+            products.add(new WorkOrderProduct(category, workOrder));
         }
 
         return products;

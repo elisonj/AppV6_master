@@ -15,7 +15,7 @@ import static br.com.bg7.appvistoria.data.TestableSummaryWorkOrder.PROJECT;
 
 public class InProgressWorkOrder extends WorkOrder {
     public InProgressWorkOrder() {
-        super(PROJECT, LOCATION, new ArrayList<WorkOrderProduct>());
+        super(PROJECT, LOCATION);
         this.start();
     }
 }

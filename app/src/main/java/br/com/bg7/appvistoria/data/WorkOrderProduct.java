@@ -30,6 +30,11 @@ public class WorkOrderProduct {
         this.category = category;
     }
 
+    public WorkOrderProduct(WorkOrderCategory category, WorkOrder workOrder) {
+        this(category);
+        this.workOrder = workOrder;
+    }
+
     public WorkOrderProductType getProductType() {
         return category.getProductType();
     }

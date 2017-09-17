@@ -69,7 +69,7 @@ public class WorkOrder {
     @ForeignCollectionField
     private Collection<Inspection> inspections = new ArrayList<>();
 
-    @ForeignCollectionField(eager = true)
+    @ForeignCollectionField
     private Collection<WorkOrderProduct> products = new ArrayList<>();
 
     @SuppressWarnings("unused")
@@ -77,23 +77,19 @@ public class WorkOrder {
         // used by ormlite
     }
 
-    public WorkOrder(Project project, Location location, List<WorkOrderProduct> workOrderProducts) {
+    public WorkOrder(Project project, Location location) {
         this.projectId = project.getId();
         this.projectDescription = project.getDescription();
 
         this.locationId = location.getId();
         this.address = location.getAddress();
 
-        for (WorkOrderProduct product : workOrderProducts) {
-            addProduct(product);
-        }
-
         this.status = WorkOrderStatus.NOT_STARTED;
         this.endAt = DateTime.now();
     }
 
-    public void addProduct(WorkOrderProduct product) {
-        products.add(product);
+    public void addProducts(List<WorkOrderProduct> products) {
+        this.products.addAll(products);
         summaryIsDirty = true;
     }
 

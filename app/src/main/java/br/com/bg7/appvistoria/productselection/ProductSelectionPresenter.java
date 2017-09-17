@@ -91,12 +91,12 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
 
     @Override
     public void confirmCreateWorkOrderClicked() {
-        ArrayList<WorkOrderProduct> selectedProducts = new ArrayList<>();
+        WorkOrder workOrder = new WorkOrder(project, location);
 
         for (ProductSelectionItem item : selectedItems) {
-            selectedProducts.addAll(item.getSelectedProducts());
+            workOrder.addProducts(item.getSelectedProducts(workOrder));
         }
-        WorkOrder workOrder = new WorkOrder(project, location, selectedProducts);
+
         workOrderRepository.save(workOrder);
 
         // TODO: Adicionar na existente

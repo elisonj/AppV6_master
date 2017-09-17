@@ -34,7 +34,7 @@ public class WorkOrderPresenterTest extends UserLoggedInTest {
 
     private WorkOrderPresenter workOrderPresenter;
 
-    private WorkOrder workOrder = new WorkOrder(PROJECT, LOCATION, new ArrayList<WorkOrderProduct>());
+    private WorkOrder workOrder = new WorkOrder(PROJECT, LOCATION);
 
     @Before
     public void setUp() throws IOException {

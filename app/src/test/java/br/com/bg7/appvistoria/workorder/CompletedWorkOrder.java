@@ -15,7 +15,7 @@ import static br.com.bg7.appvistoria.data.TestableSummaryWorkOrder.PROJECT;
 
  class CompletedWorkOrder extends WorkOrder {
      CompletedWorkOrder() {
-        super(PROJECT, LOCATION, new ArrayList<WorkOrderProduct>());
+        super(PROJECT, LOCATION);
         this.finish();
     }
 }

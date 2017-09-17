@@ -33,10 +33,8 @@ class WorkOrderSummaryTestCase {
     }
 
     void run() {
-        WorkOrder workOrder = new WorkOrder(PROJECT, LOCATION, new ArrayList<WorkOrderProduct>());
-        for (WorkOrderProduct product : this.products) {
-            workOrder.addProduct(product);
-        }
+        WorkOrder workOrder = new WorkOrder(PROJECT, LOCATION);
+        workOrder.addProducts(this.products);
 
         Assert.assertEquals(this.expectedSummary, workOrder.getSummary());
     }

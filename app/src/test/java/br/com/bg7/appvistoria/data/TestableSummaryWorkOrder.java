@@ -18,7 +18,7 @@ public class TestableSummaryWorkOrder extends WorkOrder {
     private String summary;
 
     TestableSummaryWorkOrder(String summary) {
-        super(PROJECT, LOCATION, new ArrayList<WorkOrderProduct>());
+        super(PROJECT, LOCATION);
         this.summary = summary;
     }
 
