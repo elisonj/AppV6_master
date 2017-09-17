@@ -20,6 +20,7 @@ import br.com.bg7.appvistoria.productselection.vo.ProductSelection;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelectionHeader;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelectionItem;
 import br.com.bg7.appvistoria.productselection.vo.ProductSelectionItemQuantity;
+import me.srodrigo.androidhintspinner.HintAdapter;
 import me.srodrigo.androidhintspinner.HintSpinner;
 
 /**
@@ -248,7 +249,7 @@ public class ProductSelectionAdapter extends BaseExpandableListAdapter {
 
             this.spinner = new HintSpinner<>(
                     spinner,
-                    new ProductSelectionItemQuantityAdapter(context, item),
+                    new HintAdapter<>(context, context.getString(R.string.spinner_hint), item.getQuantities()),
                     new HintSpinner.Callback<ProductSelectionItemQuantity>() {
                         @Override
                         public void onItemSelected(int position, ProductSelectionItemQuantity itemAtPosition) {

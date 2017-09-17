@@ -1,5 +1,8 @@
 package br.com.bg7.appvistoria.productselection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,6 +24,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Date: 2017-09-05
  */
 public class ProductSelectionPresenter implements ProductSelectionContract.Presenter {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ProductSelectionPresenter.class);
 
     private ProductService productService;
     private final WorkOrderRepository workOrderRepository;
@@ -53,6 +58,7 @@ public class ProductSelectionPresenter implements ProductSelectionContract.Prese
             }
             @Override
             public void onFailure(Throwable t) {
+                LOG.error("Falha ao buscar produtos por projeto e localidade", t);
                 productSelectionView.showConnectivityError();
             }
         });
