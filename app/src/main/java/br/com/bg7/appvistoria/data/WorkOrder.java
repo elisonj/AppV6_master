@@ -61,12 +61,9 @@ public class WorkOrder {
     @ForeignCollectionField
     private Collection<WorkOrderProduct> products = new ArrayList<>();
 
-    /**
-     * Default constructor used by ormlite
-     */
     @SuppressWarnings("unused")
-    // TODO: Verificar se precisamos mesmo ter esse método público - WorkOrder
-    public WorkOrder() {
+    WorkOrder() {
+        // used by ormlite
     }
 
     public WorkOrder(String name, String address) {

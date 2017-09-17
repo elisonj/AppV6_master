@@ -30,7 +30,7 @@ public class WorkOrderPresenterTest extends UserLoggedInTest {
 
     private WorkOrderPresenter workOrderPresenter;
 
-    private WorkOrder workOrder = new WorkOrder();
+    private WorkOrder workOrder = new WorkOrder("", "");
 
     @Before
     public void setUp() throws IOException {
