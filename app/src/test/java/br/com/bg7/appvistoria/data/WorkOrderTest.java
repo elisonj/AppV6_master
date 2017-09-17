@@ -24,6 +24,7 @@ public class WorkOrderTest {
     private static final WorkOrderProductType PRODUCT_TYPE = new WorkOrderProductType(10L, "PRODUCT_TYPE");
     private static final WorkOrderCategory MOTOS = new WorkOrderCategory("Motos", PRODUCT_TYPE);
     private static final WorkOrderCategory CARROS = new WorkOrderCategory("Carros", PRODUCT_TYPE);
+    private static final WorkOrderCategory CAMINHOES = new WorkOrderCategory("Caminhões", PRODUCT_TYPE);
 
     @Before
     public void setUp() {
@@ -107,6 +108,18 @@ public class WorkOrderTest {
                     .expectedSummary("Carros: 1, Motos: 2")
                     .withProducts(CARROS, 1)
                     .withProducts(MOTOS, 2));
+            add(WorkOrderSummaryTestCase
+                    .expectedSummary("Carros: 15")
+                    .withProducts(CARROS, 15));
+            add(WorkOrderSummaryTestCase
+                    .expectedSummary("Carros: 150, Caminhões: 80")
+                    .withProducts(CARROS, 150)
+                    .withProducts(CAMINHOES, 80));
+            add(WorkOrderSummaryTestCase
+                    .expectedSummary("Motos: 7, Caminhões: 21")
+                    .withProducts(CAMINHOES, 20)
+                    .withProducts(MOTOS, 7)
+                    .withProducts(CAMINHOES, 1));
         }};
 
         for (WorkOrderSummaryTestCase testCase : testCases) {

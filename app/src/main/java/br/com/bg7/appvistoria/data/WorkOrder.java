@@ -1,5 +1,6 @@
 package br.com.bg7.appvistoria.data;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
@@ -11,10 +12,11 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import br.com.bg7.appvistoria.BuildConfig;
-import br.com.bg7.appvistoria.productselection.vo.ProductSelectionItem;
 import br.com.bg7.appvistoria.workorder.WorkOrderStatus;
 
 /**
@@ -27,8 +29,9 @@ public class WorkOrder {
     private final static String ELLIPSIS = "...";
     private final static int ELLIPSIS_SIZE = ELLIPSIS.length();
     private final static String SEPARATOR = ",";
+    private static final String SUMMARY_ITEM_SEPARATOR = ": ";
+    private static final String SUMMARY_ENTRY_SEPARATOR = ", ";
 
-    @DatabaseField(canBeNull = false)
     private String summary = "";
 
     private boolean summaryIsDirty = true;
@@ -92,7 +95,29 @@ public class WorkOrder {
     }
 
     public String getSummary() {
-        return "";
+        if (!summaryIsDirty) {
+            return summary;
+        }
+
+        HashMap<String, Integer> summaryData = new HashMap<>();
+
+        for (WorkOrderProduct product : products) {
+            String category = product.getCategory().getName();
+
+            if (!summaryData.containsKey(category)) {
+                summaryData.put(category, 0);
+            }
+
+            summaryData.put(category, summaryData.get(category) + 1);
+        }
+
+        ArrayList<String> summaryEntries = new ArrayList<>();
+        for (Map.Entry<String, Integer> summaryItem : summaryData.entrySet()) {
+            summaryEntries.add(summaryItem.getKey() + SUMMARY_ITEM_SEPARATOR + summaryItem.getValue());
+        }
+
+        summary = Joiner.on(SUMMARY_ENTRY_SEPARATOR).join(summaryEntries);
+        return summary;
     }
 
     public WorkOrderStatus getStatus() {
