@@ -11,4 +11,8 @@
     <color name="in_progress">#FF0552a1</color>
     <color name="edit_default">#474d51</color>
     <color name="edit_highlight">#00539b</color>
+    <color name="item_orange">#f05f2a</color>
+    <color name="item_default">#f4f5f9</color>
+    <color name="item_font_default">#484d51</color>
+    <color name="white">#ffffff</color>
 </resources>

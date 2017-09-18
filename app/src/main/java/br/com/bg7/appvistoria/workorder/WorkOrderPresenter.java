@@ -37,7 +37,7 @@ public class WorkOrderPresenter implements WorkOrderContract.Presenter{
         Config config = configRepository.findByUser(Auth.user());
         String language = config.getLanguageName();
 
-        List<WorkOrder> workOrderList =  workOrderRepository.findAllOrderByStatus(language);
+        List<WorkOrder> workOrderList =  workOrderRepository.findAllOrderByStatus();
         if (workOrderList.size() <= 0) {
             workOrderView.showNewWorkOrderScreen();
             return;

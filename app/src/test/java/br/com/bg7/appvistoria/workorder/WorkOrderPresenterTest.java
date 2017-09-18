@@ -7,12 +7,16 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.bg7.appvistoria.UserLoggedInTest;
 import br.com.bg7.appvistoria.data.WorkOrder;
+import br.com.bg7.appvistoria.data.WorkOrderProduct;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeWorkOrderRepository;
 
+import static br.com.bg7.appvistoria.data.TestableSummaryWorkOrder.LOCATION;
+import static br.com.bg7.appvistoria.data.TestableSummaryWorkOrder.PROJECT;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -30,22 +34,22 @@ public class WorkOrderPresenterTest extends UserLoggedInTest {
 
     private WorkOrderPresenter workOrderPresenter;
 
-    private WorkOrder workOrder = new WorkOrder();
+    private WorkOrder workOrder = new WorkOrder(PROJECT, LOCATION);
 
     @Before
     public void setUp() throws IOException {
         super.setUp();
         MockitoAnnotations.initMocks(this);
 
-        workOrderRepository.save(new InProgressWorkOrder("Projeto 1", "Resumo completo", ""));
-        workOrderRepository.save(new CompletedWorkOrder("Projeto 2", "Resumo completo", ""));
-        workOrderRepository.save(new WorkOrder("Projeto 3", "Resumo completo", ""));
-        workOrderRepository.save(new InProgressWorkOrder("Projeto 4", "Resumo completo", ""));
-        workOrderRepository.save(new CompletedWorkOrder("Projeto 5", "Resumo completo", ""));
-        workOrderRepository.save(new WorkOrder("Projeto 6", "Resumo completo", ""));
-        workOrderRepository.save(new InProgressWorkOrder("Projeto 7", "Resumo completo", ""));
-        workOrderRepository.save(new CompletedWorkOrder("Projeto 8", "Resumo completo", ""));
-        workOrderRepository.save(new WorkOrder("Projeto 9", "Resumo completo", ""));
+        workOrderRepository.save(new InProgressWorkOrder());
+        workOrderRepository.save(new CompletedWorkOrder());
+        workOrderRepository.save(new NotStartedWorkOrder());
+        workOrderRepository.save(new InProgressWorkOrder());
+        workOrderRepository.save(new CompletedWorkOrder());
+        workOrderRepository.save(new NotStartedWorkOrder());
+        workOrderRepository.save(new InProgressWorkOrder());
+        workOrderRepository.save(new CompletedWorkOrder());
+        workOrderRepository.save(new NotStartedWorkOrder());
 
         workOrderPresenter =  new WorkOrderPresenter(workOrderRepository, configRepository, workOrderView);
 
@@ -60,7 +64,7 @@ public class WorkOrderPresenterTest extends UserLoggedInTest {
 
     @Test
     public void shouldShowListItemsWhenStart() {
-        List<WorkOrder> workOrderList =  workOrderRepository.findAllOrderByStatus(null);
+        List<WorkOrder> workOrderList =  workOrderRepository.findAllOrderByStatus();
         verify(workOrderView).showList(ArgumentMatchers.eq(workOrderList),ArgumentMatchers.eq(false));
     }
 

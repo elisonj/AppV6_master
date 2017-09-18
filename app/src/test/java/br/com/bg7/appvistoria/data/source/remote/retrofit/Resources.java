@@ -39,5 +39,6 @@ public class Resources {
     public final static File FILE_2048_TXT = getFileFromPath("file2048.txt");
     public final static File FILE_4096_TXT = getFileFromPath("file4096.txt");
     public final static File FILE_3800_TXT = getFileFromPath("file3800.txt");
+    public final static String GET_COMMERCIAL_PROJECT_RESPONSE_JSON = getFileContents("projectService/getCommercialProjectResponse.json");
     public final static String GET_TOKEN_RESPONSE_JSON = getFileContents("tokenService/getTokenResponse.json");
 }

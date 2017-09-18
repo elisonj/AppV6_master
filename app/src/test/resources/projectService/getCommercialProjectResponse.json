@@ -1,0 +1,58 @@
+{
+  "total": 159,
+  "start": 0,
+  "limit": 3,
+  "elements": [
+    {
+      "id": 74,
+      "description": "74 - Carros variados",
+      "statusId": 1,
+      "statusDesc": "Aberta",
+      "closeAt": "2019-03-27T13:45:48.000-04:00",
+      "ownerId": 1,
+      "createdAt": "2017-07-19T09:24:19.000-04:00",
+      "updatedAt": "2017-08-23T14:18:58.000-04:00",
+      "productsPerSubCategory": {
+        "total": 340,
+        "items": [
+          {
+            "subCategoryId": 11292,
+            "subCategoryDesc": "Motores",
+            "count": 1
+          }
+        ]
+      },
+      "storeId": 9
+    },
+    {
+      "id": 88,
+      "description": "88 - Carros e motos",
+      "statusId": 1,
+      "statusDesc": "Aberta",
+      "closeAt": "2019-03-27T13:45:48.000-04:00",
+      "ownerId": 1,
+      "createdAt": "2017-07-20T14:11:32.000-04:00",
+      "updatedAt": "2017-08-15T17:20:45.000-04:00",
+      "productsPerSubCategory": {
+        "total": 0,
+        "items": []
+      },
+      "storeId": 9
+    },
+    {
+      "id": 76,
+      "description": "76 - Apartamentos no Brooklin",
+      "statusId": 1,
+      "statusDesc": "Aberta",
+      "closeAt": "2019-03-27T13:45:48.000-04:00",
+      "ownerId": 1,
+      "createdAt": "2017-07-19T09:25:27.000-04:00",
+      "updatedAt": "2017-08-15T17:20:45.000-04:00",
+      "productsPerSubCategory": {
+        "total": 0,
+        "items": []
+      },
+      "storeId": 9
+    }
+  ]
+}

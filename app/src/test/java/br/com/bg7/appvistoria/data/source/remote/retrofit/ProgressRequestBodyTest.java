@@ -117,7 +117,7 @@ public class ProgressRequestBodyTest {
 
         ProgressTestCase(File file, double[] expected) {
             this.expected = expected;
-            this.file = this.file;
+            this.file = file;
         }
     }
 }

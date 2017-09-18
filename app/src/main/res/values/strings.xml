@@ -42,10 +42,22 @@
     <string name="next">PRÓXIMO</string>
     <string name="required">Campo obrigatório</string>
     <string name="ico_idproject">icon id projeto</string>
-    <string name="ico_address">icon endereço</string>
+    <string name="ico_location">icon endereço</string>
     <string name="ico_loading">Loading</string>
     <string name="id_project">ID e/ou Projeto</string>
     <string name="full_address">Endereço completo</string>
     <string name="search">Busca</string>
     <string name="confirm_new_workorder">Deseja criar uma nova visita?</string>
+    <string name="product_selection_available_items_single_format">%1$d disponível</string>
+    <string name="product_selection_available_items_multiple_format">%1$d disponíveis</string>
+    <string name="product_selection_title_format">Ativos de ID %1$d</string>
+    <string name="product_selection_select_quantity">Determine a quantidade a inspecionar </string>
+    <string name="product_selection_item_single_format">%1$d ativo</string>
+    <string name="product_selection_item_multiple_format">%1$d ativos</string>
+    <string name="product_selection_summary_format">%1$d de %2$d a inspecionar</string>
+    <string name="product_selection_category_header_format">%1$s: </string>
+    <string name="ico_category">Categoria</string>
+    <string name="create_workorder">CRIAR VISITA</string>
+    <string name="confirm_create_workorder">Deseja criar uma nova visita\ncom os ativos selecionados?</string>
+    <string name="could_not_load_data_error">Não foi possível carregar os dados.\nPor favor, tente novamente mais tarde.</string>
 </resources>

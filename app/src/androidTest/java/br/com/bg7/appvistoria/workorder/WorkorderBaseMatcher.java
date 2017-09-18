@@ -23,7 +23,7 @@ public class WorkorderBaseMatcher {
 
             @Override
             public boolean matchesSafely(WorkOrder item) {
-                return item.getName().toUpperCase().equals(String.valueOf(value));
+                return item.getProjectDescription().toUpperCase().equals(String.valueOf(value));
             }
         };
     }

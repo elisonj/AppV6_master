@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import br.com.bg7.appvistoria.BaseActivity;
 import br.com.bg7.appvistoria.data.servicelocator.ServiceLocator;
-import br.com.bg7.appvistoria.data.source.remote.stub.StubProjectService;
 
 /**
  * Created by: elison

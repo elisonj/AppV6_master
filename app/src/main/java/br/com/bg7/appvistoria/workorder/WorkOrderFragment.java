@@ -88,7 +88,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
     }
 
     private void initializeViewElements(View root) {
-        listView = root.findViewById(R.id.listview);
+        listView = root.findViewById(R.id.product_list);
         emptyLayout = root.findViewById(R.id.empty_layout);
         floatingActionButton = root.findViewById(R.id.floatingActionButton);
         openMapConfirmDialog = new ConfirmDialog(getContext(), getString(R.string.confirm_open_maps));
@@ -303,7 +303,6 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
          private boolean showMapButtons;
          private WorkOrder expandedWorkOrder = null;
-         private View.OnClickListener cancelButton;
 
          private List<WorkOrder> list = new ArrayList<>();
 
@@ -393,7 +392,7 @@ public class WorkOrderFragment extends Fragment implements  WorkOrderContract.Vi
 
              resetHolder(holder);
 
-             holder.name.setText(item.getName());
+             holder.name.setText(item.getProjectDescription());
              holder.shortSummary.setText(item.getShortSummary(MAX_SHORT_SUMMARY_SIZE));
              holder.date.setText(item.getEndAt(((LocalizationActivity)getActivity()).getLocale()));
              holder.status.setText(item.getStatus().toString());
