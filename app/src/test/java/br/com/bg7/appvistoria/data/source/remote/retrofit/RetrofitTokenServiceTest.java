@@ -44,7 +44,7 @@ public class RetrofitTokenServiceTest extends ServiceTest {
     public void shouldConvertJsonToToken() throws IOException, InterruptedException {
         setUpResponse(GET_TOKEN_RESPONSE_JSON);
 
-        tokenService.getToken("user", "pwd", new VerifyCallback<Token>() {
+        tokenService.getToken("user", "pwd", new VerifySuccessCallback<Token>() {
             @Override
             protected void verify(Token value) {
                 Assert.assertEquals("12b9646778ffdasdasdfc746f", value.getAccessToken());

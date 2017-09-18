@@ -7,12 +7,12 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/bt_home"
+        android:id="@+id/bt_back"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_margin="5dp"
         android:contentDescription="@string/app_name"
-        app:srcCompat="@drawable/bt_home" />
+        app:srcCompat="@drawable/bt_back" />
 
     <ImageView
         android:layout_width="40dp"

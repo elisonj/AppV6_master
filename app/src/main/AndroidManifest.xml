@@ -14,12 +14,12 @@
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme"
-        tools:replace="allowBackup, label"
         android:allowBackup="false"
+        tools:replace="android:allowBackup"
         android:supportsRtl="true"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".product.ProductActivity"
+        <activity android:name=".productselection.ProductSelectionActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|locale">
 

@@ -12,9 +12,9 @@ import br.com.bg7.appvistoria.data.source.local.android.SharedPreferencesAuthRep
 import br.com.bg7.appvistoria.data.source.local.ormlite.OrmLiteConfigRepository;
 import br.com.bg7.appvistoria.data.source.local.ormlite.OrmLiteUserRepository;
 import br.com.bg7.appvistoria.data.source.local.stub.StubInspectionRepository;
-import br.com.bg7.appvistoria.data.source.local.stub.StubWorkOrderRepository;
 import br.com.bg7.appvistoria.data.source.remote.InspectionService;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
+import br.com.bg7.appvistoria.data.source.local.ormlite.OrmLiteWorkOrderRepository;
 import br.com.bg7.appvistoria.data.source.remote.ProductService;
 import br.com.bg7.appvistoria.data.source.remote.ProjectService;
 import br.com.bg7.appvistoria.data.source.remote.TokenService;
@@ -57,7 +57,7 @@ class ReleaseServiceLocator extends ServiceLocator {
 
     @Override
     public WorkOrderRepository getWorkOrderRepository() {
-        return new StubWorkOrderRepository();
+        return new OrmLiteWorkOrderRepository(baseActivity.getWorkOrderDao());
     }
 
     @Override

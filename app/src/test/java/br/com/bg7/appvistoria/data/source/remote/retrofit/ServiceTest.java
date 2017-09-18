@@ -45,11 +45,19 @@ class ServiceTest extends UserLoggedInTest {
         );
     }
 
+    void setUpErrorResponse(String body) {
+        mockWebServer.enqueue(
+                new MockResponse()
+                        .setBody(body)
+                        .setResponseCode(400)
+        );
+    }
+
     void waitForServerToRespond() throws InterruptedException {
         Assert.assertTrue(lock.await(TIMEOUT, TimeUnit.MILLISECONDS));
     }
 
-    abstract class VerifyCallback<T> implements HttpCallback<T> {
+    abstract class VerifySuccessCallback<T> implements HttpCallback<T> {
 
         @Override
         public void onResponse(HttpResponse<T> httpResponse) {
@@ -66,6 +74,21 @@ class ServiceTest extends UserLoggedInTest {
         }
 
         protected abstract void verify(T value);
+    }
+
+    class VerifyFailureCallback<T> implements HttpCallback<T> {
+
+        @Override
+        public void onResponse(HttpResponse<T> httpResponse) {
+            Assert.fail();
+        }
+
+        @Override
+        public void onFailure(Throwable t) {
+            Assert.assertTrue(t instanceof BadResponseException);
+
+            lock.countDown();
+        }
     }
 
     class EmptyCallback<T> implements HttpCallback<T> {

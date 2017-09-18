@@ -8,7 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import br.com.bg7.appvistoria.workorder.InProgressWorkOrder;
 
@@ -19,6 +21,11 @@ import br.com.bg7.appvistoria.workorder.InProgressWorkOrder;
 
 public class WorkOrderTest {
 
+    private static final WorkOrderProductType PRODUCT_TYPE = new WorkOrderProductType(10L, "PRODUCT_TYPE");
+    private static final WorkOrderCategory MOTOS = new WorkOrderCategory("Motos", PRODUCT_TYPE);
+    private static final WorkOrderCategory CARROS = new WorkOrderCategory("Carros", PRODUCT_TYPE);
+    private static final WorkOrderCategory CAMINHOES = new WorkOrderCategory("Caminhões", PRODUCT_TYPE);
+
     @Before
     public void setUp() {
         DateTime date = new DateTime(2017, 8, 22, 0, 0, 0);
@@ -27,7 +34,7 @@ public class WorkOrderTest {
 
     @Test
     public void shouldShowLocalizedDates() {
-        WorkOrder wo = new InProgressWorkOrder("", "", "");
+        WorkOrder wo = new InProgressWorkOrder();
 
         String date = wo.getEndAt(new Locale("pt", "BR"));
         Assert.assertEquals("22/08/2017", date);
@@ -42,67 +49,81 @@ public class WorkOrderTest {
     @Test
     public void shouldCropShortSummaries() {
 
-        ArrayList<SummaryTestCase> testCases = new ArrayList<>();
-        testCases.add(new SummaryTestCase(
+        int maxSummarySize = 40;
+
+        HashMap<String, String> testCases = new HashMap<>();
+        testCases.put(
                 "Carros: 50, motos: 30, caminhões: 20",
-                "Carros: 50, motos: 30, caminhões: 20"));
-        testCases.add(new SummaryTestCase(
+                "Carros: 50, motos: 30, caminhões: 20");
+        testCases.put(
                 "Carros: 500, motos: 300, caminhões: 230",
-                "Carros: 500, motos: 300, caminhões: 230"));
-        testCases.add(new SummaryTestCase(
+                "Carros: 500, motos: 300, caminhões: 230");
+        testCases.put(
                 "Carros: 500, motos: 300, caminhões: 2305",
-                "Carros: 500, motos: 300, caminhões: 2305"));
-        testCases.add(new SummaryTestCase(
+                "Carros: 500, motos: 300, caminhões: 2305");
+        testCases.put(
                 "Carros: 500, motos: 300, caminhões: 23057",
-                "Carros: 500, motos: 300..."));
-        testCases.add(new SummaryTestCase(
+                "Carros: 500, motos: 300...");
+        testCases.put(
                 "Carros: 500, motos: 300, caminhões: 230, vans: 13",
-                "Carros: 500, motos: 300..."));
-        testCases.add(new SummaryTestCase(
+                "Carros: 500, motos: 300...");
+        testCases.put(
                 "Carros: 500, motos: 300, caminhões: 23, vans: 13",
-                "Carros: 500, motos: 300..."));
-        testCases.add(new SummaryTestCase(
+                "Carros: 500, motos: 300...");
+        testCases.put(
                 "Carros: 500, motos: 300, caminhões: 2, vans: 13",
-                "Carros: 500, motos: 300, caminhões: 2..."));
-        testCases.add(new SummaryTestCase(
+                "Carros: 500, motos: 300, caminhões: 2...");
+        testCases.put(
                 "Carros: 500, motos: 300, caminhões: 2305, vans: 13",
-                "Carros: 500, motos: 300..."));
-        testCases.add(new SummaryTestCase(
+                "Carros: 500, motos: 300...");
+        testCases.put(
                 "Carros: 500, motos: 300, caminhões: 23057, vans: 13",
-                "Carros: 500, motos: 300..."));
-        testCases.add(new SummaryTestCase(
+                "Carros: 500, motos: 300...");
+        testCases.put(
                 "Carros: 50, motos: 30, caminhões: 20, vans: 13, empilhadeiras: 5, trator: 1",
-                "Carros: 50, motos: 30, caminhões: 20..."));
-        testCases.add(new SummaryTestCase(
+                "Carros: 50, motos: 30, caminhões: 20...");
+        testCases.put(
                 "Motos: 300, caminhões: 200, trator: 14567",
-                "Motos: 300, caminhões: 200..."));
-        testCases.add(new SummaryTestCase(
+                "Motos: 300, caminhões: 200...");
+        testCases.put(
                 "Motos: 30023, trator: 14567, caminhões: 200",
-                "Motos: 30023, trator: 14567..."));
-        testCases.add(new SummaryTestCase(
+                "Motos: 30023, trator: 14567...");
+        testCases.put(
                 "Motos: 30023, trator: 14567, vans: 1333, caminhões: 200",
-                "Motos: 30023, trator: 14567..."));
+                "Motos: 30023, trator: 14567...");
 
+        for (Map.Entry<String, String> testCase : testCases.entrySet()) {
+            String fullSummary = testCase.getKey();
+            String expectedShortSummary = testCase.getValue();
 
-        for (SummaryTestCase testCase: testCases) {
-            testSummary(testCase.actual, testCase.expected);
+            WorkOrder workOrder = new TestableSummaryWorkOrder(fullSummary);
+            Assert.assertEquals(expectedShortSummary, workOrder.getShortSummary(maxSummarySize));
         }
     }
 
-    private void testSummary(String actual, String expected) {
-        int maxSummarySize = 40;
+    @Test
+    public void shouldCreateSummaries() {
+        ArrayList<WorkOrderSummaryTestCase> testCases = new ArrayList<WorkOrderSummaryTestCase>() {{
+            add(WorkOrderSummaryTestCase
+                    .expectedSummary("Carros: 1, Motos: 2")
+                    .withProducts(CARROS, 1)
+                    .withProducts(MOTOS, 2));
+            add(WorkOrderSummaryTestCase
+                    .expectedSummary("Carros: 15")
+                    .withProducts(CARROS, 15));
+            add(WorkOrderSummaryTestCase
+                    .expectedSummary("Carros: 150, Caminhões: 80")
+                    .withProducts(CARROS, 150)
+                    .withProducts(CAMINHOES, 80));
+            add(WorkOrderSummaryTestCase
+                    .expectedSummary("Motos: 7, Caminhões: 21")
+                    .withProducts(CAMINHOES, 20)
+                    .withProducts(MOTOS, 7)
+                    .withProducts(CAMINHOES, 1));
+        }};
 
-        WorkOrder workOrder = new WorkOrder("Projeto", actual, "");
-        Assert.assertEquals(expected, workOrder.getShortSummary(maxSummarySize));
-    }
-
-    private class SummaryTestCase {
-        String actual;
-        String expected;
-
-        SummaryTestCase(String actual, String expected) {
-            this.actual = actual;
-            this.expected = expected;
+        for (WorkOrderSummaryTestCase testCase : testCases) {
+            testCase.run();
         }
     }
 }

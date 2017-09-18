@@ -2,8 +2,9 @@ package br.com.bg7.appvistoria.data.source.remote;
 
 import java.util.List;
 
+import br.com.bg7.appvistoria.data.WorkOrderProduct;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
-import br.com.bg7.appvistoria.projectselection.vo.Product;
+import br.com.bg7.appvistoria.projectselection.vo.Location;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 /**
@@ -11,5 +12,5 @@ import br.com.bg7.appvistoria.projectselection.vo.Project;
  * Date: 2017-08-31
  */
 public interface ProductService {
-    void findByProjectAndAddress(Project project, String address, HttpCallback<List<Product>> callback);
+    void findByProjectAndLocation(Project project, Location location, HttpCallback<List<WorkOrderProduct>> callback);
 }

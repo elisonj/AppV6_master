@@ -6,7 +6,7 @@
 
 
     <LinearLayout
-        android:id="@+id/linear_main"
+        android:id="@+id/category_header"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:background="#f4f5f9"
@@ -22,14 +22,14 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/product"
+                android:id="@+id/category"
                 android:textColor="#484d51"
                 android:layout_marginStart="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:id="@+id/quantity"
+                android:id="@+id/category_quantity"
                 android:textColor="#484d51"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
@@ -37,7 +37,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/arrow_item"
+            android:id="@+id/arrow"
             android:layout_gravity="center_vertical"
             android:layout_width="15dp"
             android:layout_height="13dp"
@@ -50,16 +50,15 @@
 
     <LinearLayout
         android:visibility="gone"
-        android:id="@+id/linear_quantity"
+        android:id="@+id/quantity_selection_item"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:gravity="center_vertical"
         android:background="#e4e8eb"
         android:layout_height="80dp">
 
-        <com.weiwangcn.betterspinner.library.BetterSpinner
+        <Spinner
             android:id="@+id/spinner"
-            android:hint="@string/spinner_hint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

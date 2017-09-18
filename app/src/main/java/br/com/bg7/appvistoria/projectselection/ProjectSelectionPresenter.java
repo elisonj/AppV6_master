@@ -7,6 +7,7 @@ import java.util.List;
 import br.com.bg7.appvistoria.data.source.remote.ProjectService;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
+import br.com.bg7.appvistoria.projectselection.vo.Location;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -19,7 +20,8 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
 
     private ProjectService projectService;
     private ProjectSelectionContract.View projectServiceView;
-    private Project project = null;
+    private Project project;
+    private Location location;
 
     ProjectSelectionPresenter(ProjectService projectService, ProjectSelectionContract.View view) {
         this.projectService = checkNotNull(projectService);
@@ -36,75 +38,77 @@ class ProjectSelectionPresenter implements  ProjectSelectionContract.Presenter {
         if (Strings.isNullOrEmpty(idOrDescription) || Strings.isNullOrEmpty(idOrDescription.trim())) {
             return;
         }
+
         projectServiceView.showLoading();
-        ProjectSelectionCallback callback = new ProjectSelectionCallback();
-        projectService.findByIdOrDescription(idOrDescription, callback);
+        projectService.findByIdOrDescription(idOrDescription, new FindProjectsCallback());
     }
 
     @Override
     public void selectProject(Project project) {
         this.project = project;
+
+        projectServiceView.showSelectedProject(project);
         projectServiceView.showLoading();
-        AddressSelectionCallback callback = new AddressSelectionCallback();
-        projectService.findAddressesForProject(project, callback);
-
+        projectService.findLocationsForProject(project, new FindLocationsCallback());
     }
 
     @Override
-    public void selectAddress(String address) {
-        projectServiceView.showProductSelection(project.getId(), address);
+    public void selectLocation(Location location) {
+        this.location = location;
+
+        projectServiceView.showSelectedLocation(project.getId(), location);
     }
 
     @Override
-    public void addressFieldClicked() {
-        projectServiceView.clearAddressField();
+    public void locationFieldClicked() {
+        this.location = null;
+        projectServiceView.clearLocationField();
     }
 
     @Override
-    public void projectFieldClicked() {
+    public void projectFieldClicked()
+    {
+        this.location = null;
+        this.project = null;
         projectServiceView.clearProjectField();
     }
 
     @Override
     public void nextClicked() {
-        projectServiceView.showProductSelectionScreen();
+        if (project != null && location != null) {
+            projectServiceView.showProductSelectionScreen(project, location);
+        }
     }
 
-    private class ProjectSelectionCallback implements HttpCallback<List<Project>>
-
+    private class FindProjectsCallback implements HttpCallback<List<Project>>
     {
         @Override
         public void onResponse(HttpResponse<List<Project>> httpResponse) {
-            if(httpResponse.isSuccessful() && httpResponse.body() != null) {
-                List<Project> projects = httpResponse.body();
-                projectServiceView.showProjectResults(projects);
-            }
+            List<Project> projects = httpResponse.body();
+            projectServiceView.showProjectResults(projects);
             projectServiceView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable t) {
             projectServiceView.hideLoading();
-            t.printStackTrace();
+            projectServiceView.showLoadErrorMessage();
         }
     }
 
-    private class AddressSelectionCallback implements HttpCallback<List<String>>
-
+    private class FindLocationsCallback implements HttpCallback<List<Location>>
     {
         @Override
-        public void onResponse(HttpResponse<List<String>> httpResponse) {
-            if(httpResponse.isSuccessful() && httpResponse.body() != null) {
-                List<String> address = httpResponse.body();
-                projectServiceView.showSelectedProject(project, address);
-            }
+        public void onResponse(HttpResponse<List<Location>> httpResponse) {
+            List<Location> locations = httpResponse.body();
+            projectServiceView.showLocations(locations);
             projectServiceView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable t) {
             projectServiceView.hideLoading();
+            projectServiceView.showLoadErrorMessage();
         }
     }
-
 }
