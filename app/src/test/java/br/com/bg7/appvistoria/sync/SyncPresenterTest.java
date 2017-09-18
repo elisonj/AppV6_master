@@ -147,7 +147,7 @@ public class SyncPresenterTest {
         syncCallbackCaptor.getValue().onSuccess(listInspections.get(0));
         verify(syncView).showSyncSuccessMessage();
     }
-g
+
     private void populateRepository() {
         WorkOrder workOrder = new WorkOrder(new Project(1L, "Name"), new Location(1L, "Address"));
 
