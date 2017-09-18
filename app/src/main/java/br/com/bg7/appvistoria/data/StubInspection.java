@@ -9,9 +9,10 @@ import br.com.bg7.appvistoria.sync.InspectionStatus;
  */
 public class StubInspection extends Inspection {
 
-    public StubInspection(Long id, String description) {
+    public StubInspection(Long id, String description, WorkOrder workOrder) {
+        super(description, workOrder);
+
         this.id = id;
-        this.description = description;
         status = InspectionStatus.COMPLETED;
     }
 

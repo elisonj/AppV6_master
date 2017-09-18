@@ -54,8 +54,9 @@ public class Inspection {
         // used by ormlite
     }
 
-    public Inspection(String description) {
+    public Inspection(String description, WorkOrder workOrder) {
         this.description = description;
+        this.workOrder = workOrder;
     }
 
     private PictureCollection pictureCollection() {
@@ -73,10 +74,6 @@ public class Inspection {
         int synced = total - pictureCollection().quantityToSync();
 
         return (synced / total) * 100;
-    }
-
-    public void setWorkOrder(WorkOrder workOrder) {
-        this.workOrder = workOrder;
     }
 
     /**

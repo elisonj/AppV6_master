@@ -151,16 +151,11 @@ public class SyncPresenterTest {
     private void populateRepository() {
         WorkOrder workOrder = new WorkOrder(new Project(1L, "Name"), new Location(1L, "Address"));
 
-        StubInspection inspection1 = new StubInspection(1L, "FORD/BB51");
-        inspection1.setWorkOrder(workOrder);
-        StubInspection inspection2 = new StubInspection(2L, "FORD/BB51");
-        inspection2.setWorkOrder(workOrder);
-        StubInspection inspection3 = new StubInspection(3L, "FORD/BB51");
-        inspection3.setWorkOrder(workOrder);
-        StubInspection inspection4 = new StubInspection(4L, "FORD/BB51");
-        inspection4.setWorkOrder(workOrder);
-        StubInspection inspection5 = new StubInspection(5L, "FORD/BB51");
-        inspection5.setWorkOrder(workOrder);
+        StubInspection inspection1 = new StubInspection(1L, "FORD/BB51", workOrder);
+        StubInspection inspection2 = new StubInspection(2L, "FORD/BB51", workOrder);
+        StubInspection inspection3 = new StubInspection(3L, "FORD/BB51", workOrder);
+        StubInspection inspection4 = new StubInspection(4L, "FORD/BB51", workOrder);
+        StubInspection inspection5 = new StubInspection(5L, "FORD/BB51", workOrder);
 
         inspection1.readyToSync();
         inspection2.setSyncStatus(SyncStatus.INSPECTION_BEING_SYNCED);
