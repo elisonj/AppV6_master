@@ -16,6 +16,8 @@ import br.com.bg7.appvistoria.data.source.local.fake.FakeInspectionSyncRepositor
 import br.com.bg7.appvistoria.data.source.remote.InspectionService;
 import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
+import br.com.bg7.appvistoria.projectselection.vo.Location;
+import br.com.bg7.appvistoria.projectselection.vo.Project;
 import br.com.bg7.appvistoria.sync.vo.SyncList;
 
 import static org.mockito.ArgumentMatchers.eq;
@@ -58,7 +60,7 @@ public class SyncPresenterTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        syncPresenter  = new SyncPresenter(
+        syncPresenter = new SyncPresenter(
                 fakeInspectionRepository,
                 syncManager,
                 syncView);
@@ -74,7 +76,7 @@ public class SyncPresenterTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullRepository() {
-        syncPresenter  = new SyncPresenter(
+        syncPresenter = new SyncPresenter(
                 null,
                 syncManager,
                 syncView);
@@ -82,7 +84,7 @@ public class SyncPresenterTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullSyncManager() {
-        syncPresenter  = new SyncPresenter(
+        syncPresenter = new SyncPresenter(
                 fakeInspectionRepository,
                 null,
                 syncView);
@@ -90,7 +92,7 @@ public class SyncPresenterTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldNotAcceptNullSyncView() {
-        syncPresenter  = new SyncPresenter(
+        syncPresenter = new SyncPresenter(
                 fakeInspectionRepository,
                 syncManager,
                 null);
@@ -145,19 +147,19 @@ public class SyncPresenterTest {
         syncCallbackCaptor.getValue().onSuccess(listInspections.get(0));
         verify(syncView).showSyncSuccessMessage();
     }
-
+g
     private void populateRepository() {
-        WorkOrder workOrder = new WorkOrder("Name","Summary", "Address");
+        WorkOrder workOrder = new WorkOrder(new Project(1L, "Name"), new Location(1L, "Address"));
 
-        StubInspection inspection1 = new StubInspection(1L,"FORD/BB51");
+        StubInspection inspection1 = new StubInspection(1L, "FORD/BB51");
         inspection1.setWorkOrder(workOrder);
-        StubInspection inspection2 = new StubInspection(2L,"FORD/BB51");
+        StubInspection inspection2 = new StubInspection(2L, "FORD/BB51");
         inspection2.setWorkOrder(workOrder);
-        StubInspection inspection3 = new StubInspection(3L,"FORD/BB51");
+        StubInspection inspection3 = new StubInspection(3L, "FORD/BB51");
         inspection3.setWorkOrder(workOrder);
-        StubInspection inspection4 = new StubInspection(4L,"FORD/BB51");
+        StubInspection inspection4 = new StubInspection(4L, "FORD/BB51");
         inspection4.setWorkOrder(workOrder);
-        StubInspection inspection5 = new StubInspection(5L,"FORD/BB51");
+        StubInspection inspection5 = new StubInspection(5L, "FORD/BB51");
         inspection5.setWorkOrder(workOrder);
 
         inspection1.readyToSync();

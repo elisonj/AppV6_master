@@ -7,6 +7,8 @@ import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.StubInspection;
 import br.com.bg7.appvistoria.data.WorkOrder;
 import br.com.bg7.appvistoria.data.source.local.InspectionRepository;
+import br.com.bg7.appvistoria.projectselection.vo.Location;
+import br.com.bg7.appvistoria.projectselection.vo.Project;
 import br.com.bg7.appvistoria.sync.SyncStatus;
 import br.com.bg7.appvistoria.sync.InspectionStatus;
 
@@ -14,7 +16,7 @@ import br.com.bg7.appvistoria.sync.InspectionStatus;
  * Created by: elison
  * Date: 2017-09-12
  */
-public class StubInspectionRepository  implements InspectionRepository {
+public class StubInspectionRepository implements InspectionRepository {
 
 
     @Override
@@ -35,18 +37,17 @@ public class StubInspectionRepository  implements InspectionRepository {
     private List<Inspection> getInspectionData() {
         ArrayList<Inspection> list = new ArrayList<>();
 
-        WorkOrder workOrder = new WorkOrder("Name","Summary", "Address");
+        WorkOrder workOrder = new WorkOrder(new Project(1L, "Projeto"), new Location(1L, "Rua Hum, 1"));
 
-
-        StubInspection inspection1 = new StubInspection(1L,"FORD/BB51");
+        StubInspection inspection1 = new StubInspection(1L, "FORD/BB51");
         inspection1.setWorkOrder(workOrder);
-        StubInspection inspection2 = new StubInspection(2L,"FORD/BB51");
+        StubInspection inspection2 = new StubInspection(2L, "FORD/BB51");
         inspection2.setWorkOrder(workOrder);
-        StubInspection inspection3 = new StubInspection(3L,"FORD/BB51");
+        StubInspection inspection3 = new StubInspection(3L, "FORD/BB51");
         inspection3.setWorkOrder(workOrder);
-        StubInspection inspection4 = new StubInspection(4L,"FORD/BB51");
+        StubInspection inspection4 = new StubInspection(4L, "FORD/BB51");
         inspection4.setWorkOrder(workOrder);
-        StubInspection inspection5 = new StubInspection(5L,"FORD/BB51");
+        StubInspection inspection5 = new StubInspection(5L, "FORD/BB51");
         inspection5.setWorkOrder(workOrder);
 
         inspection1.readyToSync();
@@ -63,6 +64,4 @@ public class StubInspectionRepository  implements InspectionRepository {
 
         return list;
     }
-
-
 }

@@ -35,7 +35,7 @@ public class SyncList {
 
             SyncListItemDetails detail = new SyncListItemDetails();
             detail.setId(inspection.getId());
-            detail.setProject(inspection.getWorkOrder().getName());
+            detail.setProject(inspection.getWorkOrder().getProjectDescription());
             detail.setDescription(inspection.getDescription());
 
             if(inspection.getSyncStatus() == null) {
