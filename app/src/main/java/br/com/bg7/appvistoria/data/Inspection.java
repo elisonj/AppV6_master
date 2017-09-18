@@ -241,12 +241,12 @@ public class Inspection {
         return id;
     }
 
-    public WorkOrder getWorkOrder() {
-        return workOrder;
-    }
-
     public String getDescription() {
         return description;
+    }
+
+    public String getProjectDescription() {
+        return workOrder.getProjectDescription();
     }
 
     public InspectionStatus getStatus() {
