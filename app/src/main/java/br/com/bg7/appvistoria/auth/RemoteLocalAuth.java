@@ -18,7 +18,7 @@ import br.com.bg7.appvistoria.data.source.remote.UserService;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-08-07
  */
 

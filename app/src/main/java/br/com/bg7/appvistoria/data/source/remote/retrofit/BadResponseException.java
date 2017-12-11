@@ -3,7 +3,7 @@ package br.com.bg7.appvistoria.data.source.remote.retrofit;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpResponse;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-09-12
  *
  * Exception that indicates that the response that we received from

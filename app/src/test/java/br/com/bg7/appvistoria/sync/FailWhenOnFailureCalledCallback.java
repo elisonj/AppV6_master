@@ -6,7 +6,7 @@ import br.com.bg7.appvistoria.data.Inspection;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-08-05
  */
 

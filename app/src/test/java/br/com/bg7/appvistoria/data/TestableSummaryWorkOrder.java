@@ -1,12 +1,10 @@
 package br.com.bg7.appvistoria.data;
 
-import java.util.ArrayList;
-
 import br.com.bg7.appvistoria.projectselection.vo.Location;
 import br.com.bg7.appvistoria.projectselection.vo.Project;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-09-17
  */
 

@@ -14,7 +14,7 @@ import br.com.bg7.appvistoria.data.source.local.UserRepository;
 import static br.com.bg7.appvistoria.data.User.USERNAME_FIELD;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-08-16
  */
 

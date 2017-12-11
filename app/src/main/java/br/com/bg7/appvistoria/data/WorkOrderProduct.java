@@ -4,7 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-09-17
  *
  * TODO: Merge disso com o data.Product

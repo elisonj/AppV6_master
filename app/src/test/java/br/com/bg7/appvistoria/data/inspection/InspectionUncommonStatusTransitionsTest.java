@@ -10,7 +10,7 @@ import br.com.bg7.appvistoria.data.source.remote.http.HttpProgressCallback;
 import static org.mockito.Mockito.reset;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-08-21
  */
 

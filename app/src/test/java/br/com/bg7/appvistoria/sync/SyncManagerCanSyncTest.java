@@ -8,7 +8,7 @@ import static br.com.bg7.appvistoria.sync.MockInspection.mockInspection;
 import static br.com.bg7.appvistoria.sync.MockInspectionChecker.checkThat;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-08-02
  */
 

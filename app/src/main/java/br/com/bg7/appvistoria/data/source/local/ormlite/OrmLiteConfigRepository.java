@@ -16,7 +16,7 @@ import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
 import static br.com.bg7.appvistoria.data.Config.USER_ID_FIELD;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-08-16
  */
 

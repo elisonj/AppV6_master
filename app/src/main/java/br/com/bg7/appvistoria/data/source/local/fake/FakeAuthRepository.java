@@ -6,7 +6,7 @@ import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.local.AuthRepository;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-08-07
  */
 

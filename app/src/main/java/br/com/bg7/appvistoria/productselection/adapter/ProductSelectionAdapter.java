@@ -24,7 +24,7 @@ import me.srodrigo.androidhintspinner.HintAdapter;
 import me.srodrigo.androidhintspinner.HintSpinner;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-09-13
  */
 public class ProductSelectionAdapter extends BaseExpandableListAdapter {

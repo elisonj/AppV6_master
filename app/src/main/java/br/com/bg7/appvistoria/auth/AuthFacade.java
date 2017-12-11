@@ -4,7 +4,7 @@ import br.com.bg7.appvistoria.auth.callback.AuthCallback;
 import br.com.bg7.appvistoria.data.User;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-08-07
  */
 

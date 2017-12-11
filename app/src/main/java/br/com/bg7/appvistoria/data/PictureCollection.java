@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import br.com.bg7.appvistoria.sync.PictureSyncStatus;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-08-21
  */
 

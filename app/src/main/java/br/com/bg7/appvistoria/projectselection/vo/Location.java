@@ -3,7 +3,7 @@ package br.com.bg7.appvistoria.projectselection.vo;
 import java.io.Serializable;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-09-16
  */
 

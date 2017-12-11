@@ -25,7 +25,7 @@ import br.com.bg7.appvistoria.data.WorkOrderProduct;
 import br.com.bg7.appvistoria.data.WorkOrderProductType;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-08-17
  *
  * DatabaseHelper used for database initialization and updates.

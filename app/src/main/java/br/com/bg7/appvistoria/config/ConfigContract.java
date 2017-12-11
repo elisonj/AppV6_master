@@ -7,7 +7,7 @@ import br.com.bg7.appvistoria.BaseView;
 import br.com.bg7.appvistoria.config.vo.Language;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-07-17
  *
  * {@link SuppressWarnings pois so as sub-classes sao implementadas, de proposito}

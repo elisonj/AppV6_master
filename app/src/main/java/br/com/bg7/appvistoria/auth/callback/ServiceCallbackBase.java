@@ -7,7 +7,7 @@ import br.com.bg7.appvistoria.data.source.local.UserRepository;
 import br.com.bg7.appvistoria.login.LoginPresenter;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-07-31
  */
 

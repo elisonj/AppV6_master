@@ -7,7 +7,7 @@ import java.util.List;
 import br.com.bg7.appvistoria.projectselection.vo.Location;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-09-16
  */
 public class LocationSelectionAdapter extends SelectionAdapter<Location> {

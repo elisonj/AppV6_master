@@ -7,7 +7,7 @@ import br.com.bg7.appvistoria.data.Inspection;
 import static br.com.bg7.appvistoria.sync.MockInspection.mockInspection;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-08-05
  */
 

@@ -27,7 +27,7 @@ import br.com.bg7.appvistoria.data.source.remote.stub.StubProjectService;
 import br.com.bg7.appvistoria.data.source.remote.stub.StubRetrofitInspectionService;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-09-03
  */
 

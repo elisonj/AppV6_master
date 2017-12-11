@@ -4,7 +4,7 @@ import br.com.bg7.appvistoria.data.source.remote.dto.UserResponse;
 import br.com.bg7.appvistoria.data.source.remote.http.HttpCallback;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-07-19
  */
 

@@ -7,7 +7,7 @@ import br.com.bg7.appvistoria.sync.InspectionStatus;
 import br.com.bg7.appvistoria.sync.SyncStatus;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-07-31
  */
 

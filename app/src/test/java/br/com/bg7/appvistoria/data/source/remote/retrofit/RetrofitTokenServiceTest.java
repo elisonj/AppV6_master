@@ -13,7 +13,7 @@ import okhttp3.mockwebserver.RecordedRequest;
 import static br.com.bg7.appvistoria.data.source.remote.retrofit.Resources.GET_TOKEN_RESPONSE_JSON;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-09-06
  */
 

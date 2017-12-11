@@ -8,13 +8,12 @@ import br.com.bg7.appvistoria.data.User;
 import br.com.bg7.appvistoria.data.source.local.AuthRepository;
 import br.com.bg7.appvistoria.data.source.local.ConfigRepository;
 import br.com.bg7.appvistoria.data.source.local.UserRepository;
-import br.com.bg7.appvistoria.data.source.local.android.SharedPreferencesAuthRepository;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeAuthRepository;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeConfigRepository;
 import br.com.bg7.appvistoria.data.source.local.fake.FakeUserRepository;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-09-03
  */
 

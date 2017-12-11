@@ -9,7 +9,7 @@ import br.com.bg7.appvistoria.data.source.remote.PictureService;
 import br.com.bg7.appvistoria.data.source.remote.callback.SyncCallback;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-08-02
  */
 class SyncJob implements Runnable {

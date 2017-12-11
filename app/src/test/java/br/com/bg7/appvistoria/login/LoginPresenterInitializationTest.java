@@ -11,7 +11,7 @@ import br.com.bg7.appvistoria.data.source.local.fake.FakeConfigRepository;
 import static org.mockito.Mockito.verify;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-07-18
  */
 

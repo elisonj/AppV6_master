@@ -15,7 +15,7 @@ import static br.com.bg7.appvistoria.sync.MockInspection.mockInspection;
 import static org.mockito.Mockito.verify;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-07-31
  */
 

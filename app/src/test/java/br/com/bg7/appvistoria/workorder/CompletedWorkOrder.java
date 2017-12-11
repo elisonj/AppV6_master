@@ -9,7 +9,7 @@ import static br.com.bg7.appvistoria.data.TestableSummaryWorkOrder.LOCATION;
 import static br.com.bg7.appvistoria.data.TestableSummaryWorkOrder.PROJECT;
 
 /**
- * Created by: luciolucio
+ * Created by: elison
  * Date: 2017-08-22
  */
 
